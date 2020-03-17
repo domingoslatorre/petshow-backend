@@ -1,0 +1,5 @@
+[DEBUG] 2020-03-16 21:48:55.858 [executor-thread-1] ExampleResource - debug
+[ERROR] 2020-03-16 21:48:55.859 [executor-thread-1] ExampleResource - error
+[INFO ] 2020-03-16 21:48:55.859 [executor-thread-1] ExampleResource - info
+[FATAL] 2020-03-16 21:48:55.859 [executor-thread-1] ExampleResource - fatal
+[WARN ] 2020-03-16 21:48:55.859 [executor-thread-1] ExampleResource - warn
