@@ -10,3 +10,7 @@ aaaa [ERROR] 2020-03-17 21:32:22.381 [executor-thread-1] ExampleResource - error
 aaaa [INFO ] 2020-03-17 21:32:22.382 [executor-thread-1] ExampleResource - info
 aaaa [FATAL] 2020-03-17 21:32:22.382 [executor-thread-1] ExampleResource - fatal
 aaaa [WARN ] 2020-03-17 21:32:22.382 [executor-thread-1] ExampleResource - warna
+aaaa [ERROR] 2020-03-21 11:30:14.525 [executor-thread-1] ExampleResource - error
+aaaa [INFO ] 2020-03-21 11:30:14.525 [executor-thread-1] ExampleResource - info
+aaaa [FATAL] 2020-03-21 11:30:14.526 [executor-thread-1] ExampleResource - fatal
+aaaa [WARN ] 2020-03-21 11:30:14.526 [executor-thread-1] ExampleResource - warna

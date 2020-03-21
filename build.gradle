@@ -23,6 +23,9 @@ dependencies {
 group 'hyve.petshow'
 version '1.0.0-SNAPSHOT'
 
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
+
 compileJava {
     options.compilerArgs << '-parameters'
 }
