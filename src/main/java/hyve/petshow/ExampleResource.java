@@ -19,8 +19,8 @@ public class ExampleResource {
         logger.error("error");
         logger.info("info");
         logger.fatal("fatal");
-        logger.warn("warn");
-        logger.trace("trace");
+        logger.warn("warna");
+        logger.trace("tracae");
 
         return "hellasao";
 

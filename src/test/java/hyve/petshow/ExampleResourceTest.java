@@ -16,5 +16,4 @@ public class ExampleResourceTest {
           .then()
              .statusCode(200);
     }
-
 }
