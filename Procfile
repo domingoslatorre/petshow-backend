@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/petshow-1.0.0-SNAPSHOT.jar
+web: java -jar build/libs/petshow-1.0.0-SNAPSHOT.jar
