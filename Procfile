@@ -1,1 +1,1 @@
-web:java -jar target/petshow.jar
+web: java -jar target/petshow.jar
