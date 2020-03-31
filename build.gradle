@@ -1,37 +1,39 @@
 plugins {
-    id 'java'
-    id 'io.quarkus'
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'hyve.petshow'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 }
 
 repositories {
-     mavenLocal()
-     mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    implementation 'io.quarkus:quarkus-jdbc-mysql'
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-resteasy'
-
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.1'
-    compile group: 'io.quarkus', name: 'quarkus-spring-data-jpa', version: '0.26.0'
-
-    testImplementation 'io.quarkus:quarkus-junit5'
-    testImplementation 'io.rest-assured:rest-assured'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'mysql:mysql-connector-java'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 }
 
-group 'hyve.petshow'
-version '1.0.0-SNAPSHOT'
-
-task stage(dependsOn: ['build', 'clean'])
-build.mustRunAfter clean
-
-compileJava {
-    options.compilerArgs << '-parameters'
+test {
+	useJUnitPlatform()
 }
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
