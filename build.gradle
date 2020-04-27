@@ -54,7 +54,7 @@ test.finalizedBy jacocoTestReport
 
 tasks.jacocoTestReport {
 	reports {
-		xml.isEnabled = true
+		xml.enabled = true
 	}
 }
 
