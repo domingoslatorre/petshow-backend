@@ -52,6 +52,12 @@ jacoco {
 
 test.finalizedBy jacocoTestReport
 
+tasks.jacocoTestReport {
+	reports {
+		xml.enabled = true
+	}
+}
+
 /*jacocoTestCoverageVerification {
 	violationRules {
 		rule {
