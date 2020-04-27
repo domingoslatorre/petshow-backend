@@ -17,10 +17,12 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	codacy
 }
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
@@ -30,6 +32,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.1'
 	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.1'
+
+	codacy 'com.codacy:codacy-coverage-reporter:latest.release'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -57,6 +61,20 @@ tasks.jacocoTestReport {
 		xml.enabled = true
 	}
 }
+
+task sendCoverageToCodacy(type: JavaExec) {
+	main = "com.codacy.CodacyCoverageReporter"
+	classpath = configurations.codacy
+	args = [
+			"report",
+			"-l",
+			"Java",
+			"-r",
+			"${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+	]
+}
+
+jacocoTestReport.finalizedBy sendCoverageToCodacy
 
 /*jacocoTestCoverageVerification {
 	violationRules {
