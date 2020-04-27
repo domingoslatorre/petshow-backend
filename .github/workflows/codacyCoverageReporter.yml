@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     name: codacy-coverage-reporter
     steps:
+      - run: |
+          ./gradlew build
       - uses: actions/checkout@master
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@master
