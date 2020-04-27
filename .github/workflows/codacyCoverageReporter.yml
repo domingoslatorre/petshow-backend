@@ -1,6 +1,7 @@
 name: codacy-coverage-reporter
 
-on: ["push"]
+on:
+  deployment
 
 jobs:
   codacy-coverage-reporter:
