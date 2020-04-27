@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @SpringBootApplication
 public class DemoApplication {
 	@GetMapping("/home")
-	@ResponseBody
-	private String home() {
+	public String hello() {
 		log.info("Hi");
 		return "Hello World!";
 	}
