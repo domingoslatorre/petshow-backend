@@ -18,3 +18,5 @@ jobs:
       - name: Gradle Build and Test
         run: |
           ./gradlew build
+        env:
+          CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
