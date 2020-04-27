@@ -50,6 +50,14 @@ jacoco {
 	toolVersion = "0.8.5"
 }
 
+test.finalizedBy jacocoTestReport
+
+tasks.jacocoTestReport {
+	reports {
+		xml.isEnabled = true
+	}
+}
+
 /*jacocoTestCoverageVerification {
 	violationRules {
 		rule {
@@ -62,5 +70,4 @@ jacoco {
 	}
 }*/
 
-test.finalizedBy jacocoTestReport
 /*check.dependsOn jacocoTestCoverageVerification*/
