@@ -1,7 +1,9 @@
 name: codacy-coverage-reporter
 
 on:
-  deployment
+  push:
+    branches:
+      - master
 
 jobs:
   codacy-coverage-reporter:
