@@ -4,7 +4,7 @@ on:
     branches:
       - development
 jobs:
-  run-gradle-task-and-send-to-codacy:
+  build-gradle-development-branch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
