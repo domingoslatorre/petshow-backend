@@ -1,4 +1,4 @@
-name: gradle-build-n-push
+name: gradle-build-n- push
 on:
   push:
     branches:
@@ -14,18 +14,12 @@ jobs:
       - uses: eskatos/gradle-command-action@v1
         with:
           arguments: build
+  codacy-coverage-reporter:
+    runs-on: ubuntu-latest
+    name: codacy-coverage-reporter
+    steps:
       - uses: actions/checkout@master
-      - name: Create local changes
-        run: |
-          git status
-          git add src/main/resources/jacoco/jacocoTestReport.xml
-      - name: Commit files
-        run: |
-          git config --local user.email "guilhermeguis@outlook.com"
-          git config --local user.name "Guilherme Souza"
-          git commit -m "Push automático do relatório de coverage após build" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@master
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          branch: development
+          project-token: ${{secrets.CODACY_PROJECT_TOKEN}}
