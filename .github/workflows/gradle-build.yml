@@ -14,12 +14,6 @@ jobs:
       - uses: eskatos/gradle-command-action@v1
         with:
           arguments: build
-  codacy-coverage-reporter:
-    needs: gradle-build
-    runs-on: ubuntu-latest
-    name: codacy-coverage-reporter
-    steps:
-      - uses: actions/checkout@master
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@master
         with:
