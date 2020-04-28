@@ -13,7 +13,7 @@ jobs:
           java-version: 8
       - uses: eskatos/gradle-command-action@v1
         with:
-          arguments: jacocoTestReport
+          arguments: test jacocoTestReport
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@master
         with:
