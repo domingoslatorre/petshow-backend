@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class DemoApplication {
 	@GetMapping("/home")
 	public String hello(Model model) {
-		log.info("Hi");
+		log.info("Hello");
 		return "Hello World!";
 	}
 
