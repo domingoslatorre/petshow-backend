@@ -4,7 +4,7 @@ on:
     branches:
       - development
 jobs:
-  gradle:
+  gradle-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -15,6 +15,7 @@ jobs:
         with:
           arguments: build
   codacy-coverage-reporter:
+    needs: gradle-build
     runs-on: ubuntu-latest
     name: codacy-coverage-reporter
     steps:
