@@ -1,8 +1,8 @@
 name: generate-and-send-coverage-report
 on:
-  pull_request:
+  push:
     branches:
-      - master
+      - development
 env:
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
