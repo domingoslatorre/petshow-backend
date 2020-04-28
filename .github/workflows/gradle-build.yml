@@ -17,12 +17,12 @@ jobs:
       - uses: actions/checkout@master
       - name: Create local changes
         run: |
-          git status
+          git add src/main/resources/jacoco/jacocoTestReport.xml
       - name: Commit files
         run: |
           git config --local user.email "guilhermeguis@outlook.com"
           git config --local user.name "Guilherme Souza"
-          git commit -m "Push automático após build" -a
+          git commit -m "Push automático do relatório de coverage após build" -a
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
