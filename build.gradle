@@ -50,8 +50,6 @@ jacoco {
 	toolVersion = "0.8.5"
 }
 
-test.finalizedBy jacocoTestReport
-
 tasks.jacocoTestReport {
 	reports {
 		xml.enabled = true

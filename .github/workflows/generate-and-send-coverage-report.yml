@@ -1,8 +1,5 @@
 name: generate-and-send-coverage-report
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
@@ -16,7 +13,7 @@ jobs:
           java-version: 8
       - uses: eskatos/gradle-command-action@v1
         with:
-          arguments: build
+          arguments: test jacocoTestReport
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@master
         with:
