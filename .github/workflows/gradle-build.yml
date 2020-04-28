@@ -1,4 +1,4 @@
-name: Buildar o gradle quando o push for realizado na development
+name: gradle-build-n-push
 on:
   push:
     branches:
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Create local changes
         run: |
-          ...
+          git status
       - name: Commit files
         run: |
           git config --local user.email "guilhermeguis@outlook.com"
@@ -27,3 +27,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
+          branch: development
