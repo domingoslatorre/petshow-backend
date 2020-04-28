@@ -55,20 +55,5 @@ test.finalizedBy jacocoTestReport
 tasks.jacocoTestReport {
 	reports {
 		xml.enabled = true
-		xml.destination file("/src/main/resources/jacoco/jacocoTestReport.xml")
 	}
 }
-
-/*jacocoTestCoverageVerification {
-	violationRules {
-		rule {
-			limit {
-				counter = 'LINE'
-				value = 'COVEREDRATIO'
-				minimum = 1.0
-			}
-		}
-	}
-}*/
-
-/*check.dependsOn jacocoTestCoverageVerification*/
