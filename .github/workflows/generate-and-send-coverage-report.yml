@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - development
-env:
-  CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
 jobs:
   run-gradle-task-and-send-to-codacy:
@@ -19,4 +17,5 @@ jobs:
           arguments: test jacocoTestReport
       - name: Run codacy-coverage-reporter
         run: |
+          export CODACY_PROJECT_TOKEN=${{secrets.CODACY_PROJECT_TOKEN}}
           bash <(curl -Ls https://coverage.codacy.com/get.sh)
