@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
 jobs:
   run-gradle-task-and-send-to-codacy:
     runs-on: ubuntu-latest
