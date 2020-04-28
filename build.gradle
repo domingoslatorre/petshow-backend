@@ -55,6 +55,7 @@ test.finalizedBy jacocoTestReport
 tasks.jacocoTestReport {
 	reports {
 		xml.enabled = true
+		xml.destination file("/src/main/resources/jacoco/jacocoTestReport.xml")
 	}
 }
 
