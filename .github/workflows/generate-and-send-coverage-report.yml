@@ -2,7 +2,7 @@ name: generate-and-send-coverage-report
 on:
   push:
     branches:
-      - development
+      - master
 jobs:
   gradle-build:
     runs-on: ubuntu-latest
