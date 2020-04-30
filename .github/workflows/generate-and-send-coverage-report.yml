@@ -1,5 +1,8 @@
 name: generate-and-send-coverage-report
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
