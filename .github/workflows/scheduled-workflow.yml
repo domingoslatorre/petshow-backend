@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron: '30 03 * * SAT'
+    - cron: '20 03 * * SAT'
 
 name: Scheduled Actions
 jobs:
