@@ -1,14 +1,19 @@
-package hyve.petshow.demo;
+package hyve.petshow;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 class ApplicationTests {
 	@Test
-	public void contextLoads() {
+	void test01() {
+		boolean teste = false;
+
+		assertEquals(true, teste);
+	}
+
+	@Test
+	void test02() {
 		boolean teste = true;
 
 		assertEquals(true, teste);
