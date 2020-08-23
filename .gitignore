@@ -34,3 +34,6 @@ out/
 
 ### Actions ###
 node_modules/
+
+### Heroku ###
+.env
