@@ -15,6 +15,9 @@ public class TesteServiceImpl implements TesteService {
     @Autowired
     private TesteRepository testeRepository;
 
+    @Autowired
+    private Teste teste;
+
     @Override
     public List<Teste> obterTestes() {
         List<Teste> testes = new ArrayList<>();
@@ -26,12 +29,13 @@ public class TesteServiceImpl implements TesteService {
 
     @Override
     public Teste obterTeste(Long id) {
-        Teste response = new Teste();
-        Optional<Teste> teste = testeRepository.findById(id);
+        Optional<Teste> testeFound = testeRepository.findById(id);
 
-        if(teste.isPresent())
-            response = teste.get();
+        if(testeFound.isPresent()){
+            teste.setId(testeFound.get().getId());
+            teste.setTeste(testeFound.get().getTeste());
+        }
 
-        return response;
+        return teste;
     }
 }
