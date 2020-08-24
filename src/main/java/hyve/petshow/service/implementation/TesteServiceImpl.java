@@ -29,13 +29,12 @@ public class TesteServiceImpl implements TesteService {
 
     @Override
     public Teste obterTeste(Long id) {
-        Optional<Teste> testeFound = testeRepository.findById(id);
+        Teste response = new Teste();
+        Optional<Teste> teste = testeRepository.findById(id);
 
-        if(testeFound.isPresent()){
-            teste.setId(testeFound.get().getId());
-            teste.setTeste(testeFound.get().getTeste());
-        }
+        if(teste.isPresent())
+            response = teste.get();
 
-        return teste;
+        return response;
     }
 }
