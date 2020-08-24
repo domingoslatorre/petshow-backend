@@ -14,3 +14,7 @@ jobs:
           java-version: 1.11
       - name: Build with Gradle
         run: ./gradlew test
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
