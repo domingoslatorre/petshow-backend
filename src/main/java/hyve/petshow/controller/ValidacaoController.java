@@ -1,9 +1,11 @@
 package hyve.petshow.controller;
 
-import hyve.petshow.controller.converter.TesteConverter;
+import hyve.petshow.controller.converter.ValidacaoConverter;
 import hyve.petshow.controller.representation.TesteRepresentation;
-import hyve.petshow.domain.Teste;
-import hyve.petshow.service.port.TesteService;
+import hyve.petshow.controller.representation.TesteValidacaoRepresentation;
+import hyve.petshow.controller.representation.ValidacaoRepresentation;
+import hyve.petshow.domain.Validacao;
+import hyve.petshow.service.port.ValidacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -22,47 +24,47 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/teste")
-public class TesteController {
+@RequestMapping("/validacao")
+public class ValidacaoController {
     @Autowired
-    private TesteService testeService;
+    private ValidacaoService validacaoService;
 
     @Autowired
-    private TesteConverter testeConverter;
+    private ValidacaoConverter validacaoConverter;
 
-    @Operation(summary = "Retorna todos os testes")
+    @Operation(summary = "Retorna todas as validacoes")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Retornado com sucesso",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = TesteRepresentation.class)))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ValidacaoRepresentation.class)))),
             @ApiResponse(
                     responseCode = "500",
                     description = "Erro durante a execução da operação")
     })
     @GetMapping
-    public ResponseEntity<List<TesteRepresentation>> obterTestes(){
+    public ResponseEntity<List<ValidacaoRepresentation>> obterValidacoes(){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(testeConverter.toRepresentationList(testeService.obterTestes()));
+                .body(validacaoConverter.toRepresentationList(validacaoService.obterValidacoes()));
     }
 
-    @Operation(summary = "Retorna um teste")
+    @Operation(summary = "Retorna uma validacao")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Retornado com sucesso",
-                    content = @Content(schema =  @Schema(implementation = TesteRepresentation.class))),
+                    content = @Content(schema =  @Schema(implementation = ValidacaoRepresentation.class))),
             @ApiResponse(
                     responseCode = "500",
                     description = "Erro durante a execução da operação")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TesteRepresentation> obterTeste(
-            @Parameter(description = "Id do teste a ser buscado", required = true, example = "1")
+    public ResponseEntity<ValidacaoRepresentation> obterValidacao(
+            @Parameter(description = "Id da validacao a ser buscada", required = true, example = "1")
             @PathVariable Long id){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(testeConverter.toRepresentation(testeService.obterTeste(id)));
+                .body(validacaoConverter.toRepresentation(validacaoService.obterValidacao(id)));
     }
 }
