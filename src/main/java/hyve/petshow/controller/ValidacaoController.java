@@ -1,8 +1,6 @@
 package hyve.petshow.controller;
 
 import hyve.petshow.controller.converter.ValidacaoConverter;
-import hyve.petshow.controller.representation.TesteRepresentation;
-import hyve.petshow.controller.representation.TesteValidacaoRepresentation;
 import hyve.petshow.controller.representation.ValidacaoRepresentation;
 import hyve.petshow.domain.Validacao;
 import hyve.petshow.service.port.ValidacaoService;
@@ -16,10 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,7 +41,7 @@ public class ValidacaoController {
     public ResponseEntity<List<ValidacaoRepresentation>> obterValidacoes(){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(validacaoConverter.toRepresentationList(validacaoService.obterValidacoes()));
+                .body(validacaoConverter.toRepresentationList((List<Validacao>) validacaoService.obterTodos()));
     }
 
     @Operation(summary = "Retorna uma validacao")
@@ -65,6 +60,26 @@ public class ValidacaoController {
             @PathVariable Long id){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(validacaoConverter.toRepresentation(validacaoService.obterValidacao(id)));
+                .body(validacaoConverter.toRepresentation(validacaoService.obterUmPorId(id).get()));
+    }
+
+    @Operation(summary = "Cria uma validacao")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Retornado com sucesso",
+                    content = @Content(schema =  @Schema(implementation = ValidacaoRepresentation.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Erro durante a execução da operação")
+    })
+    @PostMapping
+    public ResponseEntity<ValidacaoRepresentation> criarValidacao(
+            @RequestBody ValidacaoRepresentation validacaoRepresentation){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(validacaoConverter.toRepresentation(
+                        validacaoService.criar(
+                                validacaoConverter.toDomain(validacaoRepresentation))));
     }
 }

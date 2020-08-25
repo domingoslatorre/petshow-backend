@@ -6,20 +6,35 @@ import hyve.petshow.service.port.ValidacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ValidacaoServiceProxy implements ValidacaoService {
     @Autowired
-    private ValidacaoServiceImpl validacaoService;
+    private ValidacaoServiceImpl validacaoServiceImpl;
 
     @Override
-    public List<Validacao> obterValidacoes() {
-        return validacaoService.obterValidacoes();
+    public Validacao criar(Validacao validacao) {
+        return validacaoServiceImpl.criar(validacao);
     }
 
     @Override
-    public Validacao obterValidacao(Long id) {
-        return validacaoService.obterValidacao(id);
+    public Validacao atualizar(Validacao validacao) {
+        return validacaoServiceImpl.atualizar(validacao);
+    }
+
+    @Override
+    public Boolean remover(Long id) {
+        return validacaoServiceImpl.remover(id);
+    }
+
+    @Override
+    public Optional<Validacao> obterUmPorId(Long id) {
+        return validacaoServiceImpl.obterUmPorId(id);
+    }
+
+    @Override
+    public Iterable<Validacao> obterTodos() {
+        return validacaoServiceImpl.obterTodos();
     }
 }

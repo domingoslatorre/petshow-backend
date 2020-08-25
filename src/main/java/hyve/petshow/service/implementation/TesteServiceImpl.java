@@ -15,9 +15,6 @@ public class TesteServiceImpl implements TesteService {
     @Autowired
     private TesteRepository testeRepository;
 
-    @Autowired
-    private Teste teste;
-
     @Override
     public List<Teste> obterTestes() {
         List<Teste> testes = new ArrayList<>();
