@@ -1,4 +1,4 @@
-name: gradle-test-pull-request
+name: gradle-build-pull-request
 on:
   push:
     branches:
