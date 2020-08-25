@@ -12,7 +12,7 @@ jobs:
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./build/reports/jacoco/test/jacocoTestReport.xml
+          file: /build/reports/jacoco/test/jacocoTestReport.xml
           fail_ci_if_error: true
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.4.6
