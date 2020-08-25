@@ -14,6 +14,11 @@ jobs:
           java-version: 1.11
       - name: Build with Gradle
         run: ./gradlew clean build
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ${{ secrets.CODECOV_PATH }}
+          fail_ci_if_error: true
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
