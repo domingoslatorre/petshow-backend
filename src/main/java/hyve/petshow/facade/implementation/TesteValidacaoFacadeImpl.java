@@ -21,7 +21,7 @@ public class TesteValidacaoFacadeImpl implements TesteValidacaoFacade {
     public TesteValidacao obterTesteValidacao(Long idTeste, Long idValidacao) {
         TesteValidacao testeValidacao = new TesteValidacao();
         Teste teste = testeService.obterTeste(idTeste);
-        Validacao validacao = validacaoService.obterValidacao(idValidacao);
+        Validacao validacao = validacaoService.obterUmPorId(idValidacao).get();
 
         testeValidacao.setIdTeste(teste.getId());
         testeValidacao.setIdValidacao(validacao.getId());
