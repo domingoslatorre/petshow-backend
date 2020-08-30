@@ -42,6 +42,13 @@ dependencies {
 	}
 
 	testCompile "org.junit.jupiter:junit-jupiter-engine"
+	testCompile 'info.cukes:cucumber-java:1.2.4'
+	testCompile 'info.cukes:cucumber-junit:1.2.4'
+	testCompile 'info.cukes:cucumber-spring:1.2.4'
+
+	// https://mvnrepository.com/artifact/org.junit.vintage/junit-vintage-engine
+    testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine'
+
 }
 
 test {
