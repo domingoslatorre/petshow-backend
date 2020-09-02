@@ -1,6 +1,9 @@
 package hyve.petshow.cucumber;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hyve.petshow.mock.AnimalEstimacaoMock;
+import io.cucumber.gherkin.internal.com.eclipsesource.json.Json;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
@@ -40,8 +43,11 @@ public class AnimalEstimacaoCucumberTest {
         assertEquals(expectedStatus, actualStatus);
     }
 
-    @E("um corpo preenchido")
-    public void um_objeto_do_tipo_objeto_no_corpo_da_resposta() {
-        assertNotNull(responseEntity.getBody());
+    @E("a resposta deve ser {string}")
+    public void um_objeto_do_tipo_objeto_no_corpo_da_resposta(String expectedResponse) throws JsonProcessingException {
+        var objectMapper = new ObjectMapper();
+        var actualResponse = objectMapper.writeValueAsString(responseEntity.getBody());
+
+        assertNotNull(expectedResponse, actualResponse);
     }
 }

@@ -1,43 +1,99 @@
 package hyve.petshow.controller;
 
+import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
+import hyve.petshow.controller.representation.AnimalEstimacaoResponseRepresentation;
+import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.service.port.AnimalEstimacaoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/animalEstimacao")
 public class AnimalEstimacaoController {
-    @PostMapping
-    public ResponseEntity<AnimalEstimacaoRepresentation> criarAnimal(
-            @RequestBody AnimalEstimacaoRepresentation animalEstimacaoRepresentation){
-        return new ResponseEntity(new AnimalEstimacaoRepresentation(), HttpStatus.CREATED);
-    }
+    @Autowired
+    private AnimalEstimacaoService animalEstimacaoService;
 
-    @GetMapping
-    public ResponseEntity<List<AnimalEstimacaoRepresentation>> obterAnimais(){
-        return new ResponseEntity(Arrays.asList(new AnimalEstimacaoRepresentation()), HttpStatus.OK);
+    @Autowired
+    private AnimalEstimacaoConverter animalEstimacaoConverter;
+
+    @PostMapping
+    public ResponseEntity<AnimalEstimacaoRepresentation> criarAnimalEstimacao(
+            @RequestBody AnimalEstimacaoRepresentation animalEstimacaoRepresentation){
+        AnimalEstimacaoRepresentation response =
+                animalEstimacaoConverter
+                        .toRepresentation(animalEstimacaoService
+                                .criarAnimalEstimacao(animalEstimacaoConverter
+                                        .toDomain(animalEstimacaoRepresentation)));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<AnimalEstimacaoRepresentation> obterAnimal(
+    public ResponseEntity<AnimalEstimacaoRepresentation> obterAnimalEstimacao(
             @PathVariable Long id){
-        return new ResponseEntity(new AnimalEstimacaoRepresentation(), HttpStatus.OK);
+        ResponseEntity<AnimalEstimacaoRepresentation> response = new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        Optional<AnimalEstimacao> animalEstimacao = animalEstimacaoService.obterAnimalEstimacaoPorId(id);
+
+        if(animalEstimacao.isPresent()){
+            response = new ResponseEntity<AnimalEstimacaoRepresentation>(
+                    animalEstimacaoConverter.toRepresentation(animalEstimacao.get()), HttpStatus.OK);
+        }
+
+        return response;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AnimalEstimacaoRepresentation>> obterAnimaisEstimacao(){
+        ResponseEntity<List<AnimalEstimacaoRepresentation>> response = new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        List<AnimalEstimacao> animaisEstimacao = animalEstimacaoService.obterAnimaisEstimacao();
+
+        if(animaisEstimacao.isEmpty() == false){
+            response = new ResponseEntity<List<AnimalEstimacaoRepresentation>>(
+                    animalEstimacaoConverter.toRepresentationList(animaisEstimacao), HttpStatus.OK);
+        }
+
+        return response;
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<AnimalEstimacaoRepresentation> atualizarAnimal(
+    public ResponseEntity<AnimalEstimacaoRepresentation> atualizarAnimalEstimacao(
             @PathVariable Long id,
             @RequestBody AnimalEstimacaoRepresentation animalEstimacaoRepresentation){
-        return new ResponseEntity(new AnimalEstimacaoRepresentation(), HttpStatus.OK);
+        ResponseEntity<AnimalEstimacaoRepresentation> response = new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        Optional<AnimalEstimacao> animalEstimacao = animalEstimacaoService
+                .atualizarAnimalEstimacao(id, animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation));
+
+        if(animalEstimacao.isPresent()){
+            response = new ResponseEntity<AnimalEstimacaoRepresentation>(
+                    animalEstimacaoConverter.toRepresentation(animalEstimacao.get()), HttpStatus.OK);
+        }
+
+        return response;
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> removerAnimal(
+    public ResponseEntity<AnimalEstimacaoResponseRepresentation> removerAnimalEstimacao(
             @PathVariable Long id){
-        return new ResponseEntity(Boolean.TRUE, HttpStatus.OK);
+        ResponseEntity<AnimalEstimacaoResponseRepresentation> response = new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        AnimalEstimacaoResponseRepresentation animalEstimacaoResponseRepresentation =
+                animalEstimacaoService.removerAnimalEstimacao(id);
+
+        if(animalEstimacaoResponseRepresentation.getSucesso()){
+            response = new ResponseEntity<AnimalEstimacaoResponseRepresentation>(
+                    animalEstimacaoResponseRepresentation, HttpStatus.OK);
+        }
+
+        return response;
     }
 }
