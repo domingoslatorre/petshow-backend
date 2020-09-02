@@ -17,6 +17,9 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	cucumberRuntime {
+		extendsFrom testImplementation
+	}
 }
 
 repositories {
@@ -30,7 +33,7 @@ dependencies {
 	compile 'org.apache.logging.log4j:log4j-api:2.13.1'
 	compile 'org.apache.logging.log4j:log4j-core:2.13.1'
 	compile 'org.springdoc:springdoc-openapi-ui:1.2.32'
-	compileOnly 'org.projectlombok:lombok'
+	compile 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	runtimeOnly 'com.h2database:h2'
 
@@ -43,14 +46,23 @@ dependencies {
 
 	testCompile 'org.junit.jupiter:junit-jupiter-engine'
 	testCompile 'org.junit.vintage:junit-vintage-engine'
-	testCompile 'info.cukes:cucumber-java:1.2.4'
-	testCompile 'info.cukes:cucumber-junit:1.2.4'
-	testCompile 'info.cukes:cucumber-spring:1.2.4'
+	testCompile 'io.cucumber:cucumber-java:6.6.0'
 }
 
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
+}
+
+task cucumber() {
+	dependsOn assemble, compileTestJava
+	doLast {
+		javaexec {
+			main = "io.cucumber.core.cli.Main"
+			classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+			args = ['--plugin', 'pretty', '--glue', 'hyve.petshow.cucumber', 'src/test/resources']
+		}
+	}
 }
 
 jacoco {
