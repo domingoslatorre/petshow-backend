@@ -1,7 +1,11 @@
 package hyve.petshow.unit.controller.converter;
 
 import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
+import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.mock.AnimalEstimacaoMock;
+
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,14 +15,17 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+// TODO: Pensar em forma melhor de arrumar esses testes. Não setei direto no mock pois achei que talvez quebrasse coisas
 public class AnimalEstimacaoConverterTest {
     @Autowired
     private AnimalEstimacaoConverter animalEstimacaoConverter;
 
     @Test
-    public void toRepresentationTestCase01(){
+    public void deve_converter_para_representation(){
         //dado
         var expected = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+        expected.setId(1L);
         var animalEstimacao = AnimalEstimacaoMock.animalEstimacao();
 
         //quando
@@ -29,11 +36,11 @@ public class AnimalEstimacaoConverterTest {
     }
 
     @Test
-    public void toDomainTestCase01(){
+    public void deve_converter_para_domain(){
         //dado
         var expected = AnimalEstimacaoMock.animalEstimacao();
         var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
-
+        animalEstimacaoRepresentation.setId(1L);
         //quando
         var actual = animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation);
 
@@ -42,9 +49,11 @@ public class AnimalEstimacaoConverterTest {
     }
 
     @Test
-    public void toRepresentationListTestCase01(){
+    public void deve_converter_para_lista_de_representation(){
         //dado
-        var expected = Arrays.asList(AnimalEstimacaoMock.animalEstimacaoRepresentation());
+        AnimalEstimacaoRepresentation animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+		animalEstimacaoRepresentation.setId(1L);
+        var expected = Arrays.asList(animalEstimacaoRepresentation);
         var animaisEstimacao = Arrays.asList(AnimalEstimacaoMock.animalEstimacao());
 
         //quando

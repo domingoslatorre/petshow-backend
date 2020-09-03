@@ -1,11 +1,9 @@
 package hyve.petshow.cucumber.stepdefs;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hyve.petshow.mock.AnimalEstimacaoMock;
-import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Entao;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.net.URI;
+
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -13,9 +11,13 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import hyve.petshow.mock.AnimalEstimacaoMock;
+import io.cucumber.java.pt.Dado;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Entao;
 
 @DataJpaTest
 public class AnimalEstimacaoCucumberTest {

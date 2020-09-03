@@ -1,14 +1,15 @@
 package hyve.petshow.service.implementation;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import hyve.petshow.controller.representation.AnimalEstimacaoResponseRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import hyve.petshow.service.port.AnimalEstimacaoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
@@ -40,7 +41,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
         if(animalEstimacaoOptional.isPresent()){
             AnimalEstimacao animalEstimacao = animalEstimacaoOptional.get();
-
+           
             animalEstimacao.setNome(animalEstimacaoRequest.getNome());
             animalEstimacao.setFoto(animalEstimacaoRequest.getFoto());
             animalEstimacao.setTipo(animalEstimacaoRequest.getTipo());
