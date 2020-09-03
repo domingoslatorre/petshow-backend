@@ -58,7 +58,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
         animalEstimacaoRepository.deleteById(id);
 
-        Boolean successo = animalEstimacaoRepository.existsById(id);
+        Boolean successo = !animalEstimacaoRepository.existsById(id);
 
         animalEstimacaoResponseRepresentation.setId(id);
         animalEstimacaoResponseRepresentation.setSucesso(successo);

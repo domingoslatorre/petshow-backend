@@ -108,7 +108,7 @@ public class AnimalEstimacaoServiceTest {
         var id = 1L;
         var expected = AnimalEstimacaoMock.animalEstimacaoResponseRepresentation();
 
-        when(animalEstimacaoRepository.existsById(id)).thenReturn(Boolean.TRUE);
+        when(animalEstimacaoRepository.existsById(id)).thenReturn(Boolean.FALSE);
 
         //quando
         var actual = animalEstimacaoService.removerAnimalEstimacao(id);

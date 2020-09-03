@@ -30,7 +30,6 @@ public class AnimalEstimacaoMock {
     public static AnimalEstimacaoRepresentation animalEstimacaoRepresentation(){
         AnimalEstimacaoRepresentation animalEstimacaoRepresentation = new AnimalEstimacaoRepresentation();
 
-        animalEstimacaoRepresentation.setId(1L);
         animalEstimacaoRepresentation.setNome("pedrinho");
         animalEstimacaoRepresentation.setFoto("hahah");
         animalEstimacaoRepresentation.setTipo(1);

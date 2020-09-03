@@ -1,13 +1,12 @@
-package hyve.petshow.cucumber;
+package hyve.petshow.cucumber.stepdefs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hyve.petshow.mock.AnimalEstimacaoMock;
-import io.cucumber.gherkin.internal.com.eclipsesource.json.Json;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -17,8 +16,8 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@DataJpaTest
 public class AnimalEstimacaoCucumberTest {
     private ResponseEntity<?> responseEntity;
 
@@ -32,7 +31,7 @@ public class AnimalEstimacaoCucumberTest {
                 new RequestEntity(method, uri):
                 new RequestEntity(body, method, uri);
 
-       responseEntity = restTemplate.exchange(requestEntity, new ParameterizedTypeReference<Object>() {});
+       responseEntity = restTemplate.exchange(requestEntity, Object.class);
     }
 
     @Entao("devo receber como retorno um status {int}")
@@ -48,6 +47,6 @@ public class AnimalEstimacaoCucumberTest {
         var objectMapper = new ObjectMapper();
         var actualResponse = objectMapper.writeValueAsString(responseEntity.getBody());
 
-        assertNotNull(expectedResponse, actualResponse);
+        assertEquals(expectedResponse, actualResponse);
     }
 }
