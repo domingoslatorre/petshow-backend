@@ -1,4 +1,4 @@
-package hyve.petshow.config;
+package hyve.petshow.configuration;
 
 import hyve.petshow.service.implementation.AnimalEstimacaoServiceImpl;
 import hyve.petshow.service.port.AnimalEstimacaoService;
