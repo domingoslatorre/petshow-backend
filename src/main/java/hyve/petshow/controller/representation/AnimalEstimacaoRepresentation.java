@@ -7,5 +7,5 @@ public class AnimalEstimacaoRepresentation {
     private Long id;
     private String nome;
     private String foto;
-    private Integer tipo;
+    private Long tipo;
 }

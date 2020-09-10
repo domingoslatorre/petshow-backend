@@ -1,6 +1,10 @@
 spring:
   profiles: prod
   datasource:
-  url: ${JDBC_DATABASE_URL}
-  username: ${JDBC_DATABASE_USERNAME}
-  password: ${JDBC_DATABASE_PASSWORD}
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: ${JDBC_DATABASE_PASSWORD}
+jpa:
+  hibernate.ddl-auto: update
+  generate-ddl: true
