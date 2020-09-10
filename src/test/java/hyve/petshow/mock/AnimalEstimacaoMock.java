@@ -11,7 +11,7 @@ public class AnimalEstimacaoMock {
         animalEstimacao.setId(1L);
         animalEstimacao.setNome("pedrinho");
         animalEstimacao.setFoto("hahah");
-        animalEstimacao.setTipo(1);
+        animalEstimacao.setTipo(1l);
 
         return animalEstimacao;
     }
@@ -22,7 +22,7 @@ public class AnimalEstimacaoMock {
         animalEstimacao.setId(1L);
         animalEstimacao.setNome("andrezinho");
         animalEstimacao.setFoto("aaaaa");
-        animalEstimacao.setTipo(1);
+        animalEstimacao.setTipo(1l);
 
         return animalEstimacao;
     }
@@ -32,7 +32,7 @@ public class AnimalEstimacaoMock {
 
         animalEstimacaoRepresentation.setNome("pedrinho");
         animalEstimacaoRepresentation.setFoto("hahah");
-        animalEstimacaoRepresentation.setTipo(1);
+        animalEstimacaoRepresentation.setTipo(1l);
 
         return animalEstimacaoRepresentation;
     }
@@ -43,7 +43,7 @@ public class AnimalEstimacaoMock {
 
         animalEstimacaoResponseRepresentation.setId(1L);
         animalEstimacaoResponseRepresentation.setSucesso(Boolean.TRUE);
-        animalEstimacaoResponseRepresentation.setMensagem("OperaÃ§Ã£o executada com sucesso!");
+        animalEstimacaoResponseRepresentation.setMensagem("Operação executada com sucesso!");
 
         return animalEstimacaoResponseRepresentation;
     }
@@ -54,7 +54,7 @@ public class AnimalEstimacaoMock {
 
         animalEstimacaoResponseRepresentation.setId(1L);
         animalEstimacaoResponseRepresentation.setSucesso(Boolean.FALSE);
-        animalEstimacaoResponseRepresentation.setMensagem("Falha durante a execuÃ§Ã£o da operaÃ§Ã£o.");
+        animalEstimacaoResponseRepresentation.setMensagem("Falha durante a execução da operação.");
 
         return animalEstimacaoResponseRepresentation;
     }

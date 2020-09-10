@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Data
 @Entity(name = "animal_estimacao")
@@ -16,4 +18,7 @@ public class AnimalEstimacao {
     private String nome;
     private String foto;
     private Long tipo;
+    @ManyToOne
+    @JoinColumn(name = "ID_CONTA", referencedColumnName = "ID")
+    private Cliente dono;
 }

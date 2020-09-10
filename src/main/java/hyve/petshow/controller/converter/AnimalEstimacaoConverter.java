@@ -1,12 +1,13 @@
 package hyve.petshow.controller.converter;
 
-import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
-import hyve.petshow.domain.AnimalEstimacao;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
+import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
+import hyve.petshow.domain.AnimalEstimacao;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
@@ -40,4 +41,8 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
         return representationList;
     }
+
+	public List<AnimalEstimacao> toDomainList(List<AnimalEstimacaoRepresentation> animaisEstimacao) {
+		return animaisEstimacao.stream().map(el -> toDomain(el)).collect(Collectors.toList());
+	}
 }

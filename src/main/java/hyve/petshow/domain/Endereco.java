@@ -1,0 +1,17 @@
+package hyve.petshow.domain;
+
+import javax.persistence.Embeddable;
+
+import lombok.Data;
+
+@Data
+@Embeddable
+public class Endereco {
+	private String logradouro;
+	private String cep;
+	private String bairro;
+	private String cidade;
+	private String estado;
+	private String number;
+	private String complemento;
+}

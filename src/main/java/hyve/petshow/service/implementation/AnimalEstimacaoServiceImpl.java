@@ -13,8 +13,8 @@ import hyve.petshow.service.port.AnimalEstimacaoService;
 
 @Service
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
-    private static final String MENSAGEM_SUCESSO = "OperaÃ§Ã£o executada com sucesso!";
-    private static final String MENSAGEM_FALHA = "Falha durante a execuÃ§Ã£o da operaÃ§Ã£o.";
+    private static final String MENSAGEM_SUCESSO = "Operação executada com sucesso!";
+    private static final String MENSAGEM_FALHA = "Falha durante a execução da operação.";
 
     @Autowired
     private AnimalEstimacaoRepository animalEstimacaoRepository;
