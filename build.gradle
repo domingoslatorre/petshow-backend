@@ -35,6 +35,8 @@ dependencies {
 	compile 'org.springdoc:springdoc-openapi-ui:1.2.32'
 	compile 'org.projectlombok:lombok'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+	compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
+	
 	runtimeOnly 'mysql:mysql-connector-java'
 	runtimeOnly 'com.h2database:h2'
 

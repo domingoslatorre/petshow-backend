@@ -1,27 +1,30 @@
 package hyve.petshow.unit.controller;
 
-import hyve.petshow.controller.AnimalEstimacaoController;
-import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
-import hyve.petshow.domain.AnimalEstimacao;
-import hyve.petshow.mock.AnimalEstimacaoMock;
-import hyve.petshow.service.port.AnimalEstimacaoService;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+
+import hyve.petshow.controller.AnimalEstimacaoController;
+import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
+import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.mock.AnimalEstimacaoMock;
+import hyve.petshow.service.port.AnimalEstimacaoService;
 
 @SpringBootTest
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AnimalEstimacaoControllerTest {
     @Autowired
     private AnimalEstimacaoController animalEstimacaoController;
@@ -33,7 +36,7 @@ public class AnimalEstimacaoControllerTest {
     private AnimalEstimacaoService animalEstimacaoService;
 
     @Test
-    public void criarAnimalEstimacaoTestCase01(){
+    public void deve_retornar_animal_salvo(){
         //dado
         var expectedBody = AnimalEstimacaoMock.animalEstimacaoRepresentation();
         var expectedStatus = HttpStatus.CREATED;
@@ -55,7 +58,7 @@ public class AnimalEstimacaoControllerTest {
     }
 
     @Test
-    public void obterAnimalEstimacaoTestCase01(){
+    public void deve_buscar_animal_correto(){
         //dado
         var expectedBody = AnimalEstimacaoMock.animalEstimacaoRepresentation();
         var expectedStatus = HttpStatus.OK;
@@ -91,7 +94,7 @@ public class AnimalEstimacaoControllerTest {
     }
 
     @Test
-    public void obterAnimaisEstimacaoTestCase01(){
+    public void deve_obter_lista_de_animais(){
         //dado
         var expectedBody = Arrays.asList(AnimalEstimacaoMock.animalEstimacaoRepresentation());
         var expectedStatus = HttpStatus.OK;
@@ -111,7 +114,7 @@ public class AnimalEstimacaoControllerTest {
     }
 
     @Test
-    public void obterAnimaisEstimacaoTestCase02(){
+    public void deve_retornar_lista_vazia_de_animais(){
         //dado
         var expectedStatus = HttpStatus.NO_CONTENT;
         List<AnimalEstimacao> animaisEstimacao = Collections.emptyList();
@@ -126,7 +129,7 @@ public class AnimalEstimacaoControllerTest {
     }
 
     @Test
-    public void atualizarAnimalEstimacaoTestCase01(){
+    public void deve_retornar_animal_atualizado(){
         //dado
         var expectedBody = AnimalEstimacaoMock.animalEstimacaoRepresentation();
         var expectedStatus = HttpStatus.OK;
@@ -149,7 +152,7 @@ public class AnimalEstimacaoControllerTest {
     }
 
     @Test
-    public void atualizarAnimalEstimacaoTestCase02(){
+    public void deve_retornar_vazio_quando_animal_nao_existir(){
         //dado
         var expectedStatus = HttpStatus.NO_CONTENT;
         var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
@@ -186,7 +189,7 @@ public class AnimalEstimacaoControllerTest {
     }
 
     @Test
-    public void removerAnimalEstimacaoTestCase02(){
+    public void deve_retornar_status_204_quando_nao_tiver_o_que_remover(){
         //dado
         var id = 1L;
         var expectedStatus = HttpStatus.NO_CONTENT;

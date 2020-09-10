@@ -4,6 +4,8 @@ import hyve.petshow.mock.AnimalEstimacaoMock;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AnimalEstimacaoRepositoryTest {
     @Autowired
     private AnimalEstimacaoRepository animalEstimacaoRepository;
 
     @Test
     @BeforeAll
-    public void saveTestCase01(){
+    public void deve_salvar_dados(){
         //dado
         var expected = AnimalEstimacaoMock.animalEstimacao();
         var animalEstimacao = AnimalEstimacaoMock.animalEstimacao();
@@ -35,7 +38,7 @@ public class AnimalEstimacaoRepositoryTest {
     }
 
     @Test
-    public void findByIdTestCase01(){
+    public void deve_encontrar_dados(){
         //dado
         var expected = AnimalEstimacaoMock.animalEstimacao();
         var id = 1L;
@@ -48,7 +51,7 @@ public class AnimalEstimacaoRepositoryTest {
     }
 
     @Test
-    public void findAllTestCase01(){
+    public void deve_retornar_lista(){
         //dado
         var expected = Arrays.asList(AnimalEstimacaoMock.animalEstimacao());
 
@@ -60,7 +63,7 @@ public class AnimalEstimacaoRepositoryTest {
     }
 
     @Test
-    public void saveTestCase02(){
+    public void deve_atualizar_animal(){
         //dado
         var expected = AnimalEstimacaoMock.animalEstimacaoAlt();
         var id = 1L;
@@ -80,7 +83,7 @@ public class AnimalEstimacaoRepositoryTest {
 
     @Test
     @AfterAll
-    public void deleteTestCase01(){
+    public void deve_deletar_animal(){
         //dado
         var id = 1L;
         var expected = Optional.empty();

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
@@ -37,7 +38,6 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         List<AnimalEstimacaoRepresentation> representationList = new ArrayList<>();
 
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
-
         return representationList;
     }
 }
