@@ -1,7 +1,10 @@
 package hyve.petshow.configuration;
 
 import hyve.petshow.service.implementation.AnimalEstimacaoServiceImpl;
+import hyve.petshow.service.implementation.ContaServiceImpl;
 import hyve.petshow.service.port.AnimalEstimacaoService;
+import hyve.petshow.service.port.ContaService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,4 +14,9 @@ public class ApplicationConfiguration {
     public AnimalEstimacaoService animalEstimacaoService(){
         return new AnimalEstimacaoServiceImpl();
     }
+    
+//    @Bean
+//    public ContaService contaService() {
+//    	return new ContaServiceImpl();
+//    }
 }

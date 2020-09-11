@@ -26,7 +26,7 @@ import hyve.petshow.service.port.AnimalEstimacaoService;
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 public class AnimalEstimacaoControllerTest {
     @Autowired
     private AnimalEstimacaoController animalEstimacaoController;

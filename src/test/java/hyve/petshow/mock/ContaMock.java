@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
@@ -59,5 +60,17 @@ public class ContaMock {
 		
 		return contaDb;
 		
+	}
+
+	public static Optional<Conta> buscarPorEmail(String email) {
+		return dbMock.stream()
+				.filter(el -> email.equals(el.getLogin().getEmail()))
+				.findFirst();
+	}
+
+	public static Optional<Conta> buscaPorCpf(String cpf) {
+		return dbMock.stream()
+				.filter(el -> cpf.equals(el.getCpf()))
+				.findFirst();
 	}
 }

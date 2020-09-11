@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.mock.AnimalEstimacaoMock;
@@ -20,6 +21,7 @@ import hyve.petshow.service.port.AnimalEstimacaoService;
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@ActiveProfiles("test")
 public class AnimalEstimacaoServiceTest {
 
 	@Autowired

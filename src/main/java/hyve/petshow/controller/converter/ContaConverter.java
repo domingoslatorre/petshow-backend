@@ -1,9 +1,12 @@
 package hyve.petshow.controller.converter;
 
+import org.springframework.stereotype.Component;
+
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
 
-public class ContaConverter implements Converter<Conta, ContaRepresentation>{
+@Component
+public class ContaConverter implements Converter<Conta, ContaRepresentation> {
 
 	@Override
 	public ContaRepresentation toRepresentation(Conta domain) {

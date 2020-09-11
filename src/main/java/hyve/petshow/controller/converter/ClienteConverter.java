@@ -1,9 +1,12 @@
 package hyve.petshow.controller.converter;
 
+import org.springframework.stereotype.Component;
+
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
 
 // TODO: Pensar em forma de não repetir código. São 02:40 da manhã, não me julgue pelo que fiz. Pelo q parece quando se é criada uma instância de algo ela não pode ser casteada então não sei como fazer rsrs
+@Component
 public class ClienteConverter implements Converter<Cliente, ClienteRepresentation> {
 //	private ContaConverter contaConverter = new ContaConverter();
 	private AnimalEstimacaoConverter animalConverter = new AnimalEstimacaoConverter();
