@@ -119,7 +119,7 @@ public class ClienteControllerTest {
 
 		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
 
-		ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
+		ResponseEntity<ClienteRepresentation> response = template.postForEntity(uri, request, ClienteRepresentation.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
 	}
@@ -182,5 +182,57 @@ public class ClienteControllerTest {
 		ClienteRepresentation body = response.getBody();
 		assertTrue(body.getAnimaisEstimacao().stream().filter(el -> el.getNome().equals(animal.getNome())).findFirst()
 				.isPresent());
+	}
+	
+	
+	@Test
+	@Order(8)
+	public void deve_adicionar_animal_a_lista() throws URISyntaxException {
+		URI uri = new URI(this.url);
+		
+		ClienteRepresentation cliente = new ClienteRepresentation();
+		Login login = new Login();
+		login.setEmail("testeCalebe@teste.com");
+		login.setSenha("testete1234");
+		cliente.setLogin(login);
+		
+		cliente.setCpf("12345678909");
+		
+		cliente.setNome("Joao");
+		List<AnimalEstimacaoRepresentation> animaisEstimacao = new ArrayList<AnimalEstimacaoRepresentation>();
+		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
+		animal.setNome("pedrinho");
+		animal.setTipo(1l);
+		animal.setFoto("");
+		animaisEstimacao.add(animal);
+		cliente.setAnimaisEstimacao(animaisEstimacao);
+		
+		HttpEntity<ClienteRepresentation> requestPost = new HttpEntity<ClienteRepresentation>(cliente, new HttpHeaders());
+		ResponseEntity<ClienteRepresentation> responsePost = template.postForEntity(uri, requestPost, ClienteRepresentation.class);
+		
+		assertEquals(HttpStatus.CREATED, responsePost.getStatusCode());
+		
+		HttpEntity<Login> requestLogin = new HttpEntity<Login>(cliente.getLogin(), new HttpHeaders());
+		ResponseEntity<ClienteRepresentation> responseLogin = template.postForEntity(new URI(this.url+"/login"), requestLogin, ClienteRepresentation.class);
+		
+		assertEquals(HttpStatus.OK, responseLogin.getStatusCode());
+		
+		cliente = responseLogin.getBody();
+		animaisEstimacao = cliente.getAnimaisEstimacao();
+		
+		AnimalEstimacaoRepresentation animal2 = new AnimalEstimacaoRepresentation();
+		animal2.setNome("felipinho");
+		animal2.setTipo(1l);
+		animal2.setFoto("");
+		animaisEstimacao.add(animal2);
+		
+		cliente.setAnimaisEstimacao(animaisEstimacao);
+		
+		HttpEntity<ClienteRepresentation> requestPut = new HttpEntity<ClienteRepresentation>(cliente, new HttpHeaders());
+		ResponseEntity<ClienteRepresentation> responsePut = template.exchange(uri, HttpMethod.PUT, requestPut,	ClienteRepresentation.class);
+		responsePut.getBody();
+		assertEquals(HttpStatus.OK, responsePut.getStatusCode());
+		assertEquals(2, responsePut.getBody().getAnimaisEstimacao().size());
+		
 	}
 }

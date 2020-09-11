@@ -12,7 +12,6 @@ import hyve.petshow.domain.Login;
 public interface ContaRepository<T extends Conta> extends JpaRepository<T, Long> {
 	Optional<T> findByLogin(Login login);
 	Optional<T> findByCpf(String cpf);
-	
 	@Query("select c from conta c where c.login.email = ?1")
 	Optional<T> findByEmail(String email);
 }

@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MensagemRepresentation {
-	public static final String MENSAGEM_SUCESSO = "Operação concluída com sucesso";
-	public static final String MENSAGEM_FALHA = "Falha durante a execução da operação";
+	public static final String MENSAGEM_SUCESSO = "OperaÃ§Ã£o concluÃ­da com sucesso";
+	public static final String MENSAGEM_FALHA = "Falha durante a execuÃ§Ã£o da operaÃ§Ã£o";
 	
 	private Long id;
 	@Setter(value = AccessLevel.NONE) private Boolean sucesso;
