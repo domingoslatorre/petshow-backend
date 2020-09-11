@@ -13,6 +13,7 @@ import hyve.petshow.domain.AnimalEstimacao;
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
     @Override
     public AnimalEstimacaoRepresentation toRepresentation(AnimalEstimacao domain) {
+    	if(domain == null) return new AnimalEstimacaoRepresentation();
         AnimalEstimacaoRepresentation representation = new AnimalEstimacaoRepresentation();
 
         representation.setId(domain.getId());
@@ -25,6 +26,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
 
     @Override
     public AnimalEstimacao toDomain(AnimalEstimacaoRepresentation representation) {
+    	if(representation == null) return new AnimalEstimacao();
         AnimalEstimacao domain = new AnimalEstimacao();
 
         domain.setId(representation.getId());
@@ -36,6 +38,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
     }
 
     public List<AnimalEstimacaoRepresentation> toRepresentationList(List<AnimalEstimacao> domainList){
+    	if(domainList == null) return new ArrayList<AnimalEstimacaoRepresentation>();
         List<AnimalEstimacaoRepresentation> representationList = new ArrayList<>();
 
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
@@ -43,6 +46,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
     }
 
 	public List<AnimalEstimacao> toDomainList(List<AnimalEstimacaoRepresentation> animaisEstimacao) {
+		if(animaisEstimacao == null) return new ArrayList<AnimalEstimacao>();
 		return animaisEstimacao.stream().map(el -> toDomain(el)).collect(Collectors.toList());
 	}
 }

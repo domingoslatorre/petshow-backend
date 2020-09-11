@@ -6,28 +6,29 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Endereco;
 import hyve.petshow.domain.Login;
 import hyve.petshow.domain.enums.TipoConta;
 
-public class ContaMock {
-	public static List<Conta> dbMock = new ArrayList<Conta>(Arrays.asList(new Conta(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login())));
+public class ClienteMock {
+	public static List<Cliente> dbMock = new ArrayList<Cliente>(Arrays.asList(new Cliente(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login(), new ArrayList<AnimalEstimacao>())));
 	
-	public static List<Conta> obterContas() {
+	public static List<Cliente> obterContas() {
 		return dbMock;
 	}
 
-	public static Optional<Conta> buscaPorId(Long id) {
+	public static Optional<Cliente> buscaPorId(Long id) {
 		return dbMock.stream().filter(el -> el.getId().equals(id)).findFirst();
 	}
 	
-	public static Optional<Conta> buscaPorLogin(Login login) {
+	public static Optional<Cliente> buscaPorLogin(Login login) {
 		return dbMock.stream().filter(el -> el.getLogin().equals(login)).findFirst();
 	}
 	
-	public static Conta salvaConta(Conta conta) {
+	public static Cliente salvaConta(Cliente conta) {
 		conta.setId((long) dbMock.size() + 1);
 		dbMock.add(conta);		
 		return conta;
@@ -42,6 +43,10 @@ public class ContaMock {
 	
 	public static void removeConta(Conta conta) {
 		dbMock.remove(conta);
+	}
+	
+	public static void removePorId(Long id) {
+		dbMock = dbMock.stream().filter(el -> el.getId() != id).collect(Collectors.toList());
 	}
 
 	public static Conta atualizaConta(Conta conta) {
@@ -62,13 +67,13 @@ public class ContaMock {
 		
 	}
 
-	public static Optional<Conta> buscarPorEmail(String email) {
+	public static Optional<Cliente> buscarPorEmail(String email) {
 		return dbMock.stream()
 				.filter(el -> email.equals(el.getLogin().getEmail()))
 				.findFirst();
 	}
 
-	public static Optional<Conta> buscaPorCpf(String cpf) {
+	public static Optional<Cliente> buscaPorCpf(String cpf) {
 		return dbMock.stream()
 				.filter(el -> cpf.equals(el.getCpf()))
 				.findFirst();

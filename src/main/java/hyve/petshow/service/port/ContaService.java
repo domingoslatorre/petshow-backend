@@ -6,27 +6,24 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Login;
 
 @Service
-public interface ContaService {
-	Conta salvaConta(Conta conta) throws Exception;
+public interface ContaService<T extends Conta> {
+	T salvaConta(T conta) throws Exception;
 
-	Conta obterContaPorId(Long id) throws Exception;
+	T obterContaPorId(Long id) throws Exception;
 
-	List<Conta> obterContas();
+	List<T> obterContas();
 
-	Conta obterPorLogin(Login login) throws Exception;
+	T obterPorLogin(Login login) throws Exception;
 
-	MensagemRepresentation removerConta(Long id);
-	
-	Optional<Conta> buscaPorCpf(String cpf);
-	
-	Optional<Conta> buscaPorEmail(String email);
-	
-	Conta atualizaConta(Conta conta);
-	
-	Cliente atualizaCliente(Cliente cliente);
+	MensagemRepresentation removerConta(Long id) throws Exception;
+
+	Optional<T> buscaPorCpf(String cpf);
+
+	Optional<T> buscaPorEmail(String email);
+
+	T atualizaConta(T conta);
 }

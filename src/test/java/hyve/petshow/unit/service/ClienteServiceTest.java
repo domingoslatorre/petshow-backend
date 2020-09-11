@@ -1,7 +1,6 @@
 package hyve.petshow.unit.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,41 +24,47 @@ import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Login;
-import hyve.petshow.mock.ContaMock;
-import hyve.petshow.repository.ContaRepository;
-import hyve.petshow.service.implementation.ContaServiceImpl;
+import hyve.petshow.mock.ClienteMock;
+import hyve.petshow.repository.ClienteRepository;
+import hyve.petshow.service.implementation.ClienteServiceImpl;
 
 @TestMethodOrder(OrderAnnotation.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class ContaServiceTest {
+public class ClienteServiceTest {
 	@Mock
-	private ContaRepository repository;
+	private ClienteRepository repository;
 	@InjectMocks
-	private ContaServiceImpl service;
+	private ClienteServiceImpl service;
 
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		Mockito.when(repository.findAll()).thenReturn(ContaMock.obterContas());
-		Mockito.when(repository.save(Mockito.any(Conta.class))).then(mock -> {
-			Conta conta = mock.getArgument(0);
+		Mockito.when(repository.findAll()).thenReturn(ClienteMock.obterContas());
+		Mockito.when(repository.save(Mockito.any(Cliente.class))).then(mock -> {
+			Cliente conta = mock.getArgument(0);
 			if (conta.getId() == null) {
-				ContaMock.salvaConta(conta);
+				ClienteMock.salvaConta(conta);
 			} else {
-				ContaMock.atualizaConta(conta);
+				ClienteMock.atualizaConta(conta);
 			}
 			return conta;
 		});
 		Mockito.doAnswer(mock -> {
-			ContaMock.removeConta(mock.getArgument(0));
+			ClienteMock.removeConta(mock.getArgument(0));
 			return null;
-		}).when(repository).delete(Mockito.any(Conta.class));
-		Mockito.when(repository.findById(Mockito.anyLong())).then(mock -> ContaMock.buscaPorId(mock.getArgument(0)));
+		}).when(repository).delete(Mockito.any(Cliente.class));
+		Mockito.when(repository.findById(Mockito.anyLong())).then(mock -> ClienteMock.buscaPorId(mock.getArgument(0)));
 		Mockito.when(repository.findByLogin(Mockito.any(Login.class)))
-				.then(mock -> ContaMock.buscaPorLogin(mock.getArgument(0)));
-	
-		Mockito.when(repository.findByEmail(Mockito.anyString())).then(mock -> ContaMock.buscarPorEmail(mock.getArgument(0)));
-		Mockito.when(repository.findByCpf(Mockito.anyString())).then(mock -> ContaMock.buscaPorCpf(mock.getArgument(0)));
+				.then(mock -> ClienteMock.buscaPorLogin(mock.getArgument(0)));
+
+		Mockito.when(repository.findByEmail(Mockito.anyString()))
+				.then(mock -> ClienteMock.buscarPorEmail(mock.getArgument(0)));
+		Mockito.when(repository.findByCpf(Mockito.anyString()))
+				.then(mock -> ClienteMock.buscaPorCpf(mock.getArgument(0)));
+		Mockito.doAnswer(mock -> {
+			ClienteMock.removePorId(mock.getArgument(0));
+			return null;
+		}).when(repository).deleteById(Mockito.anyLong());
 	}
 
 	@Test
@@ -79,7 +84,7 @@ public class ContaServiceTest {
 	@Test
 	@Order(2)
 	public void deve_atualizar_conta() throws Exception {
-		Conta clienteAAlterar = service.obterContaPorId(1l);
+		Cliente clienteAAlterar = service.obterContaPorId(1l);
 		Login login = new Login();
 		login.setEmail("teste@teste.com");
 		login.setSenha("aslkjdgklsdjg");
@@ -119,7 +124,7 @@ public class ContaServiceTest {
 			service.obterContaPorId(5l);
 		});
 	}
-	
+
 	@Test
 	@Order(6)
 	public void deve_encontrar_elemento_por_login() throws Exception {
@@ -130,23 +135,22 @@ public class ContaServiceTest {
 		assertNotNull(obterPorLogin);
 		assertTrue(obterPorLogin.getId() == 1);
 	}
-	
+
 	@Test
 	@Order(7)
 	public void deve_encontrar_todos_os_elementos() {
 		assertTrue(!service.obterContas().isEmpty());
 	}
 
-	
 	@Test
 	@Order(8)
-	public void deve_remover_elemento() {
+	public void deve_remover_elemento() throws Exception {
 		service.removerConta(1l);
 		assertThrows(Exception.class, () -> {
 			service.obterContaPorId(1l);
 		});
 	}
-	
+
 	@Test
 	@Order(9)
 	public void deve_retornar_mensagem_sucesso() throws Exception {
@@ -154,19 +158,11 @@ public class ContaServiceTest {
 		assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, removerConta.getMensagem());
 		assertTrue(removerConta.getSucesso());
 	}
-	
-	@Test
-	@Order(10)
-	public void deve_mensagem_com_erro() {
-		MensagemRepresentation removerConta = service.removerConta(15l);
-		assertFalse(removerConta.getSucesso());
-		assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerConta.getMensagem());
-	}
-	
+
 	@Test
 	@Order(11)
 	public void deve_impedir_insercao_contas_com_mesmo_email() throws Exception {
-		Conta conta = new Conta();
+		Cliente conta = new Cliente();
 		Login login = new Login();
 		login.setEmail("teste@teste");
 		conta.setLogin(login);
@@ -176,20 +172,20 @@ public class ContaServiceTest {
 			service.salvaConta(conta);
 		});
 	}
-	
+
 	@Test
 	@Order(12)
-	public void deve_impedir_insercao_contas_com_mesmo_cpf() {
-		Conta conta = new Conta();
+	public void deve_impedir_insercao_contas_com_mesmo_cpf() throws Exception {
+		Cliente conta = new Cliente();
 		conta.setCpf("44444444444");
 		Login login = new Login();
 		login.setEmail("asdgs@aslkdjg");
 		login.setSenha("03joiwk");
 		conta.setLogin(login);
+		service.salvaConta(conta);
 		assertThrows(Exception.class, () -> {
 			service.salvaConta(conta);
 		});
-		
-		
+
 	}
 }

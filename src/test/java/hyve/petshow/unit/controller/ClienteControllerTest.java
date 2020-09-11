@@ -31,12 +31,12 @@ import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Login;
-import hyve.petshow.repository.ContaRepository;
+import hyve.petshow.repository.ClienteRepository;
 
 @TestMethodOrder(OrderAnnotation.class)
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ContaControllerTest {
+public class ClienteControllerTest {
 	@LocalServerPort
 	private int port;
 
@@ -44,18 +44,18 @@ public class ContaControllerTest {
 	private TestRestTemplate template;
 
 	@Autowired
-	private ContaRepository<Conta> repository;
-	
+	private ClienteRepository repository;
+
 	private ContaRepresentation contaMock;
 
 	private String url;
 
 	@BeforeEach
 	public void init() {
-		url = "http://localhost:" + port + "/conta";
+		url = "http://localhost:" + port + "/cliente";
 
 	}
-	
+
 	@BeforeEach
 	public void initMock() {
 		contaMock = new ContaRepresentation();
@@ -116,7 +116,7 @@ public class ContaControllerTest {
 	public void deve_retornar_por_login() throws URISyntaxException {
 		URI uri = new URI(this.url + "/login");
 		Login login = contaMock.getLogin();
-		
+
 		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
 
 		ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
@@ -132,7 +132,7 @@ public class ContaControllerTest {
 		Login login = new Login();
 		login.setEmail("aslkdjgs@aklsdjg.com");
 		login.setSenha("ASDOHIGJKLAjh0oiq");
-		
+
 		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
 
 		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
@@ -145,20 +145,19 @@ public class ContaControllerTest {
 	public void deve_retornar_excecao() throws URISyntaxException {
 		URI uri = new URI(this.url);
 		ContaRepresentation contaMock = new ContaRepresentation();
-		
+
 		HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, new HttpHeaders());
 
 		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 
 	}
-	
+
 	@Test
 	@Order(7)
 	public void deve_adicionar_animal() throws URISyntaxException {
-		URI uri = new URI(this.url+"/cliente");
-		
-		
+		URI uri = new URI(this.url);
+
 		Conta byLogin = repository.findByLogin(contaMock.getLogin()).get();
 		ClienteRepresentation conta = new ClienteRepresentation();
 		conta.setId(byLogin.getId());
@@ -167,20 +166,21 @@ public class ContaControllerTest {
 		login.setSenha("teste1234");
 		conta.setLogin(login);
 		conta.setCpf("44444444444");
-		
-		
+
 		List<AnimalEstimacaoRepresentation> animaisEstimacao = new ArrayList<AnimalEstimacaoRepresentation>();
 		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
 		animal.setNome("Aslkajdgads");
 		animaisEstimacao.add(animal);
 		conta.setAnimaisEstimacao(animaisEstimacao);
-		
+
 		HttpEntity<ClienteRepresentation> request = new HttpEntity<>(conta, new HttpHeaders());
-		
-		ResponseEntity<ClienteRepresentation> response = template.exchange(uri,HttpMethod.PUT, request, ClienteRepresentation.class);
-		
+
+		ResponseEntity<ClienteRepresentation> response = template.exchange(uri, HttpMethod.PUT, request,
+				ClienteRepresentation.class);
+
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		ClienteRepresentation body = response.getBody();
-		assertTrue(body.getAnimaisEstimacao().stream().filter(el -> el.getNome().equals(animal.getNome())).findFirst().isPresent());
+		assertTrue(body.getAnimaisEstimacao().stream().filter(el -> el.getNome().equals(animal.getNome())).findFirst()
+				.isPresent());
 	}
 }

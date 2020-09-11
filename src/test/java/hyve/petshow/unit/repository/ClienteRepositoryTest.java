@@ -20,17 +20,17 @@ import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Login;
-import hyve.petshow.repository.ContaRepository;
+import hyve.petshow.repository.ClienteRepository;
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @ActiveProfiles("test")
-public class ContaRepositoryTest {
+public class ClienteRepositoryTest {
 //	@Autowired
 //	private ContaRepository<Cliente> repository;
 
 	@Autowired
-	private ContaRepository<Conta> repository;
+	private ClienteRepository repository;
 
 	private Conta contaMock;
 
@@ -42,20 +42,20 @@ public class ContaRepositoryTest {
 
 	@Test
 	public void deve_inserir_novo_item() {
-		contaMock = new Conta();
-		repository.save(contaMock);
+		contaMock = new Cliente();
+		repository.save((Cliente) contaMock);
 		assertNotNull(contaMock.getId());
-		assertTrue(repository.findAll().contains(contaMock));
+		assertTrue(repository.existsById(contaMock.getId()));
 
 	}
 
 	@Test
 	public void deve_alterar_item() {
-		contaMock = new Conta();
-		repository.save(contaMock);
+		contaMock = new Cliente();
+		repository.save((Cliente) contaMock);
 		String nomeEsperado = "Nome esperado";
 		contaMock.setNome(nomeEsperado);
-		Conta contaDb = repository.save(contaMock);
+		Conta contaDb = repository.save((Cliente) contaMock);
 		assertEquals(repository.findAll().size(), 1);
 		assertEquals(nomeEsperado, contaDb.getNome());
 	}
@@ -63,19 +63,19 @@ public class ContaRepositoryTest {
 	@Test
 	public void deve_salvar_um_cliente() {
 		contaMock = new Cliente();
-		Conta save = repository.save(contaMock);
+		Conta save = repository.save((Cliente) contaMock);
 		assertNotNull(save);
-		Optional<Conta> objetoDb = repository.findById(save.getId());
+		Optional<Cliente> objetoDb = repository.findById(save.getId());
 		assertTrue(objetoDb.isPresent());
 	}
 
 	@Test
 	public void deve_atualizar_lista_de_animais() {
 		contaMock = new Cliente();
-		Cliente save = (Cliente) repository.save(contaMock);
+		Cliente save = repository.save((Cliente) contaMock);
 		ArrayList<AnimalEstimacao> animaisEstimacao = new ArrayList<AnimalEstimacao>();
 		AnimalEstimacao animal = new AnimalEstimacao();
-		animal.setNome("Joãozinho");
+		animal.setNome("Joï¿½ozinho");
 		animaisEstimacao.add(animal);
 		save.setAnimaisEstimacao(animaisEstimacao);
 
@@ -87,10 +87,10 @@ public class ContaRepositoryTest {
 	@Test
 	public void deve_remover_animal() {
 		contaMock = new Cliente();
-		Cliente save = (Cliente) repository.save(contaMock);
+		Cliente save = repository.save((Cliente) contaMock);
 		ArrayList<AnimalEstimacao> animaisEstimacao = new ArrayList<AnimalEstimacao>();
 		AnimalEstimacao animal = new AnimalEstimacao();
-		animal.setNome("Joãozinho");
+		animal.setNome("Joï¿½ozinho");
 		animaisEstimacao.add(animal);
 		save.setAnimaisEstimacao(animaisEstimacao);
 
@@ -106,10 +106,10 @@ public class ContaRepositoryTest {
 	@Test
 	public void deve_atualizar_animal() {
 		contaMock = new Cliente();
-		Cliente save = (Cliente) repository.save(contaMock);
+		Cliente save = repository.save((Cliente) contaMock);
 		ArrayList<AnimalEstimacao> animaisEstimacao = new ArrayList<AnimalEstimacao>();
 		AnimalEstimacao animal = new AnimalEstimacao();
-		animal.setNome("Joãozinho");
+		animal.setNome("Joï¿½ozinho");
 		animaisEstimacao.add(animal);
 		save.setAnimaisEstimacao(animaisEstimacao);
 
@@ -125,38 +125,38 @@ public class ContaRepositoryTest {
 
 	@Test
 	public void deve_retornar_usuario_via_login() {
-		contaMock = new Conta();
+		contaMock = new Cliente();
 		Login login = new Login();
 		login.setEmail("teste@teste.com");
 		login.setSenha("teste1234");
 
 		contaMock.setLogin(login);
 
-		repository.save(contaMock);
+		repository.save((Cliente) contaMock);
 
-		Optional<Conta> busca = repository.findByLogin(login);
+		Optional<Cliente> busca = repository.findByLogin(login);
 		assertTrue(busca.isPresent());
 	}
 
 	@Test
 	public void deve_retornar_usuario_via_cpf() {
-		contaMock = new Conta();
+		contaMock = new Cliente();
 		String cpf = "444444444";
 		contaMock.setCpf(cpf);
-		repository.save(contaMock);
-		Optional<Conta> busca = repository.findByCpf(cpf);
+		repository.save((Cliente) contaMock);
+		Optional<Cliente> busca = repository.findByCpf(cpf);
 		assertTrue(busca.isPresent());
 	}
 
 	@Test
 	public void deve_retornar_por_email() {
-		contaMock = new Conta();
+		contaMock = new Cliente();
 		Login login = new Login();
 		String email = "teste@teste.com";
 		login.setEmail(email);
 		contaMock.setLogin(login);
-		repository.save(contaMock);
-		Optional<Conta> busca = repository.findByEmail(email);
+		repository.save((Cliente) contaMock);
+		Optional<Cliente> busca = repository.findByEmail(email);
 		assertTrue(busca.isPresent());
 	}
 

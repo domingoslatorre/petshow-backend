@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
 
-// TODO: Pensar em forma de não repetir código. São 02:40 da manhã, não me julgue pelo que fiz. Pelo q parece quando se é criada uma instância de algo ela não pode ser casteada então não sei como fazer rsrs
+// TODO: Pensar em forma de nï¿½o repetir cï¿½digo. Sï¿½o 02:40 da manhï¿½, nï¿½o me julgue pelo que fiz. Pelo q parece quando se ï¿½ criada uma instï¿½ncia de algo ela nï¿½o pode ser casteada entï¿½o nï¿½o sei como fazer rsrs
 @Component
 public class ClienteConverter implements Converter<Cliente, ClienteRepresentation> {
 //	private ContaConverter contaConverter = new ContaConverter();
@@ -13,6 +13,7 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 
 	@Override
 	public ClienteRepresentation toRepresentation(Cliente domain) {
+		if(domain == null) return new ClienteRepresentation();
 //		ClienteRepresentation representation = (ClienteRepresentation) contaConverter.toRepresentation(domain);
 		ClienteRepresentation representation = new ClienteRepresentation();
 		representation.setId(domain.getId());
@@ -30,6 +31,7 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 
 	@Override
 	public Cliente toDomain(ClienteRepresentation representation) {
+		if(representation == null) return new Cliente();
 //		Cliente domain = (Cliente) contaConverter.toDomain(representation);
 		Cliente domain = new Cliente();
 		domain.setCpf(representation.getCpf());
