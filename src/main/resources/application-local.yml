@@ -1,12 +1,12 @@
 spring:
-  profiles: local
+  profiles: localdb
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:mysql://localhost:3306/petshow-local?reconnect=true&serverTimezone=America/Sao_Paulo
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    show-sql: true
