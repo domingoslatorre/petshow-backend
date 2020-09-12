@@ -14,12 +14,12 @@ import lombok.Data;
 @Entity(name = "animal_estimacao")
 public class AnimalEstimacao {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String foto;
     private Long tipo;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "id")
-    private Conta dono;
+    private Cliente dono;
 }

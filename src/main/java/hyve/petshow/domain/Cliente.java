@@ -1,5 +1,6 @@
 package hyve.petshow.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,7 +15,7 @@ import lombok.Data;
 @Entity
 public class Cliente extends Conta {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	List<AnimalEstimacao> animaisEstimacao;
+	List<AnimalEstimacao> animaisEstimacao = new ArrayList<AnimalEstimacao>();
 
 	public Cliente() {
 	}

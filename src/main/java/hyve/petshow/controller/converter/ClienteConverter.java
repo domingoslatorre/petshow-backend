@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.enums.TipoConta;
 
 // TODO: Pensar em forma de n�o repetir c�digo. S�o 02:40 da manh�, n�o me julgue pelo que fiz. Pelo q parece quando se � criada uma inst�ncia de algo ela n�o pode ser casteada ent�o n�o sei como fazer rsrs
 @Component
@@ -24,7 +25,7 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 		representation.setNome(domain.getNome());
 		representation.setNomeSocial(domain.getNomeSocial());
 		representation.setTelefone(domain.getTelefone());
-		representation.setTipo(domain.getTipo());
+		representation.setTipo(domain.getTipo() == null ? null : domain.getTipo().getTipo());
 		representation.setAnimaisEstimacao(animalConverter.toRepresentationList(domain.getAnimaisEstimacao()));
 		return representation;
 	}
@@ -42,7 +43,7 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 		domain.setNome(representation.getNome());
 		domain.setNomeSocial(representation.getNomeSocial());
 		domain.setTelefone(representation.getTelefone());
-		domain.setTipo(representation.getTipo());
+		domain.setTipo(TipoConta.getTipoByInteger(representation.getTipo()));
 		domain.setAnimaisEstimacao(animalConverter.toDomainList(representation.getAnimaisEstimacao()));
 		return domain;
 	}

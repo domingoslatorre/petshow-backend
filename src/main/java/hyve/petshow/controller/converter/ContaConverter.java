@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
+import hyve.petshow.domain.enums.TipoConta;
 
 @Component
 public class ContaConverter implements Converter<Conta, ContaRepresentation> {
@@ -19,7 +20,7 @@ public class ContaConverter implements Converter<Conta, ContaRepresentation> {
 		contaRep.setNome(domain.getNome());
 		contaRep.setNomeSocial(domain.getNomeSocial());
 		contaRep.setTelefone(domain.getTelefone());
-		contaRep.setTipo(domain.getTipo());
+		contaRep.setTipo(domain.getTipo().getTipo());
 		return contaRep;
 	}
 
@@ -34,7 +35,7 @@ public class ContaConverter implements Converter<Conta, ContaRepresentation> {
 		conta.setNome(representation.getNome());
 		conta.setNomeSocial(representation.getNomeSocial());
 		conta.setTelefone(representation.getTelefone());
-		conta.setTipo(representation.getTipo());
+		conta.setTipo(TipoConta.getTipoByInteger(representation.getTipo()));
 		return conta;
 	}
 }

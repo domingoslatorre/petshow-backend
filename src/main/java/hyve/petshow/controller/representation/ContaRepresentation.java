@@ -16,7 +16,7 @@ public class ContaRepresentation {
 	private String nomeSocial;
 	private String cpf;
 	private String telefone;
-	private TipoConta tipo;
+	private Integer tipo;
 	private String foto;
 	private Endereco endereco;
 	private Login login;

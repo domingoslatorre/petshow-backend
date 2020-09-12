@@ -25,7 +25,7 @@ public class ContaConverterTest {
 	
 	@Test
 	public void deve_converter_para_domain() {
-		ContaRepresentation contaRepresentation = new ContaRepresentation(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login());
+		ContaRepresentation contaRepresentation = new ContaRepresentation(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE.getTipo(), "", new Endereco(), new Login());
 		Conta domain = converter.toDomain(contaRepresentation);
 		assertEquals(contaRepresentation.getId(), domain.getId());
 	
