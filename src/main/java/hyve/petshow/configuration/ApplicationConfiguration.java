@@ -1,12 +1,12 @@
 package hyve.petshow.configuration;
 
-import hyve.petshow.service.implementation.AnimalEstimacaoServiceImpl;
-import hyve.petshow.service.implementation.ClienteServiceImpl;
-import hyve.petshow.service.port.AnimalEstimacaoService;
-import hyve.petshow.service.port.ContaService;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import hyve.petshow.service.implementation.AnimalEstimacaoServiceImpl;
+import hyve.petshow.service.port.AnimalEstimacaoService;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -14,6 +14,7 @@ public class ApplicationConfiguration {
     public AnimalEstimacaoService animalEstimacaoService(){
         return new AnimalEstimacaoServiceImpl();
     }
+    
     
 //    @Bean
 //    public ContaService contaService() {
