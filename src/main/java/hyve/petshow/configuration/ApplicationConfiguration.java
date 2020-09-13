@@ -14,10 +14,4 @@ public class ApplicationConfiguration {
     public AnimalEstimacaoService animalEstimacaoService(){
         return new AnimalEstimacaoServiceImpl();
     }
-    
-    
-//    @Bean
-//    public ContaService contaService() {
-//    	return new ContaServiceImpl();
-//    }
 }
