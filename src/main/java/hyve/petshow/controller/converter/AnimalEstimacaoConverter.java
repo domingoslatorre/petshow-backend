@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
@@ -19,7 +20,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         representation.setId(domain.getId());
         representation.setNome(domain.getNome());
         representation.setFoto(domain.getFoto());
-        representation.setTipo(domain.getTipo());
+        representation.setTipo(TipoAnimalEstimacao.valueOf(domain.getTipo()));
 
         return representation;
     }
@@ -32,7 +33,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         domain.setId(representation.getId());
         domain.setNome(representation.getNome());
         domain.setFoto(representation.getFoto());
-        domain.setTipo(representation.getTipo());
+        domain.setTipo(representation.getTipo().id());
 
         return domain;
     }

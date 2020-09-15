@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,10 @@ public class ClienteConverterTest {
 		ClienteRepresentation representation = new ClienteRepresentation();
 		representation.setId(1l);
 		List<AnimalEstimacaoRepresentation> animais = new ArrayList<AnimalEstimacaoRepresentation>();
-		animais.add(new AnimalEstimacaoRepresentation());
+		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
+		animal.setTipo(TipoAnimalEstimacao.GATO);
+
+		animais.add(animal);
 		
 		representation.setAnimaisEstimacao(animais);
 		
