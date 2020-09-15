@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -170,6 +171,7 @@ public class ClienteControllerTest {
 		List<AnimalEstimacaoRepresentation> animaisEstimacao = new ArrayList<AnimalEstimacaoRepresentation>();
 		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
 		animal.setNome("Aslkajdgads");
+		animal.setTipo(TipoAnimalEstimacao.GATO);
 		animaisEstimacao.add(animal);
 		conta.setAnimaisEstimacao(animaisEstimacao);
 
@@ -202,7 +204,7 @@ public class ClienteControllerTest {
 		List<AnimalEstimacaoRepresentation> animaisEstimacao = new ArrayList<AnimalEstimacaoRepresentation>();
 		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
 		animal.setNome("pedrinho");
-		animal.setTipo(1l);
+		animal.setTipo(TipoAnimalEstimacao.GATO);
 		animal.setFoto("");
 		animaisEstimacao.add(animal);
 		cliente.setAnimaisEstimacao(animaisEstimacao);
@@ -222,7 +224,7 @@ public class ClienteControllerTest {
 		
 		AnimalEstimacaoRepresentation animal2 = new AnimalEstimacaoRepresentation();
 		animal2.setNome("felipinho");
-		animal2.setTipo(1l);
+		animal2.setTipo(TipoAnimalEstimacao.CACHORRO);
 		animal2.setFoto("");
 		animaisEstimacao.add(animal2);
 		
