@@ -6,7 +6,8 @@ import java.util.Map;
 public enum TipoAnimalEstimacao {
     GATO(2),
     CACHORRO(12),
-    REPTIL(22);
+    AVE(22),
+    REPTIL(32);
 
     private Integer id;
     private static Map map = new HashMap<>();
