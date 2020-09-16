@@ -16,7 +16,7 @@ public enum TipoAnimalEstimacao {
     }
 
     static {
-        for (TipoAnimalEstimacao tipoAnimalEstimacao : TipoAnimalEstimacao  .values()) {
+        for (TipoAnimalEstimacao tipoAnimalEstimacao : TipoAnimalEstimacao.values()) {
             map.put(tipoAnimalEstimacao.id(), tipoAnimalEstimacao);
         }
     }

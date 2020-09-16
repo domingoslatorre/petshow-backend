@@ -5,6 +5,3 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: ${JDBC_DATABASE_USERNAME}
     password: ${JDBC_DATABASE_PASSWORD}
-jpa:
-  hibernate.ddl-auto: update
-  generate-ddl: true
