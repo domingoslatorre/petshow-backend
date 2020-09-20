@@ -1,2 +1,4 @@
-package Cucumber;public class AnimalEstimacaoTest {
+package cucumber;
+
+public class AnimalEstimacaoTest {
 }
