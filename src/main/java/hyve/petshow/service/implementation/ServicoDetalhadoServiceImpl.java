@@ -3,11 +3,14 @@ package hyve.petshow.service.implementation;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Column;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Servico;
 //import hyve.petshow.controller.representation.ServicoDetalhadoResponseRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.NotFoundException;
@@ -25,13 +28,13 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
     //criarServicos
     @Override
-    public List<ServicoDetalhado> criarServico(List<ServicoDetalhado> servicoDetalhado) {
-        return repository.save(servicoDetalhado);
+    public List<ServicoDetalhado> adicionarServicos(List<ServicoDetalhado> servicosDetalhados) {
+        return repository.saveAll(servicosDetalhados);
     }
     
 
     @Override
-    public List<ServicoDetalhado> buscaServicosPorPrestador(Long id) {
+    public List<ServicoDetalhado> buscarServicosPorPrestador(Long id) {
         return repository.findByPrestador(id);
     }
 
@@ -45,7 +48,9 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
         	ServicoDetalhado servicoDetalhado = servicoDetalhadoOptional.get();
            
         	servicoDetalhado.setPreco(servicoDetalhadoRequest.getPreco());
-        	
+        	servicoDetalhado.setTipo(servicoDetalhadoRequest.getTipo());
+        	servicoDetalhado.setAnimaisAceitos(servicoDetalhadoRequest.getAnimaisAceitos());
+      	
             response = Optional.of(repository.save(servicoDetalhado));
         }
 

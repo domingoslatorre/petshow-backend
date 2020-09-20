@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class ServicoRepresentation {
-    private Long id;
     private String nome;
     private String descricao;
 }

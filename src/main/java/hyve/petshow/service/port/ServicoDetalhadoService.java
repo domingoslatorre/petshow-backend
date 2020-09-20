@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Service
 public interface ServicoDetalhadoService {
-	List<ServicoDetalhado> criarServico(List<ServicoDetalhado> servicoDetalhado);
+	List<ServicoDetalhado> adicionarServicos(List<ServicoDetalhado> servicoDetalhado);
 
-    List<ServicoDetalhado> buscaServicosPorPrestador(Long id);
+    List<ServicoDetalhado> buscarServicosPorPrestador(Long id);
 
     Optional<ServicoDetalhado> atualizarServicoDetalhado(Long id, ServicoDetalhado servicoDetalhadoRequest);
 

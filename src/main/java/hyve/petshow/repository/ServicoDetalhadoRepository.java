@@ -12,10 +12,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ServicoDetalhadoRepository extends JpaRepository<ServicoDetalhado, Long> {
-	//tentativa de query para selecionar todos os serviços detalhados de um prestador
-	//@Query("select servicosDetalhados from prestador p where p.id = ?1")
+	@Query("select servicoDetalhado from prestador p where p.id = ?1")
 	List<ServicoDetalhado> findByPrestador(Long Id);
-	Optional<ServicoDetalhado> findById (Long Id);
 }
 
 

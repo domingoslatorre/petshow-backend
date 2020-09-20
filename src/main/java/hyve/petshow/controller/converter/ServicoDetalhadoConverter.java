@@ -17,7 +17,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     	if(domain == null) return new ServicoDetalhadoRepresentation();
     	ServicoDetalhadoRepresentation representation = new ServicoDetalhadoRepresentation();
 
-        representation.setId(domain.getId());
         representation.setPreco(domain.getPreco());
         representation.setAnimaisAceitos(TipoAnimalEstimacao.valueOf(domain.getAnimaisAceitos()));
         representation.setTipo(servicoConverter.toRepresentationList(domain.getTipo()));
@@ -31,7 +30,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     	if(representation == null) return new ServicoDetalhado();
     	ServicoDetalhado domain = new ServicoDetalhado();
 
-        domain.setId(representation.getId());
         domain.setPreco(representation.getPreco());
         domain.setAnimaisAceitos(domain.getAnimaisAceitos().id());
         domain.setTipo(servicoConverter.toDomainList(representation.getTipo()));
