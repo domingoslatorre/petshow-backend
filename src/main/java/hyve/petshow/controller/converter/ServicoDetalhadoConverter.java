@@ -12,15 +12,19 @@ import hyve.petshow.domain.ServicoDetalhado;
 
 @Component
 public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, ServicoDetalhadoRepresentation>{
-    @Override
+	private AnimalEstimacaoConverter animalConverter = new AnimalEstimacaoConverter();
+	
+	@Override
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {
     	if(domain == null) return new ServicoDetalhadoRepresentation();
     	ServicoDetalhadoRepresentation representation = new ServicoDetalhadoRepresentation();
 
         representation.setPreco(domain.getPreco());
-        representation.setAnimaisAceitos(TipoAnimalEstimacao.valueOf(domain.getAnimaisAceitos()));
-        representation.setTipo(servicoConverter.toRepresentationList(domain.getTipo()));
-        representation.setPrestador(prestadorConverter.toRepresentationList(domain.getPrestador()));
+//        representation.setAnimaisAceitos(animalConverter.toRepresentationList(domain.getAnimaisAceitos()));
+//        representation.setTipo(servicoConverter.toRepresentationList(domain.getTipo()));
+//        representation.setPrestador(prestadorConverter.toRepresentationList(domain.getPrestador()));
+
+        
         
         return representation;
     }
@@ -31,9 +35,9 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     	ServicoDetalhado domain = new ServicoDetalhado();
 
         domain.setPreco(representation.getPreco());
-        domain.setAnimaisAceitos(domain.getAnimaisAceitos().id());
-        domain.setTipo(servicoConverter.toDomainList(representation.getTipo()));
-        domain.setPrestador(servicoPrestador.toDomainList(representation.getPrestador()));
+//        domain.setAnimaisAceitos(domain.getAnimaisAceitos().id());
+//        domain.setTipo(servicoConverter.toDomainList(representation.getTipo()));
+//        domain.setPrestador(servicoPrestador.toDomainList(representation.getPrestador()));
 		
         return domain;
     }

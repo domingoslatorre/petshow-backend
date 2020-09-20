@@ -13,4 +13,10 @@ public class Servico {
     
     private String nome;
     private String descricao;
+    
+    public Servico(Long Id, String nome, String descricao) {
+    	this.id = id;
+    	this.nome = nome;
+    	this.descricao = descricao;
+    }
 }

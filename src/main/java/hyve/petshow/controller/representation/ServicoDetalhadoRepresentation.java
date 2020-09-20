@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 public class ServicoDetalhadoRepresentation {
     private BigDecimal preco;
     private ServicoRepresentation tipo;
-    private List<TipoAnimalEstimacao> animaisAceitos;
-    private PrestadorRepresentation prestador;
+    private List<Integer> animaisAceitos;
+//    private PrestadorRepresentation prestador;
 }

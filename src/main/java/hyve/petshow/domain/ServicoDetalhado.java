@@ -15,20 +15,13 @@ public class ServicoDetalhado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal preco;
-    
     private Servico tipo;
-    
-    @ManyToOne 
-    @JoinColumn(name = "fk_conta", referencedColumnName = "id")
-    private Prestador prestador;    
-
     @Column(name = "fk_tipo_animal_estimacao")
-    private Integer animaisAceitos;
+    private List<Integer> animaisAceitos;
     
-    //private List<Adicional> adicional = new ArrayList<Adicional>();
+//    @ManyToOne 
+//    @JoinColumn(name = "fk_conta", referencedColumnName = "id")
+//    private Prestador prestador;    
+
     
-    //Criar a entidade empresa:
-    //@ManyToOne
-    //@JoinColumn(name = "fk_empresa", referencedColumnName = "id")
-    //private Empresa empresa;    
 }
