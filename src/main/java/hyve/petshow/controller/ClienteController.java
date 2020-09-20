@@ -45,6 +45,7 @@ public class ClienteController {
 	public ResponseEntity<ClienteRepresentation> atualizaCliente(@RequestBody ClienteRepresentation cliente) {
 		Cliente domain = converter.toDomain(cliente);
 		Cliente atualizaCliente = service.atualizaConta(domain);
+
 		ClienteRepresentation representation = converter.toRepresentation(atualizaCliente);
 		return ResponseEntity.status(HttpStatus.OK).body(representation);
 	}

@@ -7,5 +7,4 @@ import hyve.petshow.domain.Cliente;
 @Service
 public interface PrestadorService extends ContaService<Cliente>{ //é somente uma interface
 
-
 }

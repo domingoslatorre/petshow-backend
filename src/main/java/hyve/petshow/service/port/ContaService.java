@@ -26,4 +26,6 @@ public interface ContaService<T extends Conta> {
 	Optional<T> buscaPorEmail(String email);
 
 	T atualizaConta(T conta);
+
+	T atualizaConta(Long id,T conta);
 }

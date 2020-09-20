@@ -1,6 +1,5 @@
 package hyve.petshow.domain;
 
-
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,7 +10,7 @@ import javax.persistence.*;
 public class Prestador extends Conta{
     @OneToMany//(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)//Lazy para tipo lista no resto deixa Igger
     @JoinColumn(name="fk_conta")
-    private List<ServicoDetalhado> servicosDetalhados = new ArrayList<ServicoDetalhado>();
+    //private List<ServicoDetalhado> servicosDetalhados = new ArrayList<ServicoDetalhado>();
     private String descricao;
 
     public Prestador() {
@@ -26,9 +25,10 @@ public class Prestador extends Conta{
                          String foto,
                          Endereco endereco,
                          Login login,
-                         List<ServicoDetalhado> servicosDetalhados){
+//                         List<ServicoDetalhado> servicosDetalhados)
+            {
             super(id, nome, nomeSocial, cpf, telefone, tipo, foto, endereco, login);
-            setServicoDetalhado(servicosDetalhados);
+//          setServicoDetalhado(servicosDetalhados);
         }
 
 
