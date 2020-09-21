@@ -1,8 +1,5 @@
 package hyve.petshow.controller.representation;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import hyve.petshow.domain.Servico;
 import lombok.AllArgsConstructor;

@@ -12,8 +12,7 @@ import hyve.petshow.domain.ServicoDetalhado;
 
 @Component
 public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, ServicoDetalhadoRepresentation>{
-	private AnimalEstimacaoConverter animalConverter = new AnimalEstimacaoConverter();
-	
+		
 	@Override
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {
     	if(domain == null) return new ServicoDetalhadoRepresentation();
@@ -33,10 +32,11 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     public ServicoDetalhado toDomain(ServicoDetalhadoRepresentation representation) {
     	if(representation == null) return new ServicoDetalhado();
     	ServicoDetalhado domain = new ServicoDetalhado();
-
-        domain.setPreco(representation.getPreco());
-//        domain.setAnimaisAceitos(domain.getAnimaisAceitos().id());
-//        domain.setTipo(servicoConverter.toDomainList(representation.getTipo()));
+    	ServicoConverter servicoConverter = new ServicoConverter();
+        
+    	domain.setPreco(representation.getPreco());
+    	domain.setAnimaisAceitos(representation.getAnimaisAceitos());
+        domain.setTipo(servicoConverter.toDomain(representation.getTipo()));
 //        domain.setPrestador(servicoPrestador.toDomainList(representation.getPrestador()));
 		
         return domain;

@@ -28,15 +28,15 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
     //criarServicos
     @Override
-    public List<ServicoDetalhado> adicionarServicos(List<ServicoDetalhado> servicosDetalhados) {
+    public List<ServicoDetalhado> adicionarServicosDetalhados(List<ServicoDetalhado> servicosDetalhados) {
         return repository.saveAll(servicosDetalhados);
     }
     
 
-    @Override
-    public List<ServicoDetalhado> buscarServicosPorPrestador(Long id) {
-        return repository.findByPrestador(id);
-    }
+//    @Override
+//    public List<ServicoDetalhado> buscarServicosDetalhadosPorPrestador(Long id) {
+//        return repository.findByPrestador(id);
+//    }
 
     //
     @Override

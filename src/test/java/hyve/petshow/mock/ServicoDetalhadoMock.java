@@ -16,7 +16,7 @@ import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 
 public class ServicoDetalhadoMock {
-    public static ServicoDetalhado ServicoDetalhadoMock(){
+    public static ServicoDetalhado servicoDetalhado(){
     	ServicoDetalhado objeto = new ServicoDetalhado();
 
     	objeto.setId(1L);
@@ -24,17 +24,47 @@ public class ServicoDetalhadoMock {
     	BigDecimal p = new BigDecimal(70);
     	objeto.setPreco(p);
     	
-    	Servico s = new Servico(Long.valueOf(1),"Banho e Tosa", "Banhos quentinhos para o seu pet");
+    	Servico s = new Servico();
+    	s.setId(Long.valueOf(1));
+    	s.setNome("Banho e Tosa");
+    	s.setDescricao("Banhos quentinhos para o seu pet");
     	objeto.setTipo(s);
     	
     	//objeto.setServico("Banho e Tosa");
-    	List <Integer> lista = new ArrayList<Integer>();
-    	lista.add(TipoAnimalEstimacao.GATO.id());
-    	lista.add(TipoAnimalEstimacao.CACHORRO.id());
+    	List <TipoAnimalEstimacao> lista = new ArrayList<>();
+    	lista.add(TipoAnimalEstimacao.GATO);
+    	lista.add(TipoAnimalEstimacao.CACHORRO);
     	objeto.setAnimaisAceitos(lista);
 
         return objeto;
     }
+    
+    public static ServicoDetalhado servicoDetalhadoAlt(){
+    	ServicoDetalhado objeto = new ServicoDetalhado();
+
+    	objeto.setId(1L);
+    	
+    	BigDecimal p = new BigDecimal(80);
+    	objeto.setPreco(p);
+    	
+    	Servico s = new Servico();
+    	s.setId(Long.valueOf(1));
+    	s.setNome("Banho e Tosa");
+    	s.setDescricao("Banhos quentinhos para o seu pet");
+    	objeto.setTipo(s);
+    	
+    	//objeto.setServico("Banho e Tosa");
+    	List <TipoAnimalEstimacao> lista = new ArrayList<>();
+    	lista.add(TipoAnimalEstimacao.REPTIL);
+    	lista.add(TipoAnimalEstimacao.AVE);
+    	objeto.setAnimaisAceitos(lista);
+
+        return objeto;
+    }
+    
+    
+    
+    
 
   
     public static ServicoDetalhadoRepresentation representation(){
@@ -44,9 +74,9 @@ public class ServicoDetalhadoMock {
     	representation.setPreco(p);
 //    	ServicoRepresentation s = new Servico(Long.valueOf(1),"Banho e Tosa", "Banhos quentinhos para o seu pet");
 //    	representation.setTipo(s);
-    	List <Integer> lista = new ArrayList<Integer>();
-    	lista.add(TipoAnimalEstimacao.GATO.id());
-    	lista.add(TipoAnimalEstimacao.CACHORRO.id());
+    	List <TipoAnimalEstimacao> lista = new ArrayList<TipoAnimalEstimacao>();
+    	lista.add(TipoAnimalEstimacao.GATO);
+    	lista.add(TipoAnimalEstimacao.CACHORRO);
     	representation.setAnimaisAceitos(lista);
 
         return representation;
