@@ -24,56 +24,45 @@ public class PrestadorController {
     private PrestadorConverter converter; //converte para uma entidade de dominio para não utilizar o mesmo objeto
 
     @GetMapping("{id}")
-    public ResponseEntity<PrestadorRepresentation> buscarPrestador(@PathVariable Long id){
+    public ResponseEntity<PrestadorRepresentation> buscarPrestador(@PathVariable Long id) throws Exception {
         ResponseEntity<PrestadorRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        Prestador prestador = service.buscaPorEmail(id);
+        Prestador prestador = service.obterContaPorId(id);
 
-        if(!prestador.isEmpty()){
-            response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentationList(prestador));
-        }
-
-        return response;
+        return  ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(prestador));
     }
 
 
     @PutMapping("{id}")
-    public ResponseEntity<PrestadorRepresentation> atualizarPrestador(@PathVariable Long id, @RequestBody PrestadorRepresentation prestador) {
+    public ResponseEntity<PrestadorRepresentation> atualizarPrestador(@PathVariable Long id, @RequestBody PrestadorRepresentation prestador) throws Exception {
         Prestador domain = converter.toDomain(prestador);
-        Optional <Prestador> prestadorAtualizado = service.atualizaConta(id, domain);
-
-        if(!prestadorAtualizado.isEmpty()) {
-            PrestadorRepresentation representation = converter.toRepresentation(prestadorAtualizado.get());
-            return ResponseEntity.status(HttpStatus.OK).body(representation);
-        }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        Prestador prestadorAtualizado = service.atualizaConta(id, domain);
+        PrestadorRepresentation representation = converter.toRepresentation(prestadorAtualizado);
+        return ResponseEntity.status(HttpStatus.OK).body(representation);
     }
 
 
-    @PostMapping
-    public ResponseEntity<AutonomoRepresentation> criarAutonomo(@RequestBody AutonomoRepresentation conta) throws Exception {
-        Autonomo domain = converter.toDomain(conta);
-        Autonomo contaSalva = service.salvaConta(domain);
-        AutonomoRepresentation representation = converter.toRepresentation(contaSalva);
-        return ResponseEntity.status(HttpStatus.CREATED).body(representation);
-    }
+//    @PostMapping
+//    public ResponseEntity<AutonomoRepresentation> criarAutonomo(@RequestBody AutonomoRepresentation conta) throws Exception {
+//        Autonomo domain = converter.toDomain(conta);
+//        Autonomo contaSalva = service.salvaConta(domain);
+//        AutonomoRepresentation representation = converter.toRepresentation(contaSalva);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(representation);
+//    }
 
 
-    @GetMapping("{id}")
-    public ResponseEntity<List<PrestadorRepresentation>> buscarPrestadoresParaComparacao(@PathVariable Long id){
-        ResponseEntity<List<PrestadorRepresentation>> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-        List<Prestador> prestadores = service.buscaPorEmail(id);
-
-        if(!prestadores.isEmpty()){
-            response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentationList(prestadores));
-        }
-
-        return response;
-    }
+//    @GetMapping("{id}")
+//    public ResponseEntity<List<PrestadorRepresentation>> buscarPrestadoresParaComparacao(@PathVariable Long id) throws Exception {
+//        ResponseEntity<List<PrestadorRepresentation>> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+//
+//        List<Prestador> prestadores = service.obterContaPorId(id);
+//
+//        response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentationList(prestadores));
+//        return response;
+//    }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id){
+    public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id) throws Exception {
         ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         MensagemRepresentation mensagem = service.removerConta(id);

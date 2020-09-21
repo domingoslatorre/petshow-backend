@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // TODO: IDEM ClienteCONVERTER
+@Component // coloca a entidade dentro do contexto Spring
 public class PrestadorConverter implements Converter<Prestador, PrestadorRepresentation> {
     //private ContaConverter contaConverter = new ContaConverter();
     //private List<ServicoDetalhado> servicoDetalhadoConverter = new ArrayList<ServicoDetalhado>();
@@ -29,7 +30,7 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
         representation.setTelefone(domain.getTelefone());
 
         //representation.setServicoDetalhado(servicoDetalhadoConverter.toRepresentationList(domain.getServicoDetalhado()));
-        representation.descricao(domain.getDescricao());
+        representation.setDescricao(domain.getDescricao());
         return representation;
     }
 
@@ -47,7 +48,7 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
         domain.setTelefone(representation.getTelefone());
 
         //domain.setServicoDetalhado(servicoDetalhadoConverter.toDomainList(representation.getServicoDetalhado()));
-        domain.descricao(domain.getDescricao());
+        domain.setDescricao(domain.getDescricao());
         return domain;
     }
 

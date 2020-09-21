@@ -10,6 +10,6 @@ import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Login;
 
 @Transactional
-public interface PrestadorRepository extends ContaRepository<Cliente> {
+public interface PrestadorRepository extends ContaRepository<Prestador> {
     Optional<Prestador> findByLogin(Login login);
 }

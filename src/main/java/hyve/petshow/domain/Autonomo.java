@@ -10,8 +10,8 @@ import javax.persistence.*;
 public class Autonomo extends Prestador{
 //    private List<Pagamento> pagamentos = new ArrayList<Pagamento>();
 
-    private Autonomo{
-    }
+//    private Autonomo(){
+//    }
 
 //    private Autonomo(String descricao,
 //                     List<Pagamento> pagamentos){

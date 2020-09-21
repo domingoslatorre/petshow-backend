@@ -27,5 +27,5 @@ public interface ContaService<T extends Conta> {
 
 	T atualizaConta(T conta);
 
-	T atualizaConta(Long id,T conta);
+	T atualizaConta(Long id,T conta) throws Exception;
 }

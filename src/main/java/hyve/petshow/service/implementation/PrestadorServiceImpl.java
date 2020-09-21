@@ -78,4 +78,10 @@ public class PrestadorServiceImpl implements PrestadorService {
         return repository.save(conta);
     }
 
+    @Override
+    public Prestador atualizaConta(Long id, Prestador conta) throws Exception {
+        repository.findById(id).orElseThrow(()->new NotFoundException("Conta não encontrada"));
+        return repository.save(conta);
+    }
+
 }
