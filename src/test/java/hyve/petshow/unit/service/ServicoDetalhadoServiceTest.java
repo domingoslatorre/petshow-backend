@@ -4,11 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,21 +22,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
+
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.mock.ServicoDetalhadoMock;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 import hyve.petshow.service.implementation.ServicoDetalhadoServiceImpl;
-import hyve.petshow.service.port.ServicoDetalhadoService;
+
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
