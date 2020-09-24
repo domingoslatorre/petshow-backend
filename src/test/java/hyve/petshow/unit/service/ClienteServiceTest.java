@@ -39,30 +39,30 @@ public class ClienteServiceTest {
 	@BeforeEach
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		Mockito.when(repository.findAll()).thenReturn(ClienteMock.obterContas());
-		Mockito.when(repository.save(Mockito.any(Cliente.class))).then(mock -> {
-			Cliente conta = mock.getArgument(0);
+		Mockito.when(repository.findAll()).thenReturn(ServicoDetalhadoMock.obterContas());
+		Mockito.when(repository.save(Mockito.any(ServicoDetalhado.class))).then(mock -> {
+			ServicoDetalhado conta = mock.getArgument(0);
 			if (conta.getId() == null) {
-				ClienteMock.salvaConta(conta);
+				ServicoDetalhadoMock.salvaConta(conta);
 			} else {
-				ClienteMock.atualizaConta(conta);
+				ServicoDetalhadoMock.atualizaConta(conta);
 			}
 			return conta;
 		});
 		Mockito.doAnswer(mock -> {
-			ClienteMock.removeConta(mock.getArgument(0));
+			ServicoDetalhadoMock.removeConta(mock.getArgument(0));
 			return null;
-		}).when(repository).delete(Mockito.any(Cliente.class));
-		Mockito.when(repository.findById(Mockito.anyLong())).then(mock -> ClienteMock.buscaPorId(mock.getArgument(0)));
+		}).when(repository).delete(Mockito.any(ServicoDetalhado.class));
+		Mockito.when(repository.findById(Mockito.anyLong())).then(mock -> ServicoDetalhadoMock.buscaPorId(mock.getArgument(0)));
 		Mockito.when(repository.findByLogin(Mockito.any(Login.class)))
-				.then(mock -> ClienteMock.buscaPorLogin(mock.getArgument(0)));
+				.then(mock -> ServicoDetalhadoMock.buscaPorLogin(mock.getArgument(0)));
 
 		Mockito.when(repository.findByEmail(Mockito.anyString()))
-				.then(mock -> ClienteMock.buscarPorEmail(mock.getArgument(0)));
+				.then(mock -> ServicoDetalhadoMock.buscarPorEmail(mock.getArgument(0)));
 		Mockito.when(repository.findByCpf(Mockito.anyString()))
-				.then(mock -> ClienteMock.buscaPorCpf(mock.getArgument(0)));
+				.then(mock -> ServicoDetalhadoMock.buscaPorCpf(mock.getArgument(0)));
 		Mockito.doAnswer(mock -> {
-			ClienteMock.removePorId(mock.getArgument(0));
+			ServicoDetalhadoMock.removePorId(mock.getArgument(0));
 			return null;
 		}).when(repository).deleteById(Mockito.anyLong());
 	}

@@ -49,7 +49,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
            
         	servicoDetalhado.setPreco(servicoDetalhadoRequest.getPreco());
         	servicoDetalhado.setTipo(servicoDetalhadoRequest.getTipo());
-        	servicoDetalhado.setAnimaisAceitos(servicoDetalhadoRequest.getAnimaisAceitos());
+//        	servicoDetalhado.setAnimaisAceitos(servicoDetalhadoRequest.getAnimaisAceitos());
       	
             response = Optional.of(repository.save(servicoDetalhado));
         }

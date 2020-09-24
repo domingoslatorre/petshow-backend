@@ -35,7 +35,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     	ServicoConverter servicoConverter = new ServicoConverter();
         
     	domain.setPreco(representation.getPreco());
-    	domain.setAnimaisAceitos(representation.getAnimaisAceitos());
+//    	domain.setAnimaisAceitos(representation.getAnimaisAceitos());
         domain.setTipo(servicoConverter.toDomain(representation.getTipo()));
 //        domain.setPrestador(servicoPrestador.toDomainList(representation.getPrestador()));
 		

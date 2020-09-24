@@ -18,9 +18,9 @@ public class ServicoDetalhado {
     private BigDecimal preco;
     @ManyToOne
     private Servico tipo;
-    @Column
-    @ElementCollection(targetClass=TipoAnimalEstimacao.class)
-    private List<TipoAnimalEstimacao> animaisAceitos;
+//    @Column
+//    @ElementCollection(targetClass=TipoAnimalEstimacao.class)
+//    private List<TipoAnimalEstimacao> animaisAceitos;
     
 //    @ManyToOne 
 //    @JoinColumn(name = "fk_conta", referencedColumnName = "id")

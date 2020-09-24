@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ServicoDetalhadoRepository extends JpaRepository<ServicoDetalhado, Long> {
 //	@Query("select servicoDetalhado from prestador p where p.id = ?1")
-//	List<ServicoDetalhado> findByPrestador(Long Id);
+//	List<ServicoDetalhado> buscarPorPrestador(Long Id);
 }
 
 
