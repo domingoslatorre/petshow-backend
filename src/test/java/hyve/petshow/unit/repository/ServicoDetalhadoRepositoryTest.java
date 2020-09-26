@@ -32,46 +32,13 @@ public class ServicoDetalhadoRepositoryTest {
 //	@Autowired
 //	private ContaRepository<Cliente> repository;
 
-	@Autowired
-	private ServicoDetalhadoRepository repository;
+//	@Autowired
+//	private ServicoDetalhadoRepository repository;
 
-	private ServicoDetalhado mock;
+//	private ServicoDetalhado mock;
 
-	@AfterEach
-	public void deve_remover_item() {
-		repository.deleteAll();
-		assertTrue(repository.findAll().isEmpty());
-	}
-
-	@Test
-	@Order(1)
-	public void deve_inserir_novo_item() {
-		mock = new ServicoDetalhado();
-		List<ServicoDetalhado> lista = new ArrayList<>();
-		lista.add(mock);
-		List<ServicoDetalhado> save = repository.saveAll(lista);
-		assertNotNull(save);
-		
-		assertTrue(!repository.findAll().isEmpty());
-	}
-
-	@Test
-	@Order(2)
-	public void deve_alterar_item() {
-		mock = new ServicoDetalhado();
-		ServicoDetalhado save = repository.save((ServicoDetalhado) mock);
-    	
-		BigDecimal p = new BigDecimal(0);
-		BigDecimal precoEsperado = p;
-		save.setPreco(precoEsperado);
-		ServicoDetalhado objetoDB = repository.save((ServicoDetalhado) mock);
-		assertEquals(repository.findAll().size(), 1);
-		assertEquals(precoEsperado, objetoDB.getPreco());
-	}
-
-
+	
 //	@Test
-//	@Order(7)
 //	public void deve_retornar_servicos_via_prestador() {
 //		mock = new ServicoDetalhado();
 //		Prestador prestador = new Prestador();

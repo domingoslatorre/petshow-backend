@@ -6,9 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-
-import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +27,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 
-import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.mock.ServicoDetalhadoMock;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
@@ -76,17 +73,8 @@ public class ServicoDetalhadoServiceTest {
     @Test
 	@Order(1)
 	public void deve_inserir_servico_detalhado_na_lista() throws Exception {
-		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
-		servicoDetalhado.setId(1L);
-    	BigDecimal p = new BigDecimal(70);
-    	servicoDetalhado.setPreco(p);
-    	Servico s = new Servico();
-    	s.setId(Long.valueOf(1));
-    	s.setNome("Banho e Tosa");
-    	s.setDescricao("Banhos quentinhos para o seu pet");
-    	servicoDetalhado.setTipo(s);
-    	List<ServicoDetalhado> servicosDetalhados = new ArrayList<ServicoDetalhado>();
-    	servicosDetalhados.add(servicoDetalhado);
+		var servicoDetalhado = ServicoDetalhadoMock.criarServicoDetalhado();
+    	var servicosDetalhados = Arrays.asList(servicoDetalhado);
     	
 		service.adicionarServicosDetalhados(servicosDetalhados);
 		
@@ -110,11 +98,27 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	@Order(3)
 	public void deve_remover_elemento() throws Exception {
-		service.removerServicoDetalhado(1l);
+		service.removerServicoDetalhado(1L);
 		assertThrows(Exception.class, () -> {
-			repository.findById(1l);
+			repository.existsById(1L);
 		});
 	}
+	
+	  @Test
+	  public void deve_remover_servico_detalhado() throws Exception{
+	      //dado
+	      var id = 1L;
+	      var expected = ServicoDetalhadoMock.mensagem();
+	
+	      when(repository.existsById(id)).thenReturn(Boolean.FALSE);
+	
+	      //quando
+	      var actual = service.removerServicoDetalhado(id);
+	
+	      //entao
+	      assertEquals(expected, actual);
+	  }
+
 	
 
 	@Test

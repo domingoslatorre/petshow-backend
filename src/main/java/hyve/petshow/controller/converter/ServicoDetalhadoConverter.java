@@ -17,14 +17,14 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {
     	if(domain == null) return new ServicoDetalhadoRepresentation();
     	ServicoDetalhadoRepresentation representation = new ServicoDetalhadoRepresentation();
-
+    	ServicoConverter servicoConverter = new ServicoConverter();
+    	
+    	representation.setId(domain.getId());
         representation.setPreco(domain.getPreco());
-//        representation.setAnimaisAceitos(animalConverter.toRepresentationList(domain.getAnimaisAceitos()));
-//        representation.setTipo(servicoConverter.toRepresentationList(domain.getTipo()));
-//        representation.setPrestador(prestadorConverter.toRepresentationList(domain.getPrestador()));
+        representation.setTipo(servicoConverter.toRepresentation(domain.getTipo()));
+//      representation.setAnimaisAceitos(animalConverter.toRepresentationList(domain.getAnimaisAceitos()));
+//      representation.setPrestador(prestadorConverter.toRepresentationList(domain.getPrestador()));
 
-        
-        
         return representation;
     }
 
@@ -34,10 +34,11 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     	ServicoDetalhado domain = new ServicoDetalhado();
     	ServicoConverter servicoConverter = new ServicoConverter();
         
+    	domain.setId(representation.getId());
     	domain.setPreco(representation.getPreco());
-//    	domain.setAnimaisAceitos(representation.getAnimaisAceitos());
         domain.setTipo(servicoConverter.toDomain(representation.getTipo()));
-//        domain.setPrestador(servicoPrestador.toDomainList(representation.getPrestador()));
+//      domain.setPrestador(servicoPrestador.toDomainList(representation.getPrestador()));
+//    	domain.setAnimaisAceitos(representation.getAnimaisAceitos());
 		
         return domain;
     }
@@ -50,8 +51,11 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         return representationList;
     }
 
-	public List<ServicoDetalhado> toDomainList(List<ServicoDetalhadoRepresentation> servicoDetalhado) {
-		if(servicoDetalhado == null) return new ArrayList<ServicoDetalhado>();
-		return servicoDetalhado.stream().map(el -> toDomain(el)).collect(Collectors.toList());
-	}
+    public List<ServicoDetalhado> toDomainList(List<ServicoDetalhadoRepresentation> representationList){
+    	if(representationList == null) return new ArrayList<ServicoDetalhado>();
+        List<ServicoDetalhado> domainList = new ArrayList<>();
+
+        representationList.forEach(representation -> domainList.add(this.toDomain(representation)));
+        return domainList;
+    }
 }

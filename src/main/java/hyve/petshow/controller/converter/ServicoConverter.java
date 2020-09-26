@@ -19,10 +19,9 @@ public class ServicoConverter implements Converter<Servico, ServicoRepresentatio
     public ServicoRepresentation toRepresentation(Servico domain) {
     	if(domain == null) return new ServicoRepresentation();
     	ServicoRepresentation representation = new ServicoRepresentation();
-
+    	representation.setId(domain.getId());
         representation.setNome(domain.getNome());
         representation.setDescricao(domain.getDescricao());
-   
         
         return representation;
     }
@@ -31,7 +30,7 @@ public class ServicoConverter implements Converter<Servico, ServicoRepresentatio
     public Servico toDomain(ServicoRepresentation representation) {
     	if(representation == null) return new Servico();
     	Servico domain = new Servico();
-
+    	domain.setId(representation.getId());
         domain.setNome(representation.getNome());
         domain.setDescricao(representation.getDescricao());
         
@@ -46,8 +45,13 @@ public class ServicoConverter implements Converter<Servico, ServicoRepresentatio
         return representationList;
     }
 
-	public List<Servico> toDomainList(List<ServicoRepresentation> servico) {
-		if(servico == null) return new ArrayList<Servico>();
-		return servico.stream().map(el -> toDomain(el)).collect(Collectors.toList());
+	public List<Servico> toDomainList(List<ServicoRepresentation> representationList) {
+		if(representationList == null) return new ArrayList<Servico>();
+		
+		List<Servico> domainList = new ArrayList<>();
+
+		representationList.forEach(representation -> domainList.add(this.toDomain(representation)));
+		return domainList;
+		
 	}
 }

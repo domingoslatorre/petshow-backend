@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class ServicoRepresentation {
-    private String nome;
+    private Long id;
+	private String nome;
     private String descricao;
 }

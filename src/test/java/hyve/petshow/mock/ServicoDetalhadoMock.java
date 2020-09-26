@@ -7,27 +7,51 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import hyve.petshow.controller.converter.ServicoConverter;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 //import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 
 public class ServicoDetalhadoMock {
 		public static ServicoDetalhado criarServicoDetalhado() {
-		ServicoDetalhado sd = new ServicoDetalhado();
-    	sd.setId(1l);
-    	
-    	BigDecimal p = new BigDecimal(70);
-    	sd.setPreco(p);
-    	
-    	Servico s = new Servico();
-    	s.setId(Long.valueOf(1));
-    	s.setNome("Banho e Tosa");
-    	s.setDescricao("Banhos quentinhos para o seu pet");
-    	
-    	sd.setTipo(s);
-    	return sd;
+		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
+		servicoDetalhado.setId(1L);
+		
+		BigDecimal p = new BigDecimal(70);
+		servicoDetalhado.setPreco(p);
+		
+		Servico s = new Servico();
+		s.setId(Long.valueOf(1));
+		s.setNome("Banho e Tosa");
+		s.setDescricao("Banhos quentinhos para o seu pet");
+		
+		servicoDetalhado.setTipo(s);
+		return servicoDetalhado;
 		}
-    	
+		
+		public static ServicoDetalhadoRepresentation criarServicoDetalhadoRepresentation() {
+		ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = new ServicoDetalhadoRepresentation();
+		servicoDetalhadoRepresentation.setId(1L);
+		
+		BigDecimal p = new BigDecimal(70);
+		servicoDetalhadoRepresentation.setPreco(p);
+		
+		Servico s = new Servico();
+		s.setId(Long.valueOf(1));
+		s.setNome("Banho e Tosa");
+		s.setDescricao("Banhos quentinhos para o seu pet");
+		
+		ServicoConverter servicoConverter = new ServicoConverter();
+		
+		servicoDetalhadoRepresentation.setTipo(servicoConverter.toRepresentation(s));
+		return servicoDetalhadoRepresentation;
+		}
+		
+		
+		
+		
+	
     	public static List<ServicoDetalhado> dbMock = new ArrayList<ServicoDetalhado>(Arrays.asList(criarServicoDetalhado()));
     	
     	public static List<ServicoDetalhado> findAll() {
