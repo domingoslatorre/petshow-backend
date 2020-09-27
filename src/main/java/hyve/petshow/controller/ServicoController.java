@@ -1,8 +1,6 @@
 package hyve.petshow.controller;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +31,7 @@ public class ServicoController {
 	private ServicoConverter converter;
 
 	@PostMapping
-	public ResponseEntity <ServicoRepresentation> adicionarServico(@RequestBody ServicoRepresentation servico) {
+	public ResponseEntity <ServicoRepresentation> adicionarServico(@RequestBody ServicoRepresentation servico) throws Exception{
 		Servico domain = converter.toDomain(servico);
 		Servico servicoSalvo = service.adicionarServico(domain);
 		ServicoRepresentation representation = converter.toRepresentation(servicoSalvo);
@@ -42,15 +40,11 @@ public class ServicoController {
 	
 
 	@PutMapping("{id}")
-	public ResponseEntity<ServicoRepresentation> atualizarServico(@PathVariable Long id, @RequestBody ServicoRepresentation servico) {
-		ResponseEntity<ServicoRepresentation> response =  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	public ResponseEntity<ServicoRepresentation> atualizarServico(@PathVariable Long id, @RequestBody ServicoRepresentation servico) throws Exception{
 		Servico domain = converter.toDomain(servico);
-		Optional <Servico> servicoAtualizado = service.atualizarServico(id, domain);
+		Servico servicoAtualizado = service.atualizarServico(id, domain);
 		
-		if(!servicoAtualizado.isEmpty()) {
-			response= ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(servicoAtualizado.get()));
-		}
-		return response;
+		return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(servicoAtualizado));
 	}
 	
     @GetMapping
@@ -65,9 +59,6 @@ public class ServicoController {
 
         return response;
     }
-    
-    
-    
     
     @DeleteMapping("{id}")
     public ResponseEntity<MensagemRepresentation> removerServico(@PathVariable Long id) throws Exception{

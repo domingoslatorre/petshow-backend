@@ -1,7 +1,6 @@
 package hyve.petshow.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,15 +41,11 @@ public class ServicoDetalhadoController {
 
 
 	@PutMapping("{id}")
-	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(@PathVariable Long id, @RequestBody ServicoDetalhadoRepresentation servico) {
-		ResponseEntity<ServicoDetalhadoRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-		
+	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(@PathVariable Long id, @RequestBody ServicoDetalhadoRepresentation servico) throws Exception{
 		ServicoDetalhado domain = converter.toDomain(servico);
-		Optional <ServicoDetalhado> atualizaServico = service.atualizarServicoDetalhado(id, domain);
-		if(!atualizaServico.isEmpty()) {
-			response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(atualizaServico.get()));
-		}
-		return response;
+		ServicoDetalhado atualizaServico = service.atualizarServicoDetalhado(id, domain);
+	
+		return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(atualizaServico));
 	}
 	
 //    @GetMapping("/prestador/{id}")

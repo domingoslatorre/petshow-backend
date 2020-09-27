@@ -1,6 +1,7 @@
 package hyve.petshow.unit.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -69,11 +71,12 @@ public class ServicoDetalhadoControllerTest {
 		URI uri = new URI(this.url);
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<List<ServicoDetalhadoRepresentation>> request = new HttpEntity<>(servicoDetalhadoMockList, headers);
-
-		ResponseEntity<ServicoDetalhadoRepresentation> response = template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
-
+		
+		//parametrizestypereference -> usado pra retornar uma lista
+		ResponseEntity<List<ServicoDetalhadoRepresentation>> response = template.exchange(uri,HttpMethod.POST, request,new ParameterizedTypeReference<List<ServicoDetalhadoRepresentation>>() {});
+		
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
-		assertTrue(repository.existsById(response.getBody().getId()));
+		assertEquals(servicoDetalhadoMockList, response.getBody());
 	}
 
 

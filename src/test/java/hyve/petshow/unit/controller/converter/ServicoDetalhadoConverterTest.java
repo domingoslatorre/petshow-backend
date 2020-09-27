@@ -27,9 +27,11 @@ public class ServicoDetalhadoConverterTest {
 	
 	@Test //esse teste converte pra representação e pra dominio de novo, então se ele está correto os dois processos estão corretos
 	public void deve_retornar_servicoDetalhado_convertido() {
-		var actual = ServicoDetalhadoMock.criarServicoDetalhado();
-		var representation = converter.toRepresentation(actual);
-		var expected = converter.toDomain(representation);
+		var expected = ServicoDetalhadoMock.criarServicoDetalhado();
+		
+		var representation = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
+		
+		var actual = converter.toDomain(representation);
 		assertEquals(actual, expected);
 	}
 

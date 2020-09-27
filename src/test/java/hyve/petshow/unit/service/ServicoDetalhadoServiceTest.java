@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Optional;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -21,21 +21,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import org.springframework.boot.test.context.SpringBootTest;
-
-import org.springframework.test.context.ActiveProfiles;
-
 import hyve.petshow.controller.representation.MensagemRepresentation;
-
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.mock.ServicoDetalhadoMock;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 import hyve.petshow.service.implementation.ServicoDetalhadoServiceImpl;
 
 
-@SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@ActiveProfiles("test")
 @TestMethodOrder(OrderAnnotation.class)
 
 public class ServicoDetalhadoServiceTest {
@@ -83,44 +76,26 @@ public class ServicoDetalhadoServiceTest {
 		assertNotNull(servicoDetalhado.getId());
 	}
     
-    
-	@Test
+    @Test
 	@Order(2)
 	public void deve_atualizar_servico_detalhado() throws Exception {
-		Optional<ServicoDetalhado> servicoDetalhadoAAlterar = repository.findById(1L);
+		ServicoDetalhado servicoDetalhadoAAlterar = new ServicoDetalhado();
 		BigDecimal p = new BigDecimal(800);
-		servicoDetalhadoAAlterar.get().setPreco(p);
-		Optional<ServicoDetalhado> servicoDetalhadoDb = service.atualizarServicoDetalhado(servicoDetalhadoAAlterar.get().getId(),servicoDetalhadoAAlterar.get());
-		assertEquals(p, servicoDetalhadoAAlterar.get().getPreco());
-		assertEquals(servicoDetalhadoDb.get().getId(), servicoDetalhadoAAlterar.get().getId());
+		servicoDetalhadoAAlterar.setId(1L);
+		servicoDetalhadoAAlterar.setPreco(p);
+
+		ServicoDetalhado servicoDetalhadoDb = (ServicoDetalhado) service.atualizarServicoDetalhado(servicoDetalhadoAAlterar.getId(), servicoDetalhadoAAlterar);
+		assertEquals(p,servicoDetalhadoDb.getPreco());
+		assertEquals(servicoDetalhadoDb.getId(), servicoDetalhadoAAlterar.getId());
 	}
-    
+
 	@Test
 	@Order(3)
 	public void deve_remover_elemento() throws Exception {
 		service.removerServicoDetalhado(1L);
-		assertThrows(Exception.class, () -> {
-			repository.existsById(1L);
-		});
+		assertFalse(repository.findById(1L).isPresent());
 	}
 	
-	  @Test
-	  public void deve_remover_servico_detalhado() throws Exception{
-	      //dado
-	      var id = 1L;
-	      var expected = ServicoDetalhadoMock.mensagem();
-	
-	      when(repository.existsById(id)).thenReturn(Boolean.FALSE);
-	
-	      //quando
-	      var actual = service.removerServicoDetalhado(id);
-	
-	      //entao
-	      assertEquals(expected, actual);
-	  }
-
-	
-
 	@Test
 	@Order(4)
 	public void deve_retornar_mensagem_sucesso() throws Exception {
@@ -129,83 +104,4 @@ public class ServicoDetalhadoServiceTest {
 		assertTrue(removerServicoDetalhado.getSucesso());
 	}
 	
-    
-     //ANTIGO:
-    
-    
-    
-    
-//    
-//    @Test
-//    @Order(1)
-//    public void deve_retornar_servicos_detalhados_com_sucesso() {
-//        //dado
-//    	var expected = ServicoDetalhadoMock.servicoDetalhado();
-//    	List<ServicoDetalhado> listaExpected = new ArrayList<>();
-//        listaExpected.add(expected);  
-//        
-//        var servicoDetalhadoMock = ServicoDetalhadoMock.servicoDetalhado();
-//        List<ServicoDetalhado> listaMock = new ArrayList<>();
-//        listaMock.add(servicoDetalhadoMock);  
-//        
-//        when(repository.saveAll(listaMock)).thenReturn(listaExpected);
-//
-//        //quando
-//        var actual = service.adicionarServicosDetalhados(listaMock);
-//
-//        //entao
-//        assertEquals(expected, actual);
-//    }
-//
-//    
-//    @Test
-//    public void deve_retornar_servico_detalhado_atualizado(){
-//        //dado
-//        var servicoDetalhado = Optional.of(ServicoDetalhadoMock.servicoDetalhado());
-//        var requestBody = ServicoDetalhadoMock.servicoDetalhadoAlt();
-//        var expected = Optional.of(requestBody);
-//        var id = 1L;
-//
-//        when(repository.findById(id)).thenReturn(servicoDetalhado);
-//        when(repository.save(requestBody)).thenReturn(requestBody);
-//
-//        //quando
-//        var actual = service.atualizarServicoDetalhado(id, requestBody);
-//
-//        //entao
-//        assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    public void deve_retornar_vazio_se_animal_nao_existir(){
-//        //dado
-//        Optional<ServicoDetalhado> servicoDetalhado = Optional.empty();
-//        var requestBody = ServicoDetalhadoMock.servicoDetalhadoAlt();
-//        var expected = Optional.empty();
-//        var id = 1L;
-//
-//        when(repository.findById(id)).thenReturn(servicoDetalhado);
-//
-//        //quando
-//        var actual = service.atualizarServicoDetalhado(id, requestBody);
-//
-//        //entao
-//        assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    public void deve_remover_animal_de_estimacao() throws Exception{
-//        //dado
-//        var id = 1L;
-//        var expected = ServicoDetalhadoMock.mensagem();
-//
-//        when(repository.existsById(id)).thenReturn(Boolean.FALSE);
-//
-//        //quando
-//        var actual = service.removerServicoDetalhado(id);
-//
-//        //entao
-//        assertEquals(expected, actual);
-//    }
-
 }

@@ -9,11 +9,11 @@ import java.util.Optional;
 
 @Service
 public interface ServicoService {
-	Servico adicionarServico (Servico servico);
+	Servico adicionarServico (Servico servico)throws Exception;
 
     List<Servico> buscarServicos ();
     
-    Optional<Servico> atualizarServico(Long id, Servico servico);
+    Servico atualizarServico(Long id, Servico servico) throws Exception;
 
     MensagemRepresentation removerServico(Long id) throws Exception;
 }

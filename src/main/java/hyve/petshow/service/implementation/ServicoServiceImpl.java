@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Servico;
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ServicoRepository;
 import hyve.petshow.service.port.ServicoService;
@@ -22,11 +24,17 @@ public class ServicoServiceImpl implements ServicoService {
     private ServicoRepository repository;
 
     @Override
-    public Servico adicionarServico(Servico servico) {
-        return repository.save(servico);
+    public Servico adicionarServico(Servico servico) throws Exception{
+    	validaNovoServico(servico);
+    	return repository.save(servico);
     }
     
-
+    private void validaNovoServico(Servico servico) throws BusinessException {
+		if (repository.buscarPorNome(servico.getNome())!=null) {
+			throw new BusinessException("Serviço já cadastrado.");
+		}
+	}
+    
     @Override
     public List<Servico> buscarServicos() {
         return repository.findAll();
@@ -34,21 +42,11 @@ public class ServicoServiceImpl implements ServicoService {
 
     //
     @Override
-    public Optional<Servico> atualizarServico(Long id, Servico servicoRequest) {
-        Optional<Servico> servicoOptional = repository.findById(id);
-        Optional<Servico> response = Optional.empty();
+    public Servico atualizarServico(Long id, Servico servicoRequest) throws Exception{
+       repository.findById(id).orElseThrow(() -> new NotFoundException("Serviço não encontrado"));
+       return repository.save(servicoRequest);
+   }
 
-        if(servicoOptional.isPresent()){
-        	Servico servico = servicoOptional.get();
-           
-        	servico.setNome(servicoRequest.getNome());
-        	servico.setDescricao(servicoRequest.getDescricao());
-      	
-            response = Optional.of(repository.save(servico));
-        }
-
-        return response;
-    }
 
     @Override
     public MensagemRepresentation removerServico(Long id) {
