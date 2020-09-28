@@ -10,12 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Login;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.repository.ClienteRepository;
-import hyve.petshow.service.port.ClienteService;
 
 @Service
 public class PrestadorServiceImpl implements PrestadorService {

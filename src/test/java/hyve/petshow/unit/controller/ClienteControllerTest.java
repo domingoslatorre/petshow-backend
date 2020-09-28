@@ -53,7 +53,7 @@ public class ClienteControllerTest {
 
 	@BeforeEach
 	public void init() {
-		url = "http://localhost:" + port + "/cliente";
+		url = "http://localhost:" + port + "/prestador";
 
 	}
 

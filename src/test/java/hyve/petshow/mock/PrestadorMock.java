@@ -14,11 +14,37 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PrestadorMock {
-    public static List<Prestador> dbMock = new ArrayList<Prestador>(Arrays.asList(new Prestador(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login(), "")));
+    private static List<Prestador> dbMock = new ArrayList<Prestador>(Arrays.asList(new Prestador(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login(), "")));
     // , new ArrayList<servicosDetalhados>()
 
     public static List<Prestador> obterContas() {
         return dbMock;
+    }
+
+    public static Optional<Prestador> buscaPorId(Long id) {
+        return dbMock.stream().filter(el -> el.getId().equals(id)).findFirst();
+    }
+
+    public static Optional<Prestador> buscaPorLogin(Login login) {
+        return dbMock.stream().filter(el -> el.getLogin().equals(login)).findFirst();
+    }
+
+    public static Optional<Prestador> buscarPorEmail(String email) {
+        return dbMock.stream()
+                .filter(el -> email.equals(el.getLogin().getEmail()))
+                .findFirst();
+    }
+
+    public static Optional<Prestador> buscaPorCpf(String cpf) {
+        return dbMock.stream()
+                .filter(el -> cpf.equals(el.getCpf()))
+                .findFirst();
+    }
+
+    public static Prestador salvaPrestador(Prestador prestador) {
+        Prestador buscaPorId = (Prestador) buscaPorId(prestador.getId()).get();
+//        buscaPorId.setServicoDetalhado(cliente.getServicoDetalhado());
+        return buscaPorId;
     }
 
     public static Prestador salvaConta(Prestador conta) {
@@ -27,30 +53,9 @@ public class PrestadorMock {
         return conta;
     }
 
-
-    public static Optional<Prestador> buscaPorId(Long id) {
-        return dbMock.stream().filter(el -> el.getId().equals(id)).findFirst();
-    }
-
-
-    public static Optional<Prestador> buscaPorLogin(Login login) {
-        return dbMock.stream().filter(el -> el.getLogin().equals(login)).findFirst();
-    }
-
-
-
-
-    private static Prestador salvaCliente(Prestador cliente) {
-        Prestador buscaPorId = (Prestador) buscaPorId(cliente.getId()).get();
-//        buscaPorId.setServicoDetalhado(cliente.getServicoDetalhado());
-        return buscaPorId;
-    }
-
-
     public static void removeConta(Conta conta) {
         dbMock.remove(conta);
     }
-
 
     public static void removePorId(Long id) {
         dbMock = dbMock.stream().filter(el -> el.getId() != id).collect(Collectors.toList());
@@ -67,22 +72,10 @@ public class PrestadorMock {
         contaDb.setTelefone(conta.getTelefone());
         contaDb.setTipo(conta.getTipo());
         if(conta instanceof Prestador) {
-            salvaCliente((Prestador) conta);
+            salvaPrestador((Prestador) conta);
         }
 
         return contaDb;
 
-    }
-
-    public static Optional<Prestador> buscarPorEmail(String email) {
-        return dbMock.stream()
-                .filter(el -> email.equals(el.getLogin().getEmail()))
-                .findFirst();
-    }
-
-    public static Optional<Prestador> buscaPorCpf(String cpf) {
-        return dbMock.stream()
-                .filter(el -> cpf.equals(el.getCpf()))
-                .findFirst();
     }
 }

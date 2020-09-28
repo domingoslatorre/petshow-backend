@@ -26,7 +26,7 @@ public class Prestador extends Conta{
                          String foto,
                          Endereco endereco,
                          Login login,
-                        String descricao
+                         String descricao
 //                       List<ServicoDetalhado> servicosDetalhados
                        )
             {
