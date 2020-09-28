@@ -14,12 +14,10 @@ import java.util.List;
 public interface ServicoDetalhadoService {
 	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado);
 
-    //List<ServicoDetalhado> buscarServicosDetalhadosPorPrestador(Long id);
+    //List<ServicoDetalhado> findByPrestador(Long id);
 
 	ServicoDetalhado atualizarServicoDetalhado(Long id, ServicoDetalhado servicoDetalhadoRequest)throws Exception;
 
     MensagemRepresentation removerServicoDetalhado(Long id) throws Exception;
-    
-
     
 }

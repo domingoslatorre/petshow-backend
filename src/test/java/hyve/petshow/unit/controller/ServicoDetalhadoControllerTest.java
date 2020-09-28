@@ -7,6 +7,9 @@ import static org.mockito.Mockito.when;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import hyve.petshow.mock.AnimalEstimacaoMock;
 import hyve.petshow.mock.ServicoDetalhadoMock;
@@ -28,10 +31,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import hyve.petshow.controller.ServicoDetalhadoController;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 
@@ -91,14 +97,14 @@ public class ServicoDetalhadoControllerTest {
         );
 	}
 
-
+	
 
 
 //	@Test
 //	@Order(4)
 //	public void deve_retornar_por_prestador() throws URISyntaxException {
-//		URI uri = new URI(this.url + "/login");
-//		Login login = servicoDetalhadoMock.getLogin();
+//		URI uri = new URI("http://localhost:" + port + "/prestador";);
+//	
 //
 //		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
 //
@@ -107,21 +113,6 @@ public class ServicoDetalhadoControllerTest {
 //		assertNotNull(response.getBody());
 //	}
 
-//	@Test
-//	@Order(5)
-//	public void deve_retornar_nao_encontrado() throws URISyntaxException {
-//		URI uri = new URI(this.url + "/login");
-//
-//		Login login = new Login();
-//		login.setEmail("aslkdjgs@aklsdjg.com");
-//		login.setSenha("ASDOHIGJKLAjh0oiq");
-//
-//		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
-//
-//		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
-//		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//		assertNotNull(response.getBody());
-//	}
 
 	@Test
 	@Order(2)
@@ -136,18 +127,62 @@ public class ServicoDetalhadoControllerTest {
 
 	}
 	
+	  @Test
+	  @Order(3)
+	    public void deve_remover_servico_detalhado() throws Exception {
+	        //dado
+	        var id = 1L;
+	        var expectedStatus = HttpStatus.OK;
+	        var expectedBody = ServicoDetalhadoMock.criarMensagemRepresentation();
+
+	        when(service.removerServicoDetalhado(id)).thenReturn(expectedBody);
+
+	        //quando
+	        var actual = controller.removerServicoDetalhado(id);
+
+	        //entao
+	        assertAll(
+	                () -> assertEquals(expectedBody, actual.getBody()),
+	                () -> assertEquals(expectedStatus, actual.getStatusCode())
+	        );
+	    }
+	  
+	  @Test
+	  @Order(4)
+	  public void deve_retornar_animal_atualizado()throws Exception{
+	        //dado
+	        var expectedBody = servicoDetalhadoMock;
+	        var expectedStatus = HttpStatus.OK;
+	        var representation = servicoDetalhadoMock;
+	        var domain = ServicoDetalhadoMock.criarServicoDetalhado();
+	        var id = 1L;
+
+	        when(converter.toDomain(representation)).thenReturn(domain);
+	        when(service.atualizarServicoDetalhado(id, domain)).thenReturn(domain);
+	        when(converter.toRepresentation(domain)).thenReturn(expectedBody);
+
+	        //quando
+	        var actual = controller.atualizarServicoDetalhado(id, representation);
+
+	        //entao
+	        assertAll(
+	                () -> assertEquals(expectedBody, actual.getBody()),
+	                () -> assertEquals(expectedStatus, actual.getStatusCode())
+	        );
+	    }
+	  
 //	  @Test
-//	  @Order(3)
-//	    public void deve_remover_servico_detalhado() throws Exception {
+//	    public void deve_obter_lista_de_servicos_detalhados(){
 //	        //dado
-//	        var id = 1L;
+//	        var expectedBody = Arrays.asList(servicoDetalhadoMock);
 //	        var expectedStatus = HttpStatus.OK;
-//	        var expectedBody = ServicoDetalhadoMock.criarMensagemRepresentation();
+//	        var servicosDetalhados = Arrays.asList(ServicoDetalhadoMock.criarServicoDetalhado());
 //
-//	        when(service.removerServicoDetalhado(id)).thenReturn(expectedBody);
+//	        when(service.buscarServicosDetalhados()).thenReturn(servicosDetalhados);
+//	        when(converter.toRepresentationList(servicosDetalhados)).thenReturn(expectedBody);
 //
 //	        //quando
-//	        var actual = controller.removerServicoDetalhado(id);
+//	        var actual = controller.buscarServicosDetalhados();
 //
 //	        //entao
 //	        assertAll(
