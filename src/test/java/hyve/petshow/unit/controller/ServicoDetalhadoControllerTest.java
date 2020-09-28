@@ -53,10 +53,8 @@ public class ServicoDetalhadoControllerTest {
 
 	@Autowired
 	private ServicoDetalhadoRepository repository;
-	
-	
-	@Autowired
 	@Mock
+	
 	private ServicoDetalhadoService service;
 	
 	 
@@ -65,30 +63,28 @@ public class ServicoDetalhadoControllerTest {
 	private ServicoDetalhadoConverter converter;
 	
 
-	@Autowired
-	@InjectMocks 
+	@Mock
+	private ServicoDetalhadoConverter converter;
+	@InjectMocks
 	private ServicoDetalhadoController controller;
 	
-	private ServicoDetalhadoRepresentation servicoDetalhadoMock;
-
 	private String url;
 
 	@BeforeEach
 	public void init() {
-		url = "http://localhost:" + port + "/servicoDetalhado";
+		url = "http://localhost:" + port + "/prestador/servicos";
 
 	}
 
-	@BeforeEach
-	public void initMock() {
-		servicoDetalhadoMock = new ServicoDetalhadoRepresentation();
-		servicoDetalhadoMock = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
-	}
+
+	private ServicoDetalhadoRepresentation servicoDetalhadoMock = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
+		
+	
 
 	@Test
 	@Order(1)
-	public void deve_salvar_servicoDetalhado() throws URISyntaxException {
-		//dado
+	public void deve_salvar_servico_detalhado() throws URISyntaxException {
+		   //dado
         var expectedBody = servicoDetalhadoMock;
         var expectedStatus = HttpStatus.CREATED;
         var servicoDetalhadoRepresentation = servicoDetalhadoMock;
@@ -106,11 +102,42 @@ public class ServicoDetalhadoControllerTest {
                 () -> assertEquals(expectedBody, actual.getBody()),
                 () -> assertEquals(expectedStatus, actual.getStatusCode())
         );
-    }
+	}
 
-	
+
+
+
+//	@Test
+//	@Order(4)
+//	public void deve_retornar_por_prestador() throws URISyntaxException {
+//		URI uri = new URI(this.url + "/login");
+//		Login login = servicoDetalhadoMock.getLogin();
+//
+//		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
+//
+//		ResponseEntity<ServicoDetalhadoRepresentation> response = template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
+//		assertEquals(HttpStatus.OK, response.getStatusCode());
+//		assertNotNull(response.getBody());
+//	}
+
+//	@Test
+//	@Order(5)
+//	public void deve_retornar_nao_encontrado() throws URISyntaxException {
+//		URI uri = new URI(this.url + "/login");
+//
+//		Login login = new Login();
+//		login.setEmail("aslkdjgs@aklsdjg.com");
+//		login.setSenha("ASDOHIGJKLAjh0oiq");
+//
+//		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
+//
+//		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
+//		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+//		assertNotNull(response.getBody());
+//	}
+
 	@Test
-	@Order(6)
+	@Order(2)
 	public void deve_retornar_excecao() throws URISyntaxException {
 		URI uri = new URI(this.url);
 		ServicoDetalhadoRepresentation servicoDetalhadoMock = new ServicoDetalhadoRepresentation();
@@ -121,5 +148,26 @@ public class ServicoDetalhadoControllerTest {
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 
 	}
+	
+//	  @Test
+//	  @Order(3)
+//	    public void deve_remover_servico_detalhado() throws Exception {
+//	        //dado
+//	        var id = 1L;
+//	        var expectedStatus = HttpStatus.OK;
+//	        var expectedBody = ServicoDetalhadoMock.criarMensagemRepresentation();
+//
+//	        when(service.removerServicoDetalhado(id)).thenReturn(expectedBody);
+//
+//	        //quando
+//	        var actual = controller.removerServicoDetalhado(id);
+//
+//	        //entao
+//	        assertAll(
+//	                () -> assertEquals(expectedBody, actual.getBody()),
+//	                () -> assertEquals(expectedStatus, actual.getStatusCode())
+//	        );
+//	    }
 
+	
 }
