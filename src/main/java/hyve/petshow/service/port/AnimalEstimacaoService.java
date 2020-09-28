@@ -1,7 +1,9 @@
 package hyve.petshow.service.port;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoResponseRepresentation;
+import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,13 +11,13 @@ import java.util.Optional;
 
 @Service
 public interface AnimalEstimacaoService {
-    AnimalEstimacao criarAnimalEstimacao(AnimalEstimacao animalEstimacao);
+    AnimalEstimacao adicionarAnimalEstimacao(AnimalEstimacao animalEstimacao);
 
-    Optional<AnimalEstimacao> obterAnimalEstimacaoPorId(Long id);
+    AnimalEstimacao buscarAnimalEstimacaoPorId(Long id) throws NotFoundException;
 
-    List<AnimalEstimacao> obterAnimaisEstimacao();
+    List<AnimalEstimacao> buscarAnimaisEstimacao() throws NotFoundException;
 
-    Optional<AnimalEstimacao> atualizarAnimalEstimacao(Long id, AnimalEstimacao animalEstimacao);
+    AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao animalEstimacao) throws NotFoundException;
 
-    AnimalEstimacaoResponseRepresentation removerAnimalEstimacao(Long id);
+    MensagemRepresentation removerAnimalEstimacao(Long id);
 }

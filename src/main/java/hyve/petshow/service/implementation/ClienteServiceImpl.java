@@ -20,7 +20,7 @@ public class ClienteServiceImpl implements ClienteService {
 	private ClienteRepository repository;
 
 	@Override
-	public Cliente salvaConta(Cliente conta) throws Exception {
+	public Cliente adicionarCliente(Cliente conta) throws Exception {
 		validaNovaConta(conta);
 		return repository.save(conta);
 	}
@@ -36,7 +36,7 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Cliente obterContaPorId(Long id) throws Exception {
+	public Cliente buscarPorId(Long id) throws Exception {
 		return repository.findById(id).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
 	}
 
@@ -46,7 +46,7 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Cliente obterPorLogin(Login login) throws Exception {
+	public Cliente realizarLogin(Login login) throws Exception {
 		return repository.findByLogin(login)
 				.orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
 	}
@@ -71,7 +71,7 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Cliente atualizaConta(Cliente conta) {
+	public Cliente atualizarConta(Cliente conta) {
 		return repository.save(conta);
 	}
 

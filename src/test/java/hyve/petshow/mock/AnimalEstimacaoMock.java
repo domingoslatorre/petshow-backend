@@ -2,17 +2,26 @@ package hyve.petshow.mock;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.controller.representation.AnimalEstimacaoResponseRepresentation;
+import hyve.petshow.controller.representation.ClienteRepresentation;
+import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.enums.TipoAnimalEstimacao;
+
+import java.util.Collections;
 
 public class AnimalEstimacaoMock {
     public static AnimalEstimacao animalEstimacao(){
         AnimalEstimacao animalEstimacao = new AnimalEstimacao();
+        Cliente cliente = new Cliente();
+
+        cliente.setAnimaisEstimacao(Collections.emptyList());
 
         animalEstimacao.setId(1L);
         animalEstimacao.setNome("pedrinho");
         animalEstimacao.setFoto("hahah");
         animalEstimacao.setTipo(TipoAnimalEstimacao.GATO.id());
+        animalEstimacao.setDono(cliente);
 
         return animalEstimacao;
     }
@@ -38,25 +47,11 @@ public class AnimalEstimacaoMock {
         return animalEstimacaoRepresentation;
     }
 
-    public static AnimalEstimacaoResponseRepresentation animalEstimacaoResponseRepresentation(){
-        AnimalEstimacaoResponseRepresentation animalEstimacaoResponseRepresentation =
-                new AnimalEstimacaoResponseRepresentation();
+    public static MensagemRepresentation mensagemRepresentationSucesso(){
+        var mensagemRepresentation = new MensagemRepresentation(1L);
 
-        animalEstimacaoResponseRepresentation.setId(1L);
-        animalEstimacaoResponseRepresentation.setSucesso(Boolean.TRUE);
-        animalEstimacaoResponseRepresentation.setMensagem("Operação executada com sucesso!");
+        mensagemRepresentation.setSucesso(Boolean.TRUE);
 
-        return animalEstimacaoResponseRepresentation;
-    }
-
-    public static AnimalEstimacaoResponseRepresentation animalEstimacaoResponseRepresentationAlt(){
-        AnimalEstimacaoResponseRepresentation animalEstimacaoResponseRepresentation =
-                new AnimalEstimacaoResponseRepresentation();
-
-        animalEstimacaoResponseRepresentation.setId(1L);
-        animalEstimacaoResponseRepresentation.setSucesso(Boolean.FALSE);
-        animalEstimacaoResponseRepresentation.setMensagem("Falha durante a execução da operação.");
-
-        return animalEstimacaoResponseRepresentation;
+        return mensagemRepresentation;
     }
 }
