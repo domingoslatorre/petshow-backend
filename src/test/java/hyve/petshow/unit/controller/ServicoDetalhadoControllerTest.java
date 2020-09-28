@@ -16,6 +16,8 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -45,9 +47,12 @@ public class ServicoDetalhadoControllerTest {
 
 	@Autowired
 	private ServicoDetalhadoRepository repository;
+	@Mock
 	private ServicoDetalhadoService service;
 
+	@Mock
 	private ServicoDetalhadoConverter converter;
+	@InjectMocks
 	private ServicoDetalhadoController controller;
 	
 	private String url;
