@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // TODO: IDEM ClienteCONVERTER
+@Component
 public class AutonomoConverter implements Converter<Autonomo, AutonomoRepresentation> {
     //private ContaConverter contaConverter = new ContaConverter();
     //private List<Pagamento> pagamentosConverter = new ArrayList<Pagamento>();

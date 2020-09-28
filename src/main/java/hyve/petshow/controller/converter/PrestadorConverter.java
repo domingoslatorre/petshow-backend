@@ -1,14 +1,14 @@
 package hyve.petshow.controller.converter;
 
-import hyve.petshow.controller.representation.PrestadorRepresentation;
-import hyve.petshow.domain.Prestador;
-import org.springframework.stereotype.Component;
-
-import hyve.petshow.domain.enums.TipoConta;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
+import hyve.petshow.controller.representation.PrestadorRepresentation;
+import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.enums.TipoConta;
 
 // TODO: IDEM ClienteCONVERTER
 @Component // coloca a entidade dentro do contexto Spring
@@ -22,15 +22,19 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
         if(domain == null) return new PrestadorRepresentation();
 //		PrestadorRepresentation representation = (PrestadorRepresentation) contaConverter.toRepresentation(domain);
         PrestadorRepresentation representation = new PrestadorRepresentation();
+        representation.setNomeSocial(domain.getNomeSocial());
 
+        representation.setCpf(domain.getCpf());
         representation.setEndereco(domain.getEndereco());
         representation.setFoto(domain.getFoto());
-
-        representation.setNomeSocial(domain.getNomeSocial());
-        representation.setTelefone(domain.getTelefone());
-
-        //representation.setServicoDetalhado(servicoDetalhadoConverter.toRepresentationList(domain.getServicoDetalhado()));
-        representation.setDescricao(domain.getDescricao());
+        representation.setId(domain.getId());
+        representation.setLogin(domain.getLogin());
+		representation.setNome(domain.getNome());
+		representation.setNomeSocial(domain.getNomeSocial());
+		representation.setTelefone(domain.getTelefone());
+		representation.setTipo(domain.getTipo() == null ? null : domain.getTipo().getTipo());
+        //domain.setServicoDetalhado(servicoDetalhadoConverter.toDomainList(representation.getServicoDetalhado()));
+		representation.setDescricao(domain.getDescricao());
         return representation;
     }
 
@@ -39,16 +43,19 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
         if(representation == null) return new Prestador();
 //		Prestador domain = (Prestador) contaConverter.toDomain(representation);
         Prestador domain = new Prestador();
-
-        domain.setEndereco(representation.getEndereco());
-        domain.setFoto(representation.getFoto());
-
-
         domain.setNomeSocial(representation.getNomeSocial());
-        domain.setTelefone(representation.getTelefone());
 
+        domain.setCpf(representation.getCpf());
+		domain.setEndereco(representation.getEndereco());
+		domain.setFoto(representation.getFoto());
+		domain.setId(representation.getId());
+		domain.setLogin(representation.getLogin());
+		domain.setNome(representation.getNome());
+		domain.setNomeSocial(representation.getNomeSocial());
+		domain.setTelefone(representation.getTelefone());
+		domain.setTipo(TipoConta.getTipoByInteger(representation.getTipo()));
         //domain.setServicoDetalhado(servicoDetalhadoConverter.toDomainList(representation.getServicoDetalhado()));
-        domain.setDescricao(domain.getDescricao());
+        domain.setDescricao(representation.getDescricao());
         return domain;
     }
 

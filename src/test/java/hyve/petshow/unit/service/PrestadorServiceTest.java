@@ -139,9 +139,9 @@ public class PrestadorServiceTest {
     @Test
     @Order(6)
     public void deve_encontrar_elemento_por_login() throws Exception {
-        Login login = new Login();
+    	Login login = new Login();
         login.setEmail("teste@teste.com");
-        login.setSenha("555555555555");
+        login.setSenha("aslkjdgklsdjg");
         Conta obterPorLogin = service.obterPorLogin(login);
         assertNotNull(obterPorLogin);
         assertTrue(obterPorLogin.getId() == 1);
@@ -179,6 +179,7 @@ public class PrestadorServiceTest {
         conta.setLogin(login);
         conta.setCpf("22222222222");
         service.salvaConta(conta);
+        conta.setCpf("286238623846");
         assertThrows(Exception.class, () -> {
             service.salvaConta(conta);
         });

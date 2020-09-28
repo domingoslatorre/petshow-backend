@@ -4,6 +4,7 @@ import hyve.petshow.controller.converter.PrestadorConverter;
 import hyve.petshow.controller.representation.*;
 import hyve.petshow.domain.Autonomo;
 import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.service.port.PrestadorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,20 @@ public class PrestadorController {
         Prestador prestadorAtualizado = service.atualizaConta(id, domain);
         PrestadorRepresentation representation = converter.toRepresentation(prestadorAtualizado);
         return ResponseEntity.status(HttpStatus.OK).body(representation);
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<PrestadorRepresentation> buscaPorLogin(@RequestBody Login login) throws Exception{
+    	Prestador prestador = service.obterPorLogin(login);
+    	return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(prestador));
+    }
+    @PostMapping
+    public ResponseEntity<PrestadorRepresentation> criaPrestador(@RequestBody PrestadorRepresentation prestador) throws Exception {
+    	Prestador domain = converter.toDomain(prestador);
+    	Prestador salvaConta = service.salvaConta(domain);
+    	
+    	
+    	return ResponseEntity.status(HttpStatus.CREATED).body(converter.toRepresentation(salvaConta));
     }
 
 
