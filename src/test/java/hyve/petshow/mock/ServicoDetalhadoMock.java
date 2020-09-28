@@ -7,7 +7,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import hyve.petshow.controller.converter.ServicoConverter;
+import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
@@ -48,9 +53,6 @@ public class ServicoDetalhadoMock {
 		return servicoDetalhadoRepresentation;
 		}
 		
-		
-		
-		
 	
     	public static List<ServicoDetalhado> dbMock = new ArrayList<ServicoDetalhado>(Arrays.asList(criarServicoDetalhado()));
     	
@@ -63,10 +65,11 @@ public class ServicoDetalhadoMock {
 //    	}
     	
     	
-    	public static List<ServicoDetalhado> saveAll(List<ServicoDetalhado> servicosDetalhados) {
-    		servicosDetalhados.add(criarServicoDetalhado());
-    		dbMock = servicosDetalhados;		
-    		return dbMock;
+    	
+    	public static ServicoDetalhado save(ServicoDetalhado servicoDetalhado) {
+    		servicoDetalhado.setId((long) dbMock.size() + 1);
+    		dbMock.add(servicoDetalhado);		
+    		return servicoDetalhado;
     	}
     	
     	public static Optional<ServicoDetalhado> findById(Long id) {
@@ -94,6 +97,16 @@ public class ServicoDetalhadoMock {
     		return servicoDetalhadoDb;
     		
     	}
+    	
+	    public static MensagemRepresentation criarMensagemRepresentation(){
+	        MensagemRepresentation mensagem = new MensagemRepresentation();
+	
+	        mensagem.setId(1L);
+	        mensagem.setSucesso(Boolean.TRUE);
+	        mensagem.setMensagem("Operação executada com sucesso!");
+	
+	        return mensagem;
+	    }
 
     	    	
     	//ANTIGO:
@@ -165,16 +178,8 @@ public class ServicoDetalhadoMock {
 //        return representation;
 //    }
 //
-//    public static MensagemRepresentation mensagem(){
-//        MensagemRepresentation mensagem = new MensagemRepresentation();
-//
-//        mensagem.setId(1L);
-//        mensagem.setSucesso(Boolean.TRUE);
-//        mensagem.setMensagem("Operação executada com sucesso!");
-//
-//        return mensagem;
-//    }
-//
+
+
 //    public static MensagemRepresentation mensagem2(){
 //    	MensagemRepresentation mensagem = new MensagemRepresentation();
 //

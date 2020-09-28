@@ -52,10 +52,8 @@ public class ServicoControllerTest {
 	@BeforeEach
 	public void init() {
 		url = "http://localhost:" + port + "/servicos";
-
 	}
 
-	@BeforeEach
 	public ServicoRepresentation initMock() {
 		 var servicoMock = ServicoMock.criarServicoRepresentation();
 		 return servicoMock;
@@ -89,20 +87,9 @@ public class ServicoControllerTest {
 
 
 
-	@Test
-	@Order(5)
-	public void deve_retornar_nao_encontrado() throws URISyntaxException {
-		URI uri = new URI(this.url);
-
-		HttpEntity<ServicoRepresentation> request = new HttpEntity<>(this.initMock(), new HttpHeaders());
-
-		ResponseEntity<ServicoRepresentation> response = template.postForEntity(uri, request, ServicoRepresentation.class);
-		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-		assertNotNull(response.getBody());
-	}
 
 	@Test
-	@Order(6)
+	@Order(3)
 	public void deve_retornar_excecao() throws URISyntaxException {
 		URI uri = new URI(this.url);
 		ServicoRepresentation servicoMock = new ServicoRepresentation();
@@ -110,7 +97,7 @@ public class ServicoControllerTest {
 		HttpEntity<ServicoRepresentation> request = new HttpEntity<>(this.initMock(), new HttpHeaders());
 
 		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
-		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
 	}
 

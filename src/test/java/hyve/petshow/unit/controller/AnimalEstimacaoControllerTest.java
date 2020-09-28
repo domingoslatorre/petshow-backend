@@ -74,6 +74,7 @@ public class AnimalEstimacaoControllerTest {
         var actual = animalEstimacaoController.obterAnimalEstimacao(id);
 
         //entao
+        
         assertAll(
                 () -> assertEquals(expectedBody, actual.getBody()),
                 () -> assertEquals(expectedStatus, actual.getStatusCode())

@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ServicoRepository extends JpaRepository<Servico, Long> {
-	Optional<ServicoDetalhado> buscarPorNome(String nome);
+	Optional<Servico> findByNome(String nome);
 }

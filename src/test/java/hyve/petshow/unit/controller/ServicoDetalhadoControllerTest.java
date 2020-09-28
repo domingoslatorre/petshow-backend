@@ -1,16 +1,14 @@
 package hyve.petshow.unit.controller;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import hyve.petshow.mock.AnimalEstimacaoMock;
 import hyve.petshow.mock.ServicoDetalhadoMock;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,17 +21,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-
+import hyve.petshow.controller.ServicoDetalhadoController;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
+import hyve.petshow.service.port.ServicoDetalhadoService;
 
 @TestMethodOrder(OrderAnnotation.class)
 @ActiveProfiles("test")
@@ -47,9 +45,10 @@ public class ServicoDetalhadoControllerTest {
 
 	@Autowired
 	private ServicoDetalhadoRepository repository;
+	private ServicoDetalhadoService service;
 
-	private ServicoDetalhadoRepresentation servicoDetalhadoMock;
-	private List<ServicoDetalhadoRepresentation> servicoDetalhadoMockList;
+	private ServicoDetalhadoConverter converter;
+	private ServicoDetalhadoController controller;
 	
 	private String url;
 
@@ -59,24 +58,32 @@ public class ServicoDetalhadoControllerTest {
 
 	}
 
-	@BeforeEach
-	public void initMock() {
-		servicoDetalhadoMock = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
-		servicoDetalhadoMockList = Arrays.asList(servicoDetalhadoMock);
-	}
+
+	private ServicoDetalhadoRepresentation servicoDetalhadoMock = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
+		
+	
 
 	@Test
 	@Order(1)
-	public void deve_salvar_servicos_detalhados() throws URISyntaxException {
-		URI uri = new URI(this.url);
-		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<List<ServicoDetalhadoRepresentation>> request = new HttpEntity<>(servicoDetalhadoMockList, headers);
-		
-		//parametrizestypereference -> usado pra retornar uma lista
-		ResponseEntity<List<ServicoDetalhadoRepresentation>> response = template.exchange(uri,HttpMethod.POST, request,new ParameterizedTypeReference<List<ServicoDetalhadoRepresentation>>() {});
-		
-		assertEquals(HttpStatus.CREATED, response.getStatusCode());
-		assertEquals(servicoDetalhadoMockList, response.getBody());
+	public void deve_salvar_servico_detalhado() throws URISyntaxException {
+		   //dado
+        var expectedBody = servicoDetalhadoMock;
+        var expectedStatus = HttpStatus.CREATED;
+        var servicoDetalhadoRepresentation = servicoDetalhadoMock;
+        var servicoDetalhado = ServicoDetalhadoMock.criarServicoDetalhado();
+
+        when(converter.toDomain(servicoDetalhadoRepresentation)).thenReturn(servicoDetalhado);
+        when(service.adicionarServicoDetalhado(servicoDetalhado)).thenReturn(servicoDetalhado);
+        when(converter.toRepresentation(servicoDetalhado)).thenReturn(expectedBody);
+
+        //quando
+        var actual = controller.adicionarServicoDetalhado(servicoDetalhadoRepresentation);
+
+        //entao
+        assertAll(
+                () -> assertEquals(expectedBody, actual.getBody()),
+                () -> assertEquals(expectedStatus, actual.getStatusCode())
+        );
 	}
 
 
@@ -112,7 +119,7 @@ public class ServicoDetalhadoControllerTest {
 //	}
 
 	@Test
-	@Order(6)
+	@Order(2)
 	public void deve_retornar_excecao() throws URISyntaxException {
 		URI uri = new URI(this.url);
 		ServicoDetalhadoRepresentation servicoDetalhadoMock = new ServicoDetalhadoRepresentation();
@@ -123,6 +130,26 @@ public class ServicoDetalhadoControllerTest {
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 
 	}
+	
+//	  @Test
+//	  @Order(3)
+//	    public void deve_remover_servico_detalhado() throws Exception {
+//	        //dado
+//	        var id = 1L;
+//	        var expectedStatus = HttpStatus.OK;
+//	        var expectedBody = ServicoDetalhadoMock.criarMensagemRepresentation();
+//
+//	        when(service.removerServicoDetalhado(id)).thenReturn(expectedBody);
+//
+//	        //quando
+//	        var actual = controller.removerServicoDetalhado(id);
+//
+//	        //entao
+//	        assertAll(
+//	                () -> assertEquals(expectedBody, actual.getBody()),
+//	                () -> assertEquals(expectedStatus, actual.getStatusCode())
+//	        );
+//	    }
 
 	
 }

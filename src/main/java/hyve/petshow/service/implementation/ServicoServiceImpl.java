@@ -30,7 +30,7 @@ public class ServicoServiceImpl implements ServicoService {
     }
     
     private void validaNovoServico(Servico servico) throws BusinessException {
-		if (repository.buscarPorNome(servico.getNome())!=null) {
+		if (repository.findByNome(servico.getNome()).isPresent()) {
 			throw new BusinessException("Serviço já cadastrado.");
 		}
 	}

@@ -67,9 +67,8 @@ public class ServicoDetalhadoServiceTest {
 	@Order(1)
 	public void deve_inserir_servico_detalhado_na_lista() throws Exception {
 		var servicoDetalhado = ServicoDetalhadoMock.criarServicoDetalhado();
-    	var servicosDetalhados = Arrays.asList(servicoDetalhado);
     	
-		service.adicionarServicosDetalhados(servicosDetalhados);
+		service.adicionarServicoDetalhado(servicoDetalhado);
 		
 		assertTrue(repository.findAll().contains(servicoDetalhado));
 		

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public interface ServicoDetalhadoService {
-	List<ServicoDetalhado> adicionarServicosDetalhados(List<ServicoDetalhado> servicoDetalhado);
+	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado);
 
     //List<ServicoDetalhado> buscarServicosDetalhadosPorPrestador(Long id);
 

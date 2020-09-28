@@ -32,10 +32,10 @@ public class ServicoDetalhadoController {
 	private ServicoDetalhadoConverter converter;
 
 	@PostMapping
-	public ResponseEntity <List<ServicoDetalhadoRepresentation>> adicionarServicosDetalhados(@RequestBody List<ServicoDetalhadoRepresentation> servicos) {
-		List<ServicoDetalhado> domainList = converter.toDomainList(servicos);
-		List<ServicoDetalhado> servicosSalvos = service.adicionarServicosDetalhados(domainList);
-		List<ServicoDetalhadoRepresentation> representation = converter.toRepresentationList(servicosSalvos);
+	public ResponseEntity <ServicoDetalhadoRepresentation> adicionarServicoDetalhado(@RequestBody ServicoDetalhadoRepresentation servico) {
+		ServicoDetalhado domain = converter.toDomain(servico);
+		ServicoDetalhado servicoSalvo = service.adicionarServicoDetalhado(domain);
+		ServicoDetalhadoRepresentation representation = converter.toRepresentation(servicoSalvo);
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
 	}
 

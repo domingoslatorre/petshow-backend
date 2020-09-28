@@ -26,8 +26,8 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
     //criarServicos
     @Override
-    public List<ServicoDetalhado> adicionarServicosDetalhados(List<ServicoDetalhado> servicosDetalhados) {
-        return repository.saveAll(servicosDetalhados);
+    public ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
+        return repository.save(servicoDetalhado);
     }
     
 
