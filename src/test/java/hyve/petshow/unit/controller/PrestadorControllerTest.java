@@ -58,19 +58,19 @@ public class PrestadorControllerTest {
         contaMock.setCpf("44444444444");
     }
 
-//    @Test
-//    @Order(1)
-//    public void deve_salvar_conta() throws URISyntaxException {
-//        URI uri = new URI(this.url);
-//        HttpHeaders headers = new HttpHeaders();
-//        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
-//
-//        ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
-//
-//        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-//        assertEquals(response.getBody().getLogin(), contaMock.getLogin());
-//        assertTrue(repository.existsById(response.getBody().getId()));
-//    }
+    @Test
+    @Order(1)
+    public void deve_salvar_conta() throws URISyntaxException {
+        URI uri = new URI(this.url);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
+
+        ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(response.getBody().getLogin(), contaMock.getLogin());
+        assertTrue(repository.existsById(response.getBody().getId()));
+    }
 
     @Test
     @Order(2)
