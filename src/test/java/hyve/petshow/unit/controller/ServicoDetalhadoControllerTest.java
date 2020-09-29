@@ -2,6 +2,7 @@ package hyve.petshow.unit.controller;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -36,8 +37,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import hyve.petshow.controller.ServicoDetalhadoController;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
+import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.domain.Login;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 
@@ -99,16 +102,16 @@ public class ServicoDetalhadoControllerTest {
 
 	
 
-
+// Esse teste provavelmente está errado, rs
 //	@Test
 //	@Order(4)
 //	public void deve_retornar_por_prestador() throws URISyntaxException {
-//		URI uri = new URI("http://localhost:" + port + "/prestador";);
-//	
+//		URI uri = new URI(this.url + "/login");
+//		Prestador prestador = servicoDetalhado.getPrestador();
 //
-//		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
+//		HttpEntity<Prestador> request = new HttpEntity<>(prestador, new HttpHeaders());
 //
-//		ResponseEntity<ServicoDetalhadoRepresentation> response = template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
+//		ResponseEntity<ServicoDetalhado> response = template.postForEntity(uri, request, new ParametrizedTypeReference();
 //		assertEquals(HttpStatus.OK, response.getStatusCode());
 //		assertNotNull(response.getBody());
 //	}
@@ -171,25 +174,6 @@ public class ServicoDetalhadoControllerTest {
 	        );
 	    }
 	  
-//	  @Test
-//	    public void deve_obter_lista_de_servicos_detalhados(){
-//	        //dado
-//	        var expectedBody = Arrays.asList(servicoDetalhadoMock);
-//	        var expectedStatus = HttpStatus.OK;
-//	        var servicosDetalhados = Arrays.asList(ServicoDetalhadoMock.criarServicoDetalhado());
-//
-//	        when(service.buscarServicosDetalhados()).thenReturn(servicosDetalhados);
-//	        when(converter.toRepresentationList(servicosDetalhados)).thenReturn(expectedBody);
-//
-//	        //quando
-//	        var actual = controller.buscarServicosDetalhados();
-//
-//	        //entao
-//	        assertAll(
-//	                () -> assertEquals(expectedBody, actual.getBody()),
-//	                () -> assertEquals(expectedStatus, actual.getStatusCode())
-//	        );
-//	    }
 
 	
 }
