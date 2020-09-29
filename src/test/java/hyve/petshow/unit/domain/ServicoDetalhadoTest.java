@@ -6,13 +6,13 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
-import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.ServicoDetalhado;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class ClienteTest {
+public class ServicoDetalhadoTest {
 	@Test
 	public void deve_ter_metodos_implementados() {
-		final Class<Cliente> cliente =  Cliente.class;
-		assertPojoMethodsFor(cliente).areWellImplemented();
+		final Class<ServicoDetalhado> servicoDetalhado =  ServicoDetalhado.class;
+		assertPojoMethodsFor(servicoDetalhado).areWellImplemented();
 	}
 }
