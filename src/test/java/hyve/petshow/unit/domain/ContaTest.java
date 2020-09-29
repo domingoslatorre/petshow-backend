@@ -1,4 +1,5 @@
 package hyve.petshow.unit.domain;
+
 import static pl.pojo.tester.api.assertion.Assertions.assertPojoMethodsFor;
 
 import org.junit.jupiter.api.DisplayNameGeneration;

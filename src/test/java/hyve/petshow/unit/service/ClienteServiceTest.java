@@ -183,6 +183,11 @@ public class ClienteServiceTest {
 		login.setSenha("03joiwk");
 		conta.setLogin(login);
 		service.salvaConta(conta);
+		Login login2 = new Login();
+		login2.setEmail("asdgs@aslkdjg");
+		login2.setSenha("03joiwk");
+		conta.setLogin(login2);
+
 		assertThrows(Exception.class, () -> {
 			service.salvaConta(conta);
 		});
