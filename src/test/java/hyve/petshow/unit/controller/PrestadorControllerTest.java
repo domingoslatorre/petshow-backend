@@ -58,19 +58,19 @@ public class PrestadorControllerTest {
         contaMock.setCpf("44444444444");
     }
 
-    @Test
-    @Order(1)
-    public void deve_salvar_conta() throws URISyntaxException {
-        URI uri = new URI(this.url);
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
-
-        ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
-
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(response.getBody().getLogin(), contaMock.getLogin());
-        assertTrue(repository.existsById(response.getBody().getId()));
-    }
+//    @Test
+//    @Order(1)
+//    public void deve_salvar_conta() throws URISyntaxException {
+//        URI uri = new URI(this.url);
+//        HttpHeaders headers = new HttpHeaders();
+//        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
+//
+//        ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
+//
+//        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+//        assertEquals(response.getBody().getLogin(), contaMock.getLogin());
+//        assertTrue(repository.existsById(response.getBody().getId()));
+//    }
 
     @Test
     @Order(2)
@@ -85,36 +85,36 @@ public class PrestadorControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNotNull(response.getBody());
     }
+//
+//    @Test
+//    @Order(3)
+//    public void deve_retornar_erro_por_cpf_repetido() throws URISyntaxException {
+//        URI uri = new URI(this.url);
+//        Login login = new Login();
+//        login.setEmail("oqiwuefnajs");
+//        login.setSenha("834hufakvdsn");
+//        contaMock.setLogin(login);
+//        HttpHeaders headers = new HttpHeaders();
+//        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
+//
+//        ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
+//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+//        assertNotNull(response.getBody());
+//
+//    }
 
-    @Test
-    @Order(3)
-    public void deve_retornar_erro_por_cpf_repetido() throws URISyntaxException {
-        URI uri = new URI(this.url);
-        Login login = new Login();
-        login.setEmail("oqiwuefnajs");
-        login.setSenha("834hufakvdsn");
-        contaMock.setLogin(login);
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
-
-        ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertNotNull(response.getBody());
-
-    }
-
-    @Test
-    @Order(4)
-    public void deve_retornar_por_login() throws URISyntaxException {
-        URI uri = new URI(this.url + "/login");
-        Login login = contaMock.getLogin();
-
-        HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
-
-        ResponseEntity<PrestadorRepresentation> response = template.postForEntity(uri, request, PrestadorRepresentation.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-    }
+//    @Test
+//    @Order(4)
+//    public void deve_retornar_por_login() throws URISyntaxException {
+//        URI uri = new URI(this.url + "/login");
+//        Login login = contaMock.getLogin();
+//
+//        HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
+//
+//        ResponseEntity<PrestadorRepresentation> response = template.postForEntity(uri, request, PrestadorRepresentation.class);
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        assertNotNull(response.getBody());
+//    }
 
     @Test
     @Order(5)
