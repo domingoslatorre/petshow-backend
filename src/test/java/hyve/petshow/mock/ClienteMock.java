@@ -33,8 +33,7 @@ public class ClienteMock {
 		dbMock.add(conta);		
 		return conta;
 	}
-	
-	
+
 	private static Cliente salvaCliente(Cliente cliente) {
 		Cliente buscaPorId = (Cliente) buscaPorId(cliente.getId()).get();
 		buscaPorId.setAnimaisEstimacao(cliente.getAnimaisEstimacao());

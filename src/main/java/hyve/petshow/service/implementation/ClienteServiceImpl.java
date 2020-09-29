@@ -75,4 +75,9 @@ public class ClienteServiceImpl implements ClienteService {
 		return repository.save(conta);
 	}
 
+	@Override
+	public Cliente atualizaConta(Long id, Cliente conta) {
+		return repository.save(conta);
+	}
+
 }
