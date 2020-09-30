@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import hyve.petshow.domain.Avaliacao;
+import hyve.petshow.domain.AvaliacaoInfo;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
@@ -29,12 +30,14 @@ public class AvaliacaoMock {
 		
 		Avaliacao avaliacao = new Avaliacao();
 		avaliacao.setServicoAvaliado(servicoAvaliado);
-		avaliacao.setAtencao(10);
-		avaliacao.setQualidadeProdutos(10);
-		avaliacao.setCustoBeneficio(10);
-		avaliacao.setInfraestrutura(10);
-		avaliacao.setQualidadeServico(10);
-		avaliacao.setComentario("Muito bom");
+		AvaliacaoInfo info = new AvaliacaoInfo();
+		info.setAtencao(5);
+		info.setQualidadeProdutos(5);
+		info.setCustoBeneficio(5);
+		info.setInfraestrutura(5);
+		info.setQualidadeServico(5);
+		info.setComentario("Muito bom");
+		avaliacao.setAvaliacaoInfo(info);
 		avaliacao.setCliente(cliente);
 		
 		return avaliacao;
@@ -56,19 +59,21 @@ public class AvaliacaoMock {
 		return Stream.of(new Avaliacao(), new Avaliacao(), new Avaliacao())
 				.map(avaliacao -> {
 					avaliacao.setServicoAvaliado(servicoAvaliado);
-					avaliacao.setAtencao(geraNota());
-					avaliacao.setQualidadeProdutos(geraNota());
-					avaliacao.setCustoBeneficio(geraNota());
-					avaliacao.setInfraestrutura(geraNota());
-					avaliacao.setQualidadeServico(geraNota());
-					avaliacao.setComentario("Muito bom");
+					AvaliacaoInfo info = new AvaliacaoInfo();
+					info.setAtencao(geraNota());
+					info.setQualidadeProdutos(geraNota());
+					info.setCustoBeneficio(geraNota());
+					info.setInfraestrutura(geraNota());
+					info.setQualidadeServico(geraNota());
+					info.setComentario("Muito bom");
+					avaliacao.setAvaliacaoInfo(info);
 					avaliacao.setCliente(cliente);
 					return avaliacao;
 				}).collect(Collectors.toList());
 	}
 	
 	private static Integer geraNota() {
-		return new Random().ints(1,0,10).boxed().findFirst().get();
+		return new Random().ints(1,0,5).boxed().findFirst().get();
 	}
 	
 }
