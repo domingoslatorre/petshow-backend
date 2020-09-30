@@ -25,7 +25,7 @@ public class AutonomoController {
     public ResponseEntity<AutonomoRepresentation> buscarAutonomo(@PathVariable Long id) throws Exception {
         ResponseEntity<AutonomoRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        Autonomo autonomo = service.obterContaPorId(id);
+        Autonomo autonomo = service.buscarPorId(id);
 
         return  ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(autonomo));
     }
@@ -34,7 +34,7 @@ public class AutonomoController {
     @PutMapping("{id}")
     public ResponseEntity<AutonomoRepresentation> atualizarAutonomo(@PathVariable Long id, @RequestBody AutonomoRepresentation autonomo) throws Exception {
         Autonomo domain = converter.toDomain(autonomo);
-        Autonomo autonomoAtualizado = service.atualizaConta(id, domain);
+        Autonomo autonomoAtualizado = service.atualizarConta(id, domain);
         AutonomoRepresentation representation = converter.toRepresentation(autonomoAtualizado);
         return ResponseEntity.status(HttpStatus.OK).body(representation);
     }

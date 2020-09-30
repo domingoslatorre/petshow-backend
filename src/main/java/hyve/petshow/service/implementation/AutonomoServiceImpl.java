@@ -1,8 +1,8 @@
 package hyve.petshow.service.implementation;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Autonomo;
+import hyve.petshow.domain.Login;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AutonomoRepository;
@@ -20,7 +20,7 @@ public class AutonomoServiceImpl implements AutonomoService {
 
 
     @Override
-    public Autonomo salvaConta(Autonomo conta) throws Exception {
+    public Autonomo adicionarConta(Autonomo conta) throws Exception {
         validaNovaConta(conta);
         return repository.save(conta);
     }
@@ -36,17 +36,17 @@ public class AutonomoServiceImpl implements AutonomoService {
     }
 
     @Override
-    public Autonomo obterContaPorId(Long id) throws Exception {
+    public Autonomo buscarPorId(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
     }
 
     @Override
-    public List<Autonomo> obterContas()  {
+    public List<Autonomo> buscarContas()  {
         return repository.findAll();
     }
 
     @Override
-    public Autonomo obterPorLogin(Login login) throws Exception {
+    public Autonomo realizarLogin(Login login) throws Exception {
         return repository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
     }
@@ -61,16 +61,13 @@ public class AutonomoServiceImpl implements AutonomoService {
     }
 
     @Override
-    public Optional<Autonomo> buscaPorCpf(String cpf) { return repository.findByCpf(cpf); }
+    public Optional<Autonomo> buscarPorCpf(String cpf) { return repository.findByCpf(cpf); }
 
     @Override
-    public Optional<Autonomo> buscaPorEmail(String email) { return repository.findByEmail(email); }
+    public Optional<Autonomo> buscarPorEmail(String email) { return repository.findByEmail(email); }
 
     @Override
-    public Autonomo atualizaConta(Autonomo conta) { return repository.save(conta); }
-
-    @Override
-    public Autonomo atualizaConta(Long id, Autonomo conta) throws Exception {
+    public Autonomo atualizarConta(Long id, Autonomo conta) throws Exception {
         repository.findById(id).orElseThrow(()->new NotFoundException("Conta não encontrada"));
         return repository.save(conta);
     }

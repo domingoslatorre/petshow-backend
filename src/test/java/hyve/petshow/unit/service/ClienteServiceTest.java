@@ -76,7 +76,7 @@ public class ClienteServiceTest {
 		login.setEmail("");
 		cliente.setCpf("555555555555");
 		cliente.setLogin(login);
-		service.adicionarCliente(cliente);
+		service.adicionarConta(cliente);
 		assertTrue(repository.findAll().contains(cliente));
 		assertNotNull(cliente.getId());
 	}
@@ -89,7 +89,7 @@ public class ClienteServiceTest {
 		login.setEmail("teste@teste.com");
 		login.setSenha("aslkjdgklsdjg");
 		clienteAAlterar.setLogin(login);
-		Conta contaDb = service.atualizarConta(clienteAAlterar);
+		Conta contaDb = service.atualizarConta(1l, clienteAAlterar);
 		assertEquals(login, clienteAAlterar.getLogin());
 		assertEquals(contaDb.getId(), clienteAAlterar.getId());
 	}
@@ -105,7 +105,7 @@ public class ClienteServiceTest {
 		animaisEstimacao.add(animalTeste);
 		cliente.setAnimaisEstimacao(animaisEstimacao);
 
-		Cliente salvaConta = (Cliente) service.atualizarConta(cliente);
+		Cliente salvaConta = (Cliente) service.atualizarConta(1l, cliente);
 		assertTrue(salvaConta.getAnimaisEstimacao().contains(animalTeste));
 
 	}
@@ -139,7 +139,7 @@ public class ClienteServiceTest {
 	@Test
 	@Order(7)
 	public void deve_encontrar_todos_os_elementos() {
-		assertTrue(!service.obterContas().isEmpty());
+		assertTrue(!service.buscarContas().isEmpty());
 	}
 
 	@Test
@@ -167,9 +167,9 @@ public class ClienteServiceTest {
 		login.setEmail("teste@teste");
 		conta.setLogin(login);
 		conta.setCpf("22222222222");
-		service.adicionarCliente(conta);
+		service.adicionarConta(conta);
 		assertThrows(Exception.class, () -> {
-			service.adicionarCliente(conta);
+			service.adicionarConta(conta);
 		});
 	}
 
@@ -182,9 +182,9 @@ public class ClienteServiceTest {
 		login.setEmail("asdgs@aslkdjg");
 		login.setSenha("03joiwk");
 		conta.setLogin(login);
-		service.adicionarCliente(conta);
+		service.adicionarConta(conta);
 		assertThrows(Exception.class, () -> {
-			service.adicionarCliente(conta);
+			service.adicionarConta(conta);
 		});
 
 	}

@@ -43,7 +43,7 @@ public class ClienteController {
 
 	@PostMapping
 	public ResponseEntity<ClienteRepresentation> adicionarCliente(@RequestBody ClienteRepresentation request) throws Exception {
-		var cliente = clienteService.adicionarCliente(clienteConverter.toDomain(request));
+		var cliente = clienteService.adicionarConta(clienteConverter.toDomain(request));
 		var representation = clienteConverter.toRepresentation(cliente);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
@@ -57,9 +57,11 @@ public class ClienteController {
 		return ResponseEntity.status(HttpStatus.OK).body(representation);
 	}
 
-	@PutMapping
-	public ResponseEntity<ClienteRepresentation> atualizarCliente(@RequestBody ClienteRepresentation request) {
-		var cliente = clienteService.atualizarConta(clienteConverter.toDomain(request));
+	@PutMapping("/{id}")
+	public ResponseEntity<ClienteRepresentation> atualizarCliente(
+			@PathVariable Long id,
+			@RequestBody ClienteRepresentation request) throws Exception {
+		var cliente = clienteService.atualizarConta(id, clienteConverter.toDomain(request));
 		var representation = clienteConverter.toRepresentation(cliente);
 
 		return ResponseEntity.status(HttpStatus.OK).body(representation);

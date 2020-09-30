@@ -14,8 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -88,7 +86,7 @@ public class PrestadorServiceTest {
         login.setEmail("teste@teste.com");
         prestador.setCpf("555555555555");
         prestador.setLogin(login);
-        service.salvaConta(prestador);
+        service.adicionarConta(prestador);
         assertTrue(repository.findAll().contains(prestador));
         assertNotNull(prestador.getId());
     }
@@ -96,12 +94,12 @@ public class PrestadorServiceTest {
     @Test
     @Order(2)
     public void deve_atualizar_conta() throws Exception {
-        Prestador prestadorAlterar = service.obterContaPorId(1l);
+        Prestador prestadorAlterar = service.buscarPorId(1l);
         Login login = new Login();
         login.setEmail("teste@teste.com");
         login.setSenha("aslkjdgklsdjg");
         prestadorAlterar.setLogin(login);
-        Conta contaDb = service.atualizaConta(prestadorAlterar);
+        Conta contaDb = service.atualizarConta(1l, prestadorAlterar);
         assertEquals(login, prestadorAlterar.getLogin());
         assertEquals(contaDb.getId(), prestadorAlterar.getId());
     }
@@ -124,7 +122,7 @@ public class PrestadorServiceTest {
     @Test
     @Order(4)
     public void deve_encontrar_conta_correta() throws Exception {
-        Conta obterContaPorId = service.obterContaPorId(1l);
+        Conta obterContaPorId = service.buscarPorId(1l);
         assertEquals("Teste", obterContaPorId.getNome());
     }
 
@@ -132,7 +130,7 @@ public class PrestadorServiceTest {
     @Order(5)
     public void deve_retornar_excecao_por_pessoa_nao_encontrada() {
         assertThrows(Exception.class, () -> {
-            service.obterContaPorId(5l);
+            service.buscarPorId(5l);
         });
     }
 
@@ -142,7 +140,7 @@ public class PrestadorServiceTest {
     	Login login = new Login();
         login.setEmail("teste@teste.com");
         login.setSenha("aslkjdgklsdjg");
-        Conta obterPorLogin = service.obterPorLogin(login);
+        Conta obterPorLogin = service.realizarLogin(login);
         assertNotNull(obterPorLogin);
         assertTrue(obterPorLogin.getId() == 1);
     }
@@ -150,7 +148,7 @@ public class PrestadorServiceTest {
     @Test
     @Order(7)
     public void deve_encontrar_todos_os_elementos() {
-        assertTrue(!service.obterContas().isEmpty());
+        assertTrue(!service.buscarContas().isEmpty());
     }
 
     @Test
@@ -158,7 +156,7 @@ public class PrestadorServiceTest {
     public void deve_remover_elemento() throws Exception {
         service.removerConta(1l);
         assertThrows(Exception.class, () -> {
-            service.obterContaPorId(1l);
+            service.buscarPorId(1l);
         });
     }
 
@@ -178,10 +176,10 @@ public class PrestadorServiceTest {
         login.setEmail("teste@teste.com");
         conta.setLogin(login);
         conta.setCpf("22222222222");
-        service.salvaConta(conta);
+        service.adicionarConta(conta);
         conta.setCpf("286238623846");
         assertThrows(Exception.class, () -> {
-            service.salvaConta(conta);
+            service.adicionarConta(conta);
         });
     }
 
@@ -194,14 +192,14 @@ public class PrestadorServiceTest {
         login.setEmail("asdgs@aslkdjg");
         login.setSenha("03joiwk");
         conta.setLogin(login);
-        service.salvaConta(conta);
+        service.adicionarConta(conta);
         Login login2 = new Login();
         login2.setEmail("asdgs@aslkdjg");
         login2.setSenha("03joiwk");
         conta.setLogin(login2);
 
         assertThrows(Exception.class, () -> {
-            service.salvaConta(conta);
+            service.adicionarConta(conta);
         });
 
     }

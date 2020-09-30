@@ -1,13 +1,11 @@
 package hyve.petshow.service.port;
 
-import hyve.petshow.controller.representation.AnimalEstimacaoResponseRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface AnimalEstimacaoService {

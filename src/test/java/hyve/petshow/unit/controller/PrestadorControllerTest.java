@@ -72,19 +72,19 @@ public class PrestadorControllerTest {
 //        assertTrue(repository.existsById(response.getBody().getId()));
 //    }
 
-    @Test
-    @Order(2)
-    public void deve_retornar_erro_por_email_repetido() throws URISyntaxException {
-        URI uri = new URI(this.url);
-        contaMock.setCpf("632478509");
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
-
-        ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertNotNull(response.getBody());
-    }
+//    @Test
+//    @Order(2)
+//    public void deve_retornar_erro_por_email_repetido() throws URISyntaxException {
+//        URI uri = new URI(this.url);
+//        contaMock.setCpf("632478509");
+//        HttpHeaders headers = new HttpHeaders();
+//        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
+//
+//        ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
+//
+//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+//        assertNotNull(response.getBody());
+//    }
 //
 //    @Test
 //    @Order(3)
