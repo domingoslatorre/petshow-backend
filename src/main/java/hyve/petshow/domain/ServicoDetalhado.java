@@ -1,12 +1,17 @@
 package hyve.petshow.domain;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import lombok.Data;
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 
 @Data
 @Entity(name = "servico_detalhado")
@@ -18,6 +23,9 @@ public class ServicoDetalhado {
     private BigDecimal preco;
     @ManyToOne
     private Servico tipo;
+    @OneToMany
+    @JoinColumn(name = "fk_servico")
+    private List<Avaliacao> avaliacoes;
 //    @Column
 //    @ElementCollection(targetClass=TipoAnimalEstimacao.class)
 //    private List<TipoAnimalEstimacao> animaisAceitos;

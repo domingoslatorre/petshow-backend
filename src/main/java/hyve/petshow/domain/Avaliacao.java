@@ -22,6 +22,7 @@ public class Avaliacao {
 	@Embedded
 	private AvaliacaoInfo avaliacaoInfo;
 	@ManyToOne
+	@JoinColumn(name = "fk_servico", referencedColumnName = "id")
 	private ServicoDetalhado servicoAvaliado;
 	@ManyToOne
 	@JoinColumn(name = "fk_conta", referencedColumnName = "id")
