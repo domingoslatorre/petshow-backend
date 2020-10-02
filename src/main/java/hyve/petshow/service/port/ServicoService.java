@@ -13,7 +13,7 @@ public interface ServicoService {
 
     List<Servico> buscarServicos ();
     
-    Servico atualizarServico(Long id, Servico servico) throws Exception;
+    Servico atualizarServico(Integer id, Servico servico) throws Exception;
 
-    MensagemRepresentation removerServico(Long id) throws Exception;
+    MensagemRepresentation removerServico(Integer id) throws Exception;
 }

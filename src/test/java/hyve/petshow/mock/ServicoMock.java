@@ -1,21 +1,20 @@
 package hyve.petshow.mock;
 
-import java.math.BigDecimal;
+import hyve.petshow.controller.representation.ServicoRepresentation;
+import hyve.petshow.domain.Servico;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import hyve.petshow.controller.representation.ServicoRepresentation;
-import hyve.petshow.domain.Servico;
-
-//import hyve.petshow.domain.enums.TipoAnimalEstimacao;
+//import hyve.petshow.domain.TipoAnimalEstimacao;
 
 public class ServicoMock {
 		public static Servico criarServico() {
 		Servico servico = new Servico();
-		servico.setId(1L);
+		servico.setId(1);
     	servico.setNome("Banho e Tosa");
     	servico.setDescricao("Banhos quentinhos para o seu pet");
 
@@ -24,7 +23,7 @@ public class ServicoMock {
     	
 		public static ServicoRepresentation criarServicoRepresentation() {
 		ServicoRepresentation representation = new ServicoRepresentation();
-		representation.setId(1L);
+		representation.setId(1);
 		representation.setNome("Banho e Tosa");
 		representation.setDescricao("Banhos quentinhos para o seu pet");
 
@@ -49,7 +48,7 @@ public class ServicoMock {
     		return dbMock;
     	}
     	
-    	public static Optional<Servico> findById(Long id) {
+    	public static Optional<Servico> findById(Integer id) {
     		return dbMock.stream().filter(el -> el.getId().equals(id)).findFirst();
     	}
     	
@@ -59,7 +58,7 @@ public class ServicoMock {
     	}
     	
     	
-    	public static void removerPorId(Long id) {
+    	public static void removerPorId(Integer id) {
     		dbMock = dbMock.stream().filter(el -> el.getId() != id).collect(Collectors.toList());
     	}
 

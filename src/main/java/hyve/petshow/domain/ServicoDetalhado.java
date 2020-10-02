@@ -2,11 +2,8 @@ package hyve.petshow.domain;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+
 import lombok.Data;
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 
 @Data
 @Entity(name = "servico_detalhado")

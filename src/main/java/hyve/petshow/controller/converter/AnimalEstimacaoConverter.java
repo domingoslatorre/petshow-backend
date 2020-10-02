@@ -1,20 +1,21 @@
 package hyve.petshow.controller.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
+import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
+import hyve.petshow.domain.AnimalEstimacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
-import hyve.petshow.domain.AnimalEstimacao;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
     @Autowired
     private ClienteConverter clienteConverter;
+
+    @Autowired
+    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
 
     @Override
     public AnimalEstimacaoRepresentation toRepresentation(AnimalEstimacao domain) {
@@ -24,7 +25,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         representation.setId(domain.getId());
         representation.setNome(domain.getNome());
         representation.setFoto(domain.getFoto());
-        representation.setTipo(TipoAnimalEstimacao.valueOf(domain.getTipo()));
+        representation.setTipo(tipoAnimalEstimacaoConverter.toRepresentation(domain.getTipo()));
 
         return representation;
     }
@@ -37,7 +38,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         domain.setId(representation.getId());
         domain.setNome(representation.getNome());
         domain.setFoto(representation.getFoto());
-        domain.setTipo(representation.getTipo().id());
+        domain.setTipo(tipoAnimalEstimacaoConverter.toDomain(representation.getTipo()));
         domain.setDono(clienteConverter.toDomain(representation.getDono()));
 
         return domain;

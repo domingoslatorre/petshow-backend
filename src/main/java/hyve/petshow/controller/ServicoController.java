@@ -40,7 +40,7 @@ public class ServicoController {
 	
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ServicoRepresentation> atualizarServico(@PathVariable Long id, @RequestBody ServicoRepresentation servico) throws Exception{
+	public ResponseEntity<ServicoRepresentation> atualizarServico(@PathVariable Integer id, @RequestBody ServicoRepresentation servico) throws Exception{
 		Servico domain = converter.toDomain(servico);
 		Servico servicoAtualizado = service.atualizarServico(id, domain);
 		
@@ -61,7 +61,7 @@ public class ServicoController {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<MensagemRepresentation> removerServico(@PathVariable Long id) throws Exception{
+    public ResponseEntity<MensagemRepresentation> removerServico(@PathVariable Integer id) throws Exception{
         ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         MensagemRepresentation mensagem = service.removerServico(id);

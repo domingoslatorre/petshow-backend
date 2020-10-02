@@ -16,7 +16,7 @@ import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
-//import hyve.petshow.domain.enums.TipoAnimalEstimacao;
+//import hyve.petshow.domain.TipoAnimalEstimacao;
 
 public class ServicoDetalhadoMock {
 		public static ServicoDetalhado criarServicoDetalhado() {
@@ -27,7 +27,7 @@ public class ServicoDetalhadoMock {
 		servicoDetalhado.setPreco(p);
 		
 		Servico s = new Servico();
-		s.setId(Long.valueOf(1));
+		s.setId(1);
 		s.setNome("Banho e Tosa");
 		s.setDescricao("Banhos quentinhos para o seu pet");
 		
@@ -43,7 +43,7 @@ public class ServicoDetalhadoMock {
 		servicoDetalhadoRepresentation.setPreco(p);
 		
 		Servico s = new Servico();
-		s.setId(Long.valueOf(1));
+		s.setId(1);
 		s.setNome("Banho e Tosa");
 		s.setDescricao("Banhos quentinhos para o seu pet");
 		
@@ -103,7 +103,7 @@ public class ServicoDetalhadoMock {
 	
 	        mensagem.setId(1L);
 	        mensagem.setSucesso(Boolean.TRUE);
-	        mensagem.setMensagem("Operação executada com sucesso!");
+	        mensagem.setMensagem("Operaï¿½ï¿½o executada com sucesso!");
 	
 	        return mensagem;
 	    }
@@ -185,7 +185,7 @@ public class ServicoDetalhadoMock {
 //
 //    	mensagem.setId(1L);
 //    	mensagem.setSucesso(Boolean.FALSE);
-//    	mensagem.setMensagem("Falha durante a execução da operação.");
+//    	mensagem.setMensagem("Falha durante a execuï¿½ï¿½o da operaï¿½ï¿½o.");
 //
 //        return mensagem;
 //    }

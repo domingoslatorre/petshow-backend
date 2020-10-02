@@ -6,10 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 import hyve.petshow.mock.ServicoMock;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,14 +21,11 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.controller.representation.ServicoRepresentation;
-import hyve.petshow.domain.Servico;
-import hyve.petshow.domain.Login;
 import hyve.petshow.repository.ServicoRepository;
 
 @TestMethodOrder(OrderAnnotation.class)

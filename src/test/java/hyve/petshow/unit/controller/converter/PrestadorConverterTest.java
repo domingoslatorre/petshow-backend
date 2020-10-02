@@ -1,18 +1,11 @@
 package hyve.petshow.unit.controller.converter;
 
 import hyve.petshow.controller.converter.PrestadorConverter;
-import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
-import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
-import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

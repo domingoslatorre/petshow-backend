@@ -42,17 +42,17 @@ public class ServicoServiceImpl implements ServicoService {
 
     //
     @Override
-    public Servico atualizarServico(Long id, Servico servicoRequest) throws Exception{
+    public Servico atualizarServico(Integer id, Servico servicoRequest) throws Exception{
        repository.findById(id).orElseThrow(() -> new NotFoundException("Serviço não encontrado"));
        return repository.save(servicoRequest);
    }
 
 
     @Override
-    public MensagemRepresentation removerServico(Long id) {
+    public MensagemRepresentation removerServico(Integer id) {
     	repository.deleteById(id);
 		MensagemRepresentation mensagem = new MensagemRepresentation();
-		mensagem.setId(id);
+		mensagem.setId(Long.valueOf(id));
 		mensagem.setSucesso(!repository.existsById(id));
 		return mensagem;
     }

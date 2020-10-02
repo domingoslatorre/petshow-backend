@@ -2,9 +2,7 @@ package hyve.petshow.controller.converter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
