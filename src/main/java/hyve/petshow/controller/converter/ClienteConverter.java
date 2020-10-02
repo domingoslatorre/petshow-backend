@@ -1,9 +1,12 @@
 package hyve.petshow.controller.converter;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Login;
 import hyve.petshow.domain.enums.TipoConta;
 
 // TODO: Pensar em forma de n�o repetir c�digo. S�o 02:40 da manh�, n�o me julgue pelo que fiz. Pelo q parece quando se � criada uma inst�ncia de algo ela n�o pode ser casteada ent�o n�o sei como fazer rsrs
@@ -20,7 +23,9 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 		representation.setCpf(domain.getCpf());
 		representation.setEndereco(domain.getEndereco());
 		representation.setFoto(domain.getFoto());
-		representation.setLogin(domain.getLogin());
+		var login = new Login();
+		login.setEmail(Optional.ofNullable(domain.getLogin()).orElse(new Login()).getEmail());
+		representation.setLogin(login);
 		representation.setNome(domain.getNome());
 		representation.setNomeSocial(domain.getNomeSocial());
 		representation.setTelefone(domain.getTelefone());

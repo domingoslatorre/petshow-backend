@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.AvaliacaoInfo;
+import hyve.petshow.domain.CriteriosAvaliacao;
 import hyve.petshow.mock.entidades.AvaliacaoMock;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -38,7 +38,7 @@ public class AvaliacaoTest {
 	public void deve_retornar_media_0() {
 		// dado
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		AvaliacaoInfo avaliacaoInfo = new AvaliacaoInfo();
+		CriteriosAvaliacao avaliacaoInfo = new CriteriosAvaliacao();
 		avaliacao.setAvaliacaoInfo(avaliacaoInfo); // Deixa a avaliação com as informações nulas
 
 		// quando

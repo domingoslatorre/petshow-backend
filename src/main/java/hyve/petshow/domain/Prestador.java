@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Data // gera getters and setters e Hashcode
 @Entity // nao temos uma entidade do tipo Prestador no MER
-// @DiscriminatorValue(value="") //
+ @DiscriminatorValue(value="P") //
 public class Prestador extends Conta {
 	private String descricao;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

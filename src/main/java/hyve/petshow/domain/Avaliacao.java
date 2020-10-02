@@ -20,7 +20,7 @@ public class Avaliacao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Embedded
-	private AvaliacaoInfo avaliacaoInfo;
+	private CriteriosAvaliacao avaliacaoInfo;
 	@ManyToOne
 	@JoinColumn(name = "fk_servico", referencedColumnName = "id")
 	private ServicoDetalhado servicoAvaliado;
@@ -30,5 +30,5 @@ public class Avaliacao {
 	
 	@Transient
 	public Double getMediaAvaliacao() {
-		return Optional.ofNullable(avaliacaoInfo).orElse(new AvaliacaoInfo()).getMediaAvaliacao();
+		return Optional.ofNullable(avaliacaoInfo).orElse(new CriteriosAvaliacao()).getMediaAvaliacao();
 	}}

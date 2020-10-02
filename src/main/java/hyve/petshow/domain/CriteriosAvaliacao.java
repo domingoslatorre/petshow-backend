@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Embeddable
-public class AvaliacaoInfo {
+public class CriteriosAvaliacao {
 	private Integer atencao;
 	private Integer qualidadeProdutos;
 	private Integer custoBeneficio;

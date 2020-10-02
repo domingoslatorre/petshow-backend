@@ -15,7 +15,7 @@ import lombok.Data;
 
 @Data
 @Entity
-//@DiscriminatorValue(value = "C") // Cliente
+@DiscriminatorValue(value = "C") // Cliente
 public class Cliente extends Conta {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_conta")

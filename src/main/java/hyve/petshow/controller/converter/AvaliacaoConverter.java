@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.AvaliacaoInfo;
+import hyve.petshow.domain.CriteriosAvaliacao;
 
 @Component
 public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoRepresentation> {
@@ -40,7 +40,7 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		domain.setCliente(clienteConverter.toDomain(representation.getCliente()));
 		domain.setServicoAvaliado(servicoConverter.toDomain(representation.getServicoAvaliado()));
 		
-		var info = new AvaliacaoInfo();
+		var info = new CriteriosAvaliacao();
 		info.setAtencao(representation.getAtencao());
 		info.setQualidadeProdutos(representation.getQualidadeProdutos());
 		info.setCustoBeneficio(representation.getCustoBeneficio());

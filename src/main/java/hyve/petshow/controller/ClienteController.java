@@ -1,9 +1,13 @@
 package hyve.petshow.controller;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +51,13 @@ public class ClienteController {
 		Cliente atualizaCliente = service.atualizaConta(domain);
 
 		ClienteRepresentation representation = converter.toRepresentation(atualizaCliente);
+		return ResponseEntity.status(HttpStatus.OK).body(representation);
+	}
+	
+	@GetMapping("{id}")
+	public ResponseEntity<ClienteRepresentation> buscarClientePorId(@PathVariable Long id) throws Exception {
+		var cliente = service.obterContaPorId(id);
+		var representation = converter.toRepresentation(cliente);
 		return ResponseEntity.status(HttpStatus.OK).body(representation);
 	}
 

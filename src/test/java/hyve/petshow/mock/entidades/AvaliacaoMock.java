@@ -12,7 +12,7 @@ import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.AvaliacaoInfo;
+import hyve.petshow.domain.CriteriosAvaliacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
@@ -42,7 +42,7 @@ public class AvaliacaoMock {
 
 		var avaliacao = new Avaliacao();
 		avaliacao.setServicoAvaliado(servicoAvaliado);
-		var info = new AvaliacaoInfo();
+		var info = new CriteriosAvaliacao();
 		info.setAtencao(5);
 		info.setQualidadeProdutos(5);
 		info.setCustoBeneficio(5);
@@ -105,7 +105,7 @@ public class AvaliacaoMock {
 		cliente.setNome("Teste");
 		return Stream.of(new Avaliacao(), new Avaliacao(), new Avaliacao()).map(avaliacao -> {
 			avaliacao.setServicoAvaliado(servicoAvaliado);
-			var info = new AvaliacaoInfo();
+			var info = new CriteriosAvaliacao();
 			info.setAtencao(geraNota());
 			info.setQualidadeProdutos(geraNota());
 			info.setCustoBeneficio(geraNota());
