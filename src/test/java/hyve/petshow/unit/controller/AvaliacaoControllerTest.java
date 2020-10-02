@@ -1,9 +1,9 @@
 package hyve.petshow.unit.controller;
 // Eu sei q não tem controller de Avaliacao. Eu coloquei mais pra não ficar bagunçado no de prestador
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
 import java.util.List;

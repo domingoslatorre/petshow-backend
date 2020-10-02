@@ -1,13 +1,11 @@
 package hyve.petshow.unit.controller;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -19,23 +17,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
-import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.ContaRepresentation;
-import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Login;
-import hyve.petshow.mock.ServicoDetalhadoMock;
-import hyve.petshow.mock.entidades.AvaliacaoMock;
-import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.repository.PrestadorRepository;
 
 @TestMethodOrder(OrderAnnotation.class)
