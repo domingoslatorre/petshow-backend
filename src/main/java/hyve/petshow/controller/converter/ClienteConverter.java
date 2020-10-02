@@ -37,8 +37,8 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 	@Override
 	public Cliente toDomain(ClienteRepresentation representation) {
 		if(representation == null) return new Cliente();
-//		Cliente domain = (Cliente) contaConverter.toDomain(representation);
 		Cliente domain = new Cliente();
+
 		domain.setCpf(representation.getCpf());
 		domain.setEndereco(representation.getEndereco());
 		domain.setFoto(representation.getFoto());
@@ -48,7 +48,7 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 		domain.setNomeSocial(representation.getNomeSocial());
 		domain.setTelefone(representation.getTelefone());
 		domain.setTipo(TipoConta.getTipoByInteger(representation.getTipo()));
-		domain.setAnimaisEstimacao(animalConverter.toDomainList(representation.getAnimaisEstimacao()));
+
 		return domain;
 	}
 

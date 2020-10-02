@@ -1,11 +1,5 @@
 package hyve.petshow.service.implementation;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Login;
@@ -13,6 +7,11 @@ import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.service.port.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -20,7 +19,7 @@ public class ClienteServiceImpl implements ClienteService {
 	private ClienteRepository repository;
 
 	@Override
-	public Cliente salvaConta(Cliente conta) throws Exception {
+	public Cliente adicionarConta(Cliente conta) throws Exception {
 		validaNovaConta(conta);
 		return repository.save(conta);
 	}
@@ -36,17 +35,17 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Cliente obterContaPorId(Long id) throws Exception {
+	public Cliente buscarPorId(Long id) throws Exception {
 		return repository.findById(id).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
 	}
 
 	@Override
-	public List<Cliente> obterContas() {
+	public List<Cliente> buscarContas() {
 		return repository.findAll();
 	}
 
 	@Override
-	public Cliente obterPorLogin(Login login) throws Exception {
+	public Cliente realizarLogin(Login login) throws Exception {
 		return repository.findByLogin(login)
 				.orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
 	}
@@ -61,22 +60,18 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Optional<Cliente> buscaPorCpf(String cpf) {
+	public Optional<Cliente> buscarPorCpf(String cpf) {
 		return repository.findByCpf(cpf);
 	}
 
 	@Override
-	public Optional<Cliente> buscaPorEmail(String email) {
+	public Optional<Cliente> buscarPorEmail(String email) {
 		return repository.findByEmail(email);
 	}
 
 	@Override
-	public Cliente atualizaConta(Cliente conta) {
-		return repository.save(conta);
-	}
-
-	@Override
-	public Cliente atualizaConta(Long id, Cliente conta) {
+	public Cliente atualizarConta(Long id, Cliente conta) throws NotFoundException {
+		repository.findById(id).orElseThrow(()->new NotFoundException("Conta não encontrada"));
 		return repository.save(conta);
 	}
 

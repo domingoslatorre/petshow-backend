@@ -1,18 +1,17 @@
 package hyve.petshow.service.implementation;
 
-import java.util.List;
-import java.util.Optional;
-
+import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.service.port.PrestadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.domain.Login;
-import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.exceptions.NotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PrestadorServiceImpl implements PrestadorService {
@@ -20,7 +19,7 @@ public class PrestadorServiceImpl implements PrestadorService {
     private PrestadorRepository repository;
 
     @Override
-    public Prestador salvaConta(Prestador conta) throws Exception {
+    public Prestador adicionarConta(Prestador conta) throws Exception {
         validaNovaConta(conta);
         return repository.save(conta);
     }
@@ -36,17 +35,17 @@ public class PrestadorServiceImpl implements PrestadorService {
     }
 
     @Override
-    public Prestador obterContaPorId(Long id) throws Exception {
+    public Prestador buscarPorId(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
     }
 
     @Override
-    public List<Prestador> obterContas() {
+    public List<Prestador> buscarContas() {
         return repository.findAll();
     }
 
     @Override
-    public Prestador obterPorLogin(Login login) throws Exception {
+    public Prestador realizarLogin(Login login) throws Exception {
         return repository.findByLogin(login)
                 .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
     }
@@ -61,22 +60,17 @@ public class PrestadorServiceImpl implements PrestadorService {
     }
 
     @Override
-    public Optional<Prestador> buscaPorCpf(String cpf) {
+    public Optional<Prestador> buscarPorCpf(String cpf) {
         return repository.findByCpf(cpf);
     }
 
     @Override
-    public Optional<Prestador> buscaPorEmail(String email) {
+    public Optional<Prestador> buscarPorEmail(String email) {
         return repository.findByEmail(email);
     }
 
     @Override
-    public Prestador atualizaConta(Prestador conta) {
-        return repository.save(conta);
-    }
-
-    @Override
-    public Prestador atualizaConta(Long id, Prestador conta) throws Exception {
+    public Prestador atualizarConta(Long id, Prestador conta) throws Exception {
         repository.findById(id).orElseThrow(()->new NotFoundException("Conta não encontrada"));
         return repository.save(conta);
     }

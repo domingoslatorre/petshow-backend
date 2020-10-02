@@ -3,6 +3,8 @@ package hyve.petshow.service.implementation;
 import java.util.List;
 import java.util.Optional;
 
+import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,58 +15,50 @@ import hyve.petshow.service.port.AnimalEstimacaoService;
 
 @Service
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
-    private static final String MENSAGEM_SUCESSO = "OperaÁ„o executada com sucesso!";
-    private static final String MENSAGEM_FALHA = "Falha durante a execuÁ„o da operaÁ„o.";
-
     @Autowired
     private AnimalEstimacaoRepository animalEstimacaoRepository;
 
     @Override
-    public AnimalEstimacao criarAnimalEstimacao(AnimalEstimacao animalEstimacao) {
+    public AnimalEstimacao adicionarAnimalEstimacao(AnimalEstimacao animalEstimacao) {
         return animalEstimacaoRepository.save(animalEstimacao);
     }
 
     @Override
-    public Optional<AnimalEstimacao> obterAnimalEstimacaoPorId(Long id) {
-        return animalEstimacaoRepository.findById(id);
+    public AnimalEstimacao buscarAnimalEstimacaoPorId(Long id) throws NotFoundException {
+        return animalEstimacaoRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Animal de estima√ß√£o n√£o encontrado"));
     }
 
     @Override
-    public List<AnimalEstimacao> obterAnimaisEstimacao() {
-        return animalEstimacaoRepository.findAll();
-    }
+    public List<AnimalEstimacao> buscarAnimaisEstimacao() throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoRepository.findAll();
 
-    @Override
-    public Optional<AnimalEstimacao> atualizarAnimalEstimacao(Long id, AnimalEstimacao animalEstimacaoRequest) {
-        Optional<AnimalEstimacao> animalEstimacaoOptional = animalEstimacaoRepository.findById(id);
-        Optional<AnimalEstimacao> response = Optional.empty();
-
-        if(animalEstimacaoOptional.isPresent()){
-            AnimalEstimacao animalEstimacao = animalEstimacaoOptional.get();
-           
-            animalEstimacao.setNome(animalEstimacaoRequest.getNome());
-            animalEstimacao.setFoto(animalEstimacaoRequest.getFoto());
-            animalEstimacao.setTipo(animalEstimacaoRequest.getTipo());
-
-            response = Optional.of(animalEstimacaoRepository.save(animalEstimacao));
+        if(animaisEstimacao.isEmpty()) {
+            throw new NotFoundException("Nenhum animal de estima√ß√£o foi encontrado.");
         }
+
+        return animaisEstimacao;
+    }
+
+    @Override
+    public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request) throws NotFoundException {
+        var animalEstimacao = animalEstimacaoRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Animal de estima√ß√£o n√£o encontrado"));
+
+        var response = animalEstimacaoRepository.save(request);
 
         return response;
     }
 
     @Override
-    public AnimalEstimacaoResponseRepresentation removerAnimalEstimacao(Long id) {
-        AnimalEstimacaoResponseRepresentation animalEstimacaoResponseRepresentation =
-                new AnimalEstimacaoResponseRepresentation();
-
+    public MensagemRepresentation removerAnimalEstimacao(Long id) {
         animalEstimacaoRepository.deleteById(id);
 
-        Boolean successo = !animalEstimacaoRepository.existsById(id);
+        var sucesso = ! animalEstimacaoRepository.existsById(id);
+        var response = new MensagemRepresentation(id);
 
-        animalEstimacaoResponseRepresentation.setId(id);
-        animalEstimacaoResponseRepresentation.setSucesso(successo);
-        animalEstimacaoResponseRepresentation.setMensagem(successo ? MENSAGEM_SUCESSO : MENSAGEM_FALHA);
+        response.setSucesso(sucesso);
 
-        return animalEstimacaoResponseRepresentation;
+        return response;
     }
 }

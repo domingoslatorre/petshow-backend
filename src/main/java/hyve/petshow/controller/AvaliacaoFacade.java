@@ -24,7 +24,7 @@ public class AvaliacaoFacade {
 
 	public AvaliacaoRepresentation adicionarAvaliacao(AvaliacaoRepresentation representation, Long idCliente,
 			Long idServicoPrestado) throws Exception {
-		var cliente = clienteService.obterContaPorId(idCliente);
+		var cliente = clienteService.buscarPorId(idCliente);
 		var servicoAvaliado = servicoDetalhadoService.buscarPorId(idServicoPrestado);
 		var domain = converter.toDomain(representation);
 		domain.setCliente(cliente);
