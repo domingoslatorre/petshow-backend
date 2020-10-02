@@ -31,7 +31,4 @@ public class Avaliacao {
 	@Transient
 	public Double getMediaAvaliacao() {
 		return Optional.ofNullable(avaliacaoInfo).orElse(new AvaliacaoInfo()).getMediaAvaliacao();
-	}
-
-
-}
+	}}

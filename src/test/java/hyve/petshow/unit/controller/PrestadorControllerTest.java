@@ -1,10 +1,14 @@
 package hyve.petshow.unit.controller;
 
-import hyve.petshow.controller.representation.PrestadorRepresentation;
-import hyve.petshow.controller.representation.ContaRepresentation;
-import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
-import hyve.petshow.repository.PrestadorRepository;
+import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -15,76 +19,86 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.*;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.controller.representation.ContaRepresentation;
+import hyve.petshow.controller.representation.PrestadorRepresentation;
+import hyve.petshow.domain.Login;
+import hyve.petshow.mock.ServicoDetalhadoMock;
+import hyve.petshow.mock.entidades.AvaliacaoMock;
+import hyve.petshow.repository.AvaliacaoRepository;
+import hyve.petshow.repository.PrestadorRepository;
 
 @TestMethodOrder(OrderAnnotation.class)
 @ActiveProfiles("test")
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PrestadorControllerTest {
-    @LocalServerPort
-    private int port;
+	@LocalServerPort
+	private int port;
 
-    @Autowired
-    private TestRestTemplate template;
+	@Autowired
+	private TestRestTemplate template;
 
-    @Autowired
-    private PrestadorRepository repository;
+	@Autowired
+	private PrestadorRepository repository;
 
-    private ContaRepresentation contaMock;
+	private ContaRepresentation contaMock;
 
-    private String url;
+	private String url;
 
-    @BeforeEach
-    public void init() {
-        url = "http://localhost:" + port + "/prestador";
+	@BeforeEach
+	public void init() {
+		url = "http://localhost:" + port + "/prestador";
 
-    }
+	}
 
-    @BeforeEach
-    public void initMock() {
-        contaMock = new ContaRepresentation();
-        Login login = new Login();
-        login.setEmail("teste@teste.com");
-        login.setSenha("555555555555");
-        contaMock.setLogin(login);
-        contaMock.setCpf("44444444444");
-    }
+	@BeforeEach
+	public void initMock() {
+		contaMock = new ContaRepresentation();
+		Login login = new Login();
+		login.setEmail("teste@teste.com");
+		login.setSenha("555555555555");
+		contaMock.setLogin(login);
+		contaMock.setCpf("44444444444");
+	}
 
-    @Test
-    @Order(1)
-    public void deve_salvar_conta() throws URISyntaxException {
-        URI uri = new URI(this.url);
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
+	@Test
+	@Order(1)
+	public void deve_salvar_conta() throws URISyntaxException {
+		URI uri = new URI(this.url);
+		HttpHeaders headers = new HttpHeaders();
+		HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
 
-        ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
+		ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(response.getBody().getLogin(), contaMock.getLogin());
-        assertTrue(repository.existsById(response.getBody().getId()));
-    }
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		assertEquals(response.getBody().getLogin(), contaMock.getLogin());
+		assertTrue(repository.existsById(response.getBody().getId()));
+	}
 
-    @Test
-    @Order(2)
-    public void deve_retornar_erro_por_email_repetido() throws URISyntaxException {
-        URI uri = new URI(this.url);
-        contaMock.setCpf("632478509");
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
+	@Test
+	@Order(2)
+	public void deve_retornar_erro_por_email_repetido() throws URISyntaxException {
+		URI uri = new URI(this.url);
+		contaMock.setCpf("632478509");
+		HttpHeaders headers = new HttpHeaders();
+		HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, headers);
 
-        ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
+		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertNotNull(response.getBody());
-    }
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+		assertNotNull(response.getBody());
+	}
 //
 //    @Test
 //    @Order(3)
@@ -116,34 +130,34 @@ public class PrestadorControllerTest {
 //        assertNotNull(response.getBody());
 //    }
 
-    @Test
-    @Order(5)
-    public void deve_retornar_nao_encontrado() throws URISyntaxException {
-        URI uri = new URI(this.url + "/login");
+	@Test
+	@Order(5)
+	public void deve_retornar_nao_encontrado() throws URISyntaxException {
+		URI uri = new URI(this.url + "/login");
 
-        Login login = new Login();
-        login.setEmail("aslkdjgs@aklsdjg.com");
-        login.setSenha("ASDOHIGJKLAjh0oiq");
+		Login login = new Login();
+		login.setEmail("aslkdjgs@aklsdjg.com");
+		login.setSenha("ASDOHIGJKLAjh0oiq");
 
-        HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
+		HttpEntity<Login> request = new HttpEntity<>(login, new HttpHeaders());
 
-        ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNotNull(response.getBody());
-    }
+		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+		assertNotNull(response.getBody());
+	}
 
-    @Test
-    @Order(6)
-    public void deve_retornar_excecao() throws URISyntaxException {
-        URI uri = new URI(this.url);
-        ContaRepresentation contaMock = new ContaRepresentation();
+	@Test
+	@Order(6)
+	public void deve_retornar_excecao() throws URISyntaxException {
+		URI uri = new URI(this.url);
+		ContaRepresentation contaMock = new ContaRepresentation();
 
-        HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, new HttpHeaders());
+		HttpEntity<ContaRepresentation> request = new HttpEntity<>(contaMock, new HttpHeaders());
 
-        ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 
-    }
+	}
 //
 //    @Test
 //    @Order(7)
@@ -227,5 +241,11 @@ public class PrestadorControllerTest {
 //        assertEquals(HttpStatus.OK, responsePut.getStatusCode());
 ////        assertEquals(2, responsePut.getBody().getServicoDetalhado().size());
 //
+//    }
+
+//    @Test
+//    @Order(7)
+//    public void deve_retornar_lista_vazia() {
+//    	
 //    }
 }

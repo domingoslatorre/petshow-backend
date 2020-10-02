@@ -9,7 +9,6 @@ import hyve.petshow.domain.enums.TipoConta;
 // TODO: Pensar em forma de n�o repetir c�digo. S�o 02:40 da manh�, n�o me julgue pelo que fiz. Pelo q parece quando se � criada uma inst�ncia de algo ela n�o pode ser casteada ent�o n�o sei como fazer rsrs
 @Component
 public class ClienteConverter implements Converter<Cliente, ClienteRepresentation> {
-//	private ContaConverter contaConverter = new ContaConverter();
 	private AnimalEstimacaoConverter animalConverter = new AnimalEstimacaoConverter();
 
 	@Override

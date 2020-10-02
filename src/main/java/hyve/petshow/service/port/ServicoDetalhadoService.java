@@ -20,4 +20,6 @@ public interface ServicoDetalhadoService {
 
     MensagemRepresentation removerServicoDetalhado(Long id) throws Exception;
     
+    ServicoDetalhado buscarPorId(Long id) throws Exception;
+    
 }

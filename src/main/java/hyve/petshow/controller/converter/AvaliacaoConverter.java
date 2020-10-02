@@ -1,5 +1,8 @@
 package hyve.petshow.controller.converter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
@@ -49,4 +52,11 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		return domain;
 	}
 
+	
+	
+	public List<AvaliacaoRepresentation> toRepresentationList(List<Avaliacao> domainList) {
+		return domainList.stream()
+				.map(el -> toRepresentation(el))
+				.collect(Collectors.toList());
+	}
 }

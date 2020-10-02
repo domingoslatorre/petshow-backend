@@ -26,6 +26,10 @@ public class ServicoDetalhado {
     @OneToMany
     @JoinColumn(name = "fk_servico")
     private List<Avaliacao> avaliacoes;
+    @ManyToOne
+    @JoinColumn(name = "fk_prestador", referencedColumnName = "id")
+    private Prestador prestador;
+    
 //    @Column
 //    @ElementCollection(targetClass=TipoAnimalEstimacao.class)
 //    private List<TipoAnimalEstimacao> animaisAceitos;

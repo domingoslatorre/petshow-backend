@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import hyve.petshow.controller.converter.ServicoConverter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 //import hyve.petshow.domain.enums.TipoAnimalEstimacao;
@@ -22,6 +24,11 @@ public class ServicoDetalhadoMock {
 		public static ServicoDetalhado criarServicoDetalhado() {
 		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setId(1L);
+		
+		var prestador = new Prestador();
+		prestador.setId(1l);
+		prestador.setNome("TestePrestador");
+		servicoDetalhado.setPrestador(prestador);
 		
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhado.setPreco(p);
@@ -38,6 +45,10 @@ public class ServicoDetalhadoMock {
 		public static ServicoDetalhadoRepresentation criarServicoDetalhadoRepresentation() {
 		ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = new ServicoDetalhadoRepresentation();
 		servicoDetalhadoRepresentation.setId(1L);
+		var prestador = new PrestadorRepresentation();
+		prestador.setId(1l);
+		prestador.setNome("TestePrestador");
+		servicoDetalhadoRepresentation.setPrestador(prestador);
 		
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhadoRepresentation.setPreco(p);
@@ -103,7 +114,7 @@ public class ServicoDetalhadoMock {
 	
 	        mensagem.setId(1L);
 	        mensagem.setSucesso(Boolean.TRUE);
-	        mensagem.setMensagem("Operação executada com sucesso!");
+	        mensagem.setMensagem("Operaï¿½ï¿½o executada com sucesso!");
 	
 	        return mensagem;
 	    }
@@ -185,7 +196,7 @@ public class ServicoDetalhadoMock {
 //
 //    	mensagem.setId(1L);
 //    	mensagem.setSucesso(Boolean.FALSE);
-//    	mensagem.setMensagem("Falha durante a execução da operação.");
+//    	mensagem.setMensagem("Falha durante a execuï¿½ï¿½o da operaï¿½ï¿½o.");
 //
 //        return mensagem;
 //    }

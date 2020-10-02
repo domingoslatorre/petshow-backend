@@ -12,5 +12,5 @@ public class ServicoDetalhadoRepresentation {
 	private ServicoRepresentation tipo;
 	private List<AvaliacaoRepresentation> avaliacoes;
 //    private List<TipoAnimalEstimacao> animaisAceitos;
-//    private PrestadorRepresentation prestador;
+    private PrestadorRepresentation prestador;
 }

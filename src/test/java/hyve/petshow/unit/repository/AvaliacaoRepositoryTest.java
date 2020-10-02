@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +18,13 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.domain.Avaliacao;
+import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.mock.entidades.AvaliacaoMock;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.repository.ClienteRepository;
+import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 import hyve.petshow.repository.ServicoRepository;
 
@@ -38,13 +42,21 @@ public class AvaliacaoRepositoryTest {
 	private ServicoDetalhadoRepository servicoDetalhadoRepository;
 	@Autowired
 	private ClienteRepository clienteRepository;
+	@Autowired
+	private PrestadorRepository prestadorRepository;
+	
+	private Prestador prestador;
+	private ServicoDetalhado servico;
+	private Cliente cliente;
 
 	@BeforeEach
 	public void adicionaServico() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
+		prestador = prestadorRepository.save(avaliacao.getServicoAvaliado().getPrestador());
+		avaliacao.getServicoAvaliado().setPrestador(prestador);
 		servicoRepository.save(avaliacao.getServicoAvaliado().getTipo());
-		servicoDetalhadoRepository.save(avaliacao.getServicoAvaliado());
-		clienteRepository.save(avaliacao.getCliente());
+		servico = servicoDetalhadoRepository.save(avaliacao.getServicoAvaliado());
+		cliente = clienteRepository.save(avaliacao.getCliente());
 	}
 
 	@AfterEach
@@ -55,9 +67,11 @@ public class AvaliacaoRepositoryTest {
 	@Test
 	public void deve_retornar_avaliacao_de_servico() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
+		avaliacao.setServicoAvaliado(servico);
+		avaliacao.setCliente(cliente);
 		Avaliacao avaliacaoSalva = repository.save(avaliacao);
-
-		List<Avaliacao> avaliacoes = repository.findByServicoAvaliado(avaliacao.getServicoAvaliado());
+		servico.getPrestador();
+		List<Avaliacao> avaliacoes = repository.findByServicoAvaliado(servico);
 
 		assertTrue(avaliacoes.stream().filter(el -> avaliacaoSalva.getId().equals(el.getId())).findFirst().isPresent());
 	}
@@ -65,10 +79,14 @@ public class AvaliacaoRepositoryTest {
 	@Test
 	public void deve_retornar_lista_de_avaliacoes() {
 		List<Avaliacao> avaliacoes = AvaliacaoMock.geraListaAvaliacao();
-		List<Avaliacao> avaliacoesSalvas = repository.saveAll(avaliacoes);
+		List<Avaliacao> avaliacoesSalvas = repository.saveAll(avaliacoes.stream().map(avaliacao -> {
+			avaliacao.setCliente(cliente);
+			avaliacao.setServicoAvaliado(servico);
+			return avaliacao;
+		}).collect(Collectors.toList()));
 
 		ServicoDetalhado servicoAvaliado = avaliacoesSalvas.get(0).getServicoAvaliado();
-		List<Avaliacao> busca = repository.findByServicoAvaliado(servicoAvaliado);
+		List<Avaliacao> busca = repository.findByServicoAvaliado(servico);
 
 		assertEquals(busca.size(), avaliacoesSalvas.size());
 	}

@@ -8,33 +8,41 @@ import java.util.stream.Stream;
 
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.ClienteRepresentation;
+import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.AvaliacaoInfo;
 import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 
 public class AvaliacaoMock {
 	public static Avaliacao geraAvaliacao() {
-		Servico tipo = new Servico();
+		var tipo = new Servico();
 		tipo.setId(1l);
 		tipo.setNome("Banho");
 		tipo.setDescricao("Banho");
 
-		ServicoDetalhado servicoAvaliado = new ServicoDetalhado();
+		var servicoAvaliado = new ServicoDetalhado();
 		servicoAvaliado.setId(1l);
 		servicoAvaliado.setPreco(BigDecimal.valueOf(30.5));
 		servicoAvaliado.setTipo(tipo);
 
-		Cliente cliente = new Cliente();
+		var prestador = new Prestador();
+		prestador.setId(1l);
+		prestador.setNome("TestePrestador");
+
+		servicoAvaliado.setPrestador(prestador);
+
+		var cliente = new Cliente();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 
-		Avaliacao avaliacao = new Avaliacao();
+		var avaliacao = new Avaliacao();
 		avaliacao.setServicoAvaliado(servicoAvaliado);
-		AvaliacaoInfo info = new AvaliacaoInfo();
+		var info = new AvaliacaoInfo();
 		info.setAtencao(5);
 		info.setQualidadeProdutos(5);
 		info.setCustoBeneficio(5);
@@ -49,23 +57,28 @@ public class AvaliacaoMock {
 
 	public static AvaliacaoRepresentation geraAvaliacaoRepresentation() {
 
-		ServicoRepresentation tipo = new ServicoRepresentation();
+		var tipo = new ServicoRepresentation();
 		tipo.setId(1l);
 		tipo.setNome("Banho");
 		tipo.setDescricao("Banho");
 
-		ServicoDetalhadoRepresentation servicoAvaliado = new ServicoDetalhadoRepresentation();
+		var servicoAvaliado = new ServicoDetalhadoRepresentation();
 		servicoAvaliado.setId(1l);
 		servicoAvaliado.setPreco(BigDecimal.valueOf(30.5));
 		servicoAvaliado.setTipo(tipo);
+		
+		var prestador = new PrestadorRepresentation();
+		prestador.setId(1l);
+		prestador.setNome("TestePrestador");
+		
+		servicoAvaliado.setPrestador(prestador);
 
-		ClienteRepresentation cliente = new ClienteRepresentation();
+		var cliente = new ClienteRepresentation();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 
-		AvaliacaoRepresentation avaliacao = new AvaliacaoRepresentation();
+		var avaliacao = new AvaliacaoRepresentation();
 		avaliacao.setServicoAvaliado(servicoAvaliado);
-		AvaliacaoInfo info = new AvaliacaoInfo();
 		avaliacao.setAtencao(5);
 		avaliacao.setQualidadeProdutos(5);
 		avaliacao.setCustoBeneficio(5);
@@ -78,21 +91,21 @@ public class AvaliacaoMock {
 	}
 
 	public static List<Avaliacao> geraListaAvaliacao() {
-		Servico tipo = new Servico();
+		var tipo = new Servico();
 		tipo.setId(1l);
 		tipo.setNome("Banho");
 		tipo.setDescricao("Banho");
 
-		ServicoDetalhado servicoAvaliado = new ServicoDetalhado();
+		var servicoAvaliado = new ServicoDetalhado();
 		servicoAvaliado.setId(1l);
 		servicoAvaliado.setPreco(BigDecimal.valueOf(30.5));
 		servicoAvaliado.setTipo(tipo);
-		Cliente cliente = new Cliente();
+		var cliente = new Cliente();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 		return Stream.of(new Avaliacao(), new Avaliacao(), new Avaliacao()).map(avaliacao -> {
 			avaliacao.setServicoAvaliado(servicoAvaliado);
-			AvaliacaoInfo info = new AvaliacaoInfo();
+			var info = new AvaliacaoInfo();
 			info.setAtencao(geraNota());
 			info.setQualidadeProdutos(geraNota());
 			info.setCustoBeneficio(geraNota());

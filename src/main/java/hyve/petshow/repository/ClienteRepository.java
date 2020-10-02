@@ -11,4 +11,7 @@ import hyve.petshow.domain.Login;
 @Transactional
 public interface ClienteRepository extends ContaRepository<Cliente> {
 	Optional<Cliente> findByLogin(Login login);
+
+	@Query("select c from Cliente c left join fetch c.animaisEstimacao where c.id = ?1")
+	Optional<Cliente> findById(Long id);
 }
