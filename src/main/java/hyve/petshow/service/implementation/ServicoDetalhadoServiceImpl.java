@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
-
+import hyve.petshow.domain.Prestador;
 //import hyve.petshow.controller.representation.ServicoDetalhadoResponseRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.NotFoundException;
@@ -51,5 +51,12 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 		mensagem.setSucesso(!repository.existsById(id));
 		return mensagem;
     }
+    
+  @Override
+  public List<Prestador> buscarPrestadoresPorServico(String nome) {
+      return repository.findByTipoContainingIgnoreCase(nome);
+  }
+
+    
 }
 

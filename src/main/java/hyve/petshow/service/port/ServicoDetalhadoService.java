@@ -1,6 +1,7 @@
 package hyve.petshow.service.port;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.BusinessException;
@@ -15,7 +16,9 @@ public interface ServicoDetalhadoService {
 	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado);
 
     //List<ServicoDetalhado> findByPrestador(Long id);
-
+	
+	List<Prestador> buscarPrestadoresPorServico (String nome);
+	
 	ServicoDetalhado atualizarServicoDetalhado(Long id, ServicoDetalhado servicoDetalhadoRequest)throws Exception;
 
     MensagemRepresentation removerServicoDetalhado(Long id) throws Exception;

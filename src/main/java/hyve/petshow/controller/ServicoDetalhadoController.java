@@ -61,7 +61,8 @@ public class ServicoDetalhadoController {
 //
 //        return response;
 //    }
-    
+	
+
     @DeleteMapping("{id}")
     public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id) throws Exception{
         ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();

@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 
@@ -29,11 +30,8 @@ import hyve.petshow.repository.ServicoDetalhadoRepository;
 @ActiveProfiles("test")
 @TestMethodOrder(OrderAnnotation.class)
 public class ServicoDetalhadoRepositoryTest {
-//	@Autowired
-//	private ContaRepository<Cliente> repository;
-
-//	@Autowired
-//	private ServicoDetalhadoRepository repository;
+	@Autowired
+	private ServicoDetalhadoRepository repository;
 
 //	private ServicoDetalhado mock;
 
@@ -54,4 +52,24 @@ public class ServicoDetalhadoRepositoryTest {
 //		assertTrue(!busca.isEmpty());
 //	}
 
+	
+//	@Test
+//	public void deve_retornar_prestadores_via_servico() {
+//		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
+//		Prestador prestador = new Prestador();
+//		Servico servico = new Servico();
+//		servico.setNome("Banho");
+//		servicoDetalhado.setTipo(servico);
+//		
+//		List<ServicoDetalhado> listaServicos = new ArrayList();
+//		listaServicos.add(servicoDetalhado);
+//		prestador.setServicosDetalhados(listaServicos);
+//		
+//		repository.save(servicoDetalhado);
+//
+//		List<Prestador> busca = repository.findByTipoContainingIgnoreCase("Banho");
+//		assertTrue(!busca.isEmpty());
+//	}
 }
+
+
