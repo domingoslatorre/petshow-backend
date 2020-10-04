@@ -1,8 +1,10 @@
 package hyve.petshow.controller.converter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
@@ -11,11 +13,15 @@ import hyve.petshow.domain.CriteriosAvaliacao;
 
 @Component
 public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoRepresentation> {
-	private ClienteConverter clienteConverter = new ClienteConverter();
-	private ServicoDetalhadoConverter servicoConverter = new ServicoDetalhadoConverter();
+	@Autowired
+	private ClienteConverter clienteConverter;
+	@Autowired
+	private ServicoDetalhadoConverter servicoConverter;
 
 	@Override
 	public AvaliacaoRepresentation toRepresentation(Avaliacao domain) {
+		if(domain == null) return new AvaliacaoRepresentation();
+		
 		var representation = new AvaliacaoRepresentation();
 		representation.setId(domain.getId());
 		if (domain.getAvaliacaoInfo() != null) {
@@ -28,13 +34,13 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 			representation.setComentario(info.getComentario());
 		}
 		representation.setCliente(clienteConverter.toRepresentation(domain.getCliente()));
-		representation.setServicoAvaliado(servicoConverter.toRepresentation(domain.getServicoAvaliado()));
 		representation.setMedia(domain.getMediaAvaliacao());
 		return representation;
 	}
 
 	@Override
 	public Avaliacao toDomain(AvaliacaoRepresentation representation) {
+		if(representation == null) return new Avaliacao();
 		var domain = new Avaliacao();
 		domain.setId(representation.getId());
 		domain.setCliente(clienteConverter.toDomain(representation.getCliente()));
@@ -55,8 +61,16 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 	
 	
 	public List<AvaliacaoRepresentation> toRepresentationList(List<Avaliacao> domainList) {
+		if(domainList == null) return new ArrayList<AvaliacaoRepresentation>();
 		return domainList.stream()
 				.map(el -> toRepresentation(el))
+				.collect(Collectors.toList());
+	}
+	
+	public List<Avaliacao> toDomainList(List<AvaliacaoRepresentation> representationList) {
+		if(representationList == null) return new ArrayList<Avaliacao>();
+		return representationList.stream()
+				.map(el -> toDomain(el))
 				.collect(Collectors.toList());
 	}
 }

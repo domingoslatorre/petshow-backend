@@ -17,11 +17,9 @@ import lombok.Data;
 @Entity
 @DiscriminatorValue(value = "C") // Cliente
 public class Cliente extends Conta {
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_conta")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "dono")
 	private List<AnimalEstimacao> animaisEstimacao = new ArrayList<AnimalEstimacao>();
-	@OneToMany
-	@JoinColumn(name = "fk_conta")
+	@OneToMany(mappedBy = "cliente")
 	private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
 	public Cliente() {

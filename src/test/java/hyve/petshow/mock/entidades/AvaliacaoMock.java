@@ -1,6 +1,7 @@
 package hyve.petshow.mock.entidades;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class AvaliacaoMock {
 		prestador.setNome("TestePrestador");
 
 		servicoAvaliado.setPrestador(prestador);
-
+		servicoAvaliado.setAvaliacoes(new ArrayList<>());
 		var cliente = new Cliente();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
@@ -66,6 +67,7 @@ public class AvaliacaoMock {
 		servicoAvaliado.setId(1l);
 		servicoAvaliado.setPreco(BigDecimal.valueOf(30.5));
 		servicoAvaliado.setTipo(tipo);
+		servicoAvaliado.setAvaliacoes(new ArrayList<>());
 		
 		var prestador = new PrestadorRepresentation();
 		prestador.setId(1l);

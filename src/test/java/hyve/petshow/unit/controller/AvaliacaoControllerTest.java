@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
-import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,6 +26,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
@@ -96,11 +95,11 @@ public class AvaliacaoControllerTest {
 		var uri = new URI(urlAvaliacao);
 		// quando
 		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
-		var response = template.exchange(uri, HttpMethod.POST, requestBody,
-				new ParameterizedTypeReference<List<AvaliacaoRepresentation>>() {
-				});
+		// var response = template.exchange(uri, HttpMethod.POST, requestBody,
+		// ServicoDetalhadoRepresentation.class);
+		var response = template.postForEntity(uri, requestBody, ServicoDetalhadoRepresentation.class);
 		// então
-		assertFalse(response.getBody().isEmpty());
+		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		servicoDetalhadoRepository.findById(this.servicoDetalhadoMock.getId()).ifPresent(el -> {
 			assertFalse(el.getAvaliacoes().isEmpty());
@@ -112,15 +111,13 @@ public class AvaliacaoControllerTest {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		String urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
+				+ this.servicoDetalhadoMock.getId();
 		var uri = new URI(urlAvaliacao);
 
 		// quando
-		var response = template.exchange(urlAvaliacao, HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<AvaliacaoRepresentation>>() {
-				});
+		var response = template.exchange(urlAvaliacao, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertTrue(response.getBody().isEmpty());
+		assertTrue(response.getBody().getAvaliacoes().isEmpty());
 	}
 
 	@Test
@@ -132,16 +129,15 @@ public class AvaliacaoControllerTest {
 		var uri = new URI(urlAvaliacao);
 
 		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
-		var response = template.exchange(uri, HttpMethod.POST, requestBody,
-				new ParameterizedTypeReference<List<AvaliacaoRepresentation>>() {
-				});
+		var response = template.exchange(uri, HttpMethod.POST, requestBody, ServicoDetalhadoRepresentation.class);
 		// quando
-		var responseGet = template.exchange(urlAvaliacao, HttpMethod.GET, null,
-				new ParameterizedTypeReference<List<AvaliacaoRepresentation>>() {
-				});
+
+		uri = new URI(
+				this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/" + this.servicoDetalhadoMock.getId());
+		var responseGet = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		// entao
 		assertEquals(HttpStatus.OK, responseGet.getStatusCode());
-		assertFalse(response.getBody().isEmpty());
+		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 	}
 
 }

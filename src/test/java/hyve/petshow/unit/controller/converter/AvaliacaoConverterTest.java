@@ -5,18 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.mock.entidades.AvaliacaoMock;
 
+@SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AvaliacaoConverterTest {
-	private AvaliacaoConverter converter = new AvaliacaoConverter();
+	@Autowired
+	private AvaliacaoConverter converter;
 
 	@Test
 	public void deve_retornar_avaliacao_convertida() {
 		// dado
 		var avaliacaoEsperada = AvaliacaoMock.geraAvaliacaoRepresentation();
+		avaliacaoEsperada.setServicoAvaliado(null);
 		// quando
 		var representation = converter.toRepresentation(AvaliacaoMock.geraAvaliacao());
 		// então

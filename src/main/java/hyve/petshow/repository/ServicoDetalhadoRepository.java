@@ -15,5 +15,4 @@ public interface ServicoDetalhadoRepository extends JpaRepository<ServicoDetalha
 //	List<ServicoDetalhado> findByPrestador(Long Id);
 	@Query("select s from servico_detalhado s left join fetch s.avaliacoes where s.id = ?1")
 	Optional<ServicoDetalhado> findById(Long id);
-
 }

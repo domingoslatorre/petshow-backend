@@ -26,10 +26,11 @@ public class AvaliacaoFacade {
 			Long idServicoPrestado) throws Exception {
 		var cliente = clienteService.buscarPorId(idCliente);
 		var servicoAvaliado = servicoDetalhadoService.buscarPorId(idServicoPrestado);
-		var domain = converter.toDomain(representation);
-		domain.setCliente(cliente);
-		domain.setServicoAvaliado(servicoAvaliado);
-		var avaliacaoSalva = service.adicionarAvaliacao(domain);
+		var avaliacao = converter.toDomain(representation);
+		servicoAvaliado.addAvaliacao(avaliacao);
+		avaliacao.setServicoAvaliado(servicoAvaliado);
+		avaliacao.setCliente(cliente);
+		var avaliacaoSalva = service.adicionarAvaliacao(avaliacao);
 		return converter.toRepresentation(avaliacaoSalva);
 	}
 

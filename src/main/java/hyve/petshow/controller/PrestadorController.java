@@ -1,6 +1,5 @@
 package hyve.petshow.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.service.port.PrestadorService;
@@ -114,20 +114,21 @@ public class PrestadorController {
 		return response;
 	}
 
-	@GetMapping("{idPrestador}/servicoDetalhado/{idServico}/avaliacoes")
-	public ResponseEntity<List<AvaliacaoRepresentation>> buscarAvaliacoesPorServico(@PathVariable Long idPrestador,
+	@GetMapping("{idPrestador}/servicoDetalhado/{idServico}")
+	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhado(@PathVariable Long idPrestador,
 			@PathVariable Long idServico) throws Exception {
-		var avaliacoes = avaliacaoFacade.buscarAvaliacaoPorServico(idServico);
-		return ResponseEntity.status(HttpStatus.OK).body(avaliacoes);
+		var servico = servicoDetalhadoService.buscarPorId(idServico);
+		return ResponseEntity.status(HttpStatus.OK).body(servicoDetalhadoConverter.toRepresentation(servico));
 	}
 
 	@PostMapping("{idPrestador}/servicoDetalhado/{idServico}/avaliacoes")
-	public ResponseEntity<List<AvaliacaoRepresentation>> adicionarAvaliacao(@PathVariable Long idPrestador,
+	public ResponseEntity<ServicoDetalhadoRepresentation> adicionarAvaliacao(@PathVariable Long idPrestador,
 			@PathVariable Long idServico, @RequestBody AvaliacaoRepresentation avaliacao) throws Exception {
 		var idCliente = Optional.ofNullable(avaliacao.getCliente()).orElse(new ClienteRepresentation()).getId();
 		avaliacaoFacade.adicionarAvaliacao(avaliacao, idCliente, idServico);
-		var avaliacoes = avaliacaoFacade.buscarAvaliacaoPorServico(idServico);
-		return ResponseEntity.status(HttpStatus.CREATED).body(avaliacoes);
+
+		var servico = servicoDetalhadoService.buscarPorId(idServico);
+		return ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoConverter.toRepresentation(servico));
 	}
 
 }

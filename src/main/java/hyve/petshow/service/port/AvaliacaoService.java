@@ -11,4 +11,5 @@ import hyve.petshow.domain.ServicoDetalhado;
 public interface AvaliacaoService {
 	List<Avaliacao> buscarAvaliacoesPorServico(ServicoDetalhado servico);
 	Avaliacao adicionarAvaliacao(Avaliacao avaliacao);
+	Avaliacao buscarAvaliacaoPorId(Long id) throws Exception;
 }

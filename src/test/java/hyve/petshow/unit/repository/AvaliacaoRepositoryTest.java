@@ -1,5 +1,6 @@
 package hyve.petshow.unit.repository;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -67,10 +68,10 @@ public class AvaliacaoRepositoryTest {
 	@Test
 	public void deve_retornar_avaliacao_de_servico() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
+		servico.addAvaliacao(avaliacao);
 		avaliacao.setServicoAvaliado(servico);
 		avaliacao.setCliente(cliente);
 		Avaliacao avaliacaoSalva = repository.save(avaliacao);
-		servico.getPrestador();
 		List<Avaliacao> avaliacoes = repository.findByServicoAvaliado(servico);
 
 		assertTrue(avaliacoes.stream().filter(el -> avaliacaoSalva.getId().equals(el.getId())).findFirst().isPresent());
@@ -82,6 +83,7 @@ public class AvaliacaoRepositoryTest {
 		List<Avaliacao> avaliacoesSalvas = repository.saveAll(avaliacoes.stream().map(avaliacao -> {
 			avaliacao.setCliente(cliente);
 			avaliacao.setServicoAvaliado(servico);
+			servico.addAvaliacao(avaliacao);
 			return avaliacao;
 		}).collect(Collectors.toList()));
 
@@ -89,6 +91,17 @@ public class AvaliacaoRepositoryTest {
 		List<Avaliacao> busca = repository.findByServicoAvaliado(servico);
 
 		assertEquals(busca.size(), avaliacoesSalvas.size());
+	}
+	
+	@Test
+	public void deve_retornar_servico_com_avaliacoes() {
+		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
+		avaliacao.setServicoAvaliado(servico);
+		avaliacao.setCliente(cliente);
+		Avaliacao avaliacaoSalva = repository.save(avaliacao);
+		List<Avaliacao> avaliacoes = repository.findByServicoAvaliado(servico);
+		var servicoEncontrado = servicoDetalhadoRepository.findById(servico.getId());
+		assertFalse(servicoEncontrado.get().getAvaliacoes().isEmpty());
 	}
 
 }
