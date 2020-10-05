@@ -77,7 +77,7 @@ public class ClienteControllerTest {
 		ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
 
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
-		assertEquals(response.getBody().getLogin(), contaMock.getLogin());
+		assertEquals(response.getBody().getLogin().getEmail(), contaMock.getLogin().getEmail());
 		assertTrue(repository.existsById(response.getBody().getId()));
 	}
 
