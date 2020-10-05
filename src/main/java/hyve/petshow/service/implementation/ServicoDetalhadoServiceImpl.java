@@ -49,4 +49,9 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	public ServicoDetalhado buscarPorId(Long id) throws Exception {
 		return repository.findById(id).orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO) );
 	}
+
+	@Override
+	public ServicoDetalhado buscarPorIdEPrestador(Long idServico, Long idPrestador) throws Exception {
+		return repository.findByIdAndPrestador(idServico, idPrestador).orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO));
+	}
 }

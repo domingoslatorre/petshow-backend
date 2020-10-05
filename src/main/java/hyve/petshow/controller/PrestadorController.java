@@ -119,7 +119,7 @@ public class PrestadorController {
 	@GetMapping("{idPrestador}/servicoDetalhado/{idServico}")
 	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhado(@PathVariable Long idPrestador,
 			@PathVariable Long idServico) throws Exception {
-		var servico = servicoDetalhadoService.buscarPorId(idServico);
+		var servico = servicoDetalhadoService.buscarPorIdEPrestador(idServico, idPrestador);
 		return ResponseEntity.status(HttpStatus.OK).body(servicoDetalhadoConverter.toRepresentation(servico));
 	}
 
