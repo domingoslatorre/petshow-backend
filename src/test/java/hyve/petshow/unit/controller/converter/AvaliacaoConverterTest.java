@@ -7,12 +7,14 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.mock.entidades.AvaliacaoMock;
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@ActiveProfiles("test")
 public class AvaliacaoConverterTest {
 	@Autowired
 	private AvaliacaoConverter converter;
