@@ -53,8 +53,8 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
     }
     
   @Override
-  public List<Prestador> buscarPrestadoresPorServico(String nome) {
-      return repository.findByTipoContainingIgnoreCase(nome);
+  public List<ServicoDetalhado> buscarServicosDetalhadosPorTipo(Long id) {
+      return repository.findByTipo(id);
   }
 
     

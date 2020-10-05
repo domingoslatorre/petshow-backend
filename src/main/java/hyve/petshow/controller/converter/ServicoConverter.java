@@ -21,8 +21,7 @@ public class ServicoConverter implements Converter<Servico, ServicoRepresentatio
     	ServicoRepresentation representation = new ServicoRepresentation();
     	representation.setId(domain.getId());
         representation.setNome(domain.getNome());
-        representation.setDescricao(domain.getDescricao());
-        
+      
         return representation;
     }
 
@@ -32,7 +31,6 @@ public class ServicoConverter implements Converter<Servico, ServicoRepresentatio
     	Servico domain = new Servico();
     	domain.setId(representation.getId());
         domain.setNome(representation.getNome());
-        domain.setDescricao(representation.getDescricao());
         
         return domain;
     }

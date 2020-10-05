@@ -23,7 +23,7 @@ import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 
 @RestController
-@RequestMapping("/prestador/servicos")
+@RequestMapping("/servico-detalhado")
 @CrossOrigin(origins = {"http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200"})
 public class ServicoDetalhadoController {
 	@Autowired
@@ -45,7 +45,6 @@ public class ServicoDetalhadoController {
 	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(@PathVariable Long id, @RequestBody ServicoDetalhadoRepresentation servico) throws Exception{
 		ServicoDetalhado domain = converter.toDomain(servico);
 		ServicoDetalhado atualizaServico = service.atualizarServicoDetalhado(id, domain);
-	
 		return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(atualizaServico));
 	}
 	
@@ -63,7 +62,7 @@ public class ServicoDetalhadoController {
 //    }
 	
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id) throws Exception{
         ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -76,17 +75,17 @@ public class ServicoDetalhadoController {
         return response;
     }
     
-//    @GetMapping
-//    public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhados(){
-//        ResponseEntity<List<ServicoDetalhadoRepresentation>> response = new ResponseEntity(HttpStatus.NO_CONTENT);
-//
-//        List<ServicoDetalhado> servicosDetalhados = service.buscarServicosDetalhados();
-//
-//        if(servicosDetalhados.isEmpty() == false){
-//            response = new ResponseEntity<List<ServicoDetalhadoRepresentation>>(
-//                    converter.toRepresentationList(servicosDetalhados), HttpStatus.OK);
-//        }
-//
-//        return response;
-//    }
+    @GetMapping("/tipo-servico/{id}")
+    public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhados(@PathVariable Long id){
+        ResponseEntity<List<ServicoDetalhadoRepresentation>> response = new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        List<ServicoDetalhado> servicosDetalhados = service.buscarServicoDetalhadoPorTipo(id);
+
+        if(servicosDetalhados.isEmpty() == false){
+            response = new ResponseEntity<List<ServicoDetalhadoRepresentation>>(
+                    converter.toRepresentationList(servicosDetalhados), HttpStatus.OK);
+        }
+
+        return response;
+    }
 }

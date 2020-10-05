@@ -17,7 +17,6 @@ public class ServicoMock {
 		Servico servico = new Servico();
 		servico.setId(1L);
     	servico.setNome("Banho e Tosa");
-    	servico.setDescricao("Banhos quentinhos para o seu pet");
 
     	return servico;
 		}
@@ -66,7 +65,6 @@ public class ServicoMock {
     	public static Servico atualizarServico(Servico servico) {
     		Servico servicoDb = findById(servico.getId()).get();
     		servicoDb.setNome(servico.getNome());
-    		servicoDb.setDescricao(servico.getDescricao());
     		if(servico instanceof Servico) {
     			adicionarServico((Servico) servico);
     		}

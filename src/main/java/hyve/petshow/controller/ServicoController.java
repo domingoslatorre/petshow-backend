@@ -34,21 +34,10 @@ public class ServicoController {
 	@Autowired
 	private PrestadorConverter converter;
 
-	
-	
-  @GetMapping
-  public ResponseEntity<List<PrestadorRepresentation>> buscarPrestadoresPorServico(@PathVariable String nome){
-      ResponseEntity<List<PrestadorRepresentation>> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-      List<Prestador> prestadores = service.buscarPrestadoresPorServico(nome);
-
-      if(!prestadores.isEmpty()){
-          response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentationList(prestadores));
-      }
-
-      return response;
-  }
+		
 	
+
 	
 	
 	

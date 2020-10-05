@@ -23,8 +23,10 @@ public class PrestadorController {
 
     @Autowired
     private PrestadorConverter converter; //converte para uma entidade de dominio para não utilizar o mesmo objeto
-
-    @GetMapping("{id}")
+    
+	
+    
+    @GetMapping("{/id}")
     public ResponseEntity<PrestadorRepresentation> buscarPrestador(@PathVariable Long id) throws Exception {
         ResponseEntity<PrestadorRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -34,7 +36,7 @@ public class PrestadorController {
     }
 
 
-    @PutMapping("{id}")
+    @PutMapping("{/id}")
     public ResponseEntity<PrestadorRepresentation> atualizarPrestador(@PathVariable Long id, @RequestBody PrestadorRepresentation prestador) throws Exception {
         Prestador domain = converter.toDomain(prestador);
         Prestador prestadorAtualizado = service.atualizaConta(id, domain);
@@ -76,7 +78,7 @@ public class PrestadorController {
 //        return response;
 //    }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{/id}")
     public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id) throws Exception {
         ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

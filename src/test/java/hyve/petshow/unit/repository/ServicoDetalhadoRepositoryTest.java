@@ -53,23 +53,18 @@ public class ServicoDetalhadoRepositoryTest {
 //	}
 
 	
-//	@Test
-//	public void deve_retornar_prestadores_via_servico() {
-//		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
-//		Prestador prestador = new Prestador();
-//		Servico servico = new Servico();
-//		servico.setNome("Banho");
-//		servicoDetalhado.setTipo(servico);
-//		
-//		List<ServicoDetalhado> listaServicos = new ArrayList();
-//		listaServicos.add(servicoDetalhado);
-//		prestador.setServicosDetalhados(listaServicos);
-//		
-//		repository.save(servicoDetalhado);
-//
-//		List<Prestador> busca = repository.findByTipoContainingIgnoreCase("Banho");
-//		assertTrue(!busca.isEmpty());
-//	}
+	@Test
+	public void deve_retornar_servicos_detalhados_por_tipo() {
+		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
+		servicoDetalhado.setId(1L);
+		Servico servico = new Servico();
+		servico.setId(2L);
+		servicoDetalhado.setTipo(servico);
+		repository.save(servicoDetalhado);
+
+		List<ServicoDetalhado> busca = repository.findByTipo(2L);
+		assertTrue(!busca.isEmpty());
+	}
 }
 
 

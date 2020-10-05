@@ -22,9 +22,9 @@ public class ServicoDetalhado {
 //    @ElementCollection(targetClass=TipoAnimalEstimacao.class)
 //    private List<TipoAnimalEstimacao> animaisAceitos;
     
-//    @ManyToOne 
-//    @JoinColumn(name = "fk_conta", referencedColumnName = "id")
-//    private Prestador prestador;    
+    @ManyToOne 
+    @JoinColumn(name = "fk_conta", referencedColumnName = "id")
+    private Prestador prestador;    
 
     
 }

@@ -17,7 +17,7 @@ public interface ServicoDetalhadoService {
 
     //List<ServicoDetalhado> findByPrestador(Long id);
 	
-	List<Prestador> buscarPrestadoresPorServico (String nome);
+	List<ServicoDetalhado> buscarServicosDetalhadosPorTipo (Long id);
 	
 	ServicoDetalhado atualizarServicoDetalhado(Long id, ServicoDetalhado servicoDetalhadoRequest)throws Exception;
 
