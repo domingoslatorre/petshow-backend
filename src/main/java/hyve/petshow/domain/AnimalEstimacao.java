@@ -12,10 +12,7 @@ public class AnimalEstimacao {
     private Long id;
     private String nome;
     private String foto;
-    @ManyToOne
-    @JoinColumn(name = "fk_conta", referencedColumnName = "id")
-    private Cliente dono;
-    @ManyToOne
-    @JoinColumn(name = "fk_tipo_animal_estimacao", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_tipo_animal_estimacao")
     private TipoAnimalEstimacao tipo;
 }

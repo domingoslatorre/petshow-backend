@@ -22,7 +22,6 @@ public class AnimalEstimacaoMock {
         animalEstimacao.setNome("pedrinho");
         animalEstimacao.setFoto("hahah");
         animalEstimacao.setTipo(tipoAnimalEstimacao());
-        animalEstimacao.setDono(cliente);
 
         return animalEstimacao;
     }

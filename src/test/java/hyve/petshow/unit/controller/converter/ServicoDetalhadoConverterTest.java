@@ -9,6 +9,7 @@ import hyve.petshow.mock.ServicoDetalhadoMock;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -21,11 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @ActiveProfiles("test")
-
 public class ServicoDetalhadoConverterTest {
-	private ServicoDetalhadoConverter converter = new ServicoDetalhadoConverter();
+	@Autowired
+	private ServicoDetalhadoConverter converter;
 	
-	@Test //esse teste converte pra representação e pra dominio de novo, então se ele está correto os dois processos estão corretos
+	@Test //esse teste converte pra representaï¿½ï¿½o e pra dominio de novo, entï¿½o se ele estï¿½ correto os dois processos estï¿½o corretos
 	public void deve_retornar_servicoDetalhado_convertido() {
 		var expected = ServicoDetalhadoMock.criarServicoDetalhado();
 		

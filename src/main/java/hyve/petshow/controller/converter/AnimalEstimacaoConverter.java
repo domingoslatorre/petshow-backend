@@ -11,11 +11,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
-    @Autowired
-    private ClienteConverter clienteConverter;
-
-    @Autowired
-    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
+    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter = new TipoAnimalEstimacaoConverter();
 
     @Override
     public AnimalEstimacaoRepresentation toRepresentation(AnimalEstimacao domain) {
@@ -39,13 +35,12 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         domain.setNome(representation.getNome());
         domain.setFoto(representation.getFoto());
         domain.setTipo(tipoAnimalEstimacaoConverter.toDomain(representation.getTipo()));
-        domain.setDono(clienteConverter.toDomain(representation.getDono()));
 
         return domain;
     }
 
     public List<AnimalEstimacaoRepresentation> toRepresentationList(List<AnimalEstimacao> domainList){
-    	if(domainList == null) return new ArrayList<AnimalEstimacaoRepresentation>();
+    	if(domainList == null || domainList.isEmpty()) return new ArrayList<AnimalEstimacaoRepresentation>();
         List<AnimalEstimacaoRepresentation> representationList = new ArrayList<>();
 
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
@@ -53,7 +48,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
     }
 
 	public List<AnimalEstimacao> toDomainList(List<AnimalEstimacaoRepresentation> animaisEstimacao) {
-		if(animaisEstimacao == null) return new ArrayList<AnimalEstimacao>();
+		if(animaisEstimacao == null || animaisEstimacao.isEmpty()) return new ArrayList<AnimalEstimacao>();
 		return animaisEstimacao.stream().map(el -> toDomain(el)).collect(Collectors.toList());
 	}
 }

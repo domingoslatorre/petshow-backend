@@ -58,7 +58,6 @@ public class ClienteConverterTest {
 		List<AnimalEstimacaoRepresentation> animais = new ArrayList<AnimalEstimacaoRepresentation>();
 		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
 		animal.setTipo(tipoAnimalEstimacaoRepresentation());
-		animal.setDono(new ClienteRepresentation());
 
 		animais.add(animal);
 		

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cliente")
-@CrossOrigin(origins = {"http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200"})
+@CrossOrigin(origins = { "http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200" })
 public class ClienteController {
 	@Autowired
 	private ClienteService clienteService;
@@ -28,7 +28,8 @@ public class ClienteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ClienteRepresentation> adicionarCliente(@RequestBody ClienteRepresentation request) throws Exception {
+	public ResponseEntity<ClienteRepresentation> adicionarCliente(@RequestBody ClienteRepresentation request)
+			throws Exception {
 		var cliente = clienteService.adicionarConta(clienteConverter.toDomain(request));
 		var representation = clienteConverter.toRepresentation(cliente);
 
@@ -44,8 +45,7 @@ public class ClienteController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ClienteRepresentation> atualizarCliente(
-			@PathVariable Long id,
+	public ResponseEntity<ClienteRepresentation> atualizarCliente(@PathVariable Long id,
 			@RequestBody ClienteRepresentation request) throws Exception {
 		var cliente = clienteService.atualizarConta(id, clienteConverter.toDomain(request));
 		var representation = clienteConverter.toRepresentation(cliente);
