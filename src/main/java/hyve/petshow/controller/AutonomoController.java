@@ -6,6 +6,8 @@ import hyve.petshow.controller.representation.AutonomoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Autonomo;
 import hyve.petshow.service.port.AutonomoService;
+import hyve.petshow.util.UrlUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/autonomo")
-@CrossOrigin(origins = {"http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200"}) //quem pode usar esses serviços nesse controller
+@CrossOrigin(origins = {UrlUtils.URL_API_LOCAL, UrlUtils.URL_API_LOCAL_DOCKER, UrlUtils.URL_API_PROD}) //quem pode usar esses serviços nesse controller
 public class AutonomoController {
     @Autowired // instancia automaticamente
     private AutonomoService service; //

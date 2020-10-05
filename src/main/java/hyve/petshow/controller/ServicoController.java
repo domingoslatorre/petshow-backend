@@ -19,10 +19,11 @@ import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.service.port.ServicoService;
+import hyve.petshow.util.UrlUtils;
 
 @RestController
 @RequestMapping("/servicos")
-@CrossOrigin(origins = {"http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200"})
+@CrossOrigin(origins = {UrlUtils.URL_API_LOCAL, UrlUtils.URL_API_LOCAL_DOCKER, UrlUtils.URL_API_PROD})
 public class ServicoController {
 	@Autowired
 	private ServicoService service;

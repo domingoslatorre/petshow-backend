@@ -24,12 +24,14 @@ import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.service.port.PrestadorService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
+import hyve.petshow.util.UrlUtils;
 
 @RestController // controle de REST
 @RequestMapping("/prestador")
-@CrossOrigin(origins = { "http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200" }) // quem
+@CrossOrigin(origins = { UrlUtils.URL_API_LOCAL, UrlUtils.URL_API_LOCAL_DOCKER, UrlUtils.URL_API_PROD }) // quem
 																													// pode
 																													// usar
 																													// esses
