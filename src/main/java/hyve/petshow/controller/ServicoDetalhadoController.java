@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.service.port.ServicoDetalhadoService;
+import hyve.petshow.util.UrlUtils;
 
 @RestController
 @RequestMapping("/servico-detalhado")
-@CrossOrigin(origins = {"http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200"})
+@CrossOrigin(origins = {UrlUtils.URL_API_LOCAL, UrlUtils.URL_API_LOCAL_DOCKER, UrlUtils.URL_API_PROD})
 public class ServicoDetalhadoController {
 	@Autowired
 	private ServicoDetalhadoService service;
@@ -41,7 +41,7 @@ public class ServicoDetalhadoController {
 	}
 
 
-	@PutMapping("{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(@PathVariable Long id, @RequestBody ServicoDetalhadoRepresentation servico) throws Exception{
 		ServicoDetalhado domain = converter.toDomain(servico);
 		ServicoDetalhado atualizaServico = service.atualizarServicoDetalhado(id, domain);

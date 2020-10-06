@@ -9,4 +9,5 @@ public class AnimalEstimacaoRepresentation {
     private String nome;
     private String foto;
     private TipoAnimalEstimacao tipo;
+    private ClienteRepresentation dono;
 }

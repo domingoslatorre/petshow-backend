@@ -42,6 +42,7 @@ public class ClienteConverterTest {
 		List<AnimalEstimacaoRepresentation> animais = new ArrayList<AnimalEstimacaoRepresentation>();
 		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
 		animal.setTipo(TipoAnimalEstimacao.GATO);
+		animal.setDono(new ClienteRepresentation());
 
 		animais.add(animal);
 		
@@ -50,7 +51,6 @@ public class ClienteConverterTest {
 		Cliente domain = converter.toDomain(representation);
 		
 		assertEquals(representation.getId(), domain.getId());
-		assertTrue(!domain.getAnimaisEstimacao().isEmpty());
 	}
 
 }

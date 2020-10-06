@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class PrestadorRepresentation extends ContaRepresentation {
-//    private List<ServicoDetalhadoRepresentation> servicos;
+    private List<ServicoDetalhadoRepresentation> servicos;
     private String descricao;
 }

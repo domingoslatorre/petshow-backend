@@ -6,6 +6,8 @@ import hyve.petshow.controller.representation.AutonomoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Autonomo;
 import hyve.petshow.service.port.AutonomoService;
+import hyve.petshow.util.UrlUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/autonomo")
-@CrossOrigin(origins = {"http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200"}) //quem pode usar esses serviços nesse controller
+@CrossOrigin(origins = {UrlUtils.URL_API_LOCAL, UrlUtils.URL_API_LOCAL_DOCKER, UrlUtils.URL_API_PROD}) //quem pode usar esses serviços nesse controller
 public class AutonomoController {
     @Autowired // instancia automaticamente
     private AutonomoService service; //
@@ -25,7 +27,7 @@ public class AutonomoController {
     public ResponseEntity<AutonomoRepresentation> buscarAutonomo(@PathVariable Long id) throws Exception {
         ResponseEntity<AutonomoRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        Autonomo autonomo = service.obterContaPorId(id);
+        Autonomo autonomo = service.buscarPorId(id);
 
         return  ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(autonomo));
     }
@@ -34,7 +36,7 @@ public class AutonomoController {
     @PutMapping("{id}")
     public ResponseEntity<AutonomoRepresentation> atualizarAutonomo(@PathVariable Long id, @RequestBody AutonomoRepresentation autonomo) throws Exception {
         Autonomo domain = converter.toDomain(autonomo);
-        Autonomo autonomoAtualizado = service.atualizaConta(id, domain);
+        Autonomo autonomoAtualizado = service.atualizarConta(id, domain);
         AutonomoRepresentation representation = converter.toRepresentation(autonomoAtualizado);
         return ResponseEntity.status(HttpStatus.OK).body(representation);
     }

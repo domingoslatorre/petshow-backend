@@ -13,105 +13,114 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import hyve.petshow.controller.converter.ServicoConverter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.controller.representation.ServicoRepresentation;
+import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 //import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 
 public class ServicoDetalhadoMock {
-		public static ServicoDetalhado criarServicoDetalhado() {
+	public static ServicoDetalhado criarServicoDetalhado() {
 		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setId(1L);
-		
+
+		var prestador = new Prestador();
+		prestador.setId(1l);
+		prestador.setNome("TestePrestador");
+		servicoDetalhado.setPrestador(prestador);
+
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhado.setPreco(p);
-		
+
 		Servico s = new Servico();
 		s.setId(Long.valueOf(1));
 		s.setNome("Banho e Tosa");
 		s.setDescricao("Banhos quentinhos para o seu pet");
 		
 		servicoDetalhado.setTipo(s);
+		servicoDetalhado.setAvaliacoes(new ArrayList<>());
 		return servicoDetalhado;
-		}
-		
-		public static ServicoDetalhadoRepresentation criarServicoDetalhadoRepresentation() {
+	}
+
+	public static ServicoDetalhadoRepresentation criarServicoDetalhadoRepresentation() {
 		ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = new ServicoDetalhadoRepresentation();
 		servicoDetalhadoRepresentation.setId(1L);
-		
+		var prestador = new PrestadorRepresentation();
+		prestador.setId(1l);
+		prestador.setNome("TestePrestador");
+		servicoDetalhadoRepresentation.setPrestador(prestador);
+
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhadoRepresentation.setPreco(p);
-		
-		Servico s = new Servico();
+
+		ServicoRepresentation s = new ServicoRepresentation();
 		s.setId(Long.valueOf(1));
 		s.setNome("Banho e Tosa");
-		s.setDescricao("Banhos quentinhos para o seu pet");
+		s.setDescricao("Banhos quentinhos para o seu pet");	
 		
-		ServicoConverter servicoConverter = new ServicoConverter();
+
+		servicoDetalhadoRepresentation.setTipo(s);
 		
-		servicoDetalhadoRepresentation.setTipo(servicoConverter.toRepresentation(s));
+		servicoDetalhadoRepresentation.setAvaliacoes(new ArrayList<>());
 		return servicoDetalhadoRepresentation;
-		}
-		
-	
-    	public static List<ServicoDetalhado> dbMock = new ArrayList<ServicoDetalhado>(Arrays.asList(criarServicoDetalhado()));
-    	
-    	public static List<ServicoDetalhado> findAll() {
-    		return dbMock;
-    	}
+	}
+
+	public static List<ServicoDetalhado> dbMock = new ArrayList<ServicoDetalhado>(
+			Arrays.asList(criarServicoDetalhado()));
+
+	public static List<ServicoDetalhado> findAll() {
+		return dbMock;
+	}
 
 //    	public static Optional<ServicoDetalhado> buscarPorPrestador(Long id) {
 //    		return dbMock.stream().filter(el -> el.getId().equals(id)).findFirst();
 //    	}
-    	
-    	
-    	
-    	public static ServicoDetalhado save(ServicoDetalhado servicoDetalhado) {
-    		servicoDetalhado.setId((long) dbMock.size() + 1);
-    		dbMock.add(servicoDetalhado);		
-    		return servicoDetalhado;
-    	}
-    	
-    	public static Optional<ServicoDetalhado> findById(Long id) {
-    		return dbMock.stream().filter(el -> el.getId().equals(id)).findFirst();
-    	}
-    	
-    	public static ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado ServicoDetalhado) {
-    		ServicoDetalhado buscaPorId = (ServicoDetalhado) findById(ServicoDetalhado.getId()).get();
-    		return buscaPorId;
-    	}
-    	
-    	
-    	public static void removerPorId(Long id) {
-    		dbMock = dbMock.stream().filter(el -> el.getId() != id).collect(Collectors.toList());
-    	}
 
-    	public static ServicoDetalhado atualizarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
-    		ServicoDetalhado servicoDetalhadoDb = findById(servicoDetalhado.getId()).get();
-    		servicoDetalhadoDb.setPreco(servicoDetalhado.getPreco());
-    		servicoDetalhadoDb.setTipo(servicoDetalhado.getTipo());
-    		if(servicoDetalhado instanceof ServicoDetalhado) {
-    			adicionarServicoDetalhado((ServicoDetalhado) servicoDetalhado);
-    		}
-    		
-    		return servicoDetalhadoDb;
-    		
-    	}
-    	
-	    public static MensagemRepresentation criarMensagemRepresentation(){
-	        MensagemRepresentation mensagem = new MensagemRepresentation();
-	
-	        mensagem.setId(1L);
-	        mensagem.setSucesso(Boolean.TRUE);
-	        mensagem.setMensagem("Operação executada com sucesso!");
-	
-	        return mensagem;
-	    }
+	public static ServicoDetalhado save(ServicoDetalhado servicoDetalhado) {
+		servicoDetalhado.setId((long) dbMock.size() + 1);
+		dbMock.add(servicoDetalhado);
+		return servicoDetalhado;
+	}
 
-    	    	
-    	//ANTIGO:
-    	
-    	
+	public static Optional<ServicoDetalhado> findById(Long id) {
+		return dbMock.stream().filter(el -> el.getId().equals(id)).findFirst();
+	}
+
+	public static ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado ServicoDetalhado) {
+		ServicoDetalhado buscaPorId = (ServicoDetalhado) findById(ServicoDetalhado.getId()).get();
+		return buscaPorId;
+	}
+
+	public static void removerPorId(Long id) {
+		dbMock = dbMock.stream().filter(el -> el.getId() != id).collect(Collectors.toList());
+	}
+
+	public static ServicoDetalhado atualizarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
+		ServicoDetalhado servicoDetalhadoDb = findById(servicoDetalhado.getId()).get();
+		servicoDetalhadoDb.setPreco(servicoDetalhado.getPreco());
+		servicoDetalhadoDb.setTipo(servicoDetalhado.getTipo());
+		if (servicoDetalhado instanceof ServicoDetalhado) {
+			adicionarServicoDetalhado((ServicoDetalhado) servicoDetalhado);
+		}
+
+		return servicoDetalhadoDb;
+
+	}
+
+	public static MensagemRepresentation criarMensagemRepresentation() {
+		MensagemRepresentation mensagem = new MensagemRepresentation();
+
+		mensagem.setId(1L);
+		mensagem.setSucesso(Boolean.TRUE);
+		mensagem.setMensagem("Operaï¿½ï¿½o executada com sucesso!");
+
+		return mensagem;
+	}
+
+	// ANTIGO:
+
 //    	ServicoDetalhado objeto = new ServicoDetalhado();
 //
 //    	objeto.setId(1L);
@@ -179,13 +188,12 @@ public class ServicoDetalhadoMock {
 //    }
 //
 
-
 //    public static MensagemRepresentation mensagem2(){
 //    	MensagemRepresentation mensagem = new MensagemRepresentation();
 //
 //    	mensagem.setId(1L);
 //    	mensagem.setSucesso(Boolean.FALSE);
-//    	mensagem.setMensagem("Falha durante a execução da operação.");
+//    	mensagem.setMensagem("Falha durante a execuï¿½ï¿½o da operaï¿½ï¿½o.");
 //
 //        return mensagem;
 //    }

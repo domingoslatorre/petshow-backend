@@ -16,28 +16,55 @@ import org.springframework.web.bind.annotation.RestController;
 
 import hyve.petshow.controller.converter.PrestadorConverter;
 import hyve.petshow.controller.converter.ServicoConverter;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
+import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 import hyve.petshow.service.port.ServicoService;
+import hyve.petshow.util.UrlUtils;
 
 @RestController
-@RequestMapping("/buscar-prestadores")
-@CrossOrigin(origins = {"http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200"})
+@RequestMapping("/servicos")
+@CrossOrigin(origins = {UrlUtils.URL_API_LOCAL, UrlUtils.URL_API_LOCAL_DOCKER, UrlUtils.URL_API_PROD})
 public class ServicoController {
 	@Autowired
-	private ServicoDetalhadoService service;
+	private ServicoService service;
 
 	@Autowired
-	private PrestadorConverter converter;
+	private  ServicoConverter converter;
 
 
-		
+	@PutMapping("/{id}")
+	public ResponseEntity<ServicoRepresentation> atualizarServico(@PathVariable Long id, @RequestBody ServicoRepresentation servico) throws Exception{
+		Servico domain = converter.toDomain(servico);
+		Servico atualizaServico = service.atualizarServico(id, domain);
+		return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(atualizaServico));
+	}
 	
+    @GetMapping
+    public ResponseEntity<List<ServicoRepresentation>> buscarServicos(){
+        ResponseEntity<List<ServicoRepresentation>> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
+        List<Servico> servicos = service.buscarServicos();
+
+        if(!servicos.isEmpty()){
+            response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentationList(servicos));
+        }
+
+        return response;
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MensagemRepresentation> removerServico(@PathVariable Long id) throws Exception{
+        ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        MensagemRepresentation mensagem = service.removerServico(id);
+        return response;
+    }
 	
 	
 	

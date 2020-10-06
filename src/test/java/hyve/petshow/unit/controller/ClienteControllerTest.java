@@ -77,7 +77,7 @@ public class ClienteControllerTest {
 		ResponseEntity<ContaRepresentation> response = template.postForEntity(uri, request, ContaRepresentation.class);
 
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
-		assertEquals(response.getBody().getLogin(), contaMock.getLogin());
+		assertEquals(response.getBody().getLogin().getEmail(), contaMock.getLogin().getEmail());
 		assertTrue(repository.existsById(response.getBody().getId()));
 	}
 
@@ -154,87 +154,183 @@ public class ClienteControllerTest {
 
 	}
 
-	@Test
-	@Order(7)
-	public void deve_adicionar_animal() throws URISyntaxException {
-		URI uri = new URI(this.url);
+	/*TODO: TESTES ANIMAL ESTIMACAO
+	@Autowired
+    private AnimalEstimacaoController animalEstimacaoController;
 
-		Conta byLogin = repository.findByLogin(contaMock.getLogin()).get();
-		ClienteRepresentation conta = new ClienteRepresentation();
-		conta.setId(byLogin.getId());
-		Login login = new Login();
-		login.setEmail("teste@teste.com");
-		login.setSenha("teste1234");
-		conta.setLogin(login);
-		conta.setCpf("44444444444");
+    @MockBean
+    private AnimalEstimacaoConverter animalEstimacaoConverter;
 
-		List<AnimalEstimacaoRepresentation> animaisEstimacao = new ArrayList<AnimalEstimacaoRepresentation>();
-		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
-		animal.setNome("Aslkajdgads");
-		animal.setTipo(TipoAnimalEstimacao.GATO);
-		animaisEstimacao.add(animal);
-		conta.setAnimaisEstimacao(animaisEstimacao);
+    @MockBean(name = "animalEstimacaoService")
+    private AnimalEstimacaoService animalEstimacaoService;
 
-		HttpEntity<ClienteRepresentation> request = new HttpEntity<>(conta, new HttpHeaders());
+    @Test
+    public void deve_retornar_animal_salvo(){
+        //dado
+        var expectedBody = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+        var expectedStatus = HttpStatus.CREATED;
+        var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+        var animalEstimacao = AnimalEstimacaoMock.animalEstimacao();
 
-		ResponseEntity<ClienteRepresentation> response = template.exchange(uri, HttpMethod.PUT, request,
-				ClienteRepresentation.class);
+        when(animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation)).thenReturn(animalEstimacao);
+        when(animalEstimacaoService.adicionarAnimalEstimacao(animalEstimacao)).thenReturn(animalEstimacao);
+        when(animalEstimacaoConverter.toRepresentation(animalEstimacao)).thenReturn(expectedBody);
 
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		ClienteRepresentation body = response.getBody();
-		assertTrue(body.getAnimaisEstimacao().stream().filter(el -> el.getNome().equals(animal.getNome())).findFirst()
-				.isPresent());
-	}
-	
-	
-	@Test
-	@Order(8)
-	public void deve_adicionar_animal_a_lista() throws URISyntaxException {
-		URI uri = new URI(this.url);
-		
-		ClienteRepresentation cliente = new ClienteRepresentation();
-		Login login = new Login();
-		login.setEmail("testeCalebe@teste.com");
-		login.setSenha("testete1234");
-		cliente.setLogin(login);
-		
-		cliente.setCpf("12345678909");
-		
-		cliente.setNome("Joao");
-		List<AnimalEstimacaoRepresentation> animaisEstimacao = new ArrayList<AnimalEstimacaoRepresentation>();
-		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
-		animal.setNome("pedrinho");
-		animal.setTipo(TipoAnimalEstimacao.GATO);
-		animal.setFoto("");
-		animaisEstimacao.add(animal);
-		cliente.setAnimaisEstimacao(animaisEstimacao);
-		
-		HttpEntity<ClienteRepresentation> requestPost = new HttpEntity<ClienteRepresentation>(cliente, new HttpHeaders());
-		ResponseEntity<ClienteRepresentation> responsePost = template.postForEntity(uri, requestPost, ClienteRepresentation.class);
-		
-		assertEquals(HttpStatus.CREATED, responsePost.getStatusCode());
-		
-		HttpEntity<Login> requestLogin = new HttpEntity<Login>(cliente.getLogin(), new HttpHeaders());
-		ResponseEntity<ClienteRepresentation> responseLogin = template.postForEntity(new URI(this.url+"/login"), requestLogin, ClienteRepresentation.class);
-		
-		assertEquals(HttpStatus.OK, responseLogin.getStatusCode());
-		
-		cliente = responseLogin.getBody();
-		animaisEstimacao = cliente.getAnimaisEstimacao();
-		
-		AnimalEstimacaoRepresentation animal2 = new AnimalEstimacaoRepresentation();
-		animal2.setNome("felipinho");
-		animal2.setTipo(TipoAnimalEstimacao.CACHORRO);
-		animal2.setFoto("");
-		animaisEstimacao.add(animal2);
-		
-		cliente.setAnimaisEstimacao(animaisEstimacao);
-		
-		HttpEntity<ClienteRepresentation> requestPut = new HttpEntity<ClienteRepresentation>(cliente, new HttpHeaders());
-		ResponseEntity<ClienteRepresentation> responsePut = template.exchange(uri, HttpMethod.PUT, requestPut,	ClienteRepresentation.class);
-		responsePut.getBody();
-		assertEquals(HttpStatus.OK, responsePut.getStatusCode());
-		assertEquals(2, responsePut.getBody().getAnimaisEstimacao().size());
-		
-	}
+        //quando
+        var actual = animalEstimacaoController.criarAnimalEstimacao(animalEstimacaoRepresentation);
+
+        //entao
+        assertAll(
+                () -> assertEquals(expectedBody, actual.getBody()),
+                () -> assertEquals(expectedStatus, actual.getStatusCode())
+        );
+    }
+
+    @Test
+    public void deve_buscar_animal_correto(){
+        //dado
+        var expectedBody = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+        var expectedStatus = HttpStatus.OK;
+        var animalEstimacao = Optional.of(AnimalEstimacaoMock.animalEstimacao());
+        var id = 1L;
+
+        when(animalEstimacaoService.obterAnimalEstimacaoPorId(id)).thenReturn(animalEstimacao);
+        when(animalEstimacaoConverter.toRepresentation(animalEstimacao.get())).thenReturn(expectedBody);
+
+        //quando
+        var actual = animalEstimacaoController.obterAnimalEstimacao(id);
+
+        //entao
+
+        assertAll(
+                () -> assertEquals(expectedBody, actual.getBody()),
+                () -> assertEquals(expectedStatus, actual.getStatusCode())
+        );
+    }
+
+    @Test
+    public void obterAnimalEstimacaoTestCase02(){
+        var expectedStatus = HttpStatus.NO_CONTENT;
+        Optional<AnimalEstimacao> animalEstimacao = Optional.empty();
+        var id = 1L;
+
+        when(animalEstimacaoService.obterAnimalEstimacaoPorId(id)).thenReturn(animalEstimacao);
+
+        //quando
+        var actual = animalEstimacaoController.obterAnimalEstimacao(id);
+
+        //entao
+        assertEquals(expectedStatus, actual.getStatusCode());
+    }
+
+    @Test
+    public void deve_obter_lista_de_animais(){
+        //dado
+        var expectedBody = Arrays.asList(AnimalEstimacaoMock.animalEstimacaoRepresentation());
+        var expectedStatus = HttpStatus.OK;
+        var animaisEstimacao = Arrays.asList(AnimalEstimacaoMock.animalEstimacao());
+
+        when(animalEstimacaoService.buscarAnimaisEstimacao()).thenReturn(animaisEstimacao);
+        when(animalEstimacaoConverter.toRepresentationList(animaisEstimacao)).thenReturn(expectedBody);
+
+        //quando
+        var actual = animalEstimacaoController.obterAnimaisEstimacao();
+
+        //entao
+        assertAll(
+                () -> assertEquals(expectedBody, actual.getBody()),
+                () -> assertEquals(expectedStatus, actual.getStatusCode())
+        );
+    }
+
+    @Test
+    public void deve_retornar_lista_vazia_de_animais(){
+        //dado
+        var expectedStatus = HttpStatus.NO_CONTENT;
+        List<AnimalEstimacao> animaisEstimacao = Collections.emptyList();
+
+        when(animalEstimacaoService.buscarAnimaisEstimacao()).thenReturn(animaisEstimacao);
+
+        //quando
+        var actual = animalEstimacaoController.obterAnimaisEstimacao();
+
+        //entao
+        assertEquals(expectedStatus, actual.getStatusCode());
+    }
+
+    @Test
+    public void deve_retornar_animal_atualizado(){
+        //dado
+        var expectedBody = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+        var expectedStatus = HttpStatus.OK;
+        var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+        var animalEstimacao = AnimalEstimacaoMock.animalEstimacao();
+        var id = 1L;
+
+        when(animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation)).thenReturn(animalEstimacao);
+        when(animalEstimacaoService.atualizarAnimalEstimacao(id, animalEstimacao)).thenReturn(Optional.of(animalEstimacao));
+        when(animalEstimacaoConverter.toRepresentation(animalEstimacao)).thenReturn(expectedBody);
+
+        //quando
+        var actual = animalEstimacaoController.atualizarAnimalEstimacao(id, animalEstimacaoRepresentation);
+
+        //entao
+        assertAll(
+                () -> assertEquals(expectedBody, actual.getBody()),
+                () -> assertEquals(expectedStatus, actual.getStatusCode())
+        );
+    }
+
+    @Test
+    public void deve_retornar_vazio_quando_animal_nao_existir(){
+        //dado
+        var expectedStatus = HttpStatus.NO_CONTENT;
+        var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+        var animalEstimacao = AnimalEstimacaoMock.animalEstimacao();
+        var id = 1L;
+
+        when(animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation)).thenReturn(animalEstimacao);
+        when(animalEstimacaoService.atualizarAnimalEstimacao(id, animalEstimacao)).thenReturn(Optional.empty());
+
+        //quando
+        var actual = animalEstimacaoController.atualizarAnimalEstimacao(id, animalEstimacaoRepresentation);
+
+        //entao
+        assertEquals(expectedStatus, actual.getStatusCode());
+    }
+
+    @Test
+    public void removerAnimalEstimacaoTestCase01(){
+        //dado
+        var id = 1L;
+        var expectedStatus = HttpStatus.OK;
+        var expectedBody = AnimalEstimacaoMock.animalEstimacaoResponseRepresentation();
+
+        when(animalEstimacaoService.removerAnimalEstimacao(id)).thenReturn(expectedBody);
+
+        //quando
+        var actual = animalEstimacaoController.removerAnimalEstimacao(id);
+
+        //entao
+        assertAll(
+                () -> assertEquals(expectedBody, actual.getBody()),
+                () -> assertEquals(expectedStatus, actual.getStatusCode())
+        );
+    }
+
+    @Test
+    public void deve_retornar_status_204_quando_nao_tiver_o_que_remover(){
+        //dado
+        var id = 1L;
+        var expectedStatus = HttpStatus.NO_CONTENT;
+        var animalEstimacaoResponseRepresentation = AnimalEstimacaoMock.animalEstimacaoResponseRepresentationAlt();
+
+        when(animalEstimacaoService.removerAnimalEstimacao(id)).thenReturn(animalEstimacaoResponseRepresentation);
+
+        //quando
+        var actual = animalEstimacaoController.removerAnimalEstimacao(id);
+
+        //entao
+        assertEquals(expectedStatus, actual.getStatusCode());
+    }*/
 }

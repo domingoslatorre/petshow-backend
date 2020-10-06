@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import hyve.petshow.domain.enums.TipoAnimalEstimacao;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
@@ -12,18 +14,25 @@ import hyve.petshow.domain.ServicoDetalhado;
 
 @Component
 public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, ServicoDetalhadoRepresentation>{
-		
+	@Autowired
+	private PrestadorConverter prestadorConverter;
+	@Autowired
+	private ServicoConverter servicoConverter;
+	@Autowired
+	private AvaliacaoConverter avaliacaoConverter;
+	
 	@Override
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {
     	if(domain == null) return new ServicoDetalhadoRepresentation();
     	ServicoDetalhadoRepresentation representation = new ServicoDetalhadoRepresentation();
-    	ServicoConverter servicoConverter = new ServicoConverter();
+    	
     	
     	representation.setId(domain.getId());
         representation.setPreco(domain.getPreco());
         representation.setTipo(servicoConverter.toRepresentation(domain.getTipo()));
 //      representation.setAnimaisAceitos(animalConverter.toRepresentationList(domain.getAnimaisAceitos()));
-//      representation.setPrestador(prestadorConverter.toRepresentationList(domain.getPrestador()));
+        representation.setPrestador(prestadorConverter.toRepresentation(domain.getPrestador()));
+        representation.setAvaliacoes(avaliacaoConverter.toRepresentationList(domain.getAvaliacoes()));
 
         return representation;
     }
@@ -32,12 +41,12 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     public ServicoDetalhado toDomain(ServicoDetalhadoRepresentation representation) {
     	if(representation == null) return new ServicoDetalhado();
     	ServicoDetalhado domain = new ServicoDetalhado();
-    	ServicoConverter servicoConverter = new ServicoConverter();
         
     	domain.setId(representation.getId());
     	domain.setPreco(representation.getPreco());
         domain.setTipo(servicoConverter.toDomain(representation.getTipo()));
-//      domain.setPrestador(servicoPrestador.toDomainList(representation.getPrestador()));
+        domain.setPrestador(prestadorConverter.toDomain(representation.getPrestador()));
+        domain.setAvaliacoes(avaliacaoConverter.toDomainList(representation.getAvaliacoes()));
 //    	domain.setAnimaisAceitos(representation.getAnimaisAceitos());
 		
         return domain;

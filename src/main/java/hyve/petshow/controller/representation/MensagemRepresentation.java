@@ -14,12 +14,16 @@ public class MensagemRepresentation {
 	public static final String MENSAGEM_FALHA = "Falha durante a execução da operação";
 	
 	private Long id;
-	@Setter(value = AccessLevel.NONE) private Boolean sucesso;
+	@Setter(value = AccessLevel.NONE)
+	private Boolean sucesso;
 	private String mensagem;
-	
-	
+
+	public MensagemRepresentation(Long id) {
+		this.id = id;
+	}
+
 	public void setSucesso(Boolean sucesso) {
 		this.sucesso = sucesso;
-		setMensagem(getSucesso() ? MENSAGEM_SUCESSO : MENSAGEM_FALHA);
+		this.setMensagem(getSucesso() ? MENSAGEM_SUCESSO : MENSAGEM_FALHA);
 	}
 }
