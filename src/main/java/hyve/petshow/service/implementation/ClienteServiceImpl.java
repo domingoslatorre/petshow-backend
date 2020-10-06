@@ -71,7 +71,8 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public Cliente atualizarConta(Long id, Cliente conta) throws NotFoundException {
-		repository.findById(id).orElseThrow(()->new NotFoundException("Conta não encontrada"));
+		var contaDb = repository.findById(id).orElseThrow(()->new NotFoundException("Conta não encontrada"));
+		conta.setLogin(contaDb.getLogin());
 		return repository.save(conta);
 	}
 
