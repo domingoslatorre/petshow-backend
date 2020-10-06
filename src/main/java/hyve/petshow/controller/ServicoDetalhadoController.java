@@ -79,7 +79,7 @@ public class ServicoDetalhadoController {
     public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhados(@PathVariable Long id){
         ResponseEntity<List<ServicoDetalhadoRepresentation>> response = new ResponseEntity(HttpStatus.NO_CONTENT);
 
-        List<ServicoDetalhado> servicosDetalhados = service.buscarServicoDetalhadoPorTipo(id);
+        List<ServicoDetalhado> servicosDetalhados = service.buscarServicosDetalhadosPorTipo(id);
 
         if(servicosDetalhados.isEmpty() == false){
             response = new ResponseEntity<List<ServicoDetalhadoRepresentation>>(

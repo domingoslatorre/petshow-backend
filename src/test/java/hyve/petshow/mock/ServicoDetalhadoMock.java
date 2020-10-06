@@ -29,6 +29,7 @@ public class ServicoDetalhadoMock {
 		Servico s = new Servico();
 		s.setId(Long.valueOf(1));
 		s.setNome("Banho e Tosa");
+		s.setDescricao("Banhos quentinhos para o seu pet");
 		
 		servicoDetalhado.setTipo(s);
 		return servicoDetalhado;
@@ -44,7 +45,8 @@ public class ServicoDetalhadoMock {
 		Servico s = new Servico();
 		s.setId(Long.valueOf(1));
 		s.setNome("Banho e Tosa");
-	
+		s.setDescricao("Banhos quentinhos para o seu pet");
+		
 		ServicoConverter servicoConverter = new ServicoConverter();
 		
 		servicoDetalhadoRepresentation.setTipo(servicoConverter.toRepresentation(s));

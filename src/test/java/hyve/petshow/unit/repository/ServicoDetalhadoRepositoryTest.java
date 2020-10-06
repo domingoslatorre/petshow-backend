@@ -53,7 +53,7 @@ public class ServicoDetalhadoRepositoryTest {
 //	}
 
 	
-	@Test
+/*	@Test
 	public void deve_retornar_servicos_detalhados_por_tipo() {
 		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setId(1L);
@@ -64,7 +64,7 @@ public class ServicoDetalhadoRepositoryTest {
 
 		List<ServicoDetalhado> busca = repository.findByTipo(2L);
 		assertTrue(!busca.isEmpty());
-	}
+	}*/
 }
 
 
