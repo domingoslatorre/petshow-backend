@@ -1,4 +1,4 @@
-package hyve.petshow.controller;
+package hyve.petshow.facade;
 
 import java.util.List;
 
