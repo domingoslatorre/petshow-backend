@@ -7,11 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import hyve.petshow.controller.converter.ServicoConverter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
@@ -29,7 +24,7 @@ public class ServicoDetalhadoMock {
 		var prestador = new Prestador();
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
-		servicoDetalhado.setPrestador(prestador);
+		servicoDetalhado.setPrestadorId(prestador);
 
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhado.setPreco(p);
@@ -50,7 +45,7 @@ public class ServicoDetalhadoMock {
 		var prestador = new PrestadorRepresentation();
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
-		servicoDetalhadoRepresentation.setPrestador(prestador);
+		servicoDetalhadoRepresentation.setPrestadorId(prestador);
 
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhadoRepresentation.setPreco(p);

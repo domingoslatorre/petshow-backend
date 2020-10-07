@@ -38,9 +38,6 @@ public class AutonomoServiceImpl implements AutonomoService {
     }
 
     @Override
-    public Optional<Autonomo> buscarPorCpf(String cpf) { return repository.findByCpf(cpf); }
-
-    @Override
     public Optional<Autonomo> buscarPorEmail(String email) { return repository.findByEmail(email); }
 
     @Override

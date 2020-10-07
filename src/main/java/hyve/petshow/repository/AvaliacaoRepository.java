@@ -9,6 +9,5 @@ import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.ServicoDetalhado;
 
 public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
-	@Query("select a from Avaliacao a left join fetch a.cliente c left join fetch c.animaisEstimacao where a.servicoAvaliado = ?1")
-	List<Avaliacao> findByServicoAvaliado(ServicoDetalhado servicoAvaliado);
+	List<Avaliacao> findByServicoAvaliadoId(Long id);
 }

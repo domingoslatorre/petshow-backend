@@ -1,90 +1,94 @@
 package hyve.petshow.controller;
 
-import java.util.List;
-
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.facade.AvaliacaoFacade;
+import hyve.petshow.service.port.ServicoDetalhadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.service.port.ServicoDetalhadoService;
-import hyve.petshow.util.UrlUtils;
+import java.util.List;
 
 @RestController
-@RequestMapping("/servico-detalhado")
+@RequestMapping
 public class ServicoDetalhadoController {
 	@Autowired
 	private ServicoDetalhadoService service;
-
 	@Autowired
 	private ServicoDetalhadoConverter converter;
+	@Autowired
+	private AvaliacaoFacade avaliacaoFacade;
+	@Autowired
+	private ServicoDetalhadoConverter servicoDetalhadoConverter;
+	@Autowired
+	private ServicoDetalhadoService servicoDetalhadoService;
 
-	@PostMapping
-	public ResponseEntity <ServicoDetalhadoRepresentation> adicionarServicoDetalhado(@RequestBody ServicoDetalhadoRepresentation servico) {
-		ServicoDetalhado domain = converter.toDomain(servico);
-		ServicoDetalhado servicoSalvo = service.adicionarServicoDetalhado(domain);
-		ServicoDetalhadoRepresentation representation = converter.toRepresentation(servicoSalvo);
+	@PostMapping("/prestador/servico-detalhado")
+	public ResponseEntity <ServicoDetalhadoRepresentation> adicionarServicoDetalhado(
+	        @RequestBody ServicoDetalhadoRepresentation request) {
+		var servico = converter.toDomain(request);
+		servico = service.adicionarServicoDetalhado(servico);
+		var representation = converter.toRepresentation(servico);
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
 	}
 
-
-	@PutMapping("/{id}")
-	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(@PathVariable Long id, @RequestBody ServicoDetalhadoRepresentation servico) throws Exception{
-		ServicoDetalhado domain = converter.toDomain(servico);
-		ServicoDetalhado atualizaServico = service.atualizarServicoDetalhado(id, domain);
-		return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(atualizaServico));
+	@GetMapping("/servico-detalhado/{id}")
+	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhado(
+			@PathVariable Long id) throws NotFoundException {
+		var servicoDetalhado = service.buscarPorId(id);
+		var representation = converter.toRepresentation(servicoDetalhado);
+		return ResponseEntity.ok(representation);
 	}
-	
-//    @GetMapping("/prestador/{id}")
-//    public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosPorPrestador(@PathVariable Long id){
-//        ResponseEntity<List<ServicoDetalhadoRepresentation>> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//
-//        List<ServicoDetalhado> servicos = service.buscarServicosDetalhadosPorPrestador(id);
-//
-//        if(!servicos.isEmpty()){
-//            response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentationList(servicos));
-//        }
-//
-//        return response;
-//    }
-	
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id) throws Exception{
-        ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	@GetMapping("/servico-detalhado/tipo-servico/{id}")
+	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorTipoServico(
+			@PathVariable Integer id) throws NotFoundException {
+		var servicosDetalhados = service.buscarServicosDetalhadosPorTipoServico(id);
+		var representation = converter.toRepresentationList(servicosDetalhados);
+		return ResponseEntity.ok(representation);
+	}
 
-        MensagemRepresentation mensagem = service.removerServicoDetalhado(id);
+	@GetMapping("/prestador/{prestadorId}/servico-detalhado")
+	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicoDetalhadoPorPrestador(
+			@PathVariable Long prestadorId) throws Exception {
+		var servico = servicoDetalhadoService.buscarPorPrestadorId(prestadorId);
+		var representation = servicoDetalhadoConverter.toRepresentationList(servico);
+		return ResponseEntity.ok(representation);
+	}
 
-        if(mensagem.getSucesso()){
-            response = ResponseEntity.status(HttpStatus.OK).body(mensagem);
-        }
+	@PutMapping("/prestador/servico-detalhado/{id}")
+	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(
+	        @PathVariable Long id,
+            @RequestBody ServicoDetalhadoRepresentation request) throws Exception{
+		var servico = converter.toDomain(request);
+		servico = service.atualizarServicoDetalhado(id, servico);
+		var representation = converter.toRepresentation(servico);
+		return ResponseEntity.ok(representation);
+	}
 
-        return response;
+    @DeleteMapping("/prestador/{prestadorId}/servico-detalhado/{id}")
+    public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(
+            @PathVariable Long prestadorId,
+            @PathVariable Long id) throws Exception{
+        var response = service.removerServicoDetalhado(id, prestadorId);
+        return ResponseEntity.ok(response);
     }
-    
-    @GetMapping("/tipo-servico/{id}")
-    public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhados(@PathVariable Long id){
-        ResponseEntity<List<ServicoDetalhadoRepresentation>> response = new ResponseEntity(HttpStatus.NO_CONTENT);
 
-        List<ServicoDetalhado> servicosDetalhados = service.buscarServicosDetalhadosPorTipo(id);
+	@PostMapping("/servico-detalhado/{id}/avaliacao")
+	public ResponseEntity<ServicoDetalhadoRepresentation> adicionarAvaliacao(
+			@PathVariable Long id,
+			@RequestBody AvaliacaoRepresentation avaliacao) throws Exception {
+		var clienteId = avaliacao.getClienteId();
 
-        if(servicosDetalhados.isEmpty() == false){
-            response = new ResponseEntity<List<ServicoDetalhadoRepresentation>>(
-                    converter.toRepresentationList(servicosDetalhados), HttpStatus.OK);
-        }
+		avaliacaoFacade.adicionarAvaliacao(avaliacao, clienteId, id);
 
-        return response;
-    }
+		var servico = servicoDetalhadoService.buscarPorId(id);
+		var representation = servicoDetalhadoConverter.toRepresentation(servico);
+		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
+	}
 }

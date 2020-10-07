@@ -14,9 +14,9 @@ public interface AnimalEstimacaoService {
 
     AnimalEstimacao buscarAnimalEstimacaoPorId(Long id) throws NotFoundException;
 
-    List<AnimalEstimacao> buscarAnimaisEstimacao(Long id) throws NotFoundException;
+    List<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id) throws NotFoundException;
 
-    AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao animalEstimacao, Long donoId) throws NotFoundException, BusinessException;
+    AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao animalEstimacao) throws NotFoundException, BusinessException;
 
     MensagemRepresentation removerAnimalEstimacao(Long id, Long donoId) throws BusinessException, NotFoundException;
 }

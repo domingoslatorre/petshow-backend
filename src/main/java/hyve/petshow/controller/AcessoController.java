@@ -52,8 +52,6 @@ public class AcessoController {
         try {
             verificarEmailExistente(contaRepresentation.getLogin().getEmail());
             var conta = adicionarConta(contaRepresentation);
-
-            realizarAutenticacao(conta.getLogin());
             var token = gerarToken(conta);
 
             return ResponseEntity.ok(token);

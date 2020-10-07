@@ -11,6 +11,5 @@ public class ServicoDetalhadoRepresentation {
 	private BigDecimal preco;
 	private ServicoRepresentation tipo;
 	private List<AvaliacaoRepresentation> avaliacoes;
-//    private List<TipoAnimalEstimacao> animaisAceitos;
-    private PrestadorRepresentation prestador;
+    private Long prestadorId;
 }

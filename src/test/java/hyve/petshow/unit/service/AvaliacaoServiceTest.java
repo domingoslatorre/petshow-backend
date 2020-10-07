@@ -9,6 +9,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.stream.Collectors;
 
+import hyve.petshow.exceptions.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -24,6 +25,8 @@ import hyve.petshow.mock.repositorio.AvaliacaoRepositoryMock;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.service.implementation.AvaliacaoServiceImpl;
 
+import javax.persistence.Id;
+
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AvaliacaoServiceTest {
 	@Mock
@@ -35,7 +38,7 @@ public class AvaliacaoServiceTest {
 	@BeforeEach
 	public void init() {
 		initMocks(this);
-		when(repository.findByServicoAvaliado(any(ServicoDetalhado.class)))
+		when(repository.findByServicoAvaliadoId(any(Long.class)))
 				.then(mock -> AvaliacaoRepositoryMock.findByServicoAvaliado(mock.getArgument(0)));
 
 		when(repository.save(any(Avaliacao.class))).then(mock -> AvaliacaoRepositoryMock.save(mock.getArgument(0)));
@@ -64,28 +67,28 @@ public class AvaliacaoServiceTest {
 	}
 
 	@Test
-	public void deve_retornar_lista_contendo_elemento() {
+	public void deve_retornar_lista_contendo_elemento() throws NotFoundException {
 		// Dado
 		var avaliacao = AvaliacaoMock.geraAvaliacao();
 		var avaliacaoSalva = service.adicionarAvaliacao(avaliacao);
 
 		// Quando
-		var avaliacoes = service.buscarAvaliacoesPorServico(avaliacaoSalva.getServicoAvaliado());
+		var avaliacoes = service.buscarAvaliacoesPorServicoId(avaliacaoSalva.getServicoAvaliadoId());
 
 		// Entao
 		assertTrue(avaliacoes.stream().anyMatch(el -> el.getId().equals(avaliacaoSalva.getId())));
 	}
 
 	@Test
-	public void deve_retornar_lista_de_avaliacoes() {
+	public void deve_retornar_lista_de_avaliacoes() throws NotFoundException {
 		// Dado
 		var avaliacoes = AvaliacaoMock.geraListaAvaliacao().stream().map(avaliacao -> {
 			return service.adicionarAvaliacao(avaliacao);
 		}).collect(Collectors.toList());
 
 		// Quando
-		var servicoAvaliado = avaliacoes.get(0).getServicoAvaliado();
-		var busca = service.buscarAvaliacoesPorServico(servicoAvaliado);
+		var servicoAvaliado = avaliacoes.get(0).getServicoAvaliadoId();
+		var busca = service.buscarAvaliacoesPorServicoId(servicoAvaliado);
 
 		// Então
 		assertEquals(avaliacoes.size(), busca.size());

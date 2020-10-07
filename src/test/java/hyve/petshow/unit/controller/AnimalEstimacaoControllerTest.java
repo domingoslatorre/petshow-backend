@@ -3,7 +3,6 @@ package hyve.petshow.unit.controller;
 import hyve.petshow.controller.AnimalEstimacaoController;
 import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
 import hyve.petshow.controller.converter.TipoAnimalEstimacaoConverter;
-import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.mock.AnimalEstimacaoMock;
 import hyve.petshow.service.port.AnimalEstimacaoService;
@@ -18,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -72,7 +69,7 @@ public class AnimalEstimacaoControllerTest {
         var expectedStatus = HttpStatus.OK;
         var animaisEstimacao = Arrays.asList(AnimalEstimacaoMock.animalEstimacao());
 
-        when(animalEstimacaoService.buscarAnimaisEstimacao()).thenReturn(animaisEstimacao);
+        when(animalEstimacaoService.buscarAnimaisEstimacaoPorDono()).thenReturn(animaisEstimacao);
         when(animalEstimacaoConverter.toRepresentationList(animaisEstimacao)).thenReturn(expectedBody);
 
         //quando
@@ -90,7 +87,7 @@ public class AnimalEstimacaoControllerTest {
         //dado
         var expectedStatus = HttpStatus.NO_CONTENT;
 
-        when(animalEstimacaoService.buscarAnimaisEstimacao()).thenThrow(NotFoundException.class);
+        when(animalEstimacaoService.buscarAnimaisEstimacaoPorDono()).thenThrow(NotFoundException.class);
 
         //entao
         assertThrows(NotFoundException.class, () -> animalEstimacaoController.buscarAnimaisEstimacao());

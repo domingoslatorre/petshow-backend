@@ -13,12 +13,21 @@ import hyve.petshow.service.port.AvaliacaoService;
 
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService {
+	private final String AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada";
+	private final String NENHUMA_AVALIACAO_ENCONTRADA = "Nenhuma avaliação encontrada";
+
 	@Autowired
 	private AvaliacaoRepository repository;
 	
 	@Override
-	public List<Avaliacao> buscarAvaliacoesPorServico(ServicoDetalhado servico) {
-		return repository.findByServicoAvaliado(servico);
+	public List<Avaliacao> buscarAvaliacoesPorServicoId(Long id) throws NotFoundException {
+		var avaliacoes = repository.findByServicoAvaliadoId(id);
+
+		if(avaliacoes.isEmpty()){
+			throw new NotFoundException(NENHUMA_AVALIACAO_ENCONTRADA);
+		}
+
+		return avaliacoes;
 	}
 
 	@Override
@@ -28,7 +37,8 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 
 	@Override
 	public Avaliacao buscarAvaliacaoPorId(Long id) throws NotFoundException {
-		return repository.findById(id).orElseThrow(()-> new NotFoundException("Avaliação não encontrada"));
+		return repository.findById(id)
+				.orElseThrow(()-> new NotFoundException(AVALIACAO_NAO_ENCONTRADA));
 	}
 
 }

@@ -24,7 +24,6 @@ public class AvaliacaoMock {
 		var tipo = new Servico();
 		tipo.setId(1);
 		tipo.setNome("Banho");
-		tipo.setDescricao("Banho");
 
 		var servicoAvaliado = new ServicoDetalhado();
 		servicoAvaliado.setId(1l);
@@ -35,14 +34,14 @@ public class AvaliacaoMock {
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
 
-		servicoAvaliado.setPrestador(prestador);
+		servicoAvaliado.setPrestadorId(prestador);
 		servicoAvaliado.setAvaliacoes(new ArrayList<>());
 		var cliente = new Cliente();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 
 		var avaliacao = new Avaliacao();
-		avaliacao.setServicoAvaliado(servicoAvaliado);
+		avaliacao.setServicoAvaliadoId(servicoAvaliado);
 		var info = new CriteriosAvaliacao();
 		info.setAtencao(5);
 		info.setQualidadeProdutos(5);
@@ -51,7 +50,7 @@ public class AvaliacaoMock {
 		info.setQualidadeServico(5);
 		info.setComentario("Muito bom");
 		avaliacao.setCriteriosAvaliacao(info);
-		avaliacao.setCliente(cliente);
+		avaliacao.setClienteId(cliente);
 
 		return avaliacao;
 	}
@@ -73,14 +72,14 @@ public class AvaliacaoMock {
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
 		
-		servicoAvaliado.setPrestador(prestador);
+		servicoAvaliado.setPrestadorId(prestador);
 
 		var cliente = new ClienteRepresentation();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 
 		var avaliacao = new AvaliacaoRepresentation();
-		avaliacao.setServicoAvaliado(servicoAvaliado);
+		avaliacao.setServicoAvaliadoId(servicoAvaliado);
 		avaliacao.setAtencao(5);
 		avaliacao.setQualidadeProdutos(5);
 		avaliacao.setCustoBeneficio(5);
@@ -88,7 +87,7 @@ public class AvaliacaoMock {
 		avaliacao.setQualidadeServico(5);
 		avaliacao.setComentario("Muito bom");
 		avaliacao.setMedia(5d);
-		avaliacao.setCliente(cliente);
+		avaliacao.setClienteId(cliente);
 		return avaliacao;
 	}
 
@@ -106,7 +105,7 @@ public class AvaliacaoMock {
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 		return Stream.of(new Avaliacao(), new Avaliacao(), new Avaliacao()).map(avaliacao -> {
-			avaliacao.setServicoAvaliado(servicoAvaliado);
+			avaliacao.setServicoAvaliadoId(servicoAvaliado);
 			var info = new CriteriosAvaliacao();
 			info.setAtencao(geraNota());
 			info.setQualidadeProdutos(geraNota());
@@ -115,7 +114,7 @@ public class AvaliacaoMock {
 			info.setQualidadeServico(geraNota());
 			info.setComentario("Muito bom");
 			avaliacao.setCriteriosAvaliacao(info);
-			avaliacao.setCliente(cliente);
+			avaliacao.setClienteId(cliente);
 			return avaliacao;
 		}).collect(Collectors.toList());
 	}

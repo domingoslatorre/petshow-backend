@@ -6,6 +6,5 @@ import org.springframework.stereotype.Service;
 import hyve.petshow.domain.Cliente;
 
 @Service
-public interface PrestadorService extends ContaService<Prestador>{ //é somente uma interface
-
+public interface PrestadorService extends ContaService<Prestador> {
 }

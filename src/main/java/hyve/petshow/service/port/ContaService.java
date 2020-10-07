@@ -17,8 +17,6 @@ public interface ContaService<T extends Conta> {
 
 	MensagemRepresentation removerConta(Long id) throws Exception;
 
-	Optional<T> buscarPorCpf(String cpf);
-
 	Optional<T> buscarPorEmail(String email);
 
 	T atualizarConta(Long id, T conta) throws Exception;

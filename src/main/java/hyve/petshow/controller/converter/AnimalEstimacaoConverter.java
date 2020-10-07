@@ -22,6 +22,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         representation.setNome(domain.getNome());
         representation.setFoto(domain.getFoto());
         representation.setTipo(tipoAnimalEstimacaoConverter.toRepresentation(domain.getTipo()));
+        representation.setDonoId(domain.getDonoId());
 
         return representation;
     }
@@ -35,6 +36,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         domain.setNome(representation.getNome());
         domain.setFoto(representation.getFoto());
         domain.setTipo(tipoAnimalEstimacaoConverter.toDomain(representation.getTipo()));
+        domain.setDonoId(representation.getDonoId());
 
         return domain;
     }

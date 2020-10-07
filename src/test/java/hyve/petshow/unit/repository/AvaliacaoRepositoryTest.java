@@ -53,11 +53,12 @@ public class AvaliacaoRepositoryTest {
 	@BeforeEach
 	public void adicionaServico() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		prestador = prestadorRepository.save(avaliacao.getServicoAvaliado().getPrestador());
-		avaliacao.getServicoAvaliado().setPrestador(prestador);
-		servicoRepository.save(avaliacao.getServicoAvaliado().getTipo());
-		servico = servicoDetalhadoRepository.save(avaliacao.getServicoAvaliado());
-		cliente = clienteRepository.save(avaliacao.getCliente());
+		var servico = servicoDetalhadoRepository.findById(avaliacao.getId());
+		prestador = prestadorRepository.save(avaliacao.getServicoAvaliadoId().getPrestadorId());
+		avaliacao.getServicoAvaliadoId().setPrestadorId(prestador);
+		servicoRepository.save(avaliacao.getServicoAvaliadoId().getTipo());
+		servico = servicoDetalhadoRepository.save(avaliacao.getServicoAvaliadoId());
+		cliente = clienteRepository.save(avaliacao.getClienteId());
 	}
 
 	@AfterEach
@@ -69,10 +70,10 @@ public class AvaliacaoRepositoryTest {
 	public void deve_retornar_avaliacao_de_servico() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
 		servico.addAvaliacao(avaliacao);
-		avaliacao.setServicoAvaliado(servico);
-		avaliacao.setCliente(cliente);
+		avaliacao.setServicoAvaliadoId(servico);
+		avaliacao.setClienteId(cliente);
 		Avaliacao avaliacaoSalva = repository.save(avaliacao);
-		List<Avaliacao> avaliacoes = repository.findByServicoAvaliado(servico);
+		List<Avaliacao> avaliacoes = repository.findByServicoAvaliadoId(servico);
 
 		assertTrue(avaliacoes.stream().filter(el -> avaliacaoSalva.getId().equals(el.getId())).findFirst().isPresent());
 	}
@@ -81,14 +82,14 @@ public class AvaliacaoRepositoryTest {
 	public void deve_retornar_lista_de_avaliacoes() {
 		List<Avaliacao> avaliacoes = AvaliacaoMock.geraListaAvaliacao();
 		List<Avaliacao> avaliacoesSalvas = repository.saveAll(avaliacoes.stream().map(avaliacao -> {
-			avaliacao.setCliente(cliente);
-			avaliacao.setServicoAvaliado(servico);
+			avaliacao.setClienteId(cliente);
+			avaliacao.setServicoAvaliadoId(servico);
 			servico.addAvaliacao(avaliacao);
 			return avaliacao;
 		}).collect(Collectors.toList()));
 
-		ServicoDetalhado servicoAvaliado = avaliacoesSalvas.get(0).getServicoAvaliado();
-		List<Avaliacao> busca = repository.findByServicoAvaliado(servico);
+		ServicoDetalhado servicoAvaliado = avaliacoesSalvas.get(0).getServicoAvaliadoId();
+		List<Avaliacao> busca = repository.findByServicoAvaliadoId(servico);
 
 		assertEquals(busca.size(), avaliacoesSalvas.size());
 	}
@@ -96,10 +97,10 @@ public class AvaliacaoRepositoryTest {
 	@Test
 	public void deve_retornar_servico_com_avaliacoes() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		avaliacao.setServicoAvaliado(servico);
-		avaliacao.setCliente(cliente);
+		avaliacao.setServicoAvaliadoId(servico);
+		avaliacao.setClienteId(cliente);
 		Avaliacao avaliacaoSalva = repository.save(avaliacao);
-		List<Avaliacao> avaliacoes = repository.findByServicoAvaliado(servico);
+		List<Avaliacao> avaliacoes = repository.findByServicoAvaliadoId(servico);
 		var servicoEncontrado = servicoDetalhadoRepository.findById(servico.getId());
 		assertFalse(servicoEncontrado.get().getAvaliacoes().isEmpty());
 	}

@@ -12,6 +12,6 @@ public class AvaliacaoRepresentation {
 	private Integer qualidadeServico;
 	private String comentario;
 	private Double media;
-	private ClienteRepresentation cliente;
-	private ServicoDetalhadoRepresentation servicoAvaliado;
+	private Long clienteId;
+	private Long servicoAvaliadoId;
 }

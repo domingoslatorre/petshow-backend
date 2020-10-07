@@ -8,4 +8,5 @@ public class AnimalEstimacaoRepresentation {
     private String nome;
     private String foto;
     private TipoAnimalEstimacaoRepresentation tipo;
+    private Long donoId;
 }

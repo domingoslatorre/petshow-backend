@@ -2,18 +2,11 @@ package hyve.petshow.controller;
 
 import java.util.Optional;
 
+import hyve.petshow.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import hyve.petshow.controller.converter.PrestadorConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
@@ -34,81 +27,28 @@ import hyve.petshow.util.UrlUtils;
 public class PrestadorController {
 	@Autowired
 	private PrestadorService service;
-
 	@Autowired
 	private PrestadorConverter converter;
-
 	@Autowired
-	private AvaliacaoFacade avaliacaoFacade;
-
-	@Autowired
-	private ServicoDetalhadoConverter servicoDetalhadoConverter;
-
-	@Autowired
-	private ServicoDetalhadoService servicoDetalhadoService;
+	private JwtUtil jwtUtil;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PrestadorRepresentation> buscarPrestador(@PathVariable Long id) throws Exception {
-		Prestador prestador = service.buscarPorId(id);
+	public ResponseEntity<PrestadorRepresentation> buscarPrestadorPorId(
+			@PathVariable Long id) throws Exception {
+		var prestador = service.buscarPorId(id);
+		var representation = converter.toRepresentation(prestador);
 
-		return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(prestador));
-	}
-
-	@PutMapping("/{id}")
-	public ResponseEntity<PrestadorRepresentation> atualizarPrestador(@PathVariable Long id,
-			@RequestBody PrestadorRepresentation prestador) throws Exception {
-		Prestador domain = converter.toDomain(prestador);
-		Prestador prestadorAtualizado = service.atualizarConta(id, domain);
-		PrestadorRepresentation representation = converter.toRepresentation(prestadorAtualizado);
 		return ResponseEntity.status(HttpStatus.OK).body(representation);
 	}
 
-//    @PostMapping
-//    public ResponseEntity<AutonomoRepresentation> criarAutonomo(@RequestBody AutonomoRepresentation conta) throws Exception {
-//        Autonomo domain = converter.toDomain(conta);
-//        Autonomo contaSalva = service.salvaConta(domain);
-//        AutonomoRepresentation representation = converter.toRepresentation(contaSalva);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(representation);
-//    }
+	@PutMapping("/{id}")
+	public ResponseEntity<PrestadorRepresentation> atualizarPrestador(
+			@PathVariable Long id,
+			@RequestBody PrestadorRepresentation request) throws Exception {
+		var prestador = converter.toDomain(request);
+		prestador = service.atualizarConta(id, prestador);
+		var representation = converter.toRepresentation(prestador);
 
-//    @GetMapping("{id}")
-//    public ResponseEntity<List<PrestadorRepresentation>> buscarPrestadoresParaComparacao(@PathVariable Long id) throws Exception {
-//        ResponseEntity<List<PrestadorRepresentation>> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//
-//        List<Prestador> prestadores = service.obterContaPorId(id);
-//
-//        response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentationList(prestadores));
-//        return response;
-//    }
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id) throws Exception {
-		ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-
-		MensagemRepresentation mensagem = service.removerConta(id);
-
-		if (mensagem.getSucesso()) {
-			response = ResponseEntity.status(HttpStatus.OK).body(mensagem);
-		}
-
-		return response;
+		return ResponseEntity.status(HttpStatus.OK).body(representation);
 	}
-
-	@GetMapping("/{idPrestador}/servicoDetalhado/{idServico}")
-	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhado(@PathVariable Long idPrestador,
-			@PathVariable Long idServico) throws Exception {
-		var servico = servicoDetalhadoService.buscarPorIdEPrestador(idServico, idPrestador);
-		return ResponseEntity.status(HttpStatus.OK).body(servicoDetalhadoConverter.toRepresentation(servico));
-	}
-
-	@PostMapping("/{idPrestador}/servicoDetalhado/{idServico}/avaliacoes")
-	public ResponseEntity<ServicoDetalhadoRepresentation> adicionarAvaliacao(@PathVariable Long idPrestador,
-			@PathVariable Long idServico, @RequestBody AvaliacaoRepresentation avaliacao) throws Exception {
-		var idCliente = Optional.ofNullable(avaliacao.getCliente()).orElse(new ClienteRepresentation()).getId();
-		avaliacaoFacade.adicionarAvaliacao(avaliacao, idCliente, idServico);
-
-		var servico = servicoDetalhadoService.buscarPorId(idServico);
-		return ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoConverter.toRepresentation(servico));
-	}
-
 }

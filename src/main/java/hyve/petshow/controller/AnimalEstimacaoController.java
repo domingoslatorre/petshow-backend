@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cliente/animal-estimacao")
 public class AnimalEstimacaoController {
     @Autowired
     private AnimalEstimacaoService animalEstimacaoService;
@@ -31,14 +30,11 @@ public class AnimalEstimacaoController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping
+    @PostMapping("/cliente/animal-estimacao")
     public ResponseEntity<AnimalEstimacaoRepresentation> adicionarAnimalEstimacao(
-            @RequestHeader(name = "Authorization") String token,
             @RequestBody AnimalEstimacaoRepresentation request){
         var animalEstimacao = animalEstimacaoConverter.toDomain(request);
-        var donoId = jwtUtil.extractId(token);
 
-        animalEstimacao.setDonoId(donoId);
         animalEstimacao = animalEstimacaoService.adicionarAnimalEstimacao(animalEstimacao);
 
         var representation = animalEstimacaoConverter.toRepresentation(animalEstimacao);
@@ -46,45 +42,41 @@ public class AnimalEstimacaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(representation);
     }
 
-    @GetMapping
+    @GetMapping("/cliente/{donoId}/animal-estimacao")
     public ResponseEntity<List<AnimalEstimacaoRepresentation>> buscarAnimaisEstimacao(
-            @RequestHeader(name = "Authorization") String token) throws NotFoundException {
-        var donoId = jwtUtil.extractId(token);
-        var animaisEstimacao = animalEstimacaoService.buscarAnimaisEstimacao(donoId);
+            @PathVariable Long donoId) throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(donoId);
 
         var representation = animalEstimacaoConverter.toRepresentationList(animaisEstimacao);
 
         return ResponseEntity.status(HttpStatus.OK).body(representation);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/cliente/animal-estimacao/{id}")
     public ResponseEntity<AnimalEstimacaoRepresentation> atualizarAnimalEstimacao(
             @PathVariable Long id,
-            @RequestBody AnimalEstimacaoRepresentation request,
-            @RequestHeader(name = "Authorization") String token) throws NotFoundException, BusinessException {
+            @RequestBody AnimalEstimacaoRepresentation request) throws NotFoundException, BusinessException {
         var animalEstimacao = animalEstimacaoConverter.toDomain(request);
-        var donoId = jwtUtil.extractId(token);
 
-        animalEstimacao = animalEstimacaoService
-                .atualizarAnimalEstimacao(id, animalEstimacao, donoId);
+        animalEstimacao = animalEstimacaoService.atualizarAnimalEstimacao(id, animalEstimacao);
 
         var representation = animalEstimacaoConverter.toRepresentation(animalEstimacao);
 
         return ResponseEntity.status(HttpStatus.OK).body(representation);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/cliente/{donoId}/animal-estimacao/{id}")
     public ResponseEntity<MensagemRepresentation> removerAnimalEstimacao(
-            @PathVariable Long id,
-            @RequestHeader(name = "Authorization") String token) throws BusinessException, NotFoundException {
-        var donoId = jwtUtil.extractId(token);
+            @PathVariable Long donoId,
+            @PathVariable Long id) throws BusinessException, NotFoundException {
         var response = animalEstimacaoService.removerAnimalEstimacao(id, donoId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/tipos")
-    public ResponseEntity<List<TipoAnimalEstimacaoRepresentation>> buscarTiposAnimalEstimacao(){
+    @GetMapping("/cliente/animal-estimacao/tipos")
+    public ResponseEntity<List<TipoAnimalEstimacaoRepresentation>> buscarTiposAnimalEstimacao()
+            throws NotFoundException {
         var tiposAnimalEstimacao = tipoAnimalEstimacaoService.buscarTiposAnimalEstimacao();
 
         var representation = tipoAnimalEstimacaoConverter.toRepresentationList(tiposAnimalEstimacao);

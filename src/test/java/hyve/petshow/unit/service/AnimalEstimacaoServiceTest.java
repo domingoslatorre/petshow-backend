@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.Optional;
 
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -18,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.domain.AnimalEstimacao;
-import hyve.petshow.mock.AnimalEstimacaoMock;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 
@@ -68,18 +68,19 @@ public class AnimalEstimacaoServiceTest {
     public void deve_retornar_lista_de_animais() throws NotFoundException {
         //dado
         var expected = Arrays.asList(animalEstimacao());
+        var id = 1L;
 
         when(animalEstimacaoRepository.findAll()).thenReturn(expected);
 
         //quando
-        var actual = animalEstimacaoService.buscarAnimaisEstimacao();
+        var actual = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(id);
 
         //entao
         assertEquals(expected, actual);
     }
 
     @Test
-    public void deve_retornar_animal_atualizado() throws NotFoundException {
+    public void deve_retornar_animal_atualizado() throws NotFoundException, BusinessException {
         //dado
         var animalEstimacao = Optional.of(animalEstimacao());
         AnimalEstimacao requestBody = animalEstimacaoAlt();
@@ -113,15 +114,16 @@ public class AnimalEstimacaoServiceTest {
     }
 
     @Test
-    public void deve_remover_animal_de_estimacao(){
+    public void deve_remover_animal_de_estimacao() throws NotFoundException, BusinessException {
         //dado
         var id = 1L;
+        var donoId = 1L;
         var expected = mensagemRepresentationSucesso();
 
         when(animalEstimacaoRepository.existsById(id)).thenReturn(Boolean.FALSE);
 
         //quando
-        var actual = animalEstimacaoService.removerAnimalEstimacao(id);
+        var actual = animalEstimacaoService.removerAnimalEstimacao(id, donoId);
 
         //entao
         assertEquals(expected, actual);

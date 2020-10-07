@@ -20,21 +20,19 @@ public class ClienteController {
 	@Autowired
 	private JwtUtil jwtUtil;
 
-	@GetMapping
-	public ResponseEntity<ClienteRepresentation> buscarCliente(
-			@RequestHeader(name = "Authorization") String token) throws Exception {
-		var id = jwtUtil.extractId(token);
+	@GetMapping("/{id}")
+	public ResponseEntity<ClienteRepresentation> buscarClientePorId(
+			@PathVariable Long id) throws Exception {
 		var cliente = clienteService.buscarPorId(id);
 		var representation = clienteConverter.toRepresentation(cliente);
 
 		return ResponseEntity.status(HttpStatus.OK).body(representation);
 	}
 
-	@PutMapping
+	@PutMapping("/{id}")
 	public ResponseEntity<ClienteRepresentation> atualizarCliente(
-			@RequestHeader(name = "Authorization") String token,
+			@PathVariable Long id,
 			@RequestBody ClienteRepresentation request) throws Exception {
-		var id = jwtUtil.extractId(token);
 		var cliente = clienteService.atualizarConta(id, clienteConverter.toDomain(request));
 		var representation = clienteConverter.toRepresentation(cliente);
 

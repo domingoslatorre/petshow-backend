@@ -15,12 +15,26 @@ import java.util.Optional;
 
 @Service
 public class PrestadorServiceImpl implements PrestadorService {
+    private final String CONTA_NAO_ENCONTRADA = "Conta não encontrada";
+
     @Autowired
     private PrestadorRepository repository;
 
     @Override
     public Prestador buscarPorId(Long id) throws Exception {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
+        return repository.findById(id).orElseThrow(
+                () -> new NotFoundException(CONTA_NAO_ENCONTRADA));
+    }
+
+    @Override
+    public Prestador atualizarConta(Long id, Prestador request) throws Exception {
+        var prestador = repository.findById(id)
+                .orElseThrow(()->new NotFoundException(CONTA_NAO_ENCONTRADA));
+
+        prestador.setTelefone(request.getTelefone());
+        prestador.setEndereco(request.getEndereco());
+
+        return repository.save(prestador);
     }
 
     @Override
@@ -38,19 +52,7 @@ public class PrestadorServiceImpl implements PrestadorService {
     }
 
     @Override
-    public Optional<Prestador> buscarPorCpf(String cpf) {
-        return repository.findByCpf(cpf);
-    }
-
-    @Override
     public Optional<Prestador> buscarPorEmail(String email) {
         return repository.findByEmail(email);
     }
-
-    @Override
-    public Prestador atualizarConta(Long id, Prestador conta) throws Exception {
-        repository.findById(id).orElseThrow(()->new NotFoundException("Conta não encontrada"));
-        return repository.save(conta);
-    }
-
 }

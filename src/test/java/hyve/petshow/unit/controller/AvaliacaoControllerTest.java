@@ -73,10 +73,10 @@ public class AvaliacaoControllerTest {
 	@BeforeEach
 	public void adicionaItens() {
 		var avaliacao = AvaliacaoMock.geraAvaliacao();
-		var servicoAvaliado = avaliacao.getServicoAvaliado();
-		this.clienteMock = clienteRepository.save(avaliacao.getCliente());
-		this.prestadorMock = prestadorRepository.save(servicoAvaliado.getPrestador());
-		servicoAvaliado.setPrestador(prestadorMock);
+		var servicoAvaliado = avaliacao.getServicoAvaliadoId();
+		this.clienteMock = clienteRepository.save(avaliacao.getClienteId());
+		this.prestadorMock = prestadorRepository.save(servicoAvaliado.getPrestadorId());
+		servicoAvaliado.setPrestadorId(prestadorMock);
 		servicoRepository.save(servicoAvaliado.getTipo());
 		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(servicoAvaliado);
 	}

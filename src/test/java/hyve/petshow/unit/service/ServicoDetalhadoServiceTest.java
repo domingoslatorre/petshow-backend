@@ -91,14 +91,14 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	@Order(3)
 	public void deve_remover_elemento() throws Exception {
-		service.removerServicoDetalhado(1L);
+		service.removerServicoDetalhado(1L, 1L);
 		assertFalse(repository.findById(1L).isPresent());
 	}
 	
 	@Test
 	@Order(4)
 	public void deve_retornar_mensagem_sucesso() throws Exception {
-		MensagemRepresentation removerServicoDetalhado = service.removerServicoDetalhado(2l);
+		MensagemRepresentation removerServicoDetalhado = service.removerServicoDetalhado(2L, 1L);
 		assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, removerServicoDetalhado.getMensagem());
 		assertTrue(removerServicoDetalhado.getSucesso());
 	}

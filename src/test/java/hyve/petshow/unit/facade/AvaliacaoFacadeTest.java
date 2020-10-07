@@ -58,11 +58,11 @@ public class AvaliacaoFacadeTest {
 	@BeforeEach
 	public void adicionaItens() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		prestadorMock = prestadorRepository.save(avaliacao.getServicoAvaliado().getPrestador());
-		servicoRepository.save(avaliacao.getServicoAvaliado().getTipo());
-		avaliacao.getServicoAvaliado().setPrestador(prestadorMock);
-		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(avaliacao.getServicoAvaliado());
-		this.clienteMock = clienteRepository.save(avaliacao.getCliente());
+		prestadorMock = prestadorRepository.save(avaliacao.getServicoAvaliadoId().getPrestadorId());
+		servicoRepository.save(avaliacao.getServicoAvaliadoId().getTipo());
+		avaliacao.getServicoAvaliadoId().setPrestadorId(prestadorMock);
+		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(avaliacao.getServicoAvaliadoId());
+		this.clienteMock = clienteRepository.save(avaliacao.getClienteId());
 	}
 
 	@Test

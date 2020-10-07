@@ -12,8 +12,14 @@ import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 
+import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
+
 @Service
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
+    private final String ANIMAL_ESTIMACAO_NAO_ENCONTRADO = "Animal de estimação não encontrado";
+    private final String NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO = "Nenhum animal de estimação encontrado";
+    private final String USUARIO_NAO_PROPRIETARIO = "Este serviço não pertence a este usuário";
+
     @Autowired
     private AnimalEstimacaoRepository animalEstimacaoRepository;
 
@@ -25,37 +31,34 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     @Override
     public AnimalEstimacao buscarAnimalEstimacaoPorId(Long id) throws NotFoundException {
         return animalEstimacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Animal de estimação não encontrado"));
+                () -> new NotFoundException(ANIMAL_ESTIMACAO_NAO_ENCONTRADO));
     }
 
     @Override
-    public List<AnimalEstimacao> buscarAnimaisEstimacao(Long id) throws NotFoundException {
+    public List<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id) throws NotFoundException {
         var animaisEstimacao = animalEstimacaoRepository.findByDonoId(id);
 
         if(animaisEstimacao.isEmpty()) {
-            throw new NotFoundException("Nenhum animal de estimação foi encontrado.");
+            throw new NotFoundException(NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO);
         }
 
         return animaisEstimacao;
     }
 
     @Override
-    public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request, Long donoId)
+    public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request)
             throws NotFoundException, BusinessException {
         var animalEstimacao = animalEstimacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Animal de estimação não encontrado"));
+                () -> new NotFoundException(ANIMAL_ESTIMACAO_NAO_ENCONTRADO));
 
-        if(verificarDono(animalEstimacao.getDonoId(), donoId)){
-
+        if(verificarIdentidade(animalEstimacao.getDonoId(), request.getDonoId())){
             animalEstimacao.setNome(request.getNome());
             animalEstimacao.setTipo(request.getTipo());
             animalEstimacao.setFoto(request.getFoto());
-
             var response = animalEstimacaoRepository.save(animalEstimacao);
-
             return response;
         } else {
-            throw new BusinessException("Este animal não pertence a este usuário");
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
         }
     }
 
@@ -63,9 +66,9 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     public MensagemRepresentation removerAnimalEstimacao(Long id, Long donoId)
             throws BusinessException, NotFoundException {
         var animalEstimacao = animalEstimacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Animal de estimação não encontrado"));
+                () -> new NotFoundException(ANIMAL_ESTIMACAO_NAO_ENCONTRADO));
 
-        if(verificarDono(animalEstimacao.getDonoId(), donoId)) {
+        if(verificarIdentidade(animalEstimacao.getDonoId(), donoId)) {
             animalEstimacaoRepository.deleteById(id);
 
             var sucesso = !animalEstimacaoRepository.existsById(id);
@@ -75,11 +78,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
             return response;
         } else {
-            throw new BusinessException("Este animal não pertence a este usuário");
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
         }
-    }
-
-    private Boolean verificarDono(Long domainId, Long requestId){
-        return domainId == requestId;
     }
 }
