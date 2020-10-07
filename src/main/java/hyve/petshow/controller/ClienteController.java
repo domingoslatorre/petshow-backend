@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cliente")
-@CrossOrigin(origins = { "http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200" })
 public class ClienteController {
 	@Autowired
 	private ClienteService clienteService;

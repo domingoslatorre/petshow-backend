@@ -3,6 +3,7 @@ package hyve.petshow.service.implementation;
 import java.util.List;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,8 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     }
 
     @Override
-    public List<AnimalEstimacao> buscarAnimaisEstimacao() throws NotFoundException {
-        var animaisEstimacao = animalEstimacaoRepository.findAll();
+    public List<AnimalEstimacao> buscarAnimaisEstimacao(Long id) throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoRepository.findByDonoId(id);
 
         if(animaisEstimacao.isEmpty()) {
             throw new NotFoundException("Nenhum animal de estimação foi encontrado.");
@@ -39,24 +40,46 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     }
 
     @Override
-    public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request) throws NotFoundException {
+    public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request, Long donoId)
+            throws NotFoundException, BusinessException {
         var animalEstimacao = animalEstimacaoRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Animal de estimação não encontrado"));
 
-        var response = animalEstimacaoRepository.save(request);
+        if(verificarDono(animalEstimacao.getDonoId(), donoId)){
 
-        return response;
+            animalEstimacao.setNome(request.getNome());
+            animalEstimacao.setTipo(request.getTipo());
+            animalEstimacao.setFoto(request.getFoto());
+
+            var response = animalEstimacaoRepository.save(animalEstimacao);
+
+            return response;
+        } else {
+            throw new BusinessException("Este animal não pertence a este usuário");
+        }
     }
 
     @Override
-    public MensagemRepresentation removerAnimalEstimacao(Long id) {
-        animalEstimacaoRepository.deleteById(id);
+    public MensagemRepresentation removerAnimalEstimacao(Long id, Long donoId)
+            throws BusinessException, NotFoundException {
+        var animalEstimacao = animalEstimacaoRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Animal de estimação não encontrado"));
 
-        var sucesso = ! animalEstimacaoRepository.existsById(id);
-        var response = new MensagemRepresentation(id);
+        if(verificarDono(animalEstimacao.getDonoId(), donoId)) {
+            animalEstimacaoRepository.deleteById(id);
 
-        response.setSucesso(sucesso);
+            var sucesso = !animalEstimacaoRepository.existsById(id);
+            var response = new MensagemRepresentation(id);
 
-        return response;
+            response.setSucesso(sucesso);
+
+            return response;
+        } else {
+            throw new BusinessException("Este animal não pertence a este usuário");
+        }
+    }
+
+    private Boolean verificarDono(Long domainId, Long requestId){
+        return domainId == requestId;
     }
 }

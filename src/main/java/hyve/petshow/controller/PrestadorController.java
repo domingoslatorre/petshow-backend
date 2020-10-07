@@ -24,18 +24,13 @@ import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.service.port.PrestadorService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
+import hyve.petshow.util.UrlUtils;
 
 @RestController // controle de REST
 @RequestMapping("/prestador")
-@CrossOrigin(origins = { "http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200" }) // quem
-																													// pode
-																													// usar
-																													// esses
-																													// serviços
-																													// nesse
-																													// controller
 public class PrestadorController {
 	@Autowired // instancia automaticamente
 	private PrestadorService service; //
@@ -52,14 +47,14 @@ public class PrestadorController {
 	@Autowired
 	private ServicoDetalhadoService servicoDetalhadoService;
 
-	@GetMapping("{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<PrestadorRepresentation> buscarPrestador(@PathVariable Long id) throws Exception {
 		Prestador prestador = service.buscarPorId(id);
 
 		return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(prestador));
 	}
 
-	@PutMapping("{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<PrestadorRepresentation> atualizarPrestador(@PathVariable Long id,
 			@RequestBody PrestadorRepresentation prestador) throws Exception {
 		Prestador domain = converter.toDomain(prestador);
@@ -86,7 +81,7 @@ public class PrestadorController {
 //        return response;
 //    }
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id) throws Exception {
 		ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -99,14 +94,14 @@ public class PrestadorController {
 		return response;
 	}
 
-	@GetMapping("{idPrestador}/servicoDetalhado/{idServico}")
+	@GetMapping("/{idPrestador}/servicoDetalhado/{idServico}")
 	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhado(@PathVariable Long idPrestador,
 			@PathVariable Long idServico) throws Exception {
-		var servico = servicoDetalhadoService.buscarPorId(idServico);
+		var servico = servicoDetalhadoService.buscarPorIdEPrestador(idServico, idPrestador);
 		return ResponseEntity.status(HttpStatus.OK).body(servicoDetalhadoConverter.toRepresentation(servico));
 	}
 
-	@PostMapping("{idPrestador}/servicoDetalhado/{idServico}/avaliacoes")
+	@PostMapping("/{idPrestador}/servicoDetalhado/{idServico}/avaliacoes")
 	public ResponseEntity<ServicoDetalhadoRepresentation> adicionarAvaliacao(@PathVariable Long idPrestador,
 			@PathVariable Long idServico, @RequestBody AvaliacaoRepresentation avaliacao) throws Exception {
 		var idCliente = Optional.ofNullable(avaliacao.getCliente()).orElse(new ClienteRepresentation()).getId();

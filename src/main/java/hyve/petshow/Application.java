@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import static hyve.petshow.util.UrlUtils.*;
+
 @SpringBootApplication
 public class Application {
 	public static void main(String[] args) {
@@ -19,7 +21,7 @@ public class Application {
     		public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 						.allowedHeaders("*")
-						.allowedOrigins("http://localhost:4200", "https://petshow-frontend.herokuapp.com", "http:0.0.0.0:4200")
+						.allowedOrigins(URL_API_LOCAL, URL_API_LOCAL_DOCKER, URL_API_PROD)
 						.allowedMethods("*")
 						.allowCredentials(true);
 			}
