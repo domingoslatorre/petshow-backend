@@ -16,6 +16,23 @@ import hyve.petshow.domain.enums.TipoConta;
 public class ClienteMock {
 	public static List<Cliente> dbMock = new ArrayList<Cliente>(Arrays.asList(new Cliente(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login(), new ArrayList<AnimalEstimacao>())));
 	
+	public static Cliente criaCliente() {
+		var cliente = new Cliente();
+		cliente.setId(1l);
+		cliente.setNome("Teste");
+		cliente.setCpf("44444444444"); 
+		cliente.setTelefone("1129292828");
+		cliente.setTipo(TipoConta.CLIENTE);
+		cliente.setEndereco(new Endereco());
+		var login = new Login();
+		login.setEmail("teste-login@teste.com");
+		login.setSenha("teste1234");
+		cliente.setLogin(login);
+		cliente.setAnimaisEstimacao(new ArrayList<AnimalEstimacao>());
+		
+		return cliente;
+	}
+	
 	public static List<Cliente> obterContas() {
 		return dbMock;
 	}

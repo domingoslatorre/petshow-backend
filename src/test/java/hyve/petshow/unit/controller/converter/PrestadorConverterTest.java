@@ -10,16 +10,19 @@ import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class PrestadorConverterTest {
-    private PrestadorConverter converter = new PrestadorConverter();
+	@Autowired
+    private PrestadorConverter converter;
 
     @Test
     public void deve_retornar_prestador_convertido() {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import hyve.petshow.controller.representation.PrestadorRepresentation;
@@ -15,7 +16,9 @@ import hyve.petshow.domain.enums.TipoConta;
 public class PrestadorConverter implements Converter<Prestador, PrestadorRepresentation> {
     //private ContaConverter contaConverter = new ContaConverter();
     //private List<ServicoDetalhado> servicoDetalhadoConverter = new ArrayList<ServicoDetalhado>();
-    private String descricao;
+	
+	@Autowired
+	private ServicoDetalhadoConverter servicoConverter;
 
     @Override
     public PrestadorRepresentation toRepresentation(Prestador domain) {
@@ -33,7 +36,7 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
 		representation.setNomeSocial(domain.getNomeSocial());
 		representation.setTelefone(domain.getTelefone());
 		representation.setTipo(domain.getTipo() == null ? null : domain.getTipo().getTipo());
-        //domain.setServicoDetalhado(servicoDetalhadoConverter.toDomainList(representation.getServicoDetalhado()));
+        representation.setServicos(servicoConverter.toRepresentationList(domain.getServicosPrestados()));
 		representation.setDescricao(domain.getDescricao());
         return representation;
     }
@@ -54,7 +57,7 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
 		domain.setNomeSocial(representation.getNomeSocial());
 		domain.setTelefone(representation.getTelefone());
 		domain.setTipo(TipoConta.getTipoByInteger(representation.getTipo()));
-        //domain.setServicoDetalhado(servicoDetalhadoConverter.toDomainList(representation.getServicoDetalhado()));
+        domain.setServicosPrestados(servicoConverter.toDomainList(representation.getServicos()));
         domain.setDescricao(representation.getDescricao());
         return domain;
     }
