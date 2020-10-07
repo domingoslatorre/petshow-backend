@@ -1,22 +1,28 @@
 package hyve.petshow.mock;
 
-import hyve.petshow.domain.AnimalEstimacao;
-import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Endereco;
-import hyve.petshow.domain.Login;
-import hyve.petshow.domain.enums.TipoConta;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import hyve.petshow.domain.Conta;
+import hyve.petshow.domain.Endereco;
+import hyve.petshow.domain.Login;
+import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.enums.TipoConta;
+
 public class PrestadorMock {
     private static List<Prestador> dbMock = new ArrayList<Prestador>(Arrays.asList(new Prestador(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login(), "")));
     // , new ArrayList<servicosDetalhados>()
-
+    
+    
+    public static Prestador criaPrestador() {
+    	var login = new Login();
+    	login.setEmail("teste-login-prestador@teste.com");
+    	login.setSenha("teste1234");
+		return new Prestador(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.PRESTADOR_AUTONOMO, "", new Endereco(), login, "");
+    }
     public static List<Prestador> obterContas() {
         return dbMock;
     }

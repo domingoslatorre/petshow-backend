@@ -139,5 +139,27 @@ public class AvaliacaoControllerTest {
 		assertEquals(HttpStatus.OK, responseGet.getStatusCode());
 		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 	}
+	
+	
+
+	@Test
+	public void deve_retornar_Prestador() throws Exception {
+		// dado
+		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
+				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
+		var uri = new URI(urlAvaliacao);
+
+		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
+		var response = template.exchange(uri, HttpMethod.POST, requestBody, ServicoDetalhadoRepresentation.class);
+		// quando
+
+		uri = new URI(
+				this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/" + this.servicoDetalhadoMock.getId());
+		var responseGet = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
+		// entao
+		assertEquals(HttpStatus.OK, responseGet.getStatusCode());
+		assertFalse(response.getBody().getPrestador() == null);
+	}
 
 }

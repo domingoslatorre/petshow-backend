@@ -1,26 +1,13 @@
 package hyve.petshow.controller;
 
-import java.util.Optional;
-
+import hyve.petshow.controller.converter.PrestadorConverter;
+import hyve.petshow.controller.representation.PrestadorRepresentation;
+import hyve.petshow.service.port.PrestadorService;
 import hyve.petshow.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import hyve.petshow.controller.converter.PrestadorConverter;
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.AvaliacaoRepresentation;
-import hyve.petshow.controller.representation.ClienteRepresentation;
-import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.controller.representation.PrestadorRepresentation;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.Login;
-import hyve.petshow.domain.Prestador;
-import hyve.petshow.facade.AvaliacaoFacade;
-import hyve.petshow.service.port.PrestadorService;
-import hyve.petshow.service.port.ServicoDetalhadoService;
-import hyve.petshow.util.UrlUtils;
 
 @RestController
 @RequestMapping("/prestador")
