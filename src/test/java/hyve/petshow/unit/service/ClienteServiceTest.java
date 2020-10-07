@@ -54,9 +54,6 @@ public class ClienteServiceTest {
 			return null;
 		}).when(repository).delete(Mockito.any(Cliente.class));
 		Mockito.when(repository.findById(Mockito.anyLong())).then(mock -> ClienteMock.buscaPorId(mock.getArgument(0)));
-		Mockito.when(repository.findByLogin(Mockito.any(Login.class)))
-				.then(mock -> ClienteMock.buscaPorLogin(mock.getArgument(0)));
-
 		Mockito.when(repository.findByEmail(Mockito.anyString()))
 				.then(mock -> ClienteMock.buscarPorEmail(mock.getArgument(0)));
 		Mockito.when(repository.findByCpf(Mockito.anyString()))
@@ -69,20 +66,6 @@ public class ClienteServiceTest {
 
 	@Test
 	@Order(1)
-	public void deve_inserir_cliente_na_lista() throws Exception {
-		Cliente cliente = new Cliente();
-		cliente.setNome("Danilo");
-		Login login = new Login();
-		login.setEmail("");
-		cliente.setCpf("555555555555");
-		cliente.setLogin(login);
-		service.adicionarConta(cliente);
-		assertTrue(repository.findAll().contains(cliente));
-		assertNotNull(cliente.getId());
-	}
-
-	@Test
-	@Order(2)
 	public void deve_atualizar_conta() throws Exception {
 		Cliente clienteAAlterar = service.buscarPorId(1l);
 		Login login = new Login();
@@ -94,8 +77,8 @@ public class ClienteServiceTest {
 		assertEquals(contaDb.getId(), clienteAAlterar.getId());
 	}
 
-	@Test
-	@Order(3)
+	/*@Test
+	@Order(2)
 	public void deve_atualizar_animal() throws Exception {
 		Cliente cliente = new Cliente();
 		cliente.setId(2l);
@@ -108,17 +91,17 @@ public class ClienteServiceTest {
 		Cliente salvaConta = (Cliente) service.atualizarConta(1l, cliente);
 		assertTrue(salvaConta.getAnimaisEstimacao().contains(animalTeste));
 
-	}
+	}*/
 
 	@Test
-	@Order(4)
+	@Order(2)
 	public void deve_encontrar_conta_correta() throws Exception {
 		Conta obterContaPorId = service.buscarPorId(1l);
 		assertEquals("Teste", obterContaPorId.getNome());
 	}
 
 	@Test
-	@Order(5)
+	@Order(3)
 	public void deve_retornar_excecao_por_pessoa_nao_encontrada() {
 		assertThrows(Exception.class, () -> {
 			service.buscarPorId(5l);
@@ -126,24 +109,13 @@ public class ClienteServiceTest {
 	}
 
 	@Test
-	@Order(6)
-	public void deve_encontrar_elemento_por_login() throws Exception {
-		Login login = new Login();
-		login.setEmail("teste@teste.com");
-		login.setSenha("aslkjdgklsdjg");
-		Conta obterPorLogin = service.realizarLogin(login);
-		assertNotNull(obterPorLogin);
-		assertTrue(obterPorLogin.getId() == 1);
-	}
-
-	@Test
-	@Order(7)
+	@Order(4)
 	public void deve_encontrar_todos_os_elementos() {
 		assertTrue(!service.buscarContas().isEmpty());
 	}
 
 	@Test
-	@Order(8)
+	@Order(5)
 	public void deve_remover_elemento() throws Exception {
 		service.removerConta(1l);
 		assertThrows(Exception.class, () -> {
@@ -152,40 +124,10 @@ public class ClienteServiceTest {
 	}
 
 	@Test
-	@Order(9)
+	@Order(6)
 	public void deve_retornar_mensagem_sucesso() throws Exception {
 		MensagemRepresentation removerConta = service.removerConta(2l);
 		assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, removerConta.getMensagem());
 		assertTrue(removerConta.getSucesso());
-	}
-
-	@Test
-	@Order(11)
-	public void deve_impedir_insercao_contas_com_mesmo_email() throws Exception {
-		Cliente conta = new Cliente();
-		Login login = new Login();
-		login.setEmail("teste@teste");
-		conta.setLogin(login);
-		conta.setCpf("22222222222");
-		service.adicionarConta(conta);
-		assertThrows(Exception.class, () -> {
-			service.adicionarConta(conta);
-		});
-	}
-
-	@Test
-	@Order(12)
-	public void deve_impedir_insercao_contas_com_mesmo_cpf() throws Exception {
-		Cliente conta = new Cliente();
-		conta.setCpf("44444444444");
-		Login login = new Login();
-		login.setEmail("asdgs@aslkdjg");
-		login.setSenha("03joiwk");
-		conta.setLogin(login);
-		service.adicionarConta(conta);
-		assertThrows(Exception.class, () -> {
-			service.adicionarConta(conta);
-		});
-
 	}
 }
