@@ -1,7 +1,7 @@
 package hyve.petshow.service.implementation;
 
 import hyve.petshow.repository.ClienteRepository;
-import hyve.petshow.service.port.AuthService;
+import hyve.petshow.service.port.AcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,7 @@ import org.webjars.NotFoundException;
 import java.util.ArrayList;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AcessoServiceImpl implements AcessoService {
     @Autowired
     private ClienteRepository repository;
 

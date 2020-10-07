@@ -1,10 +1,10 @@
-package hyve.petshow.util;
+package hyve.petshow.filter;
 
-import hyve.petshow.service.port.AuthService;
+import hyve.petshow.service.port.AcessoService;
+import hyve.petshow.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,14 +20,15 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
-    private AuthService authService;
+    private AcessoService acessoService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                                    FilterChain filterChain)
             throws ServletException, IOException {
-        var authHeader = request.getHeader("Authorization");
-        var token = new String();
-        var email = new String();
+        var authHeader = httpServletRequest.getHeader("Authorization");
+        String token = null;
+        String email = null;
 
         if(authHeader != null && authHeader.startsWith("Bearer ")){
             token = authHeader.substring(7);
@@ -35,16 +36,16 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            var userDetails = authService.loadUserByUsername(email);
+            var userDetails = acessoService.loadUserByUsername(email);
 
             if(jwtUtil.validateToken(token, userDetails)){
                 var usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                var webAuthenticationDetailsSource = new WebAuthenticationDetailsSource().buildDetails(request);
+                var webAuthenticationDetailsSource = new WebAuthenticationDetailsSource().buildDetails(httpServletRequest);
                 usernamePasswordAuthenticationToken.setDetails(webAuthenticationDetailsSource);
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
