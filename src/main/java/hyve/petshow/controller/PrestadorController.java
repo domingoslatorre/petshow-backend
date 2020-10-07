@@ -29,14 +29,14 @@ import hyve.petshow.service.port.PrestadorService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 import hyve.petshow.util.UrlUtils;
 
-@RestController // controle de REST
+@RestController
 @RequestMapping("/prestador")
 public class PrestadorController {
-	@Autowired // instancia automaticamente
-	private PrestadorService service; //
+	@Autowired
+	private PrestadorService service;
 
 	@Autowired
-	private PrestadorConverter converter; // converte para uma entidade de dominio para não utilizar o mesmo objeto
+	private PrestadorConverter converter;
 
 	@Autowired
 	private AvaliacaoFacade avaliacaoFacade;

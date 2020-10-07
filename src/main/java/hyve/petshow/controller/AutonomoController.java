@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/autonomo")
 public class AutonomoController {
-    @Autowired // instancia automaticamente
-    private AutonomoService service; //
+    @Autowired
+    private AutonomoService service;
 
     @Autowired
     private AutonomoConverter converter; //converte para uma entidade de dominio para não utilizar o mesmo objeto

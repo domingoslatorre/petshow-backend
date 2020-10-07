@@ -20,12 +20,19 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public Cliente buscarPorId(Long id) throws Exception {
-		return repository.findById(id).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
+		return repository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Conta não encontrada"));
 	}
 
 	@Override
-	public List<Cliente> buscarContas() {
-		return repository.findAll();
+	public Cliente atualizarConta(Long id, Cliente request) throws NotFoundException {
+		var conta = repository.findById(id)
+				.orElseThrow(()->new NotFoundException("Conta não encontrada"));
+
+		conta.setTelefone(request.getTelefone());
+		conta.setEndereco(request.getEndereco());
+
+		return repository.save(conta);
 	}
 
 	@Override
@@ -38,6 +45,11 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
+	public List<Cliente> buscarContas() {
+		return repository.findAll();
+	}
+
+	@Override
 	public Optional<Cliente> buscarPorCpf(String cpf) {
 		return repository.findByCpf(cpf);
 	}
@@ -45,12 +57,5 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public Optional<Cliente> buscarPorEmail(String email) {
 		return repository.findByEmail(email);
-	}
-
-	@Override
-	public Cliente atualizarConta(Long id, Cliente conta) throws NotFoundException {
-		var contaDb = repository.findById(id).orElseThrow(()->new NotFoundException("Conta não encontrada"));
-		conta.setLogin(contaDb.getLogin());
-		return repository.save(conta);
 	}
 }
