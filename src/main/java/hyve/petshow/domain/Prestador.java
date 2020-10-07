@@ -29,4 +29,10 @@ public class Prestador extends Conta {
 //          setServicoDetalhado(servicosDetalhados);
 	}
 
+	public void addServicoPrestado(ServicoDetalhado domain) {
+		servicosPrestados.add(domain);
+		domain.setPrestador(this);
+		
+	}
+
 }

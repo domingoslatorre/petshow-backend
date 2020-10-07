@@ -2,9 +2,6 @@ package hyve.petshow.controller.converter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,7 +28,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         representation.setPreco(domain.getPreco());
         representation.setTipo(servicoConverter.toRepresentation(domain.getTipo()));
 //      representation.setAnimaisAceitos(animalConverter.toRepresentationList(domain.getAnimaisAceitos()));
-        representation.setPrestador(prestadorConverter.toRepresentation(domain.getPrestador()));
+//        representation.setPrestador(prestadorConverter.toRepresentation(domain.getPrestador()));
         representation.setAvaliacoes(avaliacaoConverter.toRepresentationList(domain.getAvaliacoes()));
 
         return representation;
@@ -45,7 +42,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     	domain.setId(representation.getId());
     	domain.setPreco(representation.getPreco());
         domain.setTipo(servicoConverter.toDomain(representation.getTipo()));
-        domain.setPrestador(prestadorConverter.toDomain(representation.getPrestador()));
+//        domain.setPrestador(prestadorConverter.toDomain(representation.getPrestador()));
         domain.setAvaliacoes(avaliacaoConverter.toDomainList(representation.getAvaliacoes()));
 //    	domain.setAnimaisAceitos(representation.getAnimaisAceitos());
 		
