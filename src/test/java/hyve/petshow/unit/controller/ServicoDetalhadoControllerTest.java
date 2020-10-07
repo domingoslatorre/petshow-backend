@@ -68,7 +68,7 @@ public class ServicoDetalhadoControllerTest {
 
 	@BeforeEach
 	public void init() {
-		url = "http://localhost:" + port + "/prestador/servicos";
+		url = "http://localhost:" + port + "/servico-detalhado";
 
 	}
 
@@ -152,7 +152,7 @@ public class ServicoDetalhadoControllerTest {
 	  
 	  @Test
 	  @Order(4)
-	  public void deve_retornar_animal_atualizado()throws Exception{
+	  public void deve_retornar_servico_detalhado_atualizado()throws Exception{
 	        //dado
 	        var expectedBody = servicoDetalhadoMock;
 	        var expectedStatus = HttpStatus.OK;
