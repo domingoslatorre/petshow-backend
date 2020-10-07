@@ -1,5 +1,6 @@
 package hyve.petshow.util;
 
+import hyve.petshow.domain.enums.TipoConta;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -36,8 +37,12 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email, Long id, TipoConta tipo) {
         Map<String, Object> claims = new HashMap<>();
+
+        claims.put("id", id);
+        claims.put("tipo", tipo);
+
         return createToken(claims, email);
     }
 

@@ -68,21 +68,6 @@ public class PrestadorController {
 		return ResponseEntity.status(HttpStatus.OK).body(representation);
 	}
 
-	@PostMapping("/login")
-	public ResponseEntity<PrestadorRepresentation> buscaPorLogin(@RequestBody Login login) throws Exception {
-		Prestador prestador = service.realizarLogin(login);
-		return ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(prestador));
-	}
-
-	@PostMapping
-	public ResponseEntity<PrestadorRepresentation> criaPrestador(@RequestBody PrestadorRepresentation prestador)
-			throws Exception {
-		Prestador domain = converter.toDomain(prestador);
-		Prestador salvaConta = service.adicionarConta(domain);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(converter.toRepresentation(salvaConta));
-	}
-
 //    @PostMapping
 //    public ResponseEntity<AutonomoRepresentation> criarAutonomo(@RequestBody AutonomoRepresentation conta) throws Exception {
 //        Autonomo domain = converter.toDomain(conta);

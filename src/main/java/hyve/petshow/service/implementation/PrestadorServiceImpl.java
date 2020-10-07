@@ -19,22 +19,6 @@ public class PrestadorServiceImpl implements PrestadorService {
     private PrestadorRepository repository;
 
     @Override
-    public Prestador adicionarConta(Prestador conta) throws Exception {
-        validaNovaConta(conta);
-        return repository.save(conta);
-    }
-
-    private void validaNovaConta(Prestador conta) throws BusinessException {
-        if (repository.findByEmail(conta.getLogin().getEmail()).isPresent()) {
-            throw new BusinessException("Email já cadastrado no sistema");
-        }
-
-        if (repository.findByCpf(conta.getCpf()).isPresent()) {
-            throw new BusinessException("CPF já cadastrado no sistema");
-        }
-    }
-
-    @Override
     public Prestador buscarPorId(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
     }
@@ -42,12 +26,6 @@ public class PrestadorServiceImpl implements PrestadorService {
     @Override
     public List<Prestador> buscarContas() {
         return repository.findAll();
-    }
-
-    @Override
-    public Prestador realizarLogin(Login login) throws Exception {
-        return repository.findByLogin(login)
-                .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
     }
 
     @Override

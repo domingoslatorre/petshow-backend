@@ -27,23 +27,6 @@ public class ClienteController {
 		return ResponseEntity.status(HttpStatus.OK).body(representation);
 	}
 
-	@PostMapping
-	public ResponseEntity<ClienteRepresentation> adicionarCliente(@RequestBody ClienteRepresentation request)
-			throws Exception {
-		var cliente = clienteService.adicionarConta(clienteConverter.toDomain(request));
-		var representation = clienteConverter.toRepresentation(cliente);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
-	}
-
-	@PostMapping("/login")
-	public ResponseEntity<ClienteRepresentation> realizarLogin(@RequestBody Login requuest) throws Exception {
-		var conta = clienteService.realizarLogin(requuest);
-		var representation = clienteConverter.toRepresentation(conta);
-
-		return ResponseEntity.status(HttpStatus.OK).body(representation);
-	}
-
 	@PutMapping("/{id}")
 	public ResponseEntity<ClienteRepresentation> atualizarCliente(@PathVariable Long id,
 			@RequestBody ClienteRepresentation request) throws Exception {

@@ -11,13 +11,9 @@ import hyve.petshow.domain.Login;
 
 @Service
 public interface ContaService<T extends Conta> {
-	T adicionarConta(T conta) throws Exception;
-
 	T buscarPorId(Long id) throws Exception;
 
 	List<T> buscarContas();
-
-	T realizarLogin(Login login) throws Exception;
 
 	MensagemRepresentation removerConta(Long id) throws Exception;
 
