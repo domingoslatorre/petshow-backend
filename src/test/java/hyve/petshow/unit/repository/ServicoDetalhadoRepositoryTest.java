@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 
@@ -29,11 +30,8 @@ import hyve.petshow.repository.ServicoDetalhadoRepository;
 @ActiveProfiles("test")
 @TestMethodOrder(OrderAnnotation.class)
 public class ServicoDetalhadoRepositoryTest {
-//	@Autowired
-//	private ContaRepository<Cliente> repository;
-
-//	@Autowired
-//	private ServicoDetalhadoRepository repository;
+	@Autowired
+	private ServicoDetalhadoRepository repository;
 
 //	private ServicoDetalhado mock;
 
@@ -54,4 +52,19 @@ public class ServicoDetalhadoRepositoryTest {
 //		assertTrue(!busca.isEmpty());
 //	}
 
+	
+/*	@Test
+	public void deve_retornar_servicos_detalhados_por_tipo() {
+		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
+		servicoDetalhado.setId(1L);
+		Servico servico = new Servico();
+		servico.setId(2L);
+		servicoDetalhado.setTipo(servico);
+		repository.save(servicoDetalhado);
+
+		List<ServicoDetalhado> busca = repository.findByTipo(2L);
+		assertTrue(!busca.isEmpty());
+	}*/
 }
+
+
