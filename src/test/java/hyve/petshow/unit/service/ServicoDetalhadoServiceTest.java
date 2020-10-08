@@ -1,21 +1,19 @@
 package hyve.petshow.unit.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import java.math.BigDecimal;
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -47,7 +45,7 @@ public class ServicoDetalhadoServiceTest {
 		Mockito.when(repository.save(Mockito.any(ServicoDetalhado.class))).then(mock -> {
 			ServicoDetalhado servicoDetalhado = mock.getArgument(0);
 			if (servicoDetalhado.getId() == null) {
-				ServicoDetalhadoMock.adicionarServicoDetalhado(servicoDetalhado);
+				ServicoDetalhadoMock.save(servicoDetalhado);
 			} else {
 				ServicoDetalhadoMock.atualizarServicoDetalhado(servicoDetalhado);
 			}
@@ -67,7 +65,7 @@ public class ServicoDetalhadoServiceTest {
 	@Order(1)
 	public void deve_inserir_servico_detalhado_na_lista() throws Exception {
 		var servicoDetalhado = ServicoDetalhadoMock.criarServicoDetalhado();
-    	
+    	servicoDetalhado.setId(null);
 		service.adicionarServicoDetalhado(servicoDetalhado);
 		
 		assertTrue(repository.findAll().contains(servicoDetalhado));
@@ -82,7 +80,7 @@ public class ServicoDetalhadoServiceTest {
 		BigDecimal p = new BigDecimal(800);
 		servicoDetalhadoAAlterar.setId(1L);
 		servicoDetalhadoAAlterar.setPreco(p);
-
+		servicoDetalhadoAAlterar.setPrestadorId(1l);
 		ServicoDetalhado servicoDetalhadoDb = (ServicoDetalhado) service.atualizarServicoDetalhado(servicoDetalhadoAAlterar.getId(), servicoDetalhadoAAlterar);
 		assertEquals(p,servicoDetalhadoDb.getPreco());
 		assertEquals(servicoDetalhadoDb.getId(), servicoDetalhadoAAlterar.getId());
@@ -98,6 +96,8 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	@Order(4)
 	public void deve_retornar_mensagem_sucesso() throws Exception {
+		repository.findAll();
+		
 		MensagemRepresentation removerServicoDetalhado = service.removerServicoDetalhado(2L, 1L);
 		assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, removerServicoDetalhado.getMensagem());
 		assertTrue(removerServicoDetalhado.getSucesso());

@@ -56,7 +56,6 @@ public class ServicoDetalhadoConverterTest {
     public void deve_converter_para_lista_de_representation(){
         //dado
     	var representation = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
-    	representation.setPrestadorId(null);
         var expected = Arrays.asList(representation);
         var servicosDetalhados = Arrays.asList(ServicoDetalhadoMock.criarServicoDetalhado());
 

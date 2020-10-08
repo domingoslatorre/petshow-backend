@@ -17,6 +17,9 @@ import hyve.petshow.domain.ServicoDetalhado;
 //import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 
 public class ServicoDetalhadoMock {
+	private static List<ServicoDetalhado> dbMock = new ArrayList<ServicoDetalhado>(Arrays.asList(criarServicoDetalhado()));
+	
+	
 	public static ServicoDetalhado criarServicoDetalhado() {
 		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setId(1L);
@@ -52,7 +55,6 @@ public class ServicoDetalhadoMock {
 		ServicoRepresentation s = new ServicoRepresentation();
 		s.setId(1);
 		s.setNome("Banho e Tosa");
-		s.setDescricao("Banhos quentinhos para o seu pet");	
 		
 
 		servicoDetalhadoRepresentation.setTipo(s);
@@ -60,9 +62,6 @@ public class ServicoDetalhadoMock {
 		servicoDetalhadoRepresentation.setAvaliacoes(new ArrayList<>());
 		return servicoDetalhadoRepresentation;
 	}
-
-	public static List<ServicoDetalhado> dbMock = new ArrayList<ServicoDetalhado>(
-			Arrays.asList(criarServicoDetalhado()));
 
 	public static List<ServicoDetalhado> findAll() {
 		return dbMock;

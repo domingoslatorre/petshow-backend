@@ -48,6 +48,9 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
 		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), request.getPrestadorId())){
 			servicoDetalhado.setPreco(request.getPreco());
+			servicoDetalhado.setPrestadorId(request.getPrestadorId());
+			servicoDetalhado.setAvaliacoes(request.getAvaliacoes());
+			servicoDetalhado.setTipo(request.getTipo());
 			var response = repository.save(servicoDetalhado);
 			return response;
 		} else {

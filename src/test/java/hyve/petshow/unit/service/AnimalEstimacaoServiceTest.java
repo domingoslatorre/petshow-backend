@@ -13,6 +13,7 @@ import hyve.petshow.exceptions.NotFoundException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -71,6 +72,7 @@ public class AnimalEstimacaoServiceTest {
         var id = 1L;
 
         when(animalEstimacaoRepository.findAll()).thenReturn(expected);
+        when(animalEstimacaoRepository.findByDonoId(Mockito.anyLong())).thenReturn(expected);
 
         //quando
         var actual = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(id);
@@ -102,7 +104,6 @@ public class AnimalEstimacaoServiceTest {
         //dado
         Optional<AnimalEstimacao> animalEstimacao = Optional.empty();
         var requestBody = animalEstimacaoAlt();
-        var expected = Optional.empty();
         var id = 1L;
 
         when(animalEstimacaoRepository.findById(id)).thenReturn(animalEstimacao);
@@ -119,7 +120,12 @@ public class AnimalEstimacaoServiceTest {
         var id = 1L;
         var donoId = 1L;
         var expected = mensagemRepresentationSucesso();
-
+        var animalEstimacao = new AnimalEstimacao();
+        animalEstimacao.setId(id);
+        animalEstimacao.setDonoId(donoId);
+        
+        
+		when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(animalEstimacao));
         when(animalEstimacaoRepository.existsById(id)).thenReturn(Boolean.FALSE);
 
         //quando

@@ -23,7 +23,6 @@ public class AvaliacaoConverterTest {
 	public void deve_retornar_avaliacao_convertida() {
 		// dado
 		var avaliacaoEsperada = AvaliacaoMock.geraAvaliacaoRepresentation();
-		avaliacaoEsperada.setServicoAvaliadoId(null);
 		// quando
 		var representation = converter.toRepresentation(AvaliacaoMock.geraAvaliacao());
 		// então

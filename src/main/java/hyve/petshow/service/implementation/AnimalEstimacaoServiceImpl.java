@@ -18,7 +18,7 @@ import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     private final String ANIMAL_ESTIMACAO_NAO_ENCONTRADO = "Animal de estimação não encontrado";
     private final String NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO = "Nenhum animal de estimação encontrado";
-    private final String USUARIO_NAO_PROPRIETARIO = "Este serviço não pertence a este usuário";
+    private final String USUARIO_NAO_PROPRIETARIO = "Este animal não pertence a este usuário";
 
     @Autowired
     private AnimalEstimacaoRepository animalEstimacaoRepository;

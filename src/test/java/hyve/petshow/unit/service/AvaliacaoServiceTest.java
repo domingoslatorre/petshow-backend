@@ -9,7 +9,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.stream.Collectors;
 
-import hyve.petshow.exceptions.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -19,13 +18,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.mock.entidades.AvaliacaoMock;
 import hyve.petshow.mock.repositorio.AvaliacaoRepositoryMock;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.service.implementation.AvaliacaoServiceImpl;
-
-import javax.persistence.Id;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AvaliacaoServiceTest {
