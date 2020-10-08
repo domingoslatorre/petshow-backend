@@ -1,11 +1,9 @@
 package hyve.petshow.unit.controller.converter;
 
-import hyve.petshow.controller.converter.ServicoConverter;
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.Servico;
-import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.mock.ServicoDetalhadoMock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Arrays;
+
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -13,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.mock.ServicoDetalhadoMock;
 
 
 @SpringBootTest
@@ -29,9 +25,9 @@ public class ServicoDetalhadoConverterTest {
 	@Test //esse teste converte pra representa��o e pra dominio de novo, ent�o se ele est� correto os dois processos est�o corretos
 	public void deve_retornar_servicoDetalhado_convertido() {
 		var expected = ServicoDetalhadoMock.criarServicoDetalhado();
-		expected.setPrestador(null);
+		expected.setPrestadorId(null);
 		var representation = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
-		representation.setPrestador(null);
+		representation.setPrestadorId(null);
 		var actual = converter.toDomain(representation);
 		assertEquals(actual, expected);
 	}
@@ -60,7 +56,7 @@ public class ServicoDetalhadoConverterTest {
     public void deve_converter_para_lista_de_representation(){
         //dado
     	var representation = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
-    	representation.setPrestador(null);
+    	representation.setPrestadorId(null);
         var expected = Arrays.asList(representation);
         var servicosDetalhados = Arrays.asList(ServicoDetalhadoMock.criarServicoDetalhado());
 
@@ -75,9 +71,9 @@ public class ServicoDetalhadoConverterTest {
     public void deve_converter_para_lista_de_domains(){
         //dado
     	var representation = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
-    	representation.setPrestador(null);
+    	representation.setPrestadorId(null);
         var expectedValue = ServicoDetalhadoMock.criarServicoDetalhado();
-        expectedValue.setPrestador(null);
+        expectedValue.setPrestadorId(null);
 		var expected = Arrays.asList(expectedValue);
         var representations = Arrays.asList(representation);
 

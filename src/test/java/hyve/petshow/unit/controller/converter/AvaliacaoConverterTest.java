@@ -34,7 +34,7 @@ public class AvaliacaoConverterTest {
 	public void deve_retornar_avaliacao_representation_convertida() {
 		// dado
 		var avaliacaoEsperada = AvaliacaoMock.geraAvaliacao();
-		avaliacaoEsperada.getServicoAvaliado().setPrestador(null);
+//		avaliacaoEsperada.getServicoAvaliadoId().setPrestador(null);
 		// quando
 		var domain = converter.toDomain(AvaliacaoMock.geraAvaliacaoRepresentation());
 		// então

@@ -16,7 +16,6 @@ public class ServicoMock {
 		Servico servico = new Servico();
 		servico.setId(1);
     	servico.setNome("Banho e Tosa");
-    	servico.setDescricao("Banhos quentinhos para o seu pet");
     	return servico;
 		}
     	

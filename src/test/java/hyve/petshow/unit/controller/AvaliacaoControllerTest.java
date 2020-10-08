@@ -30,6 +30,9 @@ import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.mock.ClienteMock;
+import hyve.petshow.mock.PrestadorMock;
+import hyve.petshow.mock.ServicoDetalhadoMock;
 import hyve.petshow.mock.entidades.AvaliacaoMock;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.repository.ClienteRepository;
@@ -72,11 +75,10 @@ public class AvaliacaoControllerTest {
 
 	@BeforeEach
 	public void adicionaItens() {
-		var avaliacao = AvaliacaoMock.geraAvaliacao();
-		var servicoAvaliado = avaliacao.getServicoAvaliadoId();
-		this.clienteMock = clienteRepository.save(avaliacao.getClienteId());
-		this.prestadorMock = prestadorRepository.save(servicoAvaliado.getPrestadorId());
-		servicoAvaliado.setPrestadorId(prestadorMock);
+		this.clienteMock = clienteRepository.save(ClienteMock.criaCliente());
+		this.prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
+		var servicoAvaliado = ServicoDetalhadoMock.criarServicoDetalhado();
+		servicoAvaliado.setPrestadorId(prestadorMock.getId());
 		servicoRepository.save(servicoAvaliado.getTipo());
 		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(servicoAvaliado);
 	}
@@ -90,6 +92,8 @@ public class AvaliacaoControllerTest {
 	public void deve_adicionar_avaliacao_a_lista() throws Exception {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		representation.setClienteId(clienteMock.getId());
+		
 		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
 				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
 		var uri = new URI(urlAvaliacao);
@@ -109,13 +113,12 @@ public class AvaliacaoControllerTest {
 	@Test
 	public void deve_retornar_lista_vazia() throws Exception {
 		// dado
-		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		String urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
 				+ this.servicoDetalhadoMock.getId();
 		var uri = new URI(urlAvaliacao);
 
 		// quando
-		var response = template.exchange(urlAvaliacao, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
+		var response = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertTrue(response.getBody().getAvaliacoes().isEmpty());
 	}
@@ -124,6 +127,7 @@ public class AvaliacaoControllerTest {
 	public void deve_retornar_lista_preenchida() throws Exception {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		representation.setClienteId(clienteMock.getId());
 		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
 				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
 		var uri = new URI(urlAvaliacao);
@@ -139,13 +143,12 @@ public class AvaliacaoControllerTest {
 		assertEquals(HttpStatus.OK, responseGet.getStatusCode());
 		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 	}
-	
-	
 
 	@Test
 	public void deve_retornar_Prestador() throws Exception {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		representation.setClienteId(clienteMock.getId());
 		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
 				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
 		var uri = new URI(urlAvaliacao);
@@ -159,7 +162,7 @@ public class AvaliacaoControllerTest {
 		var responseGet = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		// entao
 		assertEquals(HttpStatus.OK, responseGet.getStatusCode());
-		assertFalse(response.getBody().getPrestador() == null);
+		assertFalse(response.getBody().getPrestadorId() == null);
 	}
 
 }

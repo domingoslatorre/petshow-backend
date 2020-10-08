@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ContaGenericaRepository;
 import hyve.petshow.service.port.ContaGenericaService;
-import hyve.petshow.service.port.ContaService;
 
 @Service
 public class ContaServiceImpl implements ContaGenericaService {
@@ -20,11 +18,6 @@ public class ContaServiceImpl implements ContaGenericaService {
 	@Autowired
 	private ContaGenericaRepository repository;
 	
-	@Override
-	public Conta adicionarConta(Conta conta) throws Exception {
-		return repository.save(conta);
-	}
-
 	@Override
 	public Conta buscarPorId(Long id) throws Exception {
 		return repository.findById(id).orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
@@ -36,22 +29,12 @@ public class ContaServiceImpl implements ContaGenericaService {
 	}
 
 	@Override
-	public Conta realizarLogin(Login login) throws Exception {
-		return repository.findByLogin(login).orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
-	}
-
-	@Override
 	public MensagemRepresentation removerConta(Long id) throws Exception {
 		repository.deleteById(id);
 		MensagemRepresentation mensagem = new MensagemRepresentation();
 		mensagem.setId(id);
 		mensagem.setSucesso(!repository.existsById(id));
 		return mensagem;
-	}
-
-	@Override
-	public Optional<Conta> buscarPorCpf(String cpf) {
-		return repository.findByCpf(cpf);
 	}
 
 	@Override

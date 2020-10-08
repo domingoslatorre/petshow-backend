@@ -19,7 +19,7 @@ public class AvaliacaoRepositoryMock {
 	}
 
 	public static List<Avaliacao> findByServicoAvaliado(ServicoDetalhado servico) {
-		return dbMock.stream().filter(el -> el.getServicoAvaliadoId().getId().equals(servico.getId()))
+		return dbMock.stream().filter(el -> el.getServicoAvaliadoId().equals(servico.getId()))
 				.collect(Collectors.toList());
 	}
 

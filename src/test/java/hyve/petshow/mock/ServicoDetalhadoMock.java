@@ -24,7 +24,7 @@ public class ServicoDetalhadoMock {
 		var prestador = new Prestador();
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
-		servicoDetalhado.setPrestadorId(prestador);
+		servicoDetalhado.setPrestadorId(prestador.getId());
 
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhado.setPreco(p);
@@ -32,7 +32,6 @@ public class ServicoDetalhadoMock {
 		Servico s = new Servico();
 		s.setId(1);
 		s.setNome("Banho e Tosa");
-		s.setDescricao("Banhos quentinhos para o seu pet");
 		
 		servicoDetalhado.setTipo(s);
 		servicoDetalhado.setAvaliacoes(new ArrayList<>());
@@ -45,7 +44,7 @@ public class ServicoDetalhadoMock {
 		var prestador = new PrestadorRepresentation();
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
-		servicoDetalhadoRepresentation.setPrestadorId(prestador);
+		servicoDetalhadoRepresentation.setPrestadorId(prestador.getId());
 
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhadoRepresentation.setPreco(p);
