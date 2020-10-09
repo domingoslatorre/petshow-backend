@@ -22,4 +22,9 @@ public class ServicoDetalhado {
     private Servico tipo;
     @Column(name = "fk_conta")
     private Long prestadorId;
+    
+    public void addAvaliacao(Avaliacao avaliacao) {
+    	avaliacoes.add(avaliacao);
+    	avaliacao.setServicoAvaliadoId(this.getId());
+    }
 }

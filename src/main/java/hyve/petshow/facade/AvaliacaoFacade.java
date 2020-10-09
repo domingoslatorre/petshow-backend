@@ -27,7 +27,8 @@ public class AvaliacaoFacade {
 		var cliente = clienteService.buscarPorId(clienteId);
 		var servicoDetalhado = servicoDetalhadoService.buscarPorId(servicoDetalhadoId);
 		var avaliacao = converter.toDomain(request);
-		avaliacao.setServicoAvaliadoId(servicoDetalhado.getId());
+//		avaliacao.setServicoAvaliadoId(servicoDetalhado.getId());
+		servicoDetalhado.addAvaliacao(avaliacao);
 		avaliacao.setClienteId(cliente.getId());
 
 		avaliacaoService.adicionarAvaliacao(avaliacao);

@@ -68,9 +68,8 @@ public class PrestadorServicoControllerTest {
 		servico.setId(null);
 		var requestBody = new HttpEntity<ServicoDetalhadoRepresentation>(servico, new HttpHeaders());
 		
-		var response = template.postForEntity(uri, requestBody, PrestadorRepresentation.class);
+		var response = template.postForEntity(uri, requestBody, ServicoDetalhadoRepresentation.class);
 		
-		assertFalse(response.getBody().getServicos().isEmpty());
 		var findById = repository.findById(prestadorMock.getId());
 		assertFalse(findById.get().getServicosPrestados().isEmpty());
 	}
@@ -83,11 +82,9 @@ public class PrestadorServicoControllerTest {
 		servico.setId(null);
 		var requestBody = new HttpEntity<ServicoDetalhadoRepresentation>(servico, new HttpHeaders());
 		
-		var response = template.postForEntity(uri, requestBody, PrestadorRepresentation.class);
-		
-		assertFalse(response.getBody().getServicos().isEmpty());
-		
-		var uriDois = new URI(this.url + "/"+response.getBody().getServicos().get(0).getId());
+		var response = template.postForEntity(uri, requestBody, ServicoDetalhadoRepresentation.class);
+				
+		var uriDois = new URI(this.url + "/"+response.getBody().getId());
 		
 		template.delete(uriDois);
 		

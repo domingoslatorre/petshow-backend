@@ -88,7 +88,7 @@ public class AvaliacaoControllerTest {
 		var localhost = "http://localhost:"+this.port;
 		this.url = localhost + "/prestador";
 		
-		avaliacaoUrl = localhost + "/servico-detalhado/{id}/avaliacao";
+		avaliacaoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{id}/avaliacao";
 		servicoDetalhadoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{servicoId}";
 	}
 
@@ -98,7 +98,8 @@ public class AvaliacaoControllerTest {
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
 		
-		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString());
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
+								.replace("{prestadorId}", prestadorMock.getId().toString());
 		var uri = new URI(urlAvaliacao);
 		// quando
 		var headers = new HttpHeaders();
@@ -131,7 +132,9 @@ public class AvaliacaoControllerTest {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
-		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString());
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
+							.replace("{prestadorId}", prestadorMock.getId().toString());
+		
 		var uri = new URI(urlAvaliacao);
 
 		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
@@ -151,7 +154,9 @@ public class AvaliacaoControllerTest {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
-		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString());;
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
+							.replace("{prestadorId}", prestadorMock.getId().toString());
+		
 		var uri = new URI(urlAvaliacao);
 
 		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
