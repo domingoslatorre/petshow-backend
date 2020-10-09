@@ -57,7 +57,7 @@ public class PrestadorServicoControllerTest {
 	public void init() {
 		servicoRepository.save(ServicoDetalhadoMock.criarServicoDetalhado().getTipo());
 		prestadorMock = repository.save(PrestadorMock.criaPrestador());
-		this.url = "http://localhost:"+port+"/prestador/"+prestadorMock.getId()+"/servicoDetalhado";
+		this.url = "http://localhost:"+port+"/prestador/"+prestadorMock.getId()+"/servico-detalhado";
 	}
 	
 	@Test

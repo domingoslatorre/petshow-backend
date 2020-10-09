@@ -29,4 +29,6 @@ public interface ServicoDetalhadoService {
     
     List<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId) throws NotFoundException;
     
+    ServicoDetalhado buscarPorPrestadorEId(Long prestadorId, Long servicoId) throws NotFoundException;
+    
 }

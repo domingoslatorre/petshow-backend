@@ -44,13 +44,11 @@ import hyve.petshow.repository.ServicoRepository;
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-
 public class AvaliacaoControllerTest {
 	@LocalServerPort
 	private int port;
 	@Autowired
 	private TestRestTemplate template;
-
 	@Autowired
 	private ServicoRepository servicoRepository;
 	@Autowired
@@ -63,6 +61,8 @@ public class AvaliacaoControllerTest {
 	private PrestadorRepository prestadorRepository;
 
 	private String url;
+	private String avaliacaoUrl;
+	private String servicoDetalhadoUrl;
 
 	private Cliente clienteMock;
 	private ServicoDetalhado servicoDetalhadoMock;
@@ -85,7 +85,11 @@ public class AvaliacaoControllerTest {
 
 	@BeforeEach
 	public void init() {
-		this.url = "http://localhost:" + this.port + "/prestador";
+		var localhost = "http://localhost:"+this.port;
+		this.url = localhost + "/prestador";
+		
+		avaliacaoUrl = localhost + "/servico-detalhado/{id}/avaliacao";
+		servicoDetalhadoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{servicoId}";
 	}
 
 	@Test
@@ -94,17 +98,16 @@ public class AvaliacaoControllerTest {
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
 		
-		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString());
 		var uri = new URI(urlAvaliacao);
 		// quando
-		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
-		// var response = template.exchange(uri, HttpMethod.POST, requestBody,
-		// ServicoDetalhadoRepresentation.class);
+		var headers = new HttpHeaders();
+
+		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, headers);
 		var response = template.postForEntity(uri, requestBody, ServicoDetalhadoRepresentation.class);
 		// então
-		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 		servicoDetalhadoRepository.findById(this.servicoDetalhadoMock.getId()).ifPresent(el -> {
 			assertFalse(el.getAvaliacoes().isEmpty());
 		});
@@ -112,9 +115,9 @@ public class AvaliacaoControllerTest {
 
 	@Test
 	public void deve_retornar_lista_vazia() throws Exception {
-		// dado
-		String urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId();
+		// dado		
+		var urlAvaliacao = servicoDetalhadoUrl.replace("{prestadorId}", prestadorMock.getId().toString())
+				.replace("{servicoId}", servicoDetalhadoMock.getId().toString());
 		var uri = new URI(urlAvaliacao);
 
 		// quando
@@ -128,16 +131,15 @@ public class AvaliacaoControllerTest {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
-		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString());
 		var uri = new URI(urlAvaliacao);
 
 		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
 		var response = template.exchange(uri, HttpMethod.POST, requestBody, ServicoDetalhadoRepresentation.class);
 		// quando
-
-		uri = new URI(
-				this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/" + this.servicoDetalhadoMock.getId());
+		var urlServico = servicoDetalhadoUrl.replace("{prestadorId}", prestadorMock.getId().toString())
+				.replace("{servicoId}", servicoDetalhadoMock.getId().toString());
+		uri = new URI(urlServico);
 		var responseGet = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		// entao
 		assertEquals(HttpStatus.OK, responseGet.getStatusCode());
@@ -149,16 +151,16 @@ public class AvaliacaoControllerTest {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
-		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString());;
 		var uri = new URI(urlAvaliacao);
 
 		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
 		var response = template.exchange(uri, HttpMethod.POST, requestBody, ServicoDetalhadoRepresentation.class);
 		// quando
-
-		uri = new URI(
-				this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/" + this.servicoDetalhadoMock.getId());
+		
+		var urlServico = servicoDetalhadoUrl.replace("{prestadorId}", prestadorMock.getId().toString())
+				.replace("{servicoId}", servicoDetalhadoMock.getId().toString());
+		uri = new URI(urlServico);
 		var responseGet = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		// entao
 		assertEquals(HttpStatus.OK, responseGet.getStatusCode());

@@ -28,10 +28,11 @@ public class ServicoDetalhadoController {
 	@Autowired
 	private ServicoDetalhadoService servicoDetalhadoService;
 
-	@PostMapping("/prestador/servico-detalhado")
+	@PostMapping("/prestador/{idPrestador}/servico-detalhado")
 	public ResponseEntity <ServicoDetalhadoRepresentation> adicionarServicoDetalhado(
-	        @RequestBody ServicoDetalhadoRepresentation request) {
+	        @PathVariable Long idPrestador, @RequestBody ServicoDetalhadoRepresentation request) {
 		var servico = converter.toDomain(request);
+		servico.setPrestadorId(idPrestador);
 		servico = service.adicionarServicoDetalhado(servico);
 		var representation = converter.toRepresentation(servico);
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
@@ -61,12 +62,23 @@ public class ServicoDetalhadoController {
 		return ResponseEntity.ok(representation);
 	}
 
-	@PutMapping("/prestador/servico-detalhado/{id}")
+	
+	@GetMapping("/prestador/{prestadorId}/servico-detalhado/{servicoId}")
+	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhadoPorPrestador(
+			@PathVariable Long prestadorId, @PathVariable Long servicoId) throws Exception {
+		var servico = servicoDetalhadoService.buscarPorPrestadorEId(prestadorId, servicoId);
+		var representation = servicoDetalhadoConverter.toRepresentation(servico);
+		return ResponseEntity.ok(representation);
+	}
+	
+	
+	@PutMapping("/prestador/{idPrestador}/servico-detalhado/{idServico}")
 	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(
-	        @PathVariable Long id,
+	        @PathVariable Long idPrestador,
+			@PathVariable Long idServico,
             @RequestBody ServicoDetalhadoRepresentation request) throws Exception{
 		var servico = converter.toDomain(request);
-		servico = service.atualizarServicoDetalhado(id, servico);
+		servico = service.atualizarServicoDetalhado(idServico, servico);
 		var representation = converter.toRepresentation(servico);
 		return ResponseEntity.ok(representation);
 	}

@@ -1,29 +1,30 @@
 package hyve.petshow.service.implementation;
 
+import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
+
 import java.util.List;
 
-import hyve.petshow.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 //import hyve.petshow.controller.representation.ServicoDetalhadoResponseRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 
-import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
-
 @Service
 public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
+	private static final String SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO = "Serviço não encontrado para prestador mencionado";
 	private final String SERVICO_DETALHADO_NAO_ENCONTRADO = "Serviço detalhado não encontrado";
 	private final String NENHUM_SERVICO_DETALHADO_ENCONTRADO = "Nenhum serviço detalhado encontrado";
 	private final String USUARIO_NAO_PROPRIETARIO = "Este serviço não pertence a este usuário";
 
 	@Autowired
 	private ServicoDetalhadoRepository repository;
-
+	
 	@Override
 	public ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
 		return repository.save(servicoDetalhado);
@@ -64,7 +65,8 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 		var servicoDetalhado = repository.findById(id)
 				.orElseThrow(() -> new NotFoundException(SERVICO_DETALHADO_NAO_ENCONTRADO));
 
-		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){
+		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){		
+			
 			repository.deleteById(id);
 			var sucesso = !repository.existsById(id);
 			var response = new MensagemRepresentation(id);
@@ -90,5 +92,10 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 		}
 
 		return servicosDetalhados;
+	}
+
+	@Override
+	public ServicoDetalhado buscarPorPrestadorEId(Long prestadorId, Long servicoId) throws NotFoundException {
+		return repository.findByIdAndPrestadorId(servicoId, prestadorId).orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO));
 	}
 }
