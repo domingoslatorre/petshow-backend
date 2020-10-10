@@ -122,23 +122,6 @@ public class ServicoDetalhadoControllerTest {
 		
 		
 	}
-
-	@Test
-	public void deve_retornar_servico_detalhado_atualizado() throws Exception {
-		var url = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", "");
-		var uri = new URI(url);
-		
-		var request = new HttpEntity<ServicoDetalhadoRepresentation>(this.servicoDetalhado, new HttpHeaders());
-	
-		var response = template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
-		
-		var servicoDetalhado = response.getBody();
-		servicoDetalhado.setPreco(new BigDecimal(23));
-		
-		url = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", servicoDetalhado.getId().toString());
-		
-		template.put(url, servicoDetalhado);
-	}
 		
 	@Test
 	public void deve_retornar_lista() throws Exception {
@@ -157,6 +140,23 @@ public class ServicoDetalhadoControllerTest {
 		assertFalse(response.getBody().isEmpty());
 	
 	}
+//	
+//	@Test
+//	public void deve_retornar_servico_detalhado_atualizado() throws Exception {
+//		var url = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", "");
+//		var uri = new URI(url);
+//		
+//		var request = new HttpEntity<ServicoDetalhadoRepresentation>(this.servicoDetalhado, new HttpHeaders());
+//	
+//		var response = template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
+//		
+//		var servicoDetalhado = response.getBody();
+//		servicoDetalhado.setPreco(new BigDecimal(23));
+//		
+//		url = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", servicoDetalhado.getId().toString());
+//		
+//		template.put(url, servicoDetalhado);
+//	}
 	
 
 }
