@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
+import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import hyve.petshow.service.port.AnimalEstimacaoService;
@@ -135,4 +137,64 @@ public class AnimalEstimacaoServiceTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void deve_retornar_excecao_de_nao_encontrado() {
+    	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+    	assertThrows(NotFoundException.class, () -> {
+    		animalEstimacaoService.buscarAnimalEstimacaoPorId(1l);
+    	});
+    }
+    
+    @Test
+    public void deve_retornar_excecao_por_lista_nao_encontrada() {
+    	Mockito.when(animalEstimacaoRepository.findByDonoId(Mockito.anyLong())).thenReturn(new ArrayList<>());
+    	
+    	assertThrows(NotFoundException.class, () -> {
+    		animalEstimacaoService.buscarAnimaisEstimacaoPorDono(1l);
+    	});
+    }
+    
+    @Test
+    public void deve_retornar_excecao_por_donos_diferentes() {
+    	AnimalEstimacao animalRequest = new AnimalEstimacao();
+    	AnimalEstimacao animalDb = new AnimalEstimacao();
+    	
+    	animalRequest.setDonoId(1l);
+    	animalRequest.setDonoId(2l);
+    	
+    	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(animalDb));
+    	
+    	assertThrows(BusinessException.class, () -> {
+    		animalEstimacaoService.atualizarAnimalEstimacao(2l, animalRequest);
+    	});
+    }
+    
+    @Test
+    public void deve_retornar_excecao_por_donos_diferentes_delecao() {
+    	AnimalEstimacao animalRequest = new AnimalEstimacao();
+    	AnimalEstimacao animalDb = new AnimalEstimacao();
+    	
+    	animalRequest.setDonoId(1l);
+    	animalRequest.setDonoId(2l);
+    	
+    	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(animalDb));
+    	
+    	assertThrows(BusinessException.class, () -> {
+    		animalEstimacaoService.removerAnimalEstimacao(2l, animalRequest.getDonoId());
+    	});
+    }
+    
+    @Test
+    public void deve_retornar_mensagem_de_falha() throws BusinessException, NotFoundException {
+    	AnimalEstimacao animalRequest = new AnimalEstimacao();
+    	animalRequest.setDonoId(1l);
+    	
+    	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(animalRequest));
+    	Mockito.when(animalEstimacaoRepository.existsById(Mockito.anyLong())).thenReturn(true);
+    	
+    	var removerAnimalEstimacao = animalEstimacaoService.removerAnimalEstimacao(1l, animalRequest.getDonoId());
+    	assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerAnimalEstimacao.getMensagem());
+    	
+    	
+    }
 }

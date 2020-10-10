@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,14 +19,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.Servico;
+import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.mock.PrestadorMock;
 import hyve.petshow.mock.ServicoDetalhadoMock;
 import hyve.petshow.repository.PrestadorRepository;
@@ -55,6 +61,8 @@ public class ServicoDetalhadoControllerTest {
 	
 	private ServicoDetalhadoRepresentation servicoDetalhado;
 	
+	private Servico servico;
+	
 	@Autowired
 	private ServicoDetalhadoRepository repository;
 	
@@ -66,7 +74,7 @@ public class ServicoDetalhadoControllerTest {
 		servicoDetalhado = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
 		servicoDetalhado.setId(null);
 		
-		servicoRepository.save(ServicoDetalhadoMock.criarServicoDetalhado().getTipo());
+		servico = servicoRepository.save(ServicoDetalhadoMock.criarServicoDetalhado().getTipo());
 	}
 
 	@BeforeEach
@@ -131,5 +139,24 @@ public class ServicoDetalhadoControllerTest {
 		
 		template.put(url, servicoDetalhado);
 	}
+		
+	@Test
+	public void deve_retornar_lista() throws Exception {
+		var urlPost = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", "");
+		var uri = new URI(urlPost);
+		
+		var request = new HttpEntity<ServicoDetalhadoRepresentation>(this.servicoDetalhado, new HttpHeaders());
+	
+		template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
+	
+		this.url = "http://localhost:"+this.port+"/servico-detalhado/tipo-servico/"+servico.getId().toString();
+		var response = template.exchange(url, HttpMethod.GET, null,  new ParameterizedTypeReference<List<ServicoDetalhado>>() {
+		});
+		
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertFalse(response.getBody().isEmpty());
+	
+	}
+	
 
 }

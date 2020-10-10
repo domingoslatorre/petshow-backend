@@ -44,8 +44,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	@Override
 	public ServicoDetalhado atualizarServicoDetalhado(Long id, ServicoDetalhado request)
 			throws BusinessException, NotFoundException {
-		var servicoDetalhado = repository.findById(id)
-				.orElseThrow(() -> new NotFoundException(SERVICO_DETALHADO_NAO_ENCONTRADO));
+		var servicoDetalhado = buscarPorId(id);
 
 		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), request.getPrestadorId())){
 			servicoDetalhado.setPreco(request.getPreco());
@@ -62,8 +61,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	@Override
 	public MensagemRepresentation removerServicoDetalhado(Long id, Long prestadorId)
 			throws BusinessException, NotFoundException{
-		var servicoDetalhado = repository.findById(id)
-				.orElseThrow(() -> new NotFoundException(SERVICO_DETALHADO_NAO_ENCONTRADO));
+		var servicoDetalhado = buscarPorId(id);
 
 		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){		
 			

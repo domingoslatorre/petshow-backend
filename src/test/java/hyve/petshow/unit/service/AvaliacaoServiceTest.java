@@ -1,12 +1,16 @@
 package hyve.petshow.unit.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,6 +20,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.exceptions.NotFoundException;
@@ -91,5 +96,30 @@ public class AvaliacaoServiceTest {
 		assertEquals(avaliacoes.size(), busca.size());
 
 	}
+	
+	@Test
+	public void deve_retornar_excecao_de_nenhuma_encontrada_por_servico() {
+		Mockito.when(repository.findByServicoAvaliadoId(Mockito.anyLong())).thenReturn(new ArrayList<>());
+		assertThrows(NotFoundException.class, () -> {
+			service.buscarAvaliacoesPorServicoId(10l);
+		});
+	}
+	
+	@Test
+	public void deve_retornar_algo_por_id() throws NotFoundException {
+		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Avaliacao()));
+		assertNotNull(service.buscarAvaliacaoPorId(1l));
+	}
+	
+	@Test
+	public void deve_retornar_excecao_por_nao_encontrar_por_id() {
+		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+		
+		assertThrows(NotFoundException.class, () -> {
+			service.buscarAvaliacaoPorId(1l);
+		});
+	}
+	
+	
 
 }

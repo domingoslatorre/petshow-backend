@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -20,7 +20,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Login;
@@ -77,21 +76,21 @@ public class ClienteServiceTest {
 		assertEquals(contaDb.getId(), clienteAAlterar.getId());
 	}
 
-	/*@Test
-	@Order(2)
-	public void deve_atualizar_animal() throws Exception {
-		Cliente cliente = new Cliente();
-		cliente.setId(2l);
-		ArrayList<AnimalEstimacao> animaisEstimacao = new ArrayList<AnimalEstimacao>();
-		AnimalEstimacao animalTeste = new AnimalEstimacao();
-		animalTeste.setNome("Joao");
-		animaisEstimacao.add(animalTeste);
-		cliente.setAnimaisEstimacao(animaisEstimacao);
-
-		Cliente salvaConta = (Cliente) service.atualizarConta(1l, cliente);
-		assertTrue(salvaConta.getAnimaisEstimacao().contains(animalTeste));
-
-	}*/
+	/*
+	 * @Test
+	 * 
+	 * @Order(2) public void deve_atualizar_animal() throws Exception { Cliente
+	 * cliente = new Cliente(); cliente.setId(2l); ArrayList<AnimalEstimacao>
+	 * animaisEstimacao = new ArrayList<AnimalEstimacao>(); AnimalEstimacao
+	 * animalTeste = new AnimalEstimacao(); animalTeste.setNome("Joao");
+	 * animaisEstimacao.add(animalTeste);
+	 * cliente.setAnimaisEstimacao(animaisEstimacao);
+	 * 
+	 * Cliente salvaConta = (Cliente) service.atualizarConta(1l, cliente);
+	 * assertTrue(salvaConta.getAnimaisEstimacao().contains(animalTeste));
+	 * 
+	 * }
+	 */
 
 	@Test
 	@Order(2)
@@ -129,5 +128,22 @@ public class ClienteServiceTest {
 		MensagemRepresentation removerConta = service.removerConta(2l);
 		assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, removerConta.getMensagem());
 		assertTrue(removerConta.getSucesso());
+	}
+
+	@Test
+	@Order(7)
+	public void deve_retornar_mensagem_de_erro() throws Exception {
+		Mockito.when(repository.existsById(Mockito.anyLong())).thenReturn(true);
+		var removerConta = service.removerConta(22l);
+		assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerConta.getMensagem());
+	}
+
+	@Test
+	@Order(8)
+	public void deve_encontrar_por_email() {
+		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(new Cliente()));
+
+		var buscarPorEmail = service.buscarPorEmail("teste@teste");
+		assertNotNull(buscarPorEmail);
 	}
 }

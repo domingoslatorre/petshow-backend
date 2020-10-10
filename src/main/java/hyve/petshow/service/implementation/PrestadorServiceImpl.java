@@ -28,8 +28,7 @@ public class PrestadorServiceImpl implements PrestadorService {
 
     @Override
     public Prestador atualizarConta(Long id, Prestador request) throws Exception {
-        var prestador = repository.findById(id)
-                .orElseThrow(()->new NotFoundException(CONTA_NAO_ENCONTRADA));
+        var prestador = buscarPorId(id);
 
         prestador.setTelefone(request.getTelefone());
         prestador.setEndereco(request.getEndereco());

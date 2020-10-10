@@ -10,21 +10,41 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ServicoServiceImpl implements ServicoService {
-    private final String NENHUM_SERVICO_ENCONTRADO = "Nenhum serviço encontrado";
+public class ServicoServiceImpl extends TipoService<Servico> implements ServicoService {
+//    private final String NENHUM_SERVICO_ENCONTRADO = "Nenhum serviï¿½o encontrado";
+//
+//    @Autowired
+//    private ServicoRepository repository;
+//    
+//    @Override
+//    public List<Servico> buscarServicos() throws NotFoundException {
+//        var servicos = repository.findAll();
+//
+//        if(servicos.isEmpty()){
+//            throw new NotFoundException(NENHUM_SERVICO_ENCONTRADO);
+//        }
+//
+//        return servicos;
+//    }
+	
+    public ServicoServiceImpl() {
+		super("Nenhum serviÃ§o encontrado");
+		// TODO Auto-generated constructor stub
+	}
+
+//	private final String NENHUM_SERVICO_ENCONTRADO = "Nenhum serviï¿½o encontrado";
 
     @Autowired
     private ServicoRepository repository;
     
     @Override
-    public List<Servico> buscarServicos() throws NotFoundException {
-        var servicos = repository.findAll();
-
-        if(servicos.isEmpty()){
-            throw new NotFoundException(NENHUM_SERVICO_ENCONTRADO);
-        }
-
-        return servicos;
+    public List<Servico> buscarServicos() throws NotFoundException {    	
+    	return buscarTodos();
     }
+
+	@Override
+	public List<Servico> buscarLista() {
+		return repository.findAll();
+	}
 }
 

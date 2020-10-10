@@ -4,6 +4,7 @@ package hyve.petshow.unit.service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.*;
+import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.mock.PrestadorMock;
 import hyve.petshow.repository.PrestadorRepository;
 
@@ -16,6 +17,8 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Optional;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -126,5 +129,30 @@ public class PrestadorServiceTest {
         MensagemRepresentation removerConta = service.removerConta(2l);
         assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, removerConta.getMensagem());
         assertTrue(removerConta.getSucesso());
+    }
+    
+    @Test
+    @Order(7)
+    public void deve_retornar_excecao_quando_nao_encontrar_para_atualizar() {
+    	assertThrows(NotFoundException.class, () -> {
+    		service.atualizarConta(20l, new Prestador());
+    	});
+    }
+    
+    @Test
+    @Order(8)
+    public void deve_retornar_mensagem_de_erro_em_execucao_de_delecao() {
+    	Mockito.when(repository.existsById(Mockito.anyLong())).thenReturn(true);
+    	var mensagem = service.removerConta(20l);
+    	assertEquals(MensagemRepresentation.MENSAGEM_FALHA, mensagem.getMensagem());
+    }
+    
+    @Test
+    @Order(8)
+    public void deve_retornar_entidade() {
+    	Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(new Prestador()));
+    	
+    	var buscarPorEmail = service.buscarPorEmail("teste@teste");
+    	assertNotNull(buscarPorEmail);
     }
 }

@@ -10,20 +10,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TipoAnimalEstimacaoServiceImpl implements TipoAnimalEstimacaoService {
-    private final String NENHUM_TIPO_ANIMAL_ESTIMACAO_ENCONTRADO = "Nenhum tipo animal de estimação encontrado";
-
+public class TipoAnimalEstimacaoServiceImpl extends TipoService<TipoAnimalEstimacao> implements TipoAnimalEstimacaoService {
+//    private final String NENHUM_TIPO_ANIMAL_ESTIMACAO_ENCONTRADO = ;
+    
+    public TipoAnimalEstimacaoServiceImpl() {
+    	super("Nenhum tipo animal de estimação encontrado");
+    }
+    
     @Autowired
     private TipoAnimalEstimacaoRepository repository;
 
     @Override
     public List<TipoAnimalEstimacao> buscarTiposAnimalEstimacao() throws NotFoundException {
-        var tiposAnimalEstimacao = repository.findAll();
-
-        if(tiposAnimalEstimacao.isEmpty()){
-            throw new NotFoundException(NENHUM_TIPO_ANIMAL_ESTIMACAO_ENCONTRADO);
-        }
-
-        return tiposAnimalEstimacao;
+//        var tiposAnimalEstimacao = repository.findAll();
+//
+//        if(tiposAnimalEstimacao.isEmpty()){
+//            throw new NotFoundException(NENHUM_TIPO_ANIMAL_ESTIMACAO_ENCONTRADO);
+//        }
+//
+//        return tiposAnimalEstimacao;
+    	return buscarTodos();
     }
+
+	@Override
+	public List<TipoAnimalEstimacao> buscarLista() {
+		return repository.findAll();
+	}
+    
+    
 }

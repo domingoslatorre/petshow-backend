@@ -21,15 +21,14 @@ public class ClienteServiceImpl implements ClienteService {
 	private ClienteRepository repository;
 
 	@Override
-	public Cliente buscarPorId(Long id) throws Exception {
+	public Cliente buscarPorId(Long id) throws NotFoundException {
 		return repository.findById(id)
 				.orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
 	}
 
 	@Override
 	public Cliente atualizarConta(Long id, Cliente request) throws NotFoundException {
-		var conta = repository.findById(id)
-				.orElseThrow(()->new NotFoundException(CONTA_NAO_ENCONTRADA));
+		var conta = buscarPorId(id);
 
 		conta.setTelefone(request.getTelefone());
 		conta.setEndereco(request.getEndereco());

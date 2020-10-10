@@ -48,8 +48,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     @Override
     public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request)
             throws NotFoundException, BusinessException {
-        var animalEstimacao = animalEstimacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(ANIMAL_ESTIMACAO_NAO_ENCONTRADO));
+        var animalEstimacao =  buscarAnimalEstimacaoPorId(id);
 
         if(verificarIdentidade(animalEstimacao.getDonoId(), request.getDonoId())){
             animalEstimacao.setNome(request.getNome());
@@ -65,8 +64,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     @Override
     public MensagemRepresentation removerAnimalEstimacao(Long id, Long donoId)
             throws BusinessException, NotFoundException {
-        var animalEstimacao = animalEstimacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(ANIMAL_ESTIMACAO_NAO_ENCONTRADO));
+        var animalEstimacao =  buscarAnimalEstimacaoPorId(id);
 
         if(verificarIdentidade(animalEstimacao.getDonoId(), donoId)) {
             animalEstimacaoRepository.deleteById(id);
