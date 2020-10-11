@@ -35,7 +35,6 @@ public class ServicoDetalhadoController {
 		var representation = servicoDetalhadoConverter.toRepresentationList(servico);
 		return ResponseEntity.ok(representation);
 	}
-	
 
 	@PostMapping("/prestador/{idPrestador}/servico-detalhado")
 	public ResponseEntity <ServicoDetalhadoRepresentation> adicionarServicoDetalhado(
@@ -69,14 +68,6 @@ public class ServicoDetalhadoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
 	}
 
-//	@GetMapping("/servico-detalhado/{id}")
-//	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhado(
-//			@PathVariable Long id) throws NotFoundException {
-//		var servicoDetalhado = service.buscarPorId(id);
-//		var representation = converter.toRepresentation(servicoDetalhado);
-//		return ResponseEntity.ok(representation);
-//	}
-//	
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado/{servicoId}")
 	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhadoPorPrestador(
 			@PathVariable Long prestadorId, @PathVariable Long servicoId) throws Exception {
@@ -103,7 +94,4 @@ public class ServicoDetalhadoController {
 		var representation = converter.toRepresentationList(servicosDetalhados);
 		return ResponseEntity.ok(representation);
 	}
-
-
-
 }

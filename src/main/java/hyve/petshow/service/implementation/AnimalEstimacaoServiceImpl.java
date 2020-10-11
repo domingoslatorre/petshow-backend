@@ -48,7 +48,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     @Override
     public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request)
             throws NotFoundException, BusinessException {
-        var animalEstimacao =  buscarAnimalEstimacaoPorId(id);
+        var animalEstimacao = buscarAnimalEstimacaoPorId(id);
 
         if(verificarIdentidade(animalEstimacao.getDonoId(), request.getDonoId())){
             animalEstimacao.setNome(request.getNome());

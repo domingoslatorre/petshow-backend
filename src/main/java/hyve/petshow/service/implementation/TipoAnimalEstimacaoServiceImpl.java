@@ -11,8 +11,6 @@ import java.util.List;
 
 @Service
 public class TipoAnimalEstimacaoServiceImpl extends TipoService<TipoAnimalEstimacao> implements TipoAnimalEstimacaoService {
-//    private final String NENHUM_TIPO_ANIMAL_ESTIMACAO_ENCONTRADO = ;
-    
     public TipoAnimalEstimacaoServiceImpl() {
     	super("Nenhum tipo animal de estimação encontrado");
     }
@@ -22,13 +20,6 @@ public class TipoAnimalEstimacaoServiceImpl extends TipoService<TipoAnimalEstima
 
     @Override
     public List<TipoAnimalEstimacao> buscarTiposAnimalEstimacao() throws NotFoundException {
-//        var tiposAnimalEstimacao = repository.findAll();
-//
-//        if(tiposAnimalEstimacao.isEmpty()){
-//            throw new NotFoundException(NENHUM_TIPO_ANIMAL_ESTIMACAO_ENCONTRADO);
-//        }
-//
-//        return tiposAnimalEstimacao;
     	return buscarTodos();
     }
 
@@ -36,6 +27,4 @@ public class TipoAnimalEstimacaoServiceImpl extends TipoService<TipoAnimalEstima
 	public List<TipoAnimalEstimacao> buscarLista() {
 		return repository.findAll();
 	}
-    
-    
 }
