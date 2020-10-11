@@ -22,6 +22,9 @@ import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.mock.ClienteMock;
+import hyve.petshow.mock.PrestadorMock;
+import hyve.petshow.mock.ServicoDetalhadoMock;
 import hyve.petshow.mock.entidades.AvaliacaoMock;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.repository.ClienteRepository;
@@ -58,11 +61,19 @@ public class AvaliacaoFacadeTest {
 	@BeforeEach
 	public void adicionaItens() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		prestadorMock = prestadorRepository.save(avaliacao.getServicoAvaliado().getPrestador());
-		servicoRepository.save(avaliacao.getServicoAvaliado().getTipo());
-		avaliacao.getServicoAvaliado().setPrestador(prestadorMock);
-		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(avaliacao.getServicoAvaliado());
-		this.clienteMock = clienteRepository.save(avaliacao.getCliente());
+		prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
+		var servicoAvaliado = ServicoDetalhadoMock.criarServicoDetalhado();
+		servicoAvaliado.setPrestadorId(prestadorMock.getId());
+		
+		servicoRepository.save(servicoAvaliado.getTipo());
+		
+		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(servicoAvaliado);
+		this.clienteMock = clienteRepository.save(ClienteMock.criaCliente());
+		
+		avaliacao.setServicoAvaliadoId(servicoDetalhadoMock.getId());
+		avaliacao.setClienteId(clienteMock.getId());
+		
+		
 	}
 
 	@Test
@@ -72,9 +83,9 @@ public class AvaliacaoFacadeTest {
 		var idCliente = clienteMock.getId();
 		var idServicoPrestado = servicoDetalhadoMock.getId();
 		// quando
-		var avaliacaoSalva = facade.adicionarAvaliacao(representation, idCliente, idServicoPrestado);
+		facade.adicionarAvaliacao(representation, idCliente, idServicoPrestado);
 
-		assertNotNull(avaliacaoSalva);
+		assertNotNull(facade.buscarAvaliacaoPorServico(idServicoPrestado));
 	}
 	
 	@Test
@@ -83,11 +94,11 @@ public class AvaliacaoFacadeTest {
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
 		var idCliente = clienteMock.getId();
 		var idServicoPrestado = servicoDetalhadoMock.getId();
-		var avaliacaoSalva = facade.adicionarAvaliacao(representation, idCliente, idServicoPrestado);
+		facade.adicionarAvaliacao(representation, idCliente, idServicoPrestado);
 		
 		// quando
 		List<AvaliacaoRepresentation> avaliacoes = facade.buscarAvaliacaoPorServico(idServicoPrestado);
 		
-		assertTrue(avaliacoes.contains(avaliacaoSalva));
+		assertTrue(avaliacoes.size() == 1);
 	}
 }

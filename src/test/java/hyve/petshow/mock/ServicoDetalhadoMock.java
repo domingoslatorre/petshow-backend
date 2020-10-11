@@ -7,11 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import hyve.petshow.controller.converter.ServicoConverter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
@@ -22,6 +17,9 @@ import hyve.petshow.domain.ServicoDetalhado;
 //import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 
 public class ServicoDetalhadoMock {
+	private static List<ServicoDetalhado> dbMock = new ArrayList<ServicoDetalhado>(Arrays.asList(criarServicoDetalhado()));
+	
+	
 	public static ServicoDetalhado criarServicoDetalhado() {
 		ServicoDetalhado servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setId(1L);
@@ -29,15 +27,14 @@ public class ServicoDetalhadoMock {
 		var prestador = new Prestador();
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
-		servicoDetalhado.setPrestador(prestador);
+		servicoDetalhado.setPrestadorId(prestador.getId());
 
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhado.setPreco(p);
 
 		Servico s = new Servico();
-		s.setId(Long.valueOf(1));
+		s.setId(1);
 		s.setNome("Banho e Tosa");
-		s.setDescricao("Banhos quentinhos para o seu pet");
 		
 		servicoDetalhado.setTipo(s);
 		servicoDetalhado.setAvaliacoes(new ArrayList<>());
@@ -50,15 +47,14 @@ public class ServicoDetalhadoMock {
 		var prestador = new PrestadorRepresentation();
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
-		servicoDetalhadoRepresentation.setPrestador(prestador);
+		servicoDetalhadoRepresentation.setPrestadorId(prestador.getId());
 
 		BigDecimal p = new BigDecimal(70);
 		servicoDetalhadoRepresentation.setPreco(p);
 
 		ServicoRepresentation s = new ServicoRepresentation();
-		s.setId(Long.valueOf(1));
+		s.setId(1);
 		s.setNome("Banho e Tosa");
-		s.setDescricao("Banhos quentinhos para o seu pet");	
 		
 
 		servicoDetalhadoRepresentation.setTipo(s);
@@ -66,9 +62,6 @@ public class ServicoDetalhadoMock {
 		servicoDetalhadoRepresentation.setAvaliacoes(new ArrayList<>());
 		return servicoDetalhadoRepresentation;
 	}
-
-	public static List<ServicoDetalhado> dbMock = new ArrayList<ServicoDetalhado>(
-			Arrays.asList(criarServicoDetalhado()));
 
 	public static List<ServicoDetalhado> findAll() {
 		return dbMock;

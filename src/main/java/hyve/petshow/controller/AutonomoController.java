@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/autonomo")
-@CrossOrigin(origins = {UrlUtils.URL_API_LOCAL, UrlUtils.URL_API_LOCAL_DOCKER, UrlUtils.URL_API_PROD}) //quem pode usar esses serviços nesse controller
 public class AutonomoController {
-    @Autowired // instancia automaticamente
-    private AutonomoService service; //
+    @Autowired
+    private AutonomoService service;
 
     @Autowired
     private AutonomoConverter converter; //converte para uma entidade de dominio para não utilizar o mesmo objeto

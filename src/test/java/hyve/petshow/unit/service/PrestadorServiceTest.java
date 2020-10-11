@@ -4,6 +4,7 @@ package hyve.petshow.unit.service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.*;
+import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.mock.PrestadorMock;
 import hyve.petshow.repository.PrestadorRepository;
 
@@ -16,6 +17,8 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Optional;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -79,20 +82,6 @@ public class PrestadorServiceTest {
 
     @Test
     @Order(1)
-    public void deve_inserir_prestador_na_lista() throws Exception {
-        Prestador prestador = new Prestador();
-        prestador.setNome("Prestador_1");
-        Login login = new Login();
-        login.setEmail("teste@teste.com");
-        prestador.setCpf("555555555555");
-        prestador.setLogin(login);
-        service.adicionarConta(prestador);
-        assertTrue(repository.findAll().contains(prestador));
-        assertNotNull(prestador.getId());
-    }
-
-    @Test
-    @Order(2)
     public void deve_atualizar_conta() throws Exception {
         Prestador prestadorAlterar = service.buscarPorId(1l);
         Login login = new Login();
@@ -104,30 +93,15 @@ public class PrestadorServiceTest {
         assertEquals(contaDb.getId(), prestadorAlterar.getId());
     }
 
-//    @Test
-//    @Order(3)
-//    public void deve_atualizar_servicoDetalhado() throws Exception {
-//        Prestador prestador = new Prestador();
-//        prestador.setId(2l);
-//        ArrayList<ServicoDetalhado> servicosDetalhados = new ArrayList<ServicoDetalhado>();
-//        ServicoDetalhado servicoDetalhadoTeste = new ServicoDetalhado();
-//        servicoDetalhadoTeste.setNome("Joao");
-//        servicosDetalhados.add(servicoDetalhadoTeste);
-//        prestador.setServicoDetalhado(servicosDetalhados);
-//
-//        Prestador salvaConta = (Prestador) service.atualizaConta(prestador);
-//        assertTrue(salvaConta.getServicoDetalhado().contains(servicoDetalhadoTeste));
-//    }
-
     @Test
-    @Order(4)
+    @Order(2)
     public void deve_encontrar_conta_correta() throws Exception {
         Conta obterContaPorId = service.buscarPorId(1l);
         assertEquals("Teste", obterContaPorId.getNome());
     }
 
     @Test
-    @Order(5)
+    @Order(3)
     public void deve_retornar_excecao_por_pessoa_nao_encontrada() {
         assertThrows(Exception.class, () -> {
             service.buscarPorId(5l);
@@ -135,24 +109,13 @@ public class PrestadorServiceTest {
     }
 
     @Test
-    @Order(6)
-    public void deve_encontrar_elemento_por_login() throws Exception {
-    	Login login = new Login();
-        login.setEmail("teste@teste.com");
-        login.setSenha("aslkjdgklsdjg");
-        Conta obterPorLogin = service.realizarLogin(login);
-        assertNotNull(obterPorLogin);
-        assertTrue(obterPorLogin.getId() == 1);
-    }
-
-    @Test
-    @Order(7)
+    @Order(4)
     public void deve_encontrar_todos_os_elementos() {
         assertTrue(!service.buscarContas().isEmpty());
     }
 
     @Test
-    @Order(8)
+    @Order(5)
     public void deve_remover_elemento() throws Exception {
         service.removerConta(1l);
         assertThrows(Exception.class, () -> {
@@ -161,47 +124,35 @@ public class PrestadorServiceTest {
     }
 
     @Test
-    @Order(9)
+    @Order(6)
     public void deve_retornar_mensagem_sucesso() throws Exception {
         MensagemRepresentation removerConta = service.removerConta(2l);
         assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, removerConta.getMensagem());
         assertTrue(removerConta.getSucesso());
     }
-
+    
     @Test
-    @Order(11)
-    public void deve_impedir_insercao_contas_com_mesmo_email() throws Exception {
-        Prestador conta = new Prestador();
-        Login login = new Login();
-        login.setEmail("teste@teste.com");
-        conta.setLogin(login);
-        conta.setCpf("22222222222");
-        service.adicionarConta(conta);
-        conta.setCpf("286238623846");
-        assertThrows(Exception.class, () -> {
-            service.adicionarConta(conta);
-        });
+    @Order(7)
+    public void deve_retornar_excecao_quando_nao_encontrar_para_atualizar() {
+    	assertThrows(NotFoundException.class, () -> {
+    		service.atualizarConta(20l, new Prestador());
+    	});
     }
-
+    
     @Test
-    @Order(12)
-    public void deve_impedir_insercao_contas_com_mesmo_cpf() throws Exception {
-        Prestador conta = new Prestador();
-        conta.setCpf("44444444444");
-        Login login = new Login();
-        login.setEmail("asdgs@aslkdjg");
-        login.setSenha("03joiwk");
-        conta.setLogin(login);
-        service.adicionarConta(conta);
-        Login login2 = new Login();
-        login2.setEmail("asdgs@aslkdjg");
-        login2.setSenha("03joiwk");
-        conta.setLogin(login2);
-
-        assertThrows(Exception.class, () -> {
-            service.adicionarConta(conta);
-        });
-
+    @Order(8)
+    public void deve_retornar_mensagem_de_erro_em_execucao_de_delecao() {
+    	Mockito.when(repository.existsById(Mockito.anyLong())).thenReturn(true);
+    	var mensagem = service.removerConta(20l);
+    	assertEquals(MensagemRepresentation.MENSAGEM_FALHA, mensagem.getMensagem());
     }
-
+    
+    @Test
+    @Order(8)
+    public void deve_retornar_entidade() {
+    	Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(new Prestador()));
+    	
+    	var buscarPorEmail = service.buscarPorEmail("teste@teste");
+    	assertNotNull(buscarPorEmail);
+    }
 }

@@ -44,7 +44,6 @@ public class AnimalEstimacaoConverterTest {
         var expected = AnimalEstimacaoMock.animalEstimacao();
         var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
         animalEstimacaoRepresentation.setId(1L);
-        animalEstimacaoRepresentation.setDono(new ClienteRepresentation());
         //quando
         var actual = animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation);
 

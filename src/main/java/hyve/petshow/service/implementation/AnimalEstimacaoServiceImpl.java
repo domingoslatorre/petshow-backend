@@ -1,20 +1,25 @@
 package hyve.petshow.service.implementation;
 
 import java.util.List;
-import java.util.Optional;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import hyve.petshow.controller.representation.AnimalEstimacaoResponseRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 
+import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
+
 @Service
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
+    private final String ANIMAL_ESTIMACAO_NAO_ENCONTRADO = "Animal de estimação não encontrado";
+    private final String NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO = "Nenhum animal de estimação encontrado";
+    private final String USUARIO_NAO_PROPRIETARIO = "Este animal não pertence a este usuário";
+
     @Autowired
     private AnimalEstimacaoRepository animalEstimacaoRepository;
 
@@ -26,39 +31,52 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     @Override
     public AnimalEstimacao buscarAnimalEstimacaoPorId(Long id) throws NotFoundException {
         return animalEstimacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Animal de estimação não encontrado"));
+                () -> new NotFoundException(ANIMAL_ESTIMACAO_NAO_ENCONTRADO));
     }
 
     @Override
-    public List<AnimalEstimacao> buscarAnimaisEstimacao() throws NotFoundException {
-        var animaisEstimacao = animalEstimacaoRepository.findAll();
+    public List<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id) throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoRepository.findByDonoId(id);
 
         if(animaisEstimacao.isEmpty()) {
-            throw new NotFoundException("Nenhum animal de estimação foi encontrado.");
+            throw new NotFoundException(NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO);
         }
 
         return animaisEstimacao;
     }
 
     @Override
-    public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request) throws NotFoundException {
-        var animalEstimacao = animalEstimacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Animal de estimação não encontrado"));
+    public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request)
+            throws NotFoundException, BusinessException {
+        var animalEstimacao = buscarAnimalEstimacaoPorId(id);
 
-        var response = animalEstimacaoRepository.save(request);
-
-        return response;
+        if(verificarIdentidade(animalEstimacao.getDonoId(), request.getDonoId())){
+            animalEstimacao.setNome(request.getNome());
+            animalEstimacao.setTipo(request.getTipo());
+            animalEstimacao.setFoto(request.getFoto());
+            var response = animalEstimacaoRepository.save(animalEstimacao);
+            return response;
+        } else {
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
+        }
     }
 
     @Override
-    public MensagemRepresentation removerAnimalEstimacao(Long id) {
-        animalEstimacaoRepository.deleteById(id);
+    public MensagemRepresentation removerAnimalEstimacao(Long id, Long donoId)
+            throws BusinessException, NotFoundException {
+        var animalEstimacao =  buscarAnimalEstimacaoPorId(id);
 
-        var sucesso = ! animalEstimacaoRepository.existsById(id);
-        var response = new MensagemRepresentation(id);
+        if(verificarIdentidade(animalEstimacao.getDonoId(), donoId)) {
+            animalEstimacaoRepository.deleteById(id);
 
-        response.setSucesso(sucesso);
+            var sucesso = !animalEstimacaoRepository.existsById(id);
+            var response = new MensagemRepresentation(id);
 
-        return response;
+            response.setSucesso(sucesso);
+
+            return response;
+        } else {
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
+        }
     }
 }

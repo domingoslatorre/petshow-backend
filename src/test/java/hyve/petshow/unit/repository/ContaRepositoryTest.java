@@ -43,17 +43,17 @@ public class ContaRepositoryTest {
 		contaRepository.deleteAll();
 	}
 	
-	@Test
-	public void deve_retornar_cliente() {
-		var findByLogin = contaRepository.findByLogin(cliente.getLogin());
-		assertEquals(TipoConta.CLIENTE, findByLogin.get().getTipo());
-	}
-	
-	@Test
-	public void deve_retornar_prestador() {
-		var findByLogin = contaRepository.findByLogin(prestador.getLogin());
-		assertEquals(TipoConta.PRESTADOR_AUTONOMO, findByLogin.get().getTipo());
-	}
+//	@Test
+//	public void deve_retornar_cliente() {
+//		var findByLogin = contaRepository.findByLogin(cliente.getLogin());
+//		assertEquals(TipoConta.CLIENTE, findByLogin.get().getTipo());
+//	}
+//	
+//	@Test
+//	public void deve_retornar_prestador() {
+//		var findByLogin = contaRepository.findByLogin(prestador.getLogin());
+//		assertEquals(TipoConta.PRESTADOR_AUTONOMO, findByLogin.get().getTipo());
+//	}
 	
 
 }

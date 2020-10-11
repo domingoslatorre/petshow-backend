@@ -22,9 +22,8 @@ import hyve.petshow.domain.ServicoDetalhado;
 public class AvaliacaoMock {
 	public static Avaliacao geraAvaliacao() {
 		var tipo = new Servico();
-		tipo.setId(1l);
+		tipo.setId(1);
 		tipo.setNome("Banho");
-		tipo.setDescricao("Banho");
 
 		var servicoAvaliado = new ServicoDetalhado();
 		servicoAvaliado.setId(1l);
@@ -35,14 +34,14 @@ public class AvaliacaoMock {
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
 
-		servicoAvaliado.setPrestador(prestador);
+		servicoAvaliado.setPrestadorId(prestador.getId());
 		servicoAvaliado.setAvaliacoes(new ArrayList<>());
 		var cliente = new Cliente();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 
 		var avaliacao = new Avaliacao();
-		avaliacao.setServicoAvaliado(servicoAvaliado);
+		avaliacao.setServicoAvaliadoId(servicoAvaliado.getId());
 		var info = new CriteriosAvaliacao();
 		info.setAtencao(5);
 		info.setQualidadeProdutos(5);
@@ -50,8 +49,8 @@ public class AvaliacaoMock {
 		info.setInfraestrutura(5);
 		info.setQualidadeServico(5);
 		info.setComentario("Muito bom");
-		avaliacao.setAvaliacaoInfo(info);
-		avaliacao.setCliente(cliente);
+		avaliacao.setCriteriosAvaliacao(info);
+		avaliacao.setClienteId(cliente.getId());
 
 		return avaliacao;
 	}
@@ -59,7 +58,7 @@ public class AvaliacaoMock {
 	public static AvaliacaoRepresentation geraAvaliacaoRepresentation() {
 
 		var tipo = new ServicoRepresentation();
-		tipo.setId(1l);
+		tipo.setId(1);
 		tipo.setNome("Banho");
 		tipo.setDescricao("Banho");
 
@@ -73,14 +72,14 @@ public class AvaliacaoMock {
 		prestador.setId(1l);
 		prestador.setNome("TestePrestador");
 		
-		servicoAvaliado.setPrestador(prestador);
+		servicoAvaliado.setPrestadorId(prestador.getId());
 
 		var cliente = new ClienteRepresentation();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 
 		var avaliacao = new AvaliacaoRepresentation();
-		avaliacao.setServicoAvaliado(servicoAvaliado);
+		avaliacao.setServicoAvaliadoId(servicoAvaliado.getId());
 		avaliacao.setAtencao(5);
 		avaliacao.setQualidadeProdutos(5);
 		avaliacao.setCustoBeneficio(5);
@@ -88,15 +87,14 @@ public class AvaliacaoMock {
 		avaliacao.setQualidadeServico(5);
 		avaliacao.setComentario("Muito bom");
 		avaliacao.setMedia(5d);
-		avaliacao.setCliente(cliente);
+		avaliacao.setClienteId(cliente.getId());
 		return avaliacao;
 	}
 
 	public static List<Avaliacao> geraListaAvaliacao() {
 		var tipo = new Servico();
-		tipo.setId(1l);
+		tipo.setId(1);
 		tipo.setNome("Banho");
-		tipo.setDescricao("Banho");
 
 		var servicoAvaliado = new ServicoDetalhado();
 		servicoAvaliado.setId(1l);
@@ -106,7 +104,7 @@ public class AvaliacaoMock {
 		cliente.setId(1l);
 		cliente.setNome("Teste");
 		return Stream.of(new Avaliacao(), new Avaliacao(), new Avaliacao()).map(avaliacao -> {
-			avaliacao.setServicoAvaliado(servicoAvaliado);
+			avaliacao.setServicoAvaliadoId(servicoAvaliado.getId());
 			var info = new CriteriosAvaliacao();
 			info.setAtencao(geraNota());
 			info.setQualidadeProdutos(geraNota());
@@ -114,8 +112,8 @@ public class AvaliacaoMock {
 			info.setInfraestrutura(geraNota());
 			info.setQualidadeServico(geraNota());
 			info.setComentario("Muito bom");
-			avaliacao.setAvaliacaoInfo(info);
-			avaliacao.setCliente(cliente);
+			avaliacao.setCriteriosAvaliacao(info);
+			avaliacao.setClienteId(cliente.getId());
 			return avaliacao;
 		}).collect(Collectors.toList());
 	}

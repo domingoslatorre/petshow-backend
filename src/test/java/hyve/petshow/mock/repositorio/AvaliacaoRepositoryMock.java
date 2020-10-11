@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.ServicoDetalhado;
 
 public class AvaliacaoRepositoryMock {
 	private static List<Avaliacao> dbMock = new ArrayList<Avaliacao>();
@@ -18,9 +17,8 @@ public class AvaliacaoRepositoryMock {
 		return dbMock;
 	}
 
-	public static List<Avaliacao> findByServicoAvaliado(ServicoDetalhado servico) {
-		return dbMock.stream().filter(el -> el.getServicoAvaliado().getId().equals(servico.getId()))
-				.collect(Collectors.toList());
+	public static List<Avaliacao> findByServicoAvaliado(Long servico) {
+		return dbMock.stream().filter(el -> el.getServicoAvaliadoId().equals(servico)).collect(Collectors.toList());
 	}
 
 	public static Avaliacao save(Avaliacao avaliacao) {

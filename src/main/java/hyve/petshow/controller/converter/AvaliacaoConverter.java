@@ -13,19 +13,14 @@ import hyve.petshow.domain.CriteriosAvaliacao;
 
 @Component
 public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoRepresentation> {
-	@Autowired
-	private ClienteConverter clienteConverter;
-	@Autowired
-	private ServicoDetalhadoConverter servicoConverter;
-
 	@Override
 	public AvaliacaoRepresentation toRepresentation(Avaliacao domain) {
 		if(domain == null) return new AvaliacaoRepresentation();
 		
 		var representation = new AvaliacaoRepresentation();
 		representation.setId(domain.getId());
-		if (domain.getAvaliacaoInfo() != null) {
-			var info = domain.getAvaliacaoInfo();
+		if (domain.getCriteriosAvaliacao() != null) {
+			var info = domain.getCriteriosAvaliacao();
 			representation.setAtencao(info.getAtencao());
 			representation.setQualidadeProdutos(info.getQualidadeProdutos());
 			representation.setCustoBeneficio(info.getCustoBeneficio());
@@ -33,7 +28,8 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 			representation.setQualidadeServico(info.getQualidadeServico());
 			representation.setComentario(info.getComentario());
 		}
-		representation.setCliente(clienteConverter.toRepresentation(domain.getCliente()));
+		representation.setClienteId(domain.getClienteId());
+		representation.setServicoAvaliadoId(domain.getServicoAvaliadoId());
 		representation.setMedia(domain.getMediaAvaliacao());
 		return representation;
 	}
@@ -43,8 +39,8 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		if(representation == null) return new Avaliacao();
 		var domain = new Avaliacao();
 		domain.setId(representation.getId());
-		domain.setCliente(clienteConverter.toDomain(representation.getCliente()));
-		domain.setServicoAvaliado(servicoConverter.toDomain(representation.getServicoAvaliado()));
+		domain.setClienteId(representation.getClienteId());
+		domain.setServicoAvaliadoId(representation.getServicoAvaliadoId());
 		
 		var info = new CriteriosAvaliacao();
 		info.setAtencao(representation.getAtencao());
@@ -54,11 +50,9 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		info.setQualidadeServico(representation.getQualidadeServico());
 		info.setComentario(representation.getComentario());
 		
-		domain.setAvaliacaoInfo(info);
+		domain.setCriteriosAvaliacao(info);
 		return domain;
 	}
-
-	
 	
 	public List<AvaliacaoRepresentation> toRepresentationList(List<Avaliacao> domainList) {
 		if(domainList == null) return new ArrayList<AvaliacaoRepresentation>();

@@ -39,7 +39,7 @@ public class AvaliacaoTest {
 		// dado
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
 		CriteriosAvaliacao avaliacaoInfo = new CriteriosAvaliacao();
-		avaliacao.setAvaliacaoInfo(avaliacaoInfo); // Deixa a avaliação com as informações nulas
+		avaliacao.setCriteriosAvaliacao(avaliacaoInfo); // Deixa a avaliação com as informações nulas
 
 		// quando
 		Double media = avaliacao.getMediaAvaliacao();
@@ -52,7 +52,7 @@ public class AvaliacaoTest {
 	public void deve_retornar_media_0_por_informacoes_nulas() {
 		// Dado
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		avaliacao.setAvaliacaoInfo(null);
+		avaliacao.setCriteriosAvaliacao(null);
 
 		// Quando
 		Double media = avaliacao.getMediaAvaliacao();

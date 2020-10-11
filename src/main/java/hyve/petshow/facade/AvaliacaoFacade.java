@@ -18,25 +18,25 @@ public class AvaliacaoFacade {
 	@Autowired
 	private ServicoDetalhadoService servicoDetalhadoService;
 	@Autowired
-	private AvaliacaoService service;
+	private AvaliacaoService avaliacaoService;
 	@Autowired
 	private AvaliacaoConverter converter;
 
-	public AvaliacaoRepresentation adicionarAvaliacao(AvaliacaoRepresentation representation, Long idCliente,
-			Long idServicoPrestado) throws Exception {
-		var cliente = clienteService.buscarPorId(idCliente);
-		var servicoAvaliado = servicoDetalhadoService.buscarPorId(idServicoPrestado);
-		var avaliacao = converter.toDomain(representation);
-		servicoAvaliado.addAvaliacao(avaliacao);
-		avaliacao.setServicoAvaliado(servicoAvaliado);
-		avaliacao.setCliente(cliente);
-		var avaliacaoSalva = service.adicionarAvaliacao(avaliacao);
-		return converter.toRepresentation(avaliacaoSalva);
+	public void adicionarAvaliacao(AvaliacaoRepresentation request, Long clienteId, Long servicoDetalhadoId)
+			throws Exception {
+		var cliente = clienteService.buscarPorId(clienteId);
+		var servicoDetalhado = servicoDetalhadoService.buscarPorId(servicoDetalhadoId);
+		var avaliacao = converter.toDomain(request);
+//		avaliacao.setServicoAvaliadoId(servicoDetalhado.getId());
+		servicoDetalhado.addAvaliacao(avaliacao);
+		avaliacao.setClienteId(cliente.getId());
+
+		avaliacaoService.adicionarAvaliacao(avaliacao);
 	}
 
 	public List<AvaliacaoRepresentation> buscarAvaliacaoPorServico(Long idServicoPrestado) throws Exception {
 		var servico = servicoDetalhadoService.buscarPorId(idServicoPrestado);
-		var avaliacoes = service.buscarAvaliacoesPorServico(servico);
+		var avaliacoes = avaliacaoService.buscarAvaliacoesPorServicoId(servico.getId());
 		return converter.toRepresentationList(avaliacoes);
 	}
 

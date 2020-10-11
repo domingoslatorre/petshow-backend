@@ -18,23 +18,6 @@ public class AutonomoServiceImpl implements AutonomoService {
     @Autowired
     private AutonomoRepository repository;
 
-
-    @Override
-    public Autonomo adicionarConta(Autonomo conta) throws Exception {
-        validaNovaConta(conta);
-        return repository.save(conta);
-    }
-
-    private void validaNovaConta(Autonomo conta) throws BusinessException {
-        if (repository.findByEmail(conta.getLogin().getEmail()).isPresent()) {
-            throw new BusinessException("Email já cadastrado no sistema");
-        }
-
-        if (repository.findByCpf(conta.getCpf()).isPresent()) {
-            throw new BusinessException("CPF já cadastrado no sistema");
-        }
-    }
-
     @Override
     public Autonomo buscarPorId(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
@@ -46,12 +29,6 @@ public class AutonomoServiceImpl implements AutonomoService {
     }
 
     @Override
-    public Autonomo realizarLogin(Login login) throws Exception {
-        return repository.findByLogin(login)
-                .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
-    }
-
-    @Override
     public MensagemRepresentation removerConta(Long id) throws Exception {
         repository.deleteById(id);
         MensagemRepresentation mensagem = new MensagemRepresentation();
@@ -59,9 +36,6 @@ public class AutonomoServiceImpl implements AutonomoService {
         mensagem.setSucesso(!repository.existsById(id));
         return mensagem;
     }
-
-    @Override
-    public Optional<Autonomo> buscarPorCpf(String cpf) { return repository.findByCpf(cpf); }
 
     @Override
     public Optional<Autonomo> buscarPorEmail(String email) { return repository.findByEmail(email); }

@@ -1,104 +1,72 @@
-/*package hyve.petshow.unit.controller;
+package hyve.petshow.unit.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
-import hyve.petshow.mock.ServicoMock;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.controller.representation.ServicoRepresentation;
-import hyve.petshow.domain.Servico;
-import hyve.petshow.domain.Login;
+import hyve.petshow.mock.ServicoMock;
 import hyve.petshow.repository.ServicoRepository;
 
-@TestMethodOrder(OrderAnnotation.class)
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 public class ServicoControllerTest {
 	@LocalServerPort
-	private int port;
-
+	private Integer port;
+	
 	@Autowired
 	private TestRestTemplate template;
-
+	
 	@Autowired
 	private ServicoRepository repository;
-
+	
 	private String url;
-
+	
+	@AfterEach
+	public void limpa() {
+		repository.deleteAll();
+	}
+	
 	@BeforeEach
-	public void init() {
-		url = "http://localhost:" + port + "/servicos";
+	public void initUrl() {
+		this.url = "http://localhost:"+port+"/servico";
 	}
-
-	public ServicoRepresentation initMock() {
-		 var servicoMock = ServicoMock.criarServicoRepresentation();
-		 return servicoMock;
-	}
-
+	
 	@Test
-	@Order(1)
-	public void deve_salvar_servico() throws URISyntaxException {
-		URI uri = new URI(this.url);
-		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<ServicoRepresentation> request = new HttpEntity<>(this.initMock(), headers);
-
-		ResponseEntity<ServicoRepresentation> response = template.postForEntity(uri, request, ServicoRepresentation.class);
-
-		assertEquals(HttpStatus.CREATED, response.getStatusCode());
-		assertTrue(repository.existsById(response.getBody().getId()));
+	public void deve_trazer_lista() {
+		repository.saveAll(Arrays.asList(ServicoMock.criarServico()));
+		
+		var response = template
+	       .exchange(this.url, HttpMethod.GET, null,  new ParameterizedTypeReference<List<ServicoRepresentation>>() {
+		});
+		
+		assertFalse(response.getBody().isEmpty());
 	}
-
+	
 	@Test
-	@Order(2)
-	public void deve_retornar_erro_por_nome_repetido() throws URISyntaxException {
-		URI uri = new URI(this.url);
-		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<ServicoRepresentation> request = new HttpEntity<>(this.initMock(), headers);
-
-		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
-
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+	public void deve_trazer_mensagem_de_nao_encontrado() {
+		var response = template.exchange(this.url, HttpMethod.GET, null,  String.class);
+		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 		assertNotNull(response.getBody());
 	}
-
-
-
-
-	@Test
-	@Order(3)
-	public void deve_retornar_excecao() throws URISyntaxException {
-		URI uri = new URI(this.url);
-		ServicoRepresentation servicoMock = new ServicoRepresentation();
-
-		HttpEntity<ServicoRepresentation> request = new HttpEntity<>(this.initMock(), new HttpHeaders());
-
-		ResponseEntity<String> response = template.postForEntity(uri, request, String.class);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-
-	}
-
-}*/
+	
+}

@@ -2,14 +2,7 @@ package hyve.petshow.domain;
 
 import java.util.Optional;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import lombok.Data;
 
@@ -18,16 +11,15 @@ import lombok.Data;
 public class Avaliacao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private Long id;
 	@Embedded
-	private CriteriosAvaliacao avaliacaoInfo;
-	@ManyToOne
-	private ServicoDetalhado servicoAvaliado;
-	@ManyToOne
-	private Cliente cliente;
+	private CriteriosAvaliacao criteriosAvaliacao;
+	@Column(name = "fk_servico_detalhado")
+	private Long servicoAvaliadoId;
+	@Column(name = "fk_conta")
+	private Long clienteId;
 	
 	@Transient
 	public Double getMediaAvaliacao() {
-		return Optional.ofNullable(avaliacaoInfo).orElse(new CriteriosAvaliacao()).getMediaAvaliacao();
+		return Optional.ofNullable(criteriosAvaliacao).orElse(new CriteriosAvaliacao()).getMediaAvaliacao();
 	}}

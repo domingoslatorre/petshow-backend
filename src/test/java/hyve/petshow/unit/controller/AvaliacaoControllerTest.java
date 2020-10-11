@@ -30,6 +30,9 @@ import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.mock.ClienteMock;
+import hyve.petshow.mock.PrestadorMock;
+import hyve.petshow.mock.ServicoDetalhadoMock;
 import hyve.petshow.mock.entidades.AvaliacaoMock;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.repository.ClienteRepository;
@@ -41,13 +44,11 @@ import hyve.petshow.repository.ServicoRepository;
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-
 public class AvaliacaoControllerTest {
 	@LocalServerPort
 	private int port;
 	@Autowired
 	private TestRestTemplate template;
-
 	@Autowired
 	private ServicoRepository servicoRepository;
 	@Autowired
@@ -60,6 +61,8 @@ public class AvaliacaoControllerTest {
 	private PrestadorRepository prestadorRepository;
 
 	private String url;
+	private String avaliacaoUrl;
+	private String servicoDetalhadoUrl;
 
 	private Cliente clienteMock;
 	private ServicoDetalhado servicoDetalhadoMock;
@@ -72,35 +75,40 @@ public class AvaliacaoControllerTest {
 
 	@BeforeEach
 	public void adicionaItens() {
-		var avaliacao = AvaliacaoMock.geraAvaliacao();
-		var servicoAvaliado = avaliacao.getServicoAvaliado();
-		this.clienteMock = clienteRepository.save(avaliacao.getCliente());
-		this.prestadorMock = prestadorRepository.save(servicoAvaliado.getPrestador());
-		servicoAvaliado.setPrestador(prestadorMock);
+		this.clienteMock = clienteRepository.save(ClienteMock.criaCliente());
+		this.prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
+		var servicoAvaliado = ServicoDetalhadoMock.criarServicoDetalhado();
+		servicoAvaliado.setPrestadorId(prestadorMock.getId());
 		servicoRepository.save(servicoAvaliado.getTipo());
 		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(servicoAvaliado);
 	}
 
 	@BeforeEach
 	public void init() {
-		this.url = "http://localhost:" + this.port + "/prestador";
+		var localhost = "http://localhost:"+this.port;
+		this.url = localhost + "/prestador";
+		
+		avaliacaoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{id}/avaliacao";
+		servicoDetalhadoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{servicoId}";
 	}
 
 	@Test
 	public void deve_adicionar_avaliacao_a_lista() throws Exception {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
-		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
+		representation.setClienteId(clienteMock.getId());
+		
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
+								.replace("{prestadorId}", prestadorMock.getId().toString());
 		var uri = new URI(urlAvaliacao);
 		// quando
-		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
-		// var response = template.exchange(uri, HttpMethod.POST, requestBody,
-		// ServicoDetalhadoRepresentation.class);
+		var headers = new HttpHeaders();
+
+		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, headers);
 		var response = template.postForEntity(uri, requestBody, ServicoDetalhadoRepresentation.class);
 		// então
-		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 		servicoDetalhadoRepository.findById(this.servicoDetalhadoMock.getId()).ifPresent(el -> {
 			assertFalse(el.getAvaliacoes().isEmpty());
 		});
@@ -108,14 +116,13 @@ public class AvaliacaoControllerTest {
 
 	@Test
 	public void deve_retornar_lista_vazia() throws Exception {
-		// dado
-		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
-		String urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId();
+		// dado		
+		var urlAvaliacao = servicoDetalhadoUrl.replace("{prestadorId}", prestadorMock.getId().toString())
+				.replace("{servicoId}", servicoDetalhadoMock.getId().toString());
 		var uri = new URI(urlAvaliacao);
 
 		// quando
-		var response = template.exchange(urlAvaliacao, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
+		var response = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertTrue(response.getBody().getAvaliacoes().isEmpty());
 	}
@@ -124,42 +131,45 @@ public class AvaliacaoControllerTest {
 	public void deve_retornar_lista_preenchida() throws Exception {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
-		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
+		representation.setClienteId(clienteMock.getId());
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
+							.replace("{prestadorId}", prestadorMock.getId().toString());
+		
 		var uri = new URI(urlAvaliacao);
 
 		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
 		var response = template.exchange(uri, HttpMethod.POST, requestBody, ServicoDetalhadoRepresentation.class);
 		// quando
-
-		uri = new URI(
-				this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/" + this.servicoDetalhadoMock.getId());
+		var urlServico = servicoDetalhadoUrl.replace("{prestadorId}", prestadorMock.getId().toString())
+				.replace("{servicoId}", servicoDetalhadoMock.getId().toString());
+		uri = new URI(urlServico);
 		var responseGet = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		// entao
 		assertEquals(HttpStatus.OK, responseGet.getStatusCode());
 		assertFalse(response.getBody().getAvaliacoes().isEmpty());
 	}
-	
-	
 
 	@Test
 	public void deve_retornar_Prestador() throws Exception {
 		// dado
 		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
-		var urlAvaliacao = this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/"
-				+ this.servicoDetalhadoMock.getId() + "/avaliacoes";
+		representation.setClienteId(clienteMock.getId());
+		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
+							.replace("{prestadorId}", prestadorMock.getId().toString());
+		
 		var uri = new URI(urlAvaliacao);
 
 		var requestBody = new HttpEntity<AvaliacaoRepresentation>(representation, new HttpHeaders());
 		var response = template.exchange(uri, HttpMethod.POST, requestBody, ServicoDetalhadoRepresentation.class);
 		// quando
-
-		uri = new URI(
-				this.url + "/" + this.prestadorMock.getId() + "/servicoDetalhado/" + this.servicoDetalhadoMock.getId());
+		
+		var urlServico = servicoDetalhadoUrl.replace("{prestadorId}", prestadorMock.getId().toString())
+				.replace("{servicoId}", servicoDetalhadoMock.getId().toString());
+		uri = new URI(urlServico);
 		var responseGet = template.exchange(uri, HttpMethod.GET, null, ServicoDetalhadoRepresentation.class);
 		// entao
 		assertEquals(HttpStatus.OK, responseGet.getStatusCode());
-		assertFalse(response.getBody().getPrestador() == null);
+		assertFalse(response.getBody().getPrestadorId() == null);
 	}
 
 }

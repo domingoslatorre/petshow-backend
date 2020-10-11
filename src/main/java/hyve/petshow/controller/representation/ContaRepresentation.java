@@ -20,5 +20,8 @@ public class ContaRepresentation {
 	private String foto;
 	private Endereco endereco;
 	private Login login;
-	
+
+	public void setLogin(Login login){
+		this.login = new Login(login.getEmail());
+	}
 }

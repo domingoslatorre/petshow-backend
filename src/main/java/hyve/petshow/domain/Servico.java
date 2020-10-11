@@ -8,8 +8,6 @@ import lombok.Data;
 public class Servico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String nome;
-    private String descricao;
-    
 }

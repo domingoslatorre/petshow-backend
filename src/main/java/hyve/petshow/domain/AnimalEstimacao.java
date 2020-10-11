@@ -1,12 +1,6 @@
 package hyve.petshow.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import lombok.Data;
 
@@ -18,8 +12,9 @@ public class AnimalEstimacao {
     private Long id;
     private String nome;
     private String foto;
-    @ManyToOne
-    private Cliente dono;
-    @Column(name = "fk_tipo_animal_estimacao")
-    private Integer tipo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_tipo_animal_estimacao")
+    private TipoAnimalEstimacao tipo;
+    @Column(name = "fk_conta")
+    private Long donoId;
 }

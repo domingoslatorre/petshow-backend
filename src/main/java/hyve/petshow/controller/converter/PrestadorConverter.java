@@ -1,29 +1,24 @@
 package hyve.petshow.controller.converter;
 
+import hyve.petshow.controller.representation.PrestadorRepresentation;
+import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.enums.TipoConta;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import hyve.petshow.controller.representation.PrestadorRepresentation;
-import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.enums.TipoConta;
-
 // TODO: IDEM ClienteCONVERTER
-@Component // coloca a entidade dentro do contexto Spring
+@Component
 public class PrestadorConverter implements Converter<Prestador, PrestadorRepresentation> {
-    //private ContaConverter contaConverter = new ContaConverter();
-    //private List<ServicoDetalhado> servicoDetalhadoConverter = new ArrayList<ServicoDetalhado>();
-	
 	@Autowired
 	private ServicoDetalhadoConverter servicoConverter;
 
     @Override
     public PrestadorRepresentation toRepresentation(Prestador domain) {
         if(domain == null) return new PrestadorRepresentation();
-//		PrestadorRepresentation representation = (PrestadorRepresentation) contaConverter.toRepresentation(domain);
         PrestadorRepresentation representation = new PrestadorRepresentation();
         representation.setNomeSocial(domain.getNomeSocial());
 
@@ -44,7 +39,6 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
     @Override
     public Prestador toDomain(PrestadorRepresentation representation) {
         if(representation == null) return new Prestador();
-//		Prestador domain = (Prestador) contaConverter.toDomain(representation);
         Prestador domain = new Prestador();
         domain.setNomeSocial(representation.getNomeSocial());
 

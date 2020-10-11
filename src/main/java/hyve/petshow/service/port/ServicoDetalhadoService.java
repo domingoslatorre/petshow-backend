@@ -8,6 +8,7 @@ import hyve.petshow.exceptions.BusinessException;
 
 import java.util.List;
 
+import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
@@ -18,16 +19,16 @@ import hyve.petshow.domain.ServicoDetalhado;
 public interface ServicoDetalhadoService {
 	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado);
 
-    //List<ServicoDetalhado> findByPrestador(Long id);
+	List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer id) throws NotFoundException;
 	
-	List<ServicoDetalhado> buscarServicosDetalhadosPorTipo (Long id);
-	
-	ServicoDetalhado atualizarServicoDetalhado(Long id, ServicoDetalhado servicoDetalhadoRequest)throws Exception;
+	ServicoDetalhado atualizarServicoDetalhado(Long id, ServicoDetalhado servicoDetalhadoRequest) throws BusinessException, NotFoundException;
 
-    MensagemRepresentation removerServicoDetalhado(Long id) throws Exception;
+    MensagemRepresentation removerServicoDetalhado(Long id, Long prestadorId) throws BusinessException, NotFoundException;
     
-    ServicoDetalhado buscarPorId(Long id) throws Exception;
+    ServicoDetalhado buscarPorId(Long id) throws NotFoundException;
     
-    ServicoDetalhado buscarPorIdEPrestador(Long idServico, Long idPrestador) throws Exception;
+    List<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId) throws NotFoundException;
+    
+    ServicoDetalhado buscarPorPrestadorEId(Long prestadorId, Long servicoId) throws NotFoundException;
     
 }
