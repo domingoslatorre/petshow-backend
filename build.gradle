@@ -53,7 +53,7 @@ dependencies {
 	testCompile 'io.cucumber:cucumber-java:6.6.0'
 	testCompile 'pl.pojo:pojo-tester:0.7.6'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testCompile: 'org.springframework.security:spring-security-test:5.4.1'
+	testCompile 'org.springframework.security:spring-security-test:5.4.1'
 	
 }
 
