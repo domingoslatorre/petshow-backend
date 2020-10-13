@@ -2,8 +2,6 @@ package hyve.petshow.service.implementation;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Autonomo;
-import hyve.petshow.domain.Login;
-import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AutonomoRepository;
 import hyve.petshow.service.port.AutonomoService;

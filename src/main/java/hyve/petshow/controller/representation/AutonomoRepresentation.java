@@ -1,7 +1,5 @@
 package hyve.petshow.controller.representation;
 
-import java.util.List;
-
 import lombok.Data;
 
 @Data

@@ -1,19 +1,19 @@
 package hyve.petshow.service.implementation;
 
-import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import hyve.petshow.controller.representation.MensagemRepresentation;
-//import hyve.petshow.controller.representation.ServicoDetalhadoResponseRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 import hyve.petshow.service.port.ServicoDetalhadoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
+
+//import hyve.petshow.controller.representation.ServicoDetalhadoResponseRepresentation;
 
 @Service
 public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
@@ -80,7 +80,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
 	@Override
 	public List<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId) throws NotFoundException {
-		var servicosDetalhados = repository.findByPrestadorId(prestadorId);;
+		var servicosDetalhados = repository.findByPrestadorId(prestadorId);
 
 		if(servicosDetalhados.isEmpty()){
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);

@@ -1,11 +1,11 @@
 package hyve.petshow.domain;
 
-import javax.persistence.*;
-
 import hyve.petshow.domain.enums.TipoConta;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Data
 @Entity(name = "conta")

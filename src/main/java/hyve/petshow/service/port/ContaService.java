@@ -1,13 +1,11 @@
 package hyve.petshow.service.port;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface ContaService<T extends Conta> {

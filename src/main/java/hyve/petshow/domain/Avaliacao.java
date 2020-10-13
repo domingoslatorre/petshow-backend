@@ -1,10 +1,9 @@
 package hyve.petshow.domain;
 
-import java.util.Optional;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.util.Optional;
 
 @Data
 @Entity

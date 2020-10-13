@@ -22,6 +22,7 @@ public class AnimalEstimacaoMock {
         animalEstimacao.setNome("pedrinho");
         animalEstimacao.setFoto("hahah");
         animalEstimacao.setTipo(tipoAnimalEstimacao());
+        animalEstimacao.setDonoId(1L);
 
         return animalEstimacao;
     }
@@ -33,6 +34,7 @@ public class AnimalEstimacaoMock {
         animalEstimacao.setNome("andrezinho");
         animalEstimacao.setFoto("aaaaa");
         animalEstimacao.setTipo(tipoAnimalEstimacao());
+        animalEstimacao.setDonoId(1L);
 
         return animalEstimacao;
     }
@@ -43,6 +45,7 @@ public class AnimalEstimacaoMock {
         animalEstimacaoRepresentation.setNome("pedrinho");
         animalEstimacaoRepresentation.setFoto("hahah");
         animalEstimacaoRepresentation.setTipo(tipoAnimalEstimacaoRepresentation());
+        animalEstimacaoRepresentation.setDonoId(1L);
 
         return animalEstimacaoRepresentation;
     }

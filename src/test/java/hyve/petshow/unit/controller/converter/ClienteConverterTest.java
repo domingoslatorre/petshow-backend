@@ -6,8 +6,10 @@ import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
-import hyve.petshow.mock.AnimalEstimacaoMock;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -17,7 +19,7 @@ import java.util.List;
 import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoList;
 import static hyve.petshow.mock.AnimalEstimacaoMock.tipoAnimalEstimacaoRepresentation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -48,7 +50,7 @@ public class ClienteConverterTest {
 		ClienteRepresentation representation = converter.toRepresentation(cliente);
 		
 		assertEquals(cliente.getId(), representation.getId());
-		assertTrue(!representation.getAnimaisEstimacao().isEmpty());
+		assertFalse(representation.getAnimaisEstimacao().isEmpty());
 	}
 	
 	@Test

@@ -111,7 +111,7 @@ public class PrestadorServiceTest {
     @Test
     @Order(4)
     public void deve_encontrar_todos_os_elementos() {
-        assertTrue(!service.buscarContas().isEmpty());
+        assertFalse(service.buscarContas().isEmpty());
     }
 
     @Test

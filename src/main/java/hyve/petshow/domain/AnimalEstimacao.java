@@ -1,8 +1,8 @@
 package hyve.petshow.domain;
 
-import javax.persistence.*;
-
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Data
 @Entity(name = "animal_estimacao")

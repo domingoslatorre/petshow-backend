@@ -6,8 +6,6 @@ import hyve.petshow.controller.representation.AutonomoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Autonomo;
 import hyve.petshow.service.port.AutonomoService;
-import hyve.petshow.util.UrlUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

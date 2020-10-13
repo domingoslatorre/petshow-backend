@@ -1,9 +1,7 @@
 package hyve.petshow.service.implementation;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
-import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.service.port.PrestadorService;
