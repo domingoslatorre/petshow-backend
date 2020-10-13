@@ -85,9 +85,7 @@ public class AvaliacaoControllerTest {
 	@BeforeEach
 	public void init() {
 		var localhost = "http://localhost:"+this.port;
-		var url = "";
-		url = localhost + "/prestador";
-		
+
 		avaliacaoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{id}/avaliacao";
 		servicoDetalhadoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{servicoId}";
 	}

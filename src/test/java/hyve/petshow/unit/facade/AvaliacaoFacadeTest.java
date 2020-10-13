@@ -20,7 +20,6 @@ import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.mock.ClienteMock;
 import hyve.petshow.mock.PrestadorMock;

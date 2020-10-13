@@ -1,24 +1,15 @@
 package hyve.petshow.unit.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import hyve.petshow.repository.ContaGenericaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
-
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.enums.TipoConta;
-import hyve.petshow.mock.ClienteMock;
-import hyve.petshow.mock.PrestadorMock;
-import hyve.petshow.repository.ContaGenericaRepository;
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -32,8 +23,6 @@ public class ContaRepositoryTest {
 
 	@BeforeEach
 	public void init() {
-		var cliente = contaRepository.save(ClienteMock.criaCliente());
-		var prestador = contaRepository.save(PrestadorMock.criaPrestador());
 	}
 	
 	@AfterEach

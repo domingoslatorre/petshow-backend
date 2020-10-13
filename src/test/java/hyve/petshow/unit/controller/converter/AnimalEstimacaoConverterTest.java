@@ -1,8 +1,6 @@
 package hyve.petshow.unit.controller.converter;
 
 import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
-import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
-import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.mock.AnimalEstimacaoMock;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
