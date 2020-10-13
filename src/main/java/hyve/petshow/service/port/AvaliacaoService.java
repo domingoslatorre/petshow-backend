@@ -1,12 +1,10 @@
 package hyve.petshow.service.port;
 
-import java.util.List;
-
+import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.ServicoDetalhado;
+import java.util.List;
 
 @Service
 public interface AvaliacaoService {

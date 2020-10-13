@@ -20,7 +20,6 @@ import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.mock.ClienteMock;
 import hyve.petshow.mock.PrestadorMock;
@@ -52,7 +51,7 @@ public class AvaliacaoFacadeTest {
 
 	private Cliente clienteMock;
 	private ServicoDetalhado servicoDetalhadoMock;
-	private Prestador prestadorMock;
+
 	@AfterEach
 	public void limpaLista() {
 		avaliacaoRepository.deleteAll();
@@ -61,7 +60,7 @@ public class AvaliacaoFacadeTest {
 	@BeforeEach
 	public void adicionaItens() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
+		var prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
 		var servicoAvaliado = ServicoDetalhadoMock.criarServicoDetalhado();
 		servicoAvaliado.setPrestadorId(prestadorMock.getId());
 		

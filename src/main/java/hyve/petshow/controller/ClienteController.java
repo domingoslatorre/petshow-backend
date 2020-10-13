@@ -2,7 +2,6 @@ package hyve.petshow.controller;
 
 import hyve.petshow.controller.converter.ClienteConverter;
 import hyve.petshow.controller.representation.ClienteRepresentation;
-import hyve.petshow.domain.Login;
 import hyve.petshow.service.port.ClienteService;
 import hyve.petshow.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;

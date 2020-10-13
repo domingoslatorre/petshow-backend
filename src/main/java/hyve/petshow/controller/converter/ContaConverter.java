@@ -1,13 +1,12 @@
 package hyve.petshow.controller.converter;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Component;
-
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Login;
 import hyve.petshow.domain.enums.TipoConta;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class ContaConverter implements Converter<Conta, ContaRepresentation> {

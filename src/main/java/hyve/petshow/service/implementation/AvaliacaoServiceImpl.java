@@ -1,15 +1,13 @@
 package hyve.petshow.service.implementation;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.service.port.AvaliacaoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService {

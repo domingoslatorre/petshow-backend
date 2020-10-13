@@ -1,9 +1,9 @@
 package hyve.petshow.domain;
 
-import javax.persistence.Embeddable;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Embeddable;
 
 @Data
 @Embeddable

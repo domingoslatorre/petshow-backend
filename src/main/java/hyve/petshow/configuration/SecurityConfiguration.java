@@ -1,5 +1,7 @@
 package hyve.petshow.configuration;
 
+import hyve.petshow.filter.JwtFilter;
+import hyve.petshow.service.port.AcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import hyve.petshow.filter.JwtFilter;
-import hyve.petshow.service.port.AcessoService;
 
 @Configuration
 @EnableWebSecurity

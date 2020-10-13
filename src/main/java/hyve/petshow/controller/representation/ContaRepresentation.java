@@ -2,7 +2,6 @@ package hyve.petshow.controller.representation;
 
 import hyve.petshow.domain.Endereco;
 import hyve.petshow.domain.Login;
-import hyve.petshow.domain.enums.TipoConta;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

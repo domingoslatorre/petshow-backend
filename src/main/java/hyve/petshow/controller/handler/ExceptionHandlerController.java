@@ -1,12 +1,11 @@
 package hyve.petshow.controller.handler;
 
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.exceptions.NotFoundException;
 
 @ControllerAdvice
 public class ExceptionHandlerController {

@@ -20,7 +20,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.mock.ClienteMock;
 import hyve.petshow.mock.PrestadorMock;
@@ -49,7 +48,6 @@ public class AvaliacaoRepositoryTest {
 	@Autowired
 	private PrestadorRepository prestadorRepository;
 	
-	private Prestador prestador;
 	private ServicoDetalhado servico;
 	private Cliente cliente;
 
@@ -68,7 +66,7 @@ public class AvaliacaoRepositoryTest {
 		
 		servicoRepository.save(servicoDetalhado.getTipo());
 		cliente = clienteRepository.save(clienteMock);
-		prestador = prestadorRepository.save(prestadorMock);
+		var prestador = prestadorRepository.save(prestadorMock);
 		servicoDetalhado.setPrestadorId(prestador.getId());
 		servico = servicoDetalhadoRepository.save(servicoDetalhado);
 	}

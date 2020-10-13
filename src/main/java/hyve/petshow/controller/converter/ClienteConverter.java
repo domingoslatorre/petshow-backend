@@ -1,13 +1,12 @@
 package hyve.petshow.controller.converter;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Component;
-
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Login;
 import hyve.petshow.domain.enums.TipoConta;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 // TODO: Pensar em forma de n�o repetir c�digo. S�o 02:40 da manh�, n�o me julgue pelo que fiz. Pelo q parece quando se � criada uma inst�ncia de algo ela n�o pode ser casteada ent�o n�o sei como fazer rsrs
 @Component

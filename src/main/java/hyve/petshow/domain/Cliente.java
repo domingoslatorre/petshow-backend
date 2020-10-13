@@ -1,6 +1,5 @@
 package hyve.petshow.domain;
 
-import hyve.petshow.domain.enums.TipoConta;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,15 +15,13 @@ public class Cliente extends Conta {
 	@JoinColumn(name = "fk_conta")
 	private List<AnimalEstimacao> animaisEstimacao;
 
-	public Cliente(Long id, String nome, String nomeSocial, String cpf, String telefone, TipoConta tipo, String foto,
-			Endereco endereco, Login login, List<AnimalEstimacao> animaisEstimacao) {
-		super(id, nome, nomeSocial, cpf, telefone, tipo, foto, endereco, login);
-		setAnimaisEstimacao(animaisEstimacao);
-	}
-
 	public Cliente(Conta conta) {
 		super(conta.getId(), conta.getNome(), conta.getNomeSocial(), conta.getCpf(), conta.getTelefone(),
 				conta.getTipo(), conta.getFoto(), conta.getEndereco(), conta.getLogin());
 	}
 
+	public Cliente(Conta conta, List<AnimalEstimacao> animaisEstimacao){
+		this(conta);
+		setAnimaisEstimacao(animaisEstimacao);
+	}
 }

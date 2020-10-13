@@ -1,11 +1,10 @@
 package hyve.petshow.domain;
 
-import java.math.BigDecimal;
-import java.util.List;
+import lombok.Data;
 
 import javax.persistence.*;
-
-import lombok.Data;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Entity(name = "servico_detalhado")

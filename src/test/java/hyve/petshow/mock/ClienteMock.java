@@ -13,8 +13,11 @@ import hyve.petshow.domain.Endereco;
 import hyve.petshow.domain.Login;
 import hyve.petshow.domain.enums.TipoConta;
 
+import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
+import static hyve.petshow.mock.ContaMock.conta;
+
 public class ClienteMock {
-	public static List<Cliente> dbMock = new ArrayList<Cliente>(Arrays.asList(new Cliente(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login(), new ArrayList<AnimalEstimacao>())));
+	public static List<Cliente> dbMock = new ArrayList<Cliente>(Arrays.asList(new Cliente(conta(), Arrays.asList(animalEstimacao()))));
 	
 	public static Cliente criaCliente() {
 		var cliente = new Cliente();
