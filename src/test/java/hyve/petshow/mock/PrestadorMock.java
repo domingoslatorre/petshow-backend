@@ -122,4 +122,25 @@ public class PrestadorMock {
     	representation.setServicos(new ArrayList<>());
 		return representation;
 	}
+
+    public static PrestadorRepresentation criaRepresentationSemSenha() {
+        var representation = new PrestadorRepresentation();
+
+        var login = new Login();
+        login.setEmail(PRESTADOR_EMAIL);
+        login.setSenha(null);
+        representation.setLogin(login);
+        representation.setId(PRESTADOR_ID);
+        representation.setNome(PRESTADOR_NOME);
+        representation.setNomeSocial(PRESTADOR_NOME);
+        representation.setCpf(PRESTADOR_CPF);
+        representation.setTelefone(PRESTADOR_TELEFONE);
+        representation.setTipo(PRESTADOR_TIPO);
+        representation.setFoto(PRESTADOR_FOTO);
+        representation.setEndereco(PRESTADOR_ENDERECO);
+        representation.setDescricao(PRESTADOR_DESCRICAO);
+
+        representation.setServicos(new ArrayList<>());
+        return representation;
+    }
 }

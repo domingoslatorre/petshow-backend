@@ -12,7 +12,7 @@ import hyve.petshow.domain.ServicoDetalhado;
 
 @Repository
 public interface ServicoDetalhadoRepository extends JpaRepository<ServicoDetalhado, Long> {
-	@Query("select s from servico_detalhado s left join fetch s.avaliacoes where s.tipo.id=?1")
+	@Query("select s from servico_detalhado s where s.tipo.id=?1")
 	List<ServicoDetalhado> findByTipo(Integer id);
 	
 	@Query("select s from servico_detalhado s left join fetch s.avaliacoes where s.id=?1")

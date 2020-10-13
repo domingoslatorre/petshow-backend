@@ -21,7 +21,7 @@ public class ContaConverter implements Converter<Conta, ContaRepresentation> {
 		contaRep.setFoto(domain.getFoto());
 		var login = new Login();
 		login.setEmail(Optional.ofNullable(domain.getLogin()).orElse(new Login()).getEmail());
-		contaRep.setLogin(login);
+		contaRep.setLoginEmail(login);
 		contaRep.setNome(domain.getNome());
 		contaRep.setNomeSocial(domain.getNomeSocial());
 		contaRep.setTelefone(domain.getTelefone());
