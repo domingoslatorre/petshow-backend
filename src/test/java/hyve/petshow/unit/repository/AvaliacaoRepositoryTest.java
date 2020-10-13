@@ -49,7 +49,6 @@ public class AvaliacaoRepositoryTest {
 	@Autowired
 	private PrestadorRepository prestadorRepository;
 	
-	private Prestador prestador;
 	private ServicoDetalhado servico;
 	private Cliente cliente;
 
@@ -68,7 +67,7 @@ public class AvaliacaoRepositoryTest {
 		
 		servicoRepository.save(servicoDetalhado.getTipo());
 		cliente = clienteRepository.save(clienteMock);
-		prestador = prestadorRepository.save(prestadorMock);
+		var prestador = prestadorRepository.save(prestadorMock);
 		servicoDetalhado.setPrestadorId(prestador.getId());
 		servico = servicoDetalhadoRepository.save(servicoDetalhado);
 	}

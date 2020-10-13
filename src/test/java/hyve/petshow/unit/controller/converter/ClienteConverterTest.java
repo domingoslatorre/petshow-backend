@@ -16,8 +16,7 @@ import java.util.List;
 
 import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoList;
 import static hyve.petshow.mock.AnimalEstimacaoMock.tipoAnimalEstimacaoRepresentation;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -48,7 +47,7 @@ public class ClienteConverterTest {
 		ClienteRepresentation representation = converter.toRepresentation(cliente);
 		
 		assertEquals(cliente.getId(), representation.getId());
-		assertTrue(!representation.getAnimaisEstimacao().isEmpty());
+		assertFalse(representation.getAnimaisEstimacao().isEmpty());
 	}
 	
 	@Test

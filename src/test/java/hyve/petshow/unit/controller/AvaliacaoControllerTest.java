@@ -60,7 +60,6 @@ public class AvaliacaoControllerTest {
 	@Autowired
 	private PrestadorRepository prestadorRepository;
 
-	private String url;
 	private String avaliacaoUrl;
 	private String servicoDetalhadoUrl;
 
@@ -86,7 +85,8 @@ public class AvaliacaoControllerTest {
 	@BeforeEach
 	public void init() {
 		var localhost = "http://localhost:"+this.port;
-		this.url = localhost + "/prestador";
+		var url = "";
+		url = localhost + "/prestador";
 		
 		avaliacaoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{id}/avaliacao";
 		servicoDetalhadoUrl = localhost + "/prestador/{prestadorId}/servico-detalhado/{servicoId}";

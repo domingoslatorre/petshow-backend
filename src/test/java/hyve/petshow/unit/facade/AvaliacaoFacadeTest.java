@@ -52,7 +52,7 @@ public class AvaliacaoFacadeTest {
 
 	private Cliente clienteMock;
 	private ServicoDetalhado servicoDetalhadoMock;
-	private Prestador prestadorMock;
+
 	@AfterEach
 	public void limpaLista() {
 		avaliacaoRepository.deleteAll();
@@ -61,7 +61,7 @@ public class AvaliacaoFacadeTest {
 	@BeforeEach
 	public void adicionaItens() {
 		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
+		var prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
 		var servicoAvaliado = ServicoDetalhadoMock.criarServicoDetalhado();
 		servicoAvaliado.setPrestadorId(prestadorMock.getId());
 		

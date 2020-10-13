@@ -1,10 +1,5 @@
 package hyve.petshow.unit.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +21,8 @@ import hyve.petshow.domain.Login;
 import hyve.petshow.mock.ClienteMock;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.service.implementation.ClienteServiceImpl;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(OrderAnnotation.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -110,7 +107,7 @@ public class ClienteServiceTest {
 	@Test
 	@Order(4)
 	public void deve_encontrar_todos_os_elementos() {
-		assertTrue(!service.buscarContas().isEmpty());
+		assertFalse(service.buscarContas().isEmpty());
 	}
 
 	@Test

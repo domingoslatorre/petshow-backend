@@ -160,7 +160,7 @@ public class AnimalEstimacaoServiceTest {
     	AnimalEstimacao animalDb = new AnimalEstimacao();
     	
     	animalRequest.setDonoId(1l);
-    	animalRequest.setDonoId(2l);
+        animalDb.setDonoId(2l);
     	
     	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(animalDb));
     	
@@ -175,7 +175,7 @@ public class AnimalEstimacaoServiceTest {
     	AnimalEstimacao animalDb = new AnimalEstimacao();
     	
     	animalRequest.setDonoId(1l);
-    	animalRequest.setDonoId(2l);
+        animalDb.setDonoId(2l);
     	
     	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(animalDb));
     	

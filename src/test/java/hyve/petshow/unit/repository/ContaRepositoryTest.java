@@ -29,13 +29,11 @@ public class ContaRepositoryTest {
 	@Autowired
 	private ContaGenericaRepository contaRepository;
 	
-	private Cliente cliente;
-	private Prestador prestador;
-	
+
 	@BeforeEach
 	public void init() {
-		cliente = contaRepository.save(ClienteMock.criaCliente());
-		prestador = contaRepository.save(PrestadorMock.criaPrestador());
+		var cliente = contaRepository.save(ClienteMock.criaCliente());
+		var prestador = contaRepository.save(PrestadorMock.criaPrestador());
 	}
 	
 	@AfterEach

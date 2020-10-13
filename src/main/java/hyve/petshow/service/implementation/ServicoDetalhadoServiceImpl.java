@@ -80,7 +80,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
 	@Override
 	public List<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId) throws NotFoundException {
-		var servicosDetalhados = repository.findByPrestadorId(prestadorId);;
+		var servicosDetalhados = repository.findByPrestadorId(prestadorId);
 
 		if(servicosDetalhados.isEmpty()){
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);
