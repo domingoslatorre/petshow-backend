@@ -2,7 +2,6 @@ package hyve.petshow.unit.repository;
 
 import hyve.petshow.repository.ContaGenericaRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
