@@ -4,8 +4,6 @@ import hyve.petshow.controller.representation.AutonomoRepresentation;
 import hyve.petshow.domain.Autonomo;
 import org.springframework.stereotype.Component;
 
-import hyve.petshow.domain.enums.TipoConta;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

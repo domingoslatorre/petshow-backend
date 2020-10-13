@@ -6,7 +6,6 @@ import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.enums.TipoConta;
 import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AcessoRepository;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;

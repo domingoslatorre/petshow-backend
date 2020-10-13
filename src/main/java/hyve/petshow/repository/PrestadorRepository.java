@@ -1,11 +1,11 @@
 package hyve.petshow.repository;
 
-import java.util.Optional;
-
-import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Login;
+import hyve.petshow.domain.Prestador;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 public interface PrestadorRepository extends ContaRepository<Prestador> {

@@ -1,10 +1,9 @@
 package hyve.petshow.service.implementation;
 
-import java.util.List;
-
+import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import hyve.petshow.exceptions.NotFoundException;
+import java.util.List;
 
 @Service
 public abstract class TipoService <T> {

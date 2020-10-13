@@ -1,12 +1,11 @@
 package hyve.petshow.controller.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.domain.Servico;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ServicoConverter implements Converter<Servico, ServicoRepresentation>{

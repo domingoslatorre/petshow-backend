@@ -1,15 +1,13 @@
 package hyve.petshow.controller.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.CriteriosAvaliacao;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoRepresentation> {

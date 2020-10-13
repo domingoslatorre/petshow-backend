@@ -1,12 +1,11 @@
 package hyve.petshow.domain;
 
-import java.util.Arrays;
-import java.util.List;
+import lombok.Data;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
-
-import lombok.Data;
+import java.util.Arrays;
+import java.util.List;
 
 @Data
 @Embeddable
