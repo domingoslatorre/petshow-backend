@@ -26,7 +26,7 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
         representation.setEndereco(domain.getEndereco());
         representation.setFoto(domain.getFoto());
         representation.setId(domain.getId());
-        representation.setLogin(domain.getLogin());
+        representation.setLoginEmail(domain.getLogin());
 		representation.setNome(domain.getNome());
 		representation.setNomeSocial(domain.getNomeSocial());
 		representation.setTelefone(domain.getTelefone());

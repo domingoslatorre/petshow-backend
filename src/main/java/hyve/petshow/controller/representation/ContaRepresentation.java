@@ -21,7 +21,7 @@ public class ContaRepresentation {
 	private Endereco endereco;
 	private Login login;
 
-	public void setLogin(Login login){
+	public void setLoginEmail(Login login){
 		this.login = new Login(login.getEmail());
 	}
 }

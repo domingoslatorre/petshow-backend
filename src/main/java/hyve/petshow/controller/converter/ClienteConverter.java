@@ -25,7 +25,7 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 		representation.setFoto(domain.getFoto());
 		var login = new Login();
 		login.setEmail(Optional.ofNullable(domain.getLogin()).orElse(new Login()).getEmail());
-		representation.setLogin(login);
+		representation.setLoginEmail(login);
 		representation.setNome(domain.getNome());
 		representation.setNomeSocial(domain.getNomeSocial());
 		representation.setTelefone(domain.getTelefone());
