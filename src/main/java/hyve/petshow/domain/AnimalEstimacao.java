@@ -2,7 +2,6 @@ package hyve.petshow.domain;
 
 import javax.persistence.*;
 
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
 import lombok.Data;
 
 @Data
@@ -13,9 +12,9 @@ public class AnimalEstimacao {
     private Long id;
     private String nome;
     private String foto;
-    @ManyToOne
-    @JoinColumn(name = "fk_conta", referencedColumnName = "id")
-    private Cliente dono;
-    @Column(name = "fk_tipo_animal_estimacao")
-    private Integer tipo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_tipo_animal_estimacao")
+    private TipoAnimalEstimacao tipo;
+    @Column(name = "fk_conta")
+    private Long donoId;
 }

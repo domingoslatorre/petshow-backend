@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @DiscriminatorColumn(
 		name = "discriminator",
 		discriminatorType=DiscriminatorType.STRING)
-@DiscriminatorValue(value="P") //Pessoa
+@DiscriminatorValue(value="G") //Generico
 @NoArgsConstructor
 @AllArgsConstructor
 public class Conta {

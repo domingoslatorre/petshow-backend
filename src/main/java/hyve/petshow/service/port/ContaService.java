@@ -11,19 +11,13 @@ import hyve.petshow.domain.Login;
 
 @Service
 public interface ContaService<T extends Conta> {
-	T salvaConta(T conta) throws Exception;
+	T buscarPorId(Long id) throws Exception;
 
-	T obterContaPorId(Long id) throws Exception;
-
-	List<T> obterContas();
-
-	T obterPorLogin(Login login) throws Exception;
+	List<T> buscarContas();
 
 	MensagemRepresentation removerConta(Long id) throws Exception;
 
-	Optional<T> buscaPorCpf(String cpf);
+	Optional<T> buscarPorEmail(String email);
 
-	Optional<T> buscaPorEmail(String email);
-
-	T atualizaConta(T conta);
+	T atualizarConta(Long id, T conta) throws Exception;
 }

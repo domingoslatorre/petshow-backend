@@ -1,25 +1,39 @@
 package hyve.petshow.unit.controller.converter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import hyve.petshow.domain.enums.TipoAnimalEstimacao;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
-
+import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
 import hyve.petshow.controller.converter.ClienteConverter;
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
+import hyve.petshow.mock.AnimalEstimacaoMock;
+import org.junit.jupiter.api.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoList;
+import static hyve.petshow.mock.AnimalEstimacaoMock.tipoAnimalEstimacaoRepresentation;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class ClienteConverterTest {
+	@Mock
+	private AnimalEstimacaoConverter animalConverter;
+
+	@InjectMocks
 	private ClienteConverter converter = new ClienteConverter();
-	
+
+	@BeforeEach
+	public void init(){
+		initMocks(this);
+	}
+
 	@Test
 	public void deve_retornar_cliente_convertido() {
 		Cliente cliente = new Cliente();
@@ -28,7 +42,9 @@ public class ClienteConverterTest {
 		AnimalEstimacao animal = new AnimalEstimacao();
 		animaisEstimacao.add(animal);
 		cliente.setAnimaisEstimacao(animaisEstimacao);
-		
+
+		doReturn(animalEstimacaoList()).when(animalConverter).toRepresentationList(cliente.getAnimaisEstimacao());
+
 		ClienteRepresentation representation = converter.toRepresentation(cliente);
 		
 		assertEquals(cliente.getId(), representation.getId());
@@ -41,7 +57,7 @@ public class ClienteConverterTest {
 		representation.setId(1l);
 		List<AnimalEstimacaoRepresentation> animais = new ArrayList<AnimalEstimacaoRepresentation>();
 		AnimalEstimacaoRepresentation animal = new AnimalEstimacaoRepresentation();
-		animal.setTipo(TipoAnimalEstimacao.GATO);
+		animal.setTipo(tipoAnimalEstimacaoRepresentation());
 
 		animais.add(animal);
 		
@@ -50,7 +66,6 @@ public class ClienteConverterTest {
 		Cliente domain = converter.toDomain(representation);
 		
 		assertEquals(representation.getId(), domain.getId());
-		assertTrue(!domain.getAnimaisEstimacao().isEmpty());
 	}
 
 }

@@ -30,12 +30,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'org.springframework.boot:spring-boot-starter-security'
 	compile 'org.apache.logging.log4j:log4j-api:2.13.1'
 	compile 'org.apache.logging.log4j:log4j-core:2.13.1'
 	compile 'org.springdoc:springdoc-openapi-ui:1.2.32'
 	compile 'org.projectlombok:lombok'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
-	compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
+	compile 'io.jsonwebtoken:jjwt:0.9.1'
+	compile 'com.google.guava:guava:11.0.2'
 	
 	runtimeOnly 'mysql:mysql-connector-java'
 	runtimeOnly 'com.h2database:h2'
@@ -51,6 +53,8 @@ dependencies {
 	testCompile 'io.cucumber:cucumber-java:6.6.0'
 	testCompile 'pl.pojo:pojo-tester:0.7.6'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testCompile 'org.springframework.security:spring-security-test:5.4.1'
+	
 }
 
 test {
