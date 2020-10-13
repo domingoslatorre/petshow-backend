@@ -19,7 +19,7 @@ public class PrestadorConverterTest {
 
 	@Test
 	public void deve_retornar_prestador_convertido() {
-		var esperado = PrestadorMock.criaRepresentation();
+		var esperado = PrestadorMock.criaRepresentationSemSenha();
 		var prestador = PrestadorMock.criaPrestador();
 
 		var representation = converter.toRepresentation(prestador);
