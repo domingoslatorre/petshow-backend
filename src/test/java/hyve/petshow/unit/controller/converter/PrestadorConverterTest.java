@@ -1,13 +1,19 @@
 package hyve.petshow.unit.controller.converter;
 
+import hyve.petshow.controller.converter.PrestadorConverter;
+import hyve.petshow.mock.PrestadorMock;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class PrestadorConverterTest {
-	/*@Autowired
+	@Autowired
 	private PrestadorConverter converter;
 
 	@Test
@@ -28,5 +34,5 @@ public class PrestadorConverterTest {
 		var domain = converter.toDomain(prestador);
 
 		assertEquals(esperado, domain);
-	}*/
+	}
 }

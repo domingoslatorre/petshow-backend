@@ -54,7 +54,7 @@ public class AnimalEstimacaoConverterTest {
     @Test
     public void deve_converter_para_lista_de_representation(){
         //dado
-        AnimalEstimacaoRepresentation animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
+        var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
 		animalEstimacaoRepresentation.setId(1L);
         var expected = Arrays.asList(animalEstimacaoRepresentation);
         var animaisEstimacao = Arrays.asList(AnimalEstimacaoMock.animalEstimacao());
