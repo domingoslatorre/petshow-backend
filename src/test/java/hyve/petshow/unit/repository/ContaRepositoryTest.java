@@ -21,9 +21,9 @@ public class ContaRepositoryTest {
 	private ContaGenericaRepository contaRepository;
 	
 
-	@BeforeEach
+	/*@BeforeEach
 	public void init() {
-	}
+	}*/
 	
 	@AfterEach
 	public void limpar() {

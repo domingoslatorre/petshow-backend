@@ -18,7 +18,8 @@ import java.util.List;
 
 import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoList;
 import static hyve.petshow.mock.AnimalEstimacaoMock.tipoAnimalEstimacaoRepresentation;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 
