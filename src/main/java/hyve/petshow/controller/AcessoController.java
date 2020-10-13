@@ -31,7 +31,7 @@ public class AcessoController {
     @Autowired
     private ContaConverter contaConverter;
 
-    private final String mensagemErro = "Erro durante a autenticação, usuário ou senha incorretos.";
+    private final String mensagemErro = "Erro durante a autenticação, usuário ou senha incorretos";
 
     @PostMapping("/login")
     public ResponseEntity<String> realizarLogin(@RequestBody Login login) throws NotFoundException, BusinessException {
