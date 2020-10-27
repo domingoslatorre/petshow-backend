@@ -18,7 +18,6 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
 
     @Override
     public PrestadorRepresentation toRepresentation(Prestador domain) {
-        if(domain == null) return new PrestadorRepresentation();
         PrestadorRepresentation representation = new PrestadorRepresentation();
         representation.setNomeSocial(domain.getNomeSocial());
 
@@ -38,7 +37,6 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
 
     @Override
     public Prestador toDomain(PrestadorRepresentation representation) {
-        if(representation == null) return new Prestador();
         Prestador domain = new Prestador();
         domain.setNomeSocial(representation.getNomeSocial());
 
@@ -57,7 +55,6 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
     }
 
     public List<PrestadorRepresentation> toRepresentationList(List<Prestador> domainList){
-        if(domainList == null) return new ArrayList<PrestadorRepresentation>();
         List<PrestadorRepresentation> representationList = new ArrayList<>();
 
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
@@ -65,7 +62,6 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
     }
 
     public List<Prestador> toDomainList(List<PrestadorRepresentation> prestador) {
-        if(prestador == null) return new ArrayList<Prestador>();
         return prestador.stream().map(el -> toDomain(el)).collect(Collectors.toList());
     }
 
