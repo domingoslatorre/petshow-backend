@@ -8,6 +8,11 @@ import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.util.JwtUtil;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/acesso")
+@OpenAPIDefinition(info = @Info(title = "API de acesso à aplicação",
+        description = "API utilizada para a realização de login e cadastro"))
 public class AcessoController {
     @Autowired
     private JwtUtil jwtUtil;
@@ -34,8 +41,11 @@ public class AcessoController {
 
     private final String mensagemErro = "Erro durante a autenticação, usuário ou senha incorretos";
 
+    @Operation(summary = "Realiza o login, gerando um token para ser utilizado nas demais APIs.")
     @PostMapping("/login")
-    public ResponseEntity<String> realizarLogin(@RequestBody Login login) throws NotFoundException, BusinessException {
+    public ResponseEntity<String> realizarLogin(
+            @Parameter(description = "Objeto utilizado para realizar o login.")
+            @RequestBody Login login) throws NotFoundException, BusinessException {
         try {
             realizarAutenticacao(login);
             var token = gerarToken(login.getEmail());
@@ -49,8 +59,12 @@ public class AcessoController {
         }
     }
 
+    @Operation(summary = "Realiza o cadastro, salvando o usuário no sistema e " +
+            "gerando um token para ser utilizado nas demais APIs.")
     @PostMapping("/cadastro")
-    public ResponseEntity<String> realizarCadastro(@RequestBody ContaRepresentation contaRepresentation) throws BusinessException {
+    public ResponseEntity<String> realizarCadastro(
+            @Parameter(description = "Objeto da conta que será cadastrada.")
+            @RequestBody ContaRepresentation contaRepresentation) throws BusinessException {
         try {
             verificarEmailExistente(contaRepresentation.getLogin().getEmail());
             var conta = adicionarConta(contaRepresentation);
