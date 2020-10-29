@@ -2,6 +2,7 @@ package hyve.petshow.domain;
 
 import hyve.petshow.domain.enums.TipoConta;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.JoinColumn;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @DiscriminatorValue(value="P") //Prestador
 public class Prestador extends Conta {
