@@ -13,7 +13,7 @@ import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.CriteriosAvaliacao;
+import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;

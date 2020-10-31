@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtUtil {
+public class JwtUtils {
     private static final Long expirationTime = System.currentTimeMillis() + 1000 * 60 * 60 * 10;
     private String secret = "hyve-petshow";
 

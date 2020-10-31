@@ -1,7 +1,9 @@
 package hyve.petshow.controller.representation;
 
-import hyve.petshow.domain.Endereco;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Auditoria;
+import hyve.petshow.domain.embeddables.Endereco;
+import hyve.petshow.domain.embeddables.Geolocalizacao;
+import hyve.petshow.domain.embeddables.Login;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +19,10 @@ public class ContaRepresentation {
 	private String telefone;
 	private Integer tipo;
 	private String foto;
+	private Float mediaAvaliacao;
 	private Endereco endereco;
 	private Login login;
+	private Geolocalizacao geolocalizacao;
 
 	public void setLoginEmail(Login login){
 		this.login = new Login(login.getEmail());

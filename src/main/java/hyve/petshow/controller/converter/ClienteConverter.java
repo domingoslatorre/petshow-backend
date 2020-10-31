@@ -2,7 +2,7 @@ package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 import org.springframework.stereotype.Component;
 

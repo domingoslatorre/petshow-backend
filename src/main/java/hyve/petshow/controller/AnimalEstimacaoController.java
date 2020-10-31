@@ -9,12 +9,11 @@ import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 import hyve.petshow.service.port.TipoAnimalEstimacaoService;
-import hyve.petshow.util.JwtUtil;
+import hyve.petshow.util.JwtUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class AnimalEstimacaoController {
     @Autowired
     private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtils jwtUtils;
 
     @Operation(summary = "Adiciona um animal de estimação ao sistema.")
     @PostMapping("/cliente/animal-estimacao")

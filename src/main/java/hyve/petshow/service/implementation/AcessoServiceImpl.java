@@ -2,7 +2,7 @@ package hyve.petshow.service.implementation;
 
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.enums.TipoConta;
 import hyve.petshow.exceptions.BusinessException;
@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Optional;
+
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
@@ -51,6 +53,8 @@ public class AcessoServiceImpl implements AcessoService {
     public Conta adicionarConta(Conta conta) throws BusinessException {
         var tipoConta = conta.getTipo();
         criptografarSenha(conta.getLogin());
+
+        conta.setAuditoria(geraAuditoriaInsercao(null));
 
         if(tipoConta.equals(TipoConta.CLIENTE)){
             var cliente = new Cliente(conta);

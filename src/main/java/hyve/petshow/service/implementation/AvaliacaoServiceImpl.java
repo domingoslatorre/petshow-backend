@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService {
 	private final String AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada";
@@ -30,6 +32,8 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 
 	@Override
 	public Avaliacao adicionarAvaliacao(Avaliacao avaliacao) {
+		avaliacao.setAuditoria(geraAuditoriaInsercao(avaliacao.getClienteId()));
+
 		return repository.save(avaliacao);
 	}
 

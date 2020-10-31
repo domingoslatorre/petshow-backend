@@ -4,6 +4,7 @@ package hyve.petshow.unit.service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.*;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.mock.PrestadorMock;
 import hyve.petshow.repository.PrestadorRepository;

@@ -1,7 +1,7 @@
 package hyve.petshow.filter;
 
 import hyve.petshow.service.port.AcessoService;
-import hyve.petshow.util.JwtUtil;
+import hyve.petshow.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtils jwtUtils;
     @Autowired
     private AcessoService acessoService;
 
@@ -32,13 +32,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(authHeader != null && authHeader.startsWith("Bearer ")){
             token = authHeader.substring(7);
-            email = jwtUtil.extractUsername(token);
+            email = jwtUtils.extractUsername(token);
         }
 
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
             var userDetails = acessoService.loadUserByUsername(email);
 
-            if(jwtUtil.validateToken(token, userDetails)){
+            if(jwtUtils.validateToken(token, userDetails)){
                 var usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 var webAuthenticationDetailsSource = new WebAuthenticationDetailsSource().buildDetails(httpServletRequest);

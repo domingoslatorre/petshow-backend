@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.mock.ClienteMock;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.service.implementation.ClienteServiceImpl;

@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Endereco;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Endereco;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 
 import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;

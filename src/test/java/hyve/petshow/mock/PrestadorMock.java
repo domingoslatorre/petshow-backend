@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Endereco;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Endereco;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.domain.enums.TipoConta;
+
+import static hyve.petshow.mock.ContaMock.conta;
 
 public class PrestadorMock {
     private static final Endereco PRESTADOR_ENDERECO = new Endereco();
@@ -35,7 +37,7 @@ public class PrestadorMock {
     	login.setEmail(PRESTADOR_EMAIL);
     	login.setSenha(PRESTADOR_SENHA);
     	
-    	var prestador = new Prestador(1l, PRESTADOR_NOME, PRESTADOR_NOME, PRESTADOR_CPF, PRESTADOR_TELEFONE, TipoConta.PRESTADOR_AUTONOMO, PRESTADOR_FOTO, PRESTADOR_ENDERECO, login, PRESTADOR_FOTO);
+    	var prestador = new Prestador(conta());
     	
     	prestador.setServicosPrestados(new ArrayList<ServicoDetalhado>());  
     	

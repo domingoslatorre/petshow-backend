@@ -2,10 +2,9 @@ package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.CriteriosAvaliacao;
+import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

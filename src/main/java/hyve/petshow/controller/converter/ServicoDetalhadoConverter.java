@@ -19,26 +19,28 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
 	
 	@Override
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {
-    	ServicoDetalhadoRepresentation representation = new ServicoDetalhadoRepresentation();
+    	var representation = new ServicoDetalhadoRepresentation();
     	
     	representation.setId(domain.getId());
         representation.setPreco(domain.getPreco());
         representation.setTipo(servicoConverter.toRepresentation(domain.getTipo()));
         representation.setPrestadorId(domain.getPrestadorId());
         representation.setAvaliacoes(avaliacaoConverter.toRepresentationList(domain.getAvaliacoes()));
+        representation.setMediaAvaliacao(domain.getMediaAvaliacao());
 
         return representation;
     }
 
     @Override
     public ServicoDetalhado toDomain(ServicoDetalhadoRepresentation representation) {
-    	ServicoDetalhado domain = new ServicoDetalhado();
+    	var domain = new ServicoDetalhado();
         
     	domain.setId(representation.getId());
     	domain.setPreco(representation.getPreco());
         domain.setTipo(servicoConverter.toDomain(representation.getTipo()));
         domain.setPrestadorId(representation.getPrestadorId());
         domain.setAvaliacoes(avaliacaoConverter.toDomainList(representation.getAvaliacoes()));
+        domain.setMediaAvaliacao(representation.getMediaAvaliacao());
 
         return domain;
     }

@@ -1,31 +1,29 @@
 package hyve.petshow.unit.controller.converter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import hyve.petshow.controller.converter.ContaConverter;
+import hyve.petshow.controller.representation.ContaRepresentation;
+import hyve.petshow.domain.Conta;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
-import hyve.petshow.controller.converter.ContaConverter;
-import hyve.petshow.controller.representation.ContaRepresentation;
-import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Endereco;
-import hyve.petshow.domain.Login;
-import hyve.petshow.domain.enums.TipoConta;
+import static hyve.petshow.mock.ContaMock.conta;
+import static hyve.petshow.mock.ContaMock.contaRepresentation;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class ContaConverterTest {
 	private ContaConverter converter = new ContaConverter();
 	
 	@Test
 	public void deve_converter_para_conta_representation() {
-		Conta conta = new Conta(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login());
+		Conta conta = conta();
 		ContaRepresentation representation = converter.toRepresentation(conta);
 		assertEquals(conta.getId(), representation.getId());
 	}
 	
 	@Test
 	public void deve_converter_para_domain() {
-		ContaRepresentation contaRepresentation = new ContaRepresentation(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE.getTipo(), "", new Endereco(), new Login());
+		ContaRepresentation contaRepresentation = contaRepresentation();
 		Conta domain = converter.toDomain(contaRepresentation);
 		assertEquals(contaRepresentation.getId(), domain.getId());
 	

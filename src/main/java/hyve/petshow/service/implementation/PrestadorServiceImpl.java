@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static hyve.petshow.util.AuditoriaUtils.*;
+
 @Service
 public class PrestadorServiceImpl implements PrestadorService {
     private final String CONTA_NAO_ENCONTRADA = "Conta não encontrada";
@@ -30,6 +32,7 @@ public class PrestadorServiceImpl implements PrestadorService {
 
         prestador.setTelefone(request.getTelefone());
         prestador.setEndereco(request.getEndereco());
+        prestador.setAuditoria(atualizaAuditoria(prestador.getAuditoria(), ATIVO));
 
         return repository.save(prestador);
     }
@@ -40,11 +43,16 @@ public class PrestadorServiceImpl implements PrestadorService {
     }
 
     @Override
-    public MensagemRepresentation removerConta(Long id) {
-        repository.deleteById(id);
-        MensagemRepresentation mensagem = new MensagemRepresentation();
+    public MensagemRepresentation removerConta(Long id) throws Exception {
+        var conta = buscarPorId(id);
+        var mensagem = new MensagemRepresentation();
+
+        conta.setAuditoria(atualizaAuditoria(conta.getAuditoria(), INATIVO));
+        conta = repository.save(conta);
+
         mensagem.setId(id);
-        mensagem.setSucesso(!repository.existsById(id));
+        mensagem.setSucesso(conta.getAuditoria().getFlagAtivo().equals(INATIVO));
+
         return mensagem;
     }
 

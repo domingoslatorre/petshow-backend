@@ -3,16 +3,15 @@ package hyve.petshow.controller;
 import hyve.petshow.controller.converter.ContaConverter;
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AcessoService;
-import hyve.petshow.util.JwtUtil;
+import hyve.petshow.util.JwtUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
         description = "API utilizada para a realização de login e cadastro"))
 public class AcessoController {
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtils jwtUtils;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -85,12 +84,12 @@ public class AcessoController {
     private String gerarToken(String email) throws NotFoundException {
         var conta = acessoService.buscarPorEmail(email)
                 .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
-        var token = jwtUtil.generateToken(email, conta.getId(), conta.getTipo());
+        var token = jwtUtils.generateToken(email, conta.getId(), conta.getTipo());
         return token;
     }
 
     private String gerarToken(Conta conta) {
-        var token = jwtUtil.generateToken(conta.getLogin().getEmail(), conta.getId(), conta.getTipo());
+        var token = jwtUtils.generateToken(conta.getLogin().getEmail(), conta.getId(), conta.getTipo());
         return token;
     }
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 //import hyve.petshow.controller.representation.ServicoDetalhadoResponseRepresentation;
@@ -27,18 +28,20 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	
 	@Override
 	public ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
+		servicoDetalhado.setAuditoria(geraAuditoriaInsercao(servicoDetalhado.getPrestadorId()));
+
 		return repository.save(servicoDetalhado);
 	}
 
 	@Override
 	public List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer id) throws NotFoundException {
-		var servicsoDetalhados = repository.findByTipo(id);
+		var servicosDetalhados = repository.findByTipo(id);
 
-		if(servicsoDetalhados.isEmpty()){
+		if(servicosDetalhados.isEmpty()){
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);
 		}
 
-		return servicsoDetalhados;
+		return servicosDetalhados;
 	}
 
 	@Override
@@ -48,6 +51,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
 		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), request.getPrestadorId())){
 			servicoDetalhado.setPreco(request.getPreco());
+			servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ATIVO));
 			var response = repository.save(servicoDetalhado);
 			return response;
 		} else {
@@ -60,8 +64,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			throws BusinessException, NotFoundException{
 		var servicoDetalhado = buscarPorId(id);
 
-		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){		
-			
+		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){
 			repository.deleteById(id);
 			var sucesso = !repository.existsById(id);
 			var response = new MensagemRepresentation(id);
