@@ -4,6 +4,7 @@ import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.VerificationToken;
 import hyve.petshow.domain.enums.TipoConta;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.repository.AcessoRepository;
@@ -74,5 +75,17 @@ public class AcessoServiceImpl implements AcessoService {
 	public Conta criaTokenVerificacao(Conta conta, String token) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public VerificationToken buscarTokenVerificacao(String tokenVerificadcao) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ativaConta(Conta conta) {
+		// TODO Auto-generated method stub
+		
 	}
 }

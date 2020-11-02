@@ -1,6 +1,7 @@
 package hyve.petshow.service.port;
 
 import hyve.petshow.domain.Conta;
+import hyve.petshow.domain.VerificationToken;
 import hyve.petshow.exceptions.BusinessException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -14,4 +15,8 @@ public interface AcessoService extends UserDetailsService {
     Optional<Conta> buscarPorEmail(String email);
     
     Conta criaTokenVerificacao(Conta conta, String token);
+
+	VerificationToken buscarTokenVerificacao(String tokenVerificadcao);
+
+	void ativaConta(Conta conta);
 }

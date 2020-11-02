@@ -1,15 +1,6 @@
 package hyve.petshow.controller;
 
-import hyve.petshow.controller.converter.ContaConverter;
-import hyve.petshow.controller.representation.ContaRepresentation;
-import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
-import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.service.port.AcessoService;
-import hyve.petshow.util.JwtUtil;
-import hyve.petshow.util.OnRegistrationCompleteEvent;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,10 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import hyve.petshow.controller.converter.ContaConverter;
+import hyve.petshow.controller.representation.ContaRepresentation;
+import hyve.petshow.domain.Conta;
+import hyve.petshow.domain.Login;
+import hyve.petshow.domain.VerificationToken;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.service.port.AcessoService;
+import hyve.petshow.util.JwtUtil;
+import hyve.petshow.util.OnRegistrationCompleteEvent;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -99,4 +103,23 @@ public class AcessoController {
         var conta = acessoService.adicionarConta(request);
         return conta;
     }
+    
+    @GetMapping("/ativar")
+    public ResponseEntity<String> confirmarRegistro(@RequestBody String tokenVerificadcao) throws Exception {
+    	var token = acessoService.buscarTokenVerificacao(tokenVerificadcao);
+    	if(!isTokenExpirado(token)) {
+    		throw new BusinessException("O Token informado já expirou");
+    	}
+    	var conta = token.getConta();
+		acessoService.ativaConta(conta);
+    	var tokenRetorno = gerarToken(conta.getEmail());
+    	return ResponseEntity.ok(tokenRetorno);
+    }
+
+	private Boolean isTokenExpirado(VerificationToken token) {
+		Long hoje = Calendar.getInstance().getTime().getTime();
+		long expiracaoToken = token.getDataExpiracao().getTime();
+		return expiracaoToken - hoje > 0;
+	}
+    
 }
