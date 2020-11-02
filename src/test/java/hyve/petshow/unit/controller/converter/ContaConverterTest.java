@@ -18,7 +18,7 @@ public class ContaConverterTest {
 	
 	@Test
 	public void deve_converter_para_conta_representation() {
-		Conta conta = new Conta(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login());
+		Conta conta = new Conta(1l, "Teste", "Teste", "44444444444", "1129292828", TipoConta.CLIENTE, "", new Endereco(), new Login(), false);
 		ContaRepresentation representation = converter.toRepresentation(conta);
 		assertEquals(conta.getId(), representation.getId());
 	}

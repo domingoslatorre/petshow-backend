@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import com.google.common.base.Optional;
+
 @Data
 @Entity(name = "conta")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -31,4 +33,9 @@ public class Conta {
     private Endereco endereco;
 	@Embedded
     private Login login;
+	private Boolean enabled;
+	
+	public String getEmail() {
+		return getLogin() == null ? null : getLogin().getEmail();
+	}
 }

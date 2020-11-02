@@ -12,4 +12,6 @@ public interface AcessoService extends UserDetailsService {
     Conta adicionarConta(Conta conta) throws BusinessException;
 
     Optional<Conta> buscarPorEmail(String email);
+    
+    Conta criaTokenVerificacao(Conta conta, String token);
 }

@@ -8,8 +8,13 @@ import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.util.JwtUtil;
+import hyve.petshow.util.OnRegistrationCompleteEvent;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,6 +36,8 @@ public class AcessoController {
     private AcessoService acessoService;
     @Autowired
     private ContaConverter contaConverter;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     private final String mensagemErro = "Erro durante a autenticação, usuário ou senha incorretos";
 
@@ -50,12 +57,13 @@ public class AcessoController {
     }
 
     @PostMapping("/cadastro")
-    public ResponseEntity<String> realizarCadastro(@RequestBody ContaRepresentation contaRepresentation) throws BusinessException {
+    public ResponseEntity<String> realizarCadastro(@RequestBody ContaRepresentation contaRepresentation, HttpServletRequest request) throws BusinessException {
         try {
             verificarEmailExistente(contaRepresentation.getLogin().getEmail());
             var conta = adicionarConta(contaRepresentation);
             var token = gerarToken(conta);
-
+            String appUrl = request.getContextPath();
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(conta, request.getLocale(), appUrl));
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
             log.error("{}, mensagem: {}, causa: {}", mensagemErro, e.getMessage(), e.getCause());

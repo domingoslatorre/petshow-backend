@@ -69,4 +69,10 @@ public class AcessoServiceImpl implements AcessoService {
         var senha = login.getSenha();
         login.setSenha(passwordEncoder.encode(senha));
     }
+
+	@Override
+	public Conta criaTokenVerificacao(Conta conta, String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
