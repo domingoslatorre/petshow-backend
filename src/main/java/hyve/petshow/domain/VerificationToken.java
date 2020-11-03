@@ -41,4 +41,10 @@ public class VerificationToken {
 	public VerificationToken() {
 		setDataExpiracao(calcularTempoExpiracao(TEMPO_EXPIRACAO));
 	}	
+	
+	public VerificationToken(Conta conta, String token) {
+		setConta(conta);
+		setToken(token);
+		setDataExpiracao(calcularTempoExpiracao(TEMPO_EXPIRACAO));
+	}
 }

@@ -11,3 +11,8 @@ spring:
   h2:
     console:
       enabled: true
+  mail:
+    host: petshow-frontend.herokuapp.com
+    username: no-reply
+    password: teste1234
+    port: 8080

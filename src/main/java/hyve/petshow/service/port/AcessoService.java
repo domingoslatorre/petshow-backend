@@ -16,7 +16,7 @@ public interface AcessoService extends UserDetailsService {
     
     Conta criaTokenVerificacao(Conta conta, String token);
 
-	VerificationToken buscarTokenVerificacao(String tokenVerificadcao);
+	VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception;
 
-	void ativaConta(Conta conta);
+	Conta ativaConta(String token) throws Exception;
 }

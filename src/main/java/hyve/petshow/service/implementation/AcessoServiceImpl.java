@@ -1,16 +1,8 @@
 package hyve.petshow.service.implementation;
 
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
-import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.VerificationToken;
-import hyve.petshow.domain.enums.TipoConta;
-import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.repository.AcessoRepository;
-import hyve.petshow.repository.ClienteRepository;
-import hyve.petshow.repository.PrestadorRepository;
-import hyve.petshow.service.port.AcessoService;
+import java.util.ArrayList;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +10,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Conta;
+import hyve.petshow.domain.Login;
+import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.VerificationToken;
+import hyve.petshow.domain.enums.TipoConta;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.repository.AcessoRepository;
+import hyve.petshow.repository.ClienteRepository;
+import hyve.petshow.repository.PrestadorRepository;
+import hyve.petshow.repository.VerificationTokenRepository;
+import hyve.petshow.service.port.AcessoService;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
@@ -31,6 +34,8 @@ public class AcessoServiceImpl implements AcessoService {
     private PrestadorRepository prestadorRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private VerificationTokenRepository tokenRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -70,22 +75,29 @@ public class AcessoServiceImpl implements AcessoService {
         var senha = login.getSenha();
         login.setSenha(passwordEncoder.encode(senha));
     }
+    
+    private Conta buscarConta(String email) throws Exception {
+    	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
+    }
 
 	@Override
 	public Conta criaTokenVerificacao(Conta conta, String token) {
-		// TODO Auto-generated method stub
-		return null;
+		var verificationToken = new VerificationToken(conta, token);
+		tokenRepository.save(verificationToken);
+		return conta;
 	}
 
 	@Override
-	public VerificationToken buscarTokenVerificacao(String tokenVerificadcao) {
-		// TODO Auto-generated method stub
-		return null;
+	public VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception {
+		return tokenRepository.findByToken(tokenVerificadcao).orElseThrow(() -> new NotFoundException("Token informado não encontrado"));
 	}
 
 	@Override
-	public void ativaConta(Conta conta) {
-		// TODO Auto-generated method stub
+	public Conta ativaConta(String token) throws Exception {
+		var tokenVerificacao = buscarTokenVerificacao(token);		
+		var conta = buscarConta(tokenVerificacao.getConta().getEmail());
+		conta.setEnabled(true);
+		return acessoRepository.save(conta);
 		
 	}
 }

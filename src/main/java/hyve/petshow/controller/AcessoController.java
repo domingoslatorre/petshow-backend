@@ -1,7 +1,5 @@
 package hyve.petshow.controller;
 
-import java.util.Calendar;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import hyve.petshow.controller.converter.ContaConverter;
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Login;
-import hyve.petshow.domain.VerificationToken;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AcessoService;
@@ -46,7 +43,7 @@ public class AcessoController {
     private final String mensagemErro = "Erro durante a autenticação, usuário ou senha incorretos";
 
     @PostMapping("/login")
-    public ResponseEntity<String> realizarLogin(@RequestBody Login login) throws NotFoundException, BusinessException {
+    public ResponseEntity<String> realizarLogin(@RequestBody Login login) throws Exception {
         try {
             realizarAutenticacao(login);
             var token = gerarToken(login.getEmail());
@@ -80,9 +77,12 @@ public class AcessoController {
         authenticationManager.authenticate(token);
     }
 
-    private String gerarToken(String email) throws NotFoundException {
+    private String gerarToken(String email) throws Exception {
         var conta = acessoService.buscarPorEmail(email)
                 .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
+        if(!conta.getEnabled()) {
+        	throw new BusinessException("Conta informada ainda não foi ativada");
+        }
         var token = jwtUtil.generateToken(email, conta.getId(), conta.getTipo());
         return token;
     }
@@ -106,20 +106,9 @@ public class AcessoController {
     
     @GetMapping("/ativar")
     public ResponseEntity<String> confirmarRegistro(@RequestBody String tokenVerificadcao) throws Exception {
-    	var token = acessoService.buscarTokenVerificacao(tokenVerificadcao);
-    	if(!isTokenExpirado(token)) {
-    		throw new BusinessException("O Token informado já expirou");
-    	}
-    	var conta = token.getConta();
-		acessoService.ativaConta(conta);
+		var conta = acessoService.ativaConta(tokenVerificadcao);
     	var tokenRetorno = gerarToken(conta.getEmail());
     	return ResponseEntity.ok(tokenRetorno);
     }
-
-	private Boolean isTokenExpirado(VerificationToken token) {
-		Long hoje = Calendar.getInstance().getTime().getTime();
-		long expiracaoToken = token.getDataExpiracao().getTime();
-		return expiracaoToken - hoje > 0;
-	}
     
 }
