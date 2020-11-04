@@ -14,14 +14,13 @@ public class ContaConverter implements Converter<Conta, ContaRepresentation> {
 	@Override
 	public ContaRepresentation toRepresentation(Conta domain) {
 		var representation = new ContaRepresentation();
+		var login = new Login(domain.getLogin().getEmail());
 
 		representation.setId(domain.getId());
 		representation.setCpf(domain.getCpf());
 		representation.setEndereco(domain.getEndereco());
 		representation.setFoto(domain.getFoto());
-		var login = new Login();
-		login.setEmail(Optional.ofNullable(domain.getLogin()).orElse(new Login()).getEmail());
-		representation.setLoginEmail(login);
+		representation.setLogin(login);
 		representation.setNome(domain.getNome());
 		representation.setNomeSocial(domain.getNomeSocial());
 		representation.setTelefone(domain.getTelefone());

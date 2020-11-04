@@ -38,7 +38,7 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public MensagemRepresentation removerConta(Long id) throws NotFoundException {
+	public MensagemRepresentation desativarConta(Long id) throws NotFoundException {
 		var conta = buscarPorId(id);
 		var mensagem = new MensagemRepresentation();
 
@@ -49,11 +49,6 @@ public class ClienteServiceImpl implements ClienteService {
 		mensagem.setSucesso(conta.getAuditoria().getFlagAtivo().equals(INATIVO));
 
 		return mensagem;
-	}
-
-	@Override
-	public List<Cliente> buscarContas() {
-		return repository.findAll();
 	}
 
 	@Override

@@ -48,13 +48,12 @@ public class AcessoServiceImpl implements AcessoService {
         return conta;
     }
 
-    //TODO MELHORAR CODIGO DESTE MÉTODO
     @Override
     public Conta adicionarConta(Conta conta) throws BusinessException {
         var tipoConta = conta.getTipo();
         criptografarSenha(conta.getLogin());
 
-        conta.setAuditoria(geraAuditoriaInsercao(null));
+        conta.setAuditoria(geraAuditoriaInsercao(Optional.empty()));
 
         if(tipoConta.equals(TipoConta.CLIENTE)){
             var cliente = new Cliente(conta);

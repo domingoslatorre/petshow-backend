@@ -30,6 +30,7 @@ public class ServicoController {
     public ResponseEntity<List<ServicoRepresentation>> buscarServicos() throws NotFoundException {
         var servicos = service.buscarServicos();
         var representation = converter.toRepresentationList(servicos);
+
         return ResponseEntity.ok(representation);
     }
 }

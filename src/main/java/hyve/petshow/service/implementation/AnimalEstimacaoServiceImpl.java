@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
@@ -25,7 +26,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
     @Override
     public AnimalEstimacao adicionarAnimalEstimacao(AnimalEstimacao animalEstimacao) {
-        animalEstimacao.setAuditoria(geraAuditoriaInsercao(animalEstimacao.getDonoId()));
+        animalEstimacao.setAuditoria(geraAuditoriaInsercao(Optional.of(animalEstimacao.getDonoId())));
 
         return animalEstimacaoRepository.save(animalEstimacao);
     }

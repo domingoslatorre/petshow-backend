@@ -9,6 +9,8 @@ import java.util.List;
 @Service
 public interface AvaliacaoService {
 	List<Avaliacao> buscarAvaliacoesPorServicoId(Long id) throws NotFoundException;
+
 	Avaliacao adicionarAvaliacao(Avaliacao avaliacao);
+
 	Avaliacao buscarAvaliacaoPorId(Long id) throws Exception;
 }

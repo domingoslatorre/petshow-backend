@@ -38,12 +38,7 @@ public class PrestadorServiceImpl implements PrestadorService {
     }
 
     @Override
-    public List<Prestador> buscarContas() {
-        return repository.findAll();
-    }
-
-    @Override
-    public MensagemRepresentation removerConta(Long id) throws Exception {
+    public MensagemRepresentation desativarConta(Long id) throws Exception {
         var conta = buscarPorId(id);
         var mensagem = new MensagemRepresentation();
 

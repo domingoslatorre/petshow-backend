@@ -1,6 +1,5 @@
 package hyve.petshow.controller.representation;
 
-import hyve.petshow.domain.embeddables.Auditoria;
 import hyve.petshow.domain.embeddables.Endereco;
 import hyve.petshow.domain.embeddables.Geolocalizacao;
 import hyve.petshow.domain.embeddables.Login;
@@ -23,8 +22,4 @@ public class ContaRepresentation {
 	private Endereco endereco;
 	private Login login;
 	private Geolocalizacao geolocalizacao;
-
-	public void setLoginEmail(Login login){
-		this.login = new Login(login.getEmail());
-	}
 }

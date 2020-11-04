@@ -9,14 +9,13 @@ public class AuditoriaUtils {
     public static final String ATIVO = "S";
     public static final String INATIVO = "N";
 
-    public static Auditoria geraAuditoriaInsercao(Long usuarioId){
+    public static Auditoria geraAuditoriaInsercao(Optional<Long> usuarioId){
         var auditoria = new Auditoria();
 
         auditoria.setDataCriacao(LocalDate.now());
         auditoria.setDataAtualizacao(LocalDate.now());
-        auditoria.setUsuarioCriacao(null);
+        auditoria.setUsuarioCriacao(usuarioId.isPresent() ? usuarioId.get() : null);
         auditoria.setFlagAtivo(ATIVO);
-
 
         return auditoria;
     }

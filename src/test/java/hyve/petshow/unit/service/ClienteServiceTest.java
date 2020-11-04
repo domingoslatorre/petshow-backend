@@ -56,8 +56,6 @@ public class ClienteServiceTest {
 		Mockito.when(repository.findById(Mockito.anyLong())).then(mock -> ClienteMock.buscaPorId(mock.getArgument(0)));
 		Mockito.when(repository.findByEmail(Mockito.anyString()))
 				.then(mock -> ClienteMock.buscarPorEmail(mock.getArgument(0)));
-		Mockito.when(repository.findByCpf(Mockito.anyString()))
-				.then(mock -> ClienteMock.buscaPorCpf(mock.getArgument(0)));
 		Mockito.doAnswer(mock -> {
 			ClienteMock.removePorId(mock.getArgument(0));
 			return null;
@@ -110,37 +108,31 @@ public class ClienteServiceTest {
 
 	@Test
 	@Order(4)
-	public void deve_encontrar_todos_os_elementos() {
-		assertFalse(service.buscarContas().isEmpty());
-	}
-
-	@Test
-	@Order(5)
 	public void deve_remover_elemento() throws Exception {
-		service.removerConta(1l);
+		service.desativarConta(1l);
 		assertThrows(Exception.class, () -> {
 			service.buscarPorId(1l);
 		});
 	}
 
 	@Test
-	@Order(6)
+	@Order(5)
 	public void deve_retornar_mensagem_sucesso() throws Exception {
-		MensagemRepresentation removerConta = service.removerConta(2l);
+		MensagemRepresentation removerConta = service.desativarConta(2l);
 		assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, removerConta.getMensagem());
 		assertTrue(removerConta.getSucesso());
 	}
 
 	@Test
-	@Order(7)
+	@Order(6)
 	public void deve_retornar_mensagem_de_erro() throws Exception {
 		Mockito.when(repository.existsById(Mockito.anyLong())).thenReturn(true);
-		var removerConta = service.removerConta(22l);
+		var removerConta = service.desativarConta(22l);
 		assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerConta.getMensagem());
 	}
 
 	@Test
-	@Order(8)
+	@Order(7)
 	public void deve_encontrar_por_email() {
 		Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(new Cliente()));
 

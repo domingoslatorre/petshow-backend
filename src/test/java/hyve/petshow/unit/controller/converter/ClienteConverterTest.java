@@ -18,6 +18,7 @@ import java.util.List;
 
 import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoList;
 import static hyve.petshow.mock.AnimalEstimacaoMock.tipoAnimalEstimacaoRepresentation;
+import static hyve.petshow.mock.ClienteMock.criaCliente;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.doReturn;
@@ -38,12 +39,7 @@ public class ClienteConverterTest {
 
 	@Test
 	public void deve_retornar_cliente_convertido() {
-		Cliente cliente = new Cliente();
-		cliente.setId(1l);
-		ArrayList<AnimalEstimacao> animaisEstimacao = new ArrayList<AnimalEstimacao>();
-		AnimalEstimacao animal = new AnimalEstimacao();
-		animaisEstimacao.add(animal);
-		cliente.setAnimaisEstimacao(animaisEstimacao);
+		Cliente cliente = criaCliente();
 
 		doReturn(animalEstimacaoList()).when(animalConverter).toRepresentationList(cliente.getAnimaisEstimacao());
 

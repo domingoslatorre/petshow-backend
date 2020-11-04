@@ -2,6 +2,7 @@ package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,11 +11,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
-    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter = new TipoAnimalEstimacaoConverter();
+    @Autowired
+    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
 
     @Override
     public AnimalEstimacaoRepresentation toRepresentation(AnimalEstimacao domain) {
-        AnimalEstimacaoRepresentation representation = new AnimalEstimacaoRepresentation();
+        var representation = new AnimalEstimacaoRepresentation();
 
         representation.setId(domain.getId());
         representation.setNome(domain.getNome());
@@ -29,7 +31,7 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
 
     @Override
     public AnimalEstimacao toDomain(AnimalEstimacaoRepresentation representation) {
-        AnimalEstimacao domain = new AnimalEstimacao();
+        var domain = new AnimalEstimacao();
 
         domain.setId(representation.getId());
         domain.setNome(representation.getNome());
@@ -43,13 +45,10 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
     }
 
     public List<AnimalEstimacaoRepresentation> toRepresentationList(List<AnimalEstimacao> domainList){
-        List<AnimalEstimacaoRepresentation> representationList = new ArrayList<>();
+        var representationList = new ArrayList<AnimalEstimacaoRepresentation>();
 
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
+
         return representationList;
     }
-
-	public List<AnimalEstimacao> toDomainList(List<AnimalEstimacaoRepresentation> animaisEstimacao) {
-		return animaisEstimacao.stream().map(el -> toDomain(el)).collect(Collectors.toList());
-	}
 }

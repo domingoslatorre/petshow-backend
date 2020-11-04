@@ -48,6 +48,7 @@ public class AcessoController {
         try {
             realizarAutenticacao(login);
             var token = gerarToken(login.getEmail());
+
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
             log.error("{}, mensagem: {}, causa: {}", mensagemErro, e.getMessage(), e.getCause());
@@ -85,11 +86,13 @@ public class AcessoController {
         var conta = acessoService.buscarPorEmail(email)
                 .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
         var token = jwtUtils.generateToken(email, conta.getId(), conta.getTipo());
+
         return token;
     }
 
     private String gerarToken(Conta conta) {
         var token = jwtUtils.generateToken(conta.getLogin().getEmail(), conta.getId(), conta.getTipo());
+
         return token;
     }
 
@@ -102,6 +105,7 @@ public class AcessoController {
     private Conta adicionarConta(ContaRepresentation contaRepresentation) throws BusinessException {
         var request = contaConverter.toDomain(contaRepresentation);
         var conta = acessoService.adicionarConta(request);
+
         return conta;
     }
 }

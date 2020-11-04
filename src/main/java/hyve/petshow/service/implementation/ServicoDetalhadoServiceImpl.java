@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
-
-//import hyve.petshow.controller.representation.ServicoDetalhadoResponseRepresentation;
 
 @Service
 public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
@@ -28,7 +27,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	
 	@Override
 	public ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
-		servicoDetalhado.setAuditoria(geraAuditoriaInsercao(servicoDetalhado.getPrestadorId()));
+		servicoDetalhado.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
 
 		return repository.save(servicoDetalhado);
 	}

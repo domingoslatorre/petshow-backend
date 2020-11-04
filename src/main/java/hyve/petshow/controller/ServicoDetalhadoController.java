@@ -40,6 +40,7 @@ public class ServicoDetalhadoController {
 			@PathVariable Long prestadorId) throws Exception {
 		var servico = servicoDetalhadoService.buscarPorPrestadorId(prestadorId);
 		var representation = servicoDetalhadoConverter.toRepresentationList(servico);
+
 		return ResponseEntity.ok(representation);
 	}
 
@@ -54,6 +55,7 @@ public class ServicoDetalhadoController {
 		servico.setPrestadorId(idPrestador);
 		servico = service.adicionarServicoDetalhado(servico);
 		var representation = converter.toRepresentation(servico);
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
 	}
 
@@ -65,6 +67,7 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Id do serviço detalhado.")
 			@PathVariable Long id) throws Exception{
         var response = service.removerServicoDetalhado(id, prestadorId);
+
         return ResponseEntity.ok(response);
     }
 
@@ -83,6 +86,7 @@ public class ServicoDetalhadoController {
 
 		var servico = servicoDetalhadoService.buscarPorPrestadorEId(prestadorId, id);
 		var representation = servicoDetalhadoConverter.toRepresentation(servico);
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
 	}
 
@@ -95,6 +99,7 @@ public class ServicoDetalhadoController {
 			@PathVariable Long servicoId) throws Exception {
 		var servico = servicoDetalhadoService.buscarPorPrestadorEId(prestadorId, servicoId);
 		var representation = servicoDetalhadoConverter.toRepresentation(servico);
+
 		return ResponseEntity.ok(representation);
 	}
 
@@ -110,6 +115,7 @@ public class ServicoDetalhadoController {
 		var servico = converter.toDomain(request);
 		servico = service.atualizarServicoDetalhado(idServico, servico);
 		var representation = converter.toRepresentation(servico);
+
 		return ResponseEntity.ok(representation);
 	}
 
@@ -120,6 +126,7 @@ public class ServicoDetalhadoController {
 			@PathVariable Integer id) throws NotFoundException {
 		var servicosDetalhados = service.buscarServicosDetalhadosPorTipoServico(id);
 		var representation = converter.toRepresentationList(servicosDetalhados);
+
 		return ResponseEntity.ok(representation);
 	}
 }

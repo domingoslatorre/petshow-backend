@@ -30,7 +30,7 @@ public class TipoAnimalEstimacaoConverter implements Converter<TipoAnimalEstimac
     }
 
     public List<TipoAnimalEstimacaoRepresentation> toRepresentationList(List<TipoAnimalEstimacao> domainList){
-        List<TipoAnimalEstimacaoRepresentation> representationList = new ArrayList<>();
+        var representationList = new ArrayList<TipoAnimalEstimacaoRepresentation>();
 
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
 

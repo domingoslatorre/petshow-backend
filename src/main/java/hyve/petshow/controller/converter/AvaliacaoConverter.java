@@ -13,6 +13,7 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 	@Override
 	public AvaliacaoRepresentation toRepresentation(Avaliacao domain) {
 		var representation = new AvaliacaoRepresentation();
+
 		representation.setId(domain.getId());
 		if (domain.getCriteriosAvaliacao() != null) {
 			var info = domain.getCriteriosAvaliacao();
@@ -26,12 +27,14 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		representation.setClienteId(domain.getClienteId());
 		representation.setServicoAvaliadoId(domain.getServicoAvaliadoId());
 		representation.setMedia(domain.getMediaAvaliacao());
+
 		return representation;
 	}
 
 	@Override
 	public Avaliacao toDomain(AvaliacaoRepresentation representation) {
 		var domain = new Avaliacao();
+
 		domain.setId(representation.getId());
 		domain.setClienteId(representation.getClienteId());
 		domain.setServicoAvaliadoId(representation.getServicoAvaliadoId());
@@ -45,6 +48,7 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		info.setComentario(representation.getComentario());
 		
 		domain.setCriteriosAvaliacao(info);
+
 		return domain;
 	}
 	

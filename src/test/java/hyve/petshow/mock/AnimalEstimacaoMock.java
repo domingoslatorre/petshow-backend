@@ -6,6 +6,7 @@ import hyve.petshow.controller.representation.TipoAnimalEstimacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.TipoAnimalEstimacao;
+import hyve.petshow.domain.embeddables.Auditoria;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,6 +35,7 @@ public class AnimalEstimacaoMock {
         animalEstimacao.setNome("andrezinho");
         animalEstimacao.setFoto("aaaaa");
         animalEstimacao.setTipo(tipoAnimalEstimacao());
+        animalEstimacao.setAuditoria(new Auditoria());
         animalEstimacao.setDonoId(1L);
 
         return animalEstimacao;

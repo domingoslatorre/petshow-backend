@@ -109,7 +109,7 @@ public class AcessoServiceTest {
 		
 		var prestador = PrestadorMock.criaPrestador();
 		service.adicionarConta(prestador);
+
 		assertTrue(dbMock.stream().anyMatch(el -> el.getNome().equals(prestador.getNome())));
-		
 	}
 }

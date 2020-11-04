@@ -46,16 +46,18 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     }
 
     public List<ServicoDetalhadoRepresentation> toRepresentationList(List<ServicoDetalhado> domainList){
-        List<ServicoDetalhadoRepresentation> representationList = new ArrayList<>();
+        var representationList = new ArrayList<ServicoDetalhadoRepresentation>();
 
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
+
         return representationList;
     }
 
     public List<ServicoDetalhado> toDomainList(List<ServicoDetalhadoRepresentation> representationList){
-        List<ServicoDetalhado> domainList = new ArrayList<>();
+        var domainList = new ArrayList<ServicoDetalhado>();
 
         representationList.forEach(representation -> domainList.add(this.toDomain(representation)));
+
         return domainList;
     }
 }
