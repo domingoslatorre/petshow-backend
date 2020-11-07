@@ -4,8 +4,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: petshowmail12@gmail.com
-    password: nffmjchahjnrhxjg
+    username: ${env.PETSHOW_MAIL}
+    password: ${env.PETSHOW_PASSWORD}
     properties:
       mail:
         smtp:
