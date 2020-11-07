@@ -16,6 +16,9 @@ jobs:
         with:
           java-version: 1.11
       - name: Build with Gradle
+        env:
+          PETSHOW_MAIL: ${{secrets.PETSHOW_MAIL}}
+          PETSHOW_PASSWORD: ${{secrets.PETSHOW_PASSWORD}}
         run: ./gradlew clean build
       - uses: codecov/codecov-action@v1
         with:
