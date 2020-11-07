@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hyve.petshow.controller.converter.ContaConverter;
@@ -105,7 +106,7 @@ public class AcessoController {
     }
     
     @GetMapping("/ativar")
-    public ResponseEntity<String> confirmarRegistro(@RequestBody String tokenVerificadcao) throws Exception {
+    public ResponseEntity<String> confirmarRegistro(@RequestParam("token") String tokenVerificadcao) throws Exception {
 		var conta = acessoService.ativaConta(tokenVerificadcao);
     	var tokenRetorno = gerarToken(conta.getEmail());
     	return ResponseEntity.ok(tokenRetorno);

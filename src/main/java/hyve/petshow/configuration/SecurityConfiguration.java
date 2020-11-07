@@ -46,11 +46,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().disable();
+        http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/h2-console/**").permitAll();
+        
+        
         http.csrf()
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/acesso/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/servico-detalhado/**", "/prestador/**", "/cliente/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/servico-detalhado/**", "/prestador/**", "/cliente/**", "/servico/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest()
                 .authenticated()
@@ -59,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        
+        http.headers().frameOptions().disable();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
    }
 }
