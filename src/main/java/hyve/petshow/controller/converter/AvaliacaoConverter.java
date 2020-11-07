@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
 public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoRepresentation> {
 	@Override
 	public AvaliacaoRepresentation toRepresentation(Avaliacao domain) {
-		if(domain == null) return new AvaliacaoRepresentation();
-		
 		var representation = new AvaliacaoRepresentation();
 		representation.setId(domain.getId());
 		if (domain.getCriteriosAvaliacao() != null) {
@@ -34,7 +32,6 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 
 	@Override
 	public Avaliacao toDomain(AvaliacaoRepresentation representation) {
-		if(representation == null) return new Avaliacao();
 		var domain = new Avaliacao();
 		domain.setId(representation.getId());
 		domain.setClienteId(representation.getClienteId());
@@ -53,14 +50,12 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 	}
 	
 	public List<AvaliacaoRepresentation> toRepresentationList(List<Avaliacao> domainList) {
-		if(domainList == null) return new ArrayList<AvaliacaoRepresentation>();
 		return domainList.stream()
 				.map(el -> toRepresentation(el))
 				.collect(Collectors.toList());
 	}
 	
 	public List<Avaliacao> toDomainList(List<AvaliacaoRepresentation> representationList) {
-		if(representationList == null) return new ArrayList<Avaliacao>();
 		return representationList.stream()
 				.map(el -> toDomain(el))
 				.collect(Collectors.toList());

@@ -24,11 +24,17 @@ import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.util.JwtUtil;
 import hyve.petshow.util.OnRegistrationCompleteEvent;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("/acesso")
+@OpenAPIDefinition(info = @Info(title = "API de acesso à aplicação",
+        description = "API utilizada para a realização de login e cadastro"))
 public class AcessoController {
     @Autowired
     private JwtUtil jwtUtil;
@@ -43,8 +49,11 @@ public class AcessoController {
 
     private final String mensagemErro = "Erro durante a autenticação, usuário ou senha incorretos";
 
+    @Operation(summary = "Realiza o login, gerando um token para ser utilizado nas demais APIs.")
     @PostMapping("/login")
-    public ResponseEntity<String> realizarLogin(@RequestBody Login login) throws Exception {
+    public ResponseEntity<String> realizarLogin(
+            @Parameter(description = "Objeto utilizado para realizar o login.")
+            @RequestBody Login login) throws Exception {
         try {
             realizarAutenticacao(login);
             var token = gerarToken(login.getEmail());
@@ -58,8 +67,14 @@ public class AcessoController {
         }
     }
 
+    @Operation(summary = "Realiza o cadastro, salvando o usuário no sistema e " +
+            "gerando um token para ser utilizado nas demais APIs.")
     @PostMapping("/cadastro")
-    public ResponseEntity<String> realizarCadastro(@RequestBody ContaRepresentation contaRepresentation, HttpServletRequest request) throws BusinessException {
+    public ResponseEntity<String> realizarCadastro(
+            @Parameter(description = "Objeto da conta que será cadastrada.")
+            @RequestBody ContaRepresentation contaRepresentation, 
+            @Parameter(description = "Requisição")
+            HttpServletRequest request) throws BusinessException {
         try {
             verificarEmailExistente(contaRepresentation.getLogin().getEmail());
             var conta = adicionarConta(contaRepresentation);
@@ -79,11 +94,7 @@ public class AcessoController {
     }
 
     private String gerarToken(String email) throws Exception {
-        var conta = acessoService.buscarPorEmail(email)
-                .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
-        if(!conta.getEnabled()) {
-        	throw new BusinessException("Conta informada ainda não foi ativada");
-        }
+        var conta = acessoService.buscarContaPorEmail(email);        
         var token = jwtUtil.generateToken(email, conta.getId(), conta.getTipo());
         return token;
     }

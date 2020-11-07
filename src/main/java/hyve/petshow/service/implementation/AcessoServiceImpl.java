@@ -103,4 +103,15 @@ public class AcessoServiceImpl implements AcessoService {
 		return acessoRepository.save(conta);
 		
 	}
+
+	@Override
+	public Conta buscarContaPorEmail(String email) throws Exception {
+		var conta = buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
+		if(!conta.getEnabled()) {
+			throw new BusinessException("Conta informada ainda não foi ativada");
+		}
+		return conta;
+	}
+	
+	
 }

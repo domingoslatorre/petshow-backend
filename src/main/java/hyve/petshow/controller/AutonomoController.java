@@ -6,6 +6,10 @@ import hyve.petshow.controller.representation.AutonomoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Autonomo;
 import hyve.petshow.service.port.AutonomoService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/autonomo")
+@OpenAPIDefinition(info = @Info(title = "API autonomo", description = "API para CRUD de autonomo"))
 public class AutonomoController {
     @Autowired
     private AutonomoService service;
@@ -20,8 +25,11 @@ public class AutonomoController {
     @Autowired
     private AutonomoConverter converter; //converte para uma entidade de dominio para não utilizar o mesmo objeto
 
+    @Operation(summary = "Busca autonomo por id.")
     @GetMapping("{id}")
-    public ResponseEntity<AutonomoRepresentation> buscarAutonomo(@PathVariable Long id) throws Exception {
+    public ResponseEntity<AutonomoRepresentation> buscarAutonomo(
+            @Parameter(description = "Id do autonomo.")
+            @PathVariable Long id) throws Exception {
         ResponseEntity<AutonomoRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         Autonomo autonomo = service.buscarPorId(id);
@@ -29,37 +37,24 @@ public class AutonomoController {
         return  ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentation(autonomo));
     }
 
-
+    @Operation(summary = "Atualiza autonomo.")
     @PutMapping("{id}")
-    public ResponseEntity<AutonomoRepresentation> atualizarAutonomo(@PathVariable Long id, @RequestBody AutonomoRepresentation autonomo) throws Exception {
+    public ResponseEntity<AutonomoRepresentation> atualizarAutonomo(
+            @Parameter(description = "Id do autonomo.")
+            @PathVariable Long id,
+            @Parameter(description = "Autonomo que será atualizado.")
+            @RequestBody AutonomoRepresentation autonomo) throws Exception {
         Autonomo domain = converter.toDomain(autonomo);
         Autonomo autonomoAtualizado = service.atualizarConta(id, domain);
         AutonomoRepresentation representation = converter.toRepresentation(autonomoAtualizado);
         return ResponseEntity.status(HttpStatus.OK).body(representation);
     }
 
-
-//    @PostMapping
-//    public ResponseEntity<AutonomoRepresentation> criarAutonomo(@RequestBody AutonomoRepresentation conta) throws Exception {
-//        Autonomo domain = converter.toDomain(conta);
-//        Autonomo contaSalva = service.salvaConta(domain);
-//        AutonomoRepresentation representation = converter.toRepresentation(contaSalva);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(representation);
-//    }
-
-
-//    @GetMapping("{id}")
-//    public ResponseEntity<List<AutonomoRepresentation>> buscarAutonomosParaComparacao(@PathVariable Long id) throws Exception {
-//        ResponseEntity<List<AutonomoRepresentation>> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//
-//        List<Autonomo> autonomos = service.obterContaPorId(id);
-//
-//        response = ResponseEntity.status(HttpStatus.OK).body(converter.toRepresentationList(autonomos));
-//        return response;
-//    }
-
+    @Operation(summary = "Deleta autonomo.")
     @DeleteMapping("{id}")
-    public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(@PathVariable Long id) throws Exception {
+    public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(
+            @Parameter(description = "Id do autonomo.")
+            @PathVariable Long id) throws Exception {
         ResponseEntity<MensagemRepresentation> response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         MensagemRepresentation mensagem = service.removerConta(id);
@@ -70,5 +65,4 @@ public class AutonomoController {
 
         return response;
     }
-
 }

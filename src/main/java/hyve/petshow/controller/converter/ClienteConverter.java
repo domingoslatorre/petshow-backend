@@ -15,8 +15,6 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 
 	@Override
 	public ClienteRepresentation toRepresentation(Cliente domain) {
-		if(domain == null) return new ClienteRepresentation();
-//		ClienteRepresentation representation = (ClienteRepresentation) contaConverter.toRepresentation(domain);
 		ClienteRepresentation representation = new ClienteRepresentation();
 		representation.setId(domain.getId());
 		representation.setCpf(domain.getCpf());
@@ -35,7 +33,6 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 
 	@Override
 	public Cliente toDomain(ClienteRepresentation representation) {
-		if(representation == null) return new Cliente();
 		Cliente domain = new Cliente();
 
 		domain.setCpf(representation.getCpf());

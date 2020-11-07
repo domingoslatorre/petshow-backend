@@ -19,9 +19,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
 	
 	@Override
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {
-    	if(domain == null) return new ServicoDetalhadoRepresentation();
     	ServicoDetalhadoRepresentation representation = new ServicoDetalhadoRepresentation();
-    	
     	
     	representation.setId(domain.getId());
         representation.setPreco(domain.getPreco());
@@ -34,7 +32,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
 
     @Override
     public ServicoDetalhado toDomain(ServicoDetalhadoRepresentation representation) {
-    	if(representation == null) return new ServicoDetalhado();
     	ServicoDetalhado domain = new ServicoDetalhado();
         
     	domain.setId(representation.getId());
@@ -47,7 +44,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     }
 
     public List<ServicoDetalhadoRepresentation> toRepresentationList(List<ServicoDetalhado> domainList){
-    	if(domainList == null) return new ArrayList<ServicoDetalhadoRepresentation>();
         List<ServicoDetalhadoRepresentation> representationList = new ArrayList<>();
 
         domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
@@ -55,7 +51,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     }
 
     public List<ServicoDetalhado> toDomainList(List<ServicoDetalhadoRepresentation> representationList){
-    	if(representationList == null) return new ArrayList<ServicoDetalhado>();
         List<ServicoDetalhado> domainList = new ArrayList<>();
 
         representationList.forEach(representation -> domainList.add(this.toDomain(representation)));
