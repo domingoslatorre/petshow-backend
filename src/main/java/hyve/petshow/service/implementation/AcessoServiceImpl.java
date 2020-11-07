@@ -58,10 +58,10 @@ public class AcessoServiceImpl implements AcessoService {
         var tipoConta = conta.getTipo();
         criptografarSenha(conta.getLogin());
 
-        if(tipoConta.equals(TipoConta.CLIENTE)){
+        if(TipoConta.CLIENTE.equals(tipoConta)){
             var cliente = new Cliente(conta);
             conta = clienteRepository.save(cliente);
-        } else if(tipoConta.equals(TipoConta.PRESTADOR_AUTONOMO)){
+        } else if(TipoConta.PRESTADOR_AUTONOMO.equals(tipoConta)){
             var prestador = new Prestador(conta);
             conta = prestadorRepository.save(prestador);
         } else {
@@ -76,7 +76,7 @@ public class AcessoServiceImpl implements AcessoService {
         login.setSenha(passwordEncoder.encode(senha));
     }
     
-    private Conta buscarConta(String email) throws Exception {
+    public Conta buscarConta(String email) throws Exception {
     	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
     }
 
@@ -96,6 +96,9 @@ public class AcessoServiceImpl implements AcessoService {
 	public Conta ativaConta(String token) throws Exception {
 		var tokenVerificacao = buscarTokenVerificacao(token);		
 		var conta = buscarConta(tokenVerificacao.getConta().getEmail());
+		if(conta.getEnabled()) {
+			throw new BusinessException("Conta já ativa");
+		}
 		conta.setEnabled(true);
 		return acessoRepository.save(conta);
 		

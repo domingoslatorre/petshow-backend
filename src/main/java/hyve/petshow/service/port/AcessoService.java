@@ -19,4 +19,6 @@ public interface AcessoService extends UserDetailsService {
 	VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception;
 
 	Conta ativaConta(String token) throws Exception;
+	
+	Conta buscarConta(String email) throws Exception;
 }
