@@ -1,5 +1,6 @@
 package hyve.petshow.unit.facade;
 
+import static hyve.petshow.mock.PrestadorMock.prestador;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,10 +22,9 @@ import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.mock.ClienteMock;
 import hyve.petshow.mock.PrestadorMock;
 import hyve.petshow.mock.ServicoDetalhadoMock;
-import hyve.petshow.mock.entidades.AvaliacaoMock;
+import hyve.petshow.mock.AvaliacaoMock;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
@@ -59,15 +59,15 @@ public class AvaliacaoFacadeTest {
 
 	@BeforeEach
 	public void adicionaItens() {
-		Avaliacao avaliacao = AvaliacaoMock.geraAvaliacao();
-		var prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
-		var servicoAvaliado = ServicoDetalhadoMock.criarServicoDetalhado();
+		Avaliacao avaliacao = AvaliacaoMock.avaliacao();
+		var prestadorMock = prestadorRepository.save(prestador());
+		var servicoAvaliado = ServicoDetalhadoMock.servicoDetalhado();
 		servicoAvaliado.setPrestadorId(prestadorMock.getId());
 		
 		servicoRepository.save(servicoAvaliado.getTipo());
 		
 		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(servicoAvaliado);
-		this.clienteMock = clienteRepository.save(ClienteMock.criaCliente());
+//		this.clienteMock = clienteRepository.save(ClienteMock.criaCliente());
 		
 		avaliacao.setServicoAvaliadoId(servicoDetalhadoMock.getId());
 		avaliacao.setClienteId(clienteMock.getId());
@@ -78,7 +78,7 @@ public class AvaliacaoFacadeTest {
 	@Test
 	public void deve_criar_avaliacao() throws Exception {
 		// dado
-		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		var representation = AvaliacaoMock.avaliacaoRepresentation();
 		var idCliente = clienteMock.getId();
 		var idServicoPrestado = servicoDetalhadoMock.getId();
 		// quando
@@ -90,7 +90,7 @@ public class AvaliacaoFacadeTest {
 	@Test
 	public void deve_retornar_avaliacao_em_lista() throws Exception {
 		// dado
-		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		var representation = AvaliacaoMock.avaliacaoRepresentation();
 		var idCliente = clienteMock.getId();
 		var idServicoPrestado = servicoDetalhadoMock.getId();
 		facade.adicionarAvaliacao(representation, idCliente, idServicoPrestado);

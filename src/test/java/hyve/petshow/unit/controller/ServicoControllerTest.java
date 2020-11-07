@@ -1,5 +1,6 @@
 package hyve.petshow.unit.controller;
 
+import static hyve.petshow.mock.ServicoMock.servico;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -53,7 +54,7 @@ public class ServicoControllerTest {
 	
 	@Test
 	public void deve_trazer_lista() {
-		repository.saveAll(Arrays.asList(ServicoMock.criarServico()));
+		repository.saveAll(Arrays.asList(servico()));
 		
 		var response = template
 	       .exchange(this.url, HttpMethod.GET, null,  new ParameterizedTypeReference<List<ServicoRepresentation>>() {

@@ -1,5 +1,8 @@
 package hyve.petshow.unit.controller;
 
+import static hyve.petshow.mock.PrestadorMock.prestador;
+import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
+import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentation;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -55,8 +58,8 @@ public class PrestadorServicoControllerTest {
 	
 	@BeforeEach
 	public void init() {
-		servicoRepository.save(ServicoDetalhadoMock.criarServicoDetalhado().getTipo());
-		prestadorMock = repository.save(PrestadorMock.criaPrestador());
+		servicoRepository.save(servicoDetalhado().getTipo());
+		prestadorMock = repository.save(prestador());
 		this.url = "http://localhost:"+port+"/prestador/"+prestadorMock.getId()+"/servico-detalhado";
 	}
 	
@@ -64,9 +67,9 @@ public class PrestadorServicoControllerTest {
 	public void deve_retornar_lista_de_servicos() throws Exception {
 		var uri = new URI(this.url);
 		
-		var servico = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
+		var servico = servicoDetalhadoRepresentation();
 		servico.setId(null);
-		var requestBody = new HttpEntity<ServicoDetalhadoRepresentation>(servico, new HttpHeaders());
+		var requestBody = new HttpEntity<>(servico, new HttpHeaders());
 		
 		var response = template.postForEntity(uri, requestBody, ServicoDetalhadoRepresentation.class);
 		
@@ -78,9 +81,9 @@ public class PrestadorServicoControllerTest {
 	public void deve_remover_item_da_lista() throws Exception {
 		var uri = new URI(this.url);
 		
-		var servico = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
+		var servico = servicoDetalhadoRepresentation();
 		servico.setId(null);
-		var requestBody = new HttpEntity<ServicoDetalhadoRepresentation>(servico, new HttpHeaders());
+		var requestBody = new HttpEntity<>(servico, new HttpHeaders());
 		
 		var response = template.postForEntity(uri, requestBody, ServicoDetalhadoRepresentation.class);
 				

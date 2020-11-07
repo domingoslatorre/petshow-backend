@@ -32,9 +32,9 @@ public class Prestador extends Conta {
 				conta.getMediaAvaliacao(), conta.getFoto(), conta.getTipo(), conta.getEndereco(),
 				conta.getLogin(), conta.getAuditoria(), conta.getGeolocalizacao());
 	}
-	
-	public void addServicoPrestado(ServicoDetalhado servicoPrestado) {
-		servicosPrestados.add(servicoPrestado);
-	}
 
+	public Prestador(Conta conta, List<ServicoDetalhado> servicosDetalhados){
+		this(conta);
+		setServicosPrestados(servicosDetalhados);
+	}
 }

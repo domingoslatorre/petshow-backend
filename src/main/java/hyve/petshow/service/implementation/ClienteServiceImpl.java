@@ -16,14 +16,20 @@ import static hyve.petshow.util.AuditoriaUtils.*;
 @Service
 public class ClienteServiceImpl implements ClienteService {
 	private final String CONTA_NAO_ENCONTRADA = "Conta não encontrada";
+	private final String CONTA_DESATIVADA = "Conta desativada";
 
 	@Autowired
 	private ClienteRepository repository;
 
 	@Override
 	public Cliente buscarPorId(Long id) throws NotFoundException {
-		return repository.findById(id)
+		var cliente = repository.findById(id)
 				.orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
+
+		if(cliente.getAuditoria().getFlagAtivo().equals(INATIVO))
+			throw new NotFoundException(CONTA_DESATIVADA);
+
+		return cliente;
 	}
 
 	@Override
@@ -39,14 +45,14 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public MensagemRepresentation desativarConta(Long id) throws NotFoundException {
-		var conta = buscarPorId(id);
+		var cliente = buscarPorId(id);
 		var mensagem = new MensagemRepresentation();
 
-		conta.setAuditoria(atualizaAuditoria(conta.getAuditoria(), INATIVO));
-		conta = repository.save(conta);
+		cliente.setAuditoria(atualizaAuditoria(cliente.getAuditoria(), INATIVO));
+		cliente = repository.save(cliente);
 
 		mensagem.setId(id);
-		mensagem.setSucesso(conta.getAuditoria().getFlagAtivo().equals(INATIVO));
+		mensagem.setSucesso(cliente.getAuditoria().getFlagAtivo().equals(INATIVO));
 
 		return mensagem;
 	}

@@ -24,7 +24,7 @@ import org.mockito.Mockito;
 
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.mock.entidades.AvaliacaoMock;
+import hyve.petshow.mock.AvaliacaoMock;
 import hyve.petshow.mock.repositorio.AvaliacaoRepositoryMock;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.service.implementation.AvaliacaoServiceImpl;
@@ -40,9 +40,9 @@ public class AvaliacaoServiceTest {
 	@BeforeEach
 	public void init() {
 		initMocks(this);
+
 		when(repository.findByServicoAvaliadoId(any(Long.class)))
 				.then(mock -> AvaliacaoRepositoryMock.findByServicoAvaliado(mock.getArgument(0)));
-
 		when(repository.save(any(Avaliacao.class))).then(mock -> AvaliacaoRepositoryMock.save(mock.getArgument(0)));
 		doAnswer(mock -> {
 			AvaliacaoRepositoryMock.limpaLista();
@@ -58,68 +58,48 @@ public class AvaliacaoServiceTest {
 
 	@Test
 	public void deve_inserir_elemento_na_lista() {
-		// dado
-		var avaliacao = AvaliacaoMock.geraAvaliacao();
-
-		// Quando
+		var avaliacao = AvaliacaoMock.avaliacao();
 		var avaliacaoSalva = service.adicionarAvaliacao(avaliacao);
 
-		// Entao
 		assertTrue(repository.findAll().stream().anyMatch(el -> el.getId().equals(avaliacaoSalva.getId())));
 	}
 
 	@Test
 	public void deve_retornar_lista_contendo_elemento() throws NotFoundException {
-		// Dado
-		var avaliacao = AvaliacaoMock.geraAvaliacao();
+		var avaliacao = AvaliacaoMock.avaliacao();
 		var avaliacaoSalva = service.adicionarAvaliacao(avaliacao);
-
-		// Quando
 		var avaliacoes = service.buscarAvaliacoesPorServicoId(avaliacaoSalva.getServicoAvaliadoId());
 
-		// Entao
 		assertTrue(avaliacoes.stream().anyMatch(el -> el.getId().equals(avaliacaoSalva.getId())));
 	}
 
 	@Test
 	public void deve_retornar_lista_de_avaliacoes() throws NotFoundException {
-		// Dado
-		var avaliacoes = AvaliacaoMock.geraListaAvaliacao().stream().map(avaliacao -> {
-			return service.adicionarAvaliacao(avaliacao);
-		}).collect(Collectors.toList());
-
-		// Quando
+		var avaliacoes = AvaliacaoMock.avaliacaoList().stream().map(avaliacao -> service.adicionarAvaliacao(avaliacao)).collect(Collectors.toList());
 		var servicoAvaliado = avaliacoes.get(0).getServicoAvaliadoId();
 		var busca = service.buscarAvaliacoesPorServicoId(servicoAvaliado);
 
-		// Então
 		assertEquals(avaliacoes.size(), busca.size());
-
 	}
 	
 	@Test
 	public void deve_retornar_excecao_de_nenhuma_encontrada_por_servico() {
-		Mockito.when(repository.findByServicoAvaliadoId(Mockito.anyLong())).thenReturn(new ArrayList<>());
-		assertThrows(NotFoundException.class, () -> {
-			service.buscarAvaliacoesPorServicoId(10l);
-		});
+		when(repository.findByServicoAvaliadoId(Mockito.anyLong())).thenReturn(new ArrayList<>());
+
+		assertThrows(NotFoundException.class, () -> service.buscarAvaliacoesPorServicoId(10L));
 	}
 	
 	@Test
 	public void deve_retornar_algo_por_id() throws NotFoundException {
-		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Avaliacao()));
-		assertNotNull(service.buscarAvaliacaoPorId(1l));
+		when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Avaliacao()));
+
+		assertNotNull(service.buscarAvaliacaoPorId(1L));
 	}
 	
 	@Test
 	public void deve_retornar_excecao_por_nao_encontrar_por_id() {
-		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+		when(repository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 		
-		assertThrows(NotFoundException.class, () -> {
-			service.buscarAvaliacaoPorId(1l);
-		});
+		assertThrows(NotFoundException.class, () -> service.buscarAvaliacaoPorId(1L));
 	}
-	
-	
-
 }

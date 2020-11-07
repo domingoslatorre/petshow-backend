@@ -1,17 +1,14 @@
 package hyve.petshow.unit.controller;
 // Eu sei q não tem controller de Avaliacao. Eu coloquei mais pra não ficar bagunçado no de prestador
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.net.URI;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.mock.AvaliacaoMock;
+import hyve.petshow.repository.*;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -25,20 +22,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
-import hyve.petshow.controller.representation.AvaliacaoRepresentation;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.mock.ClienteMock;
-import hyve.petshow.mock.PrestadorMock;
-import hyve.petshow.mock.ServicoDetalhadoMock;
-import hyve.petshow.mock.entidades.AvaliacaoMock;
-import hyve.petshow.repository.AvaliacaoRepository;
-import hyve.petshow.repository.ClienteRepository;
-import hyve.petshow.repository.PrestadorRepository;
-import hyve.petshow.repository.ServicoDetalhadoRepository;
-import hyve.petshow.repository.ServicoRepository;
+import java.net.URI;
+
+import static hyve.petshow.mock.PrestadorMock.prestador;
+import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -74,9 +62,9 @@ public class AvaliacaoControllerTest {
 
 	@BeforeEach
 	public void adicionaItens() {
-		this.clienteMock = clienteRepository.save(ClienteMock.criaCliente());
-		this.prestadorMock = prestadorRepository.save(PrestadorMock.criaPrestador());
-		var servicoAvaliado = ServicoDetalhadoMock.criarServicoDetalhado();
+//		this.clienteMock = clienteRepository.save(ClienteMock.criaCliente());
+		this.prestadorMock = prestadorRepository.save(prestador());
+		var servicoAvaliado = servicoDetalhado();
 		servicoAvaliado.setPrestadorId(prestadorMock.getId());
 		servicoRepository.save(servicoAvaliado.getTipo());
 		this.servicoDetalhadoMock = servicoDetalhadoRepository.save(servicoAvaliado);
@@ -93,7 +81,7 @@ public class AvaliacaoControllerTest {
 	@Test
 	public void deve_adicionar_avaliacao_a_lista() throws Exception {
 		// dado
-		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		var representation = AvaliacaoMock.avaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
 		
 		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
@@ -128,7 +116,7 @@ public class AvaliacaoControllerTest {
 	@Test
 	public void deve_retornar_lista_preenchida() throws Exception {
 		// dado
-		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		var representation = AvaliacaoMock.avaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
 		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
 							.replace("{prestadorId}", prestadorMock.getId().toString());
@@ -150,7 +138,7 @@ public class AvaliacaoControllerTest {
 	@Test
 	public void deve_retornar_Prestador() throws Exception {
 		// dado
-		var representation = AvaliacaoMock.geraAvaliacaoRepresentation();
+		var representation = AvaliacaoMock.avaliacaoRepresentation();
 		representation.setClienteId(clienteMock.getId());
 		var urlAvaliacao = avaliacaoUrl.replace("{id}", this.servicoDetalhadoMock.getId().toString())
 							.replace("{prestadorId}", prestadorMock.getId().toString());

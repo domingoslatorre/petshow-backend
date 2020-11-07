@@ -1,4 +1,4 @@
-package hyve.petshow.mock.entidades;
+package hyve.petshow.mock;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 
 public class AvaliacaoMock {
-	public static Avaliacao geraAvaliacao() {
+	public static Avaliacao avaliacao() {
 		var tipo = new Servico();
 		tipo.setId(1);
 		tipo.setNome("Banho");
@@ -55,7 +55,7 @@ public class AvaliacaoMock {
 		return avaliacao;
 	}
 
-	public static AvaliacaoRepresentation geraAvaliacaoRepresentation() {
+	public static AvaliacaoRepresentation avaliacaoRepresentation() {
 
 		var tipo = new ServicoRepresentation();
 		tipo.setId(1);
@@ -91,7 +91,7 @@ public class AvaliacaoMock {
 		return avaliacao;
 	}
 
-	public static List<Avaliacao> geraListaAvaliacao() {
+	public static List<Avaliacao> avaliacaoList() {
 		var tipo = new Servico();
 		tipo.setId(1);
 		tipo.setNome("Banho");

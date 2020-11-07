@@ -8,8 +8,12 @@ import hyve.petshow.domain.embeddables.Geolocalizacao;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 
+import static hyve.petshow.mock.AuditoriaMock.auditoria;
+import static hyve.petshow.mock.LoginMock.login;
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+
 public class ContaMock {
-    public static Conta conta(){
+    public static Conta contaCliente(){
         Conta conta = new Conta();
 
         conta.setId(1L);
@@ -20,10 +24,29 @@ public class ContaMock {
         conta.setTipo(TipoConta.CLIENTE);
         conta.setFoto("");
         conta.setEndereco(new Endereco());
+        conta.setLogin(login());
+        conta.setGeolocalizacao(new Geolocalizacao());
+        conta.setMediaAvaliacao(1.5F);
+        conta.setAuditoria(auditoria(ATIVO));
+
+        return conta;
+    }
+
+    public static Conta contaPrestador(){
+        Conta conta = new Conta();
+
+        conta.setId(1L);
+        conta.setNome("Teste");
+        conta.setNomeSocial("teste");
+        conta.setCpf("544444444");
+        conta.setTelefone("1129299292");
+        conta.setTipo(TipoConta.PRESTADOR_AUTONOMO);
+        conta.setFoto("");
+        conta.setEndereco(new Endereco());
         conta.setLogin(new Login());
         conta.setGeolocalizacao(new Geolocalizacao());
         conta.setMediaAvaliacao(1.5F);
-        conta.setAuditoria(new Auditoria());
+        conta.setAuditoria(auditoria("S"));
 
         return conta;
     }
