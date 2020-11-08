@@ -6,7 +6,6 @@ import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.repository.AcessoRepository;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
-import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.implementation.AcessoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
