@@ -1,8 +1,6 @@
 package hyve.petshow.mock;
 
-import hyve.petshow.controller.converter.ClienteConverter;
 import hyve.petshow.controller.converter.PrestadorConverter;
-import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Prestador;
 

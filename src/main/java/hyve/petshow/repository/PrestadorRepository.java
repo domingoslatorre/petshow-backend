@@ -1,6 +1,5 @@
 package hyve.petshow.repository;
 
-import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.Prestador;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;

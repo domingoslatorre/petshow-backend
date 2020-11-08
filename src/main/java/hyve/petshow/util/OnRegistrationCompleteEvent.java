@@ -1,11 +1,10 @@
 package hyve.petshow.util;
 
-import java.util.Locale;
-
-import org.springframework.context.ApplicationEvent;
-
 import hyve.petshow.domain.Conta;
 import lombok.Data;
+import org.springframework.context.ApplicationEvent;
+
+import java.util.Locale;
 
 @Data
 public class OnRegistrationCompleteEvent extends ApplicationEvent {

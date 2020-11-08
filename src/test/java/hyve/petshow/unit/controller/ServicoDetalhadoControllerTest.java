@@ -5,8 +5,6 @@ import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
@@ -22,7 +20,6 @@ import java.util.List;
 
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
 import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
-import static hyve.petshow.mock.PrestadorMock.prestador;
 import static hyve.petshow.mock.ServicoDetalhadoMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;

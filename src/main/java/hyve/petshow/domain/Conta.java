@@ -1,7 +1,7 @@
 package hyve.petshow.domain;
 
-import hyve.petshow.domain.embeddables.Endereco;
 import hyve.petshow.domain.embeddables.Auditoria;
+import hyve.petshow.domain.embeddables.Endereco;
 import hyve.petshow.domain.embeddables.Geolocalizacao;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
@@ -10,8 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import com.google.common.base.Optional;
 
 @Data
 @Entity(name = "conta")

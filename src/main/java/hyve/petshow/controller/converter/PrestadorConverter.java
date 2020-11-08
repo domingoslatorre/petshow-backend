@@ -4,12 +4,10 @@ import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PrestadorConverter implements Converter<Prestador, PrestadorRepresentation> {

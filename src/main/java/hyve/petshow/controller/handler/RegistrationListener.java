@@ -1,6 +1,7 @@
 package hyve.petshow.controller.handler;
 
-import static java.util.UUID.randomUUID;
+import hyve.petshow.service.port.AcessoService;
+import hyve.petshow.util.OnRegistrationCompleteEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -8,8 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import hyve.petshow.service.port.AcessoService;
-import hyve.petshow.util.OnRegistrationCompleteEvent;
+import static java.util.UUID.randomUUID;
 
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {

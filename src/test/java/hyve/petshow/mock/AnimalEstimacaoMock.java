@@ -1,7 +1,6 @@
 package hyve.petshow.mock;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
-import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.TipoAnimalEstimacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;

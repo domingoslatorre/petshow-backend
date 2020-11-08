@@ -2,10 +2,8 @@ package hyve.petshow.mock;
 
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.embeddables.Auditoria;
 import hyve.petshow.domain.embeddables.Endereco;
 import hyve.petshow.domain.embeddables.Geolocalizacao;
-import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 
 import static hyve.petshow.mock.AuditoriaMock.auditoria;

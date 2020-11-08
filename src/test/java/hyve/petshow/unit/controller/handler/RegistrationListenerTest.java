@@ -1,15 +1,8 @@
 package hyve.petshow.unit.controller.handler;
 
-import static hyve.petshow.mock.ClienteMock.cliente;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.util.Locale;
-
+import hyve.petshow.controller.handler.RegistrationListener;
+import hyve.petshow.service.port.AcessoService;
+import hyve.petshow.util.OnRegistrationCompleteEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,9 +10,13 @@ import org.mockito.Mock;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import hyve.petshow.controller.handler.RegistrationListener;
-import hyve.petshow.service.port.AcessoService;
-import hyve.petshow.util.OnRegistrationCompleteEvent;
+import java.util.Locale;
+
+import static hyve.petshow.mock.ClienteMock.cliente;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RegistrationListenerTest {
 	@Mock

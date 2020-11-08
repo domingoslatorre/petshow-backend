@@ -7,8 +7,6 @@ import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.mock.AnimalEstimacaoMock;
-import hyve.petshow.mock.MensagemMock;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -21,13 +19,16 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-import static hyve.petshow.mock.AnimalEstimacaoMock.*;
+import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
+import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoRepresentation;
 import static hyve.petshow.mock.MensagemMock.mensagemRepresentationFalha;
 import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

@@ -6,8 +6,6 @@ import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class ContaConverter implements Converter<Conta, ContaRepresentation> {
 	@Override
