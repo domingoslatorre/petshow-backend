@@ -9,7 +9,6 @@ import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 import hyve.petshow.service.port.TipoAnimalEstimacaoService;
-import hyve.petshow.util.JwtUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
