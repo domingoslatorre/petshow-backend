@@ -3,7 +3,7 @@ package hyve.petshow.controller;
 import hyve.petshow.controller.converter.ClienteConverter;
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.service.port.ClienteService;
-import hyve.petshow.util.JwtUtil;
+import hyve.petshow.util.JwtUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,8 +21,6 @@ public class ClienteController {
 	private ClienteService clienteService;
 	@Autowired
 	private ClienteConverter clienteConverter;
-	@Autowired
-	private JwtUtil jwtUtil;
 
 	@Operation(summary = "Busca cliente por id.")
 	@GetMapping("/{id}")

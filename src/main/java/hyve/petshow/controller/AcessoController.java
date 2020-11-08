@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import hyve.petshow.controller.converter.ContaConverter;
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AcessoService;
-import hyve.petshow.util.JwtUtil;
 import hyve.petshow.util.OnRegistrationCompleteEvent;
+import hyve.petshow.util.JwtUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
         description = "API utilizada para a realização de login e cadastro"))
 public class AcessoController {
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtils jwtUtils;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -57,6 +57,7 @@ public class AcessoController {
         try {
             realizarAutenticacao(login);
             var token = gerarToken(login.getEmail());
+
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
             log.error("{}, mensagem: {}, causa: {}", mensagemErro, e.getMessage(), e.getCause());
@@ -72,15 +73,17 @@ public class AcessoController {
     @PostMapping("/cadastro")
     public ResponseEntity<String> realizarCadastro(
             @Parameter(description = "Objeto da conta que será cadastrada.")
-            @RequestBody ContaRepresentation contaRepresentation, 
+            @RequestBody ContaRepresentation contaRepresentation,
             @Parameter(description = "Requisição")
             HttpServletRequest request) throws BusinessException {
         try {
             verificarEmailExistente(contaRepresentation.getLogin().getEmail());
             var conta = adicionarConta(contaRepresentation);
             var token = gerarToken(conta);
-            String appUrl = request.getContextPath();
+            var appUrl = request.getContextPath();
+
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(conta, request.getLocale(), appUrl));
+
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
             log.error("{}, mensagem: {}, causa: {}", mensagemErro, e.getMessage(), e.getCause());
@@ -93,15 +96,15 @@ public class AcessoController {
         authenticationManager.authenticate(token);
     }
 
-    private String gerarToken(String email) throws Exception {
-        var conta = acessoService.buscarContaPorEmail(email);        
-        var token = jwtUtil.generateToken(email, conta.getId(), conta.getTipo());
-        return token;
+    private String gerarToken(String email) throws NotFoundException {
+        var conta = acessoService.buscarPorEmail(email)
+                .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
+
+        return jwtUtils.generateToken(email, conta.getId(), conta.getTipo());
     }
 
     private String gerarToken(Conta conta) {
-        var token = jwtUtil.generateToken(conta.getLogin().getEmail(), conta.getId(), conta.getTipo());
-        return token;
+        return jwtUtils.generateToken(conta.getLogin().getEmail(), conta.getId(), conta.getTipo());
     }
 
     private void verificarEmailExistente(String email) throws BusinessException {
@@ -112,15 +115,15 @@ public class AcessoController {
 
     private Conta adicionarConta(ContaRepresentation contaRepresentation) throws BusinessException {
         var request = contaConverter.toDomain(contaRepresentation);
-        var conta = acessoService.adicionarConta(request);
-        return conta;
+
+        return acessoService.adicionarConta(request);
     }
-    
+
     @GetMapping("/ativar")
     public ResponseEntity<String> confirmarRegistro(@RequestParam("token") String tokenVerificadcao) throws Exception {
 		var conta = acessoService.ativaConta(tokenVerificadcao);
-    	var tokenRetorno = gerarToken(conta.getEmail());
+    	var tokenRetorno = gerarToken(conta.getLogin().getEmail());
     	return ResponseEntity.ok(tokenRetorno);
     }
-    
+
 }

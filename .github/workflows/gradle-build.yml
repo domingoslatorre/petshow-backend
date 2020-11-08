@@ -22,10 +22,6 @@ jobs:
         run: ./gradlew clean build
       - uses: codecov/codecov-action@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ secrets.CODECOV_TvOKEN }}
           file: ${{ secrets.CODECOV_PATH }}
           fail_ci_if_error: true
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}

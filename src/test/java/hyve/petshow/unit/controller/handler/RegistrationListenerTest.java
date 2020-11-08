@@ -1,6 +1,6 @@
 package hyve.petshow.unit.controller.handler;
 
-import static hyve.petshow.mock.ClienteMock.criaCliente;
+import static hyve.petshow.mock.ClienteMock.cliente;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -36,7 +36,7 @@ public class RegistrationListenerTest {
 	
 	@Test
 	public void deve_enviar_email() {
-		var cliente = criaCliente();
+		var cliente = cliente();
 		var event = new OnRegistrationCompleteEvent(cliente, Locale.US, "teste");
 		when(acessoService.criaTokenVerificacao(any(), anyString())).thenReturn(cliente);
 		

@@ -26,7 +26,7 @@ public class AvaliacaoFacade {
 		var cliente = clienteService.buscarPorId(clienteId);
 		var servicoDetalhado = servicoDetalhadoService.buscarPorId(servicoDetalhadoId);
 		var avaliacao = converter.toDomain(request);
-//		avaliacao.setServicoAvaliadoId(servicoDetalhado.getId());
+
 		servicoDetalhado.addAvaliacao(avaliacao);
 		avaliacao.setClienteId(cliente.getId());
 
@@ -36,6 +36,7 @@ public class AvaliacaoFacade {
 	public List<AvaliacaoRepresentation> buscarAvaliacaoPorServico(Long idServicoPrestado) throws Exception {
 		var servico = servicoDetalhadoService.buscarPorId(idServicoPrestado);
 		var avaliacoes = avaliacaoService.buscarAvaliacoesPorServicoId(servico.getId());
+
 		return converter.toRepresentationList(avaliacoes);
 	}
 

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 @Service
@@ -24,6 +26,8 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
     @Override
     public AnimalEstimacao adicionarAnimalEstimacao(AnimalEstimacao animalEstimacao) {
+        animalEstimacao.setAuditoria(geraAuditoriaInsercao(Optional.of(animalEstimacao.getDonoId())));
+
         return animalEstimacaoRepository.save(animalEstimacao);
     }
 
@@ -53,7 +57,12 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
             animalEstimacao.setNome(request.getNome());
             animalEstimacao.setTipo(request.getTipo());
             animalEstimacao.setFoto(request.getFoto());
+            animalEstimacao.setPorte(request.getPorte());
+            animalEstimacao.setPelagem(request.getPelagem());
+            animalEstimacao.setAuditoria(atualizaAuditoria(animalEstimacao.getAuditoria(), ATIVO));
+
             var response = animalEstimacaoRepository.save(animalEstimacao);
+
             return response;
         } else {
             throw new BusinessException(USUARIO_NAO_PROPRIETARIO);

@@ -1,5 +1,9 @@
 package hyve.petshow.domain;
 
+import hyve.petshow.domain.embeddables.Endereco;
+import hyve.petshow.domain.embeddables.Auditoria;
+import hyve.petshow.domain.embeddables.Geolocalizacao;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,16 +30,17 @@ public class Conta {
 	private String nomeSocial;
 	private String cpf;
 	private String telefone;
+	private Float mediaAvaliacao;
+	private String foto;
 	@Enumerated(EnumType.STRING)
 	private TipoConta tipo;
-	private String foto;
 	@Embedded
     private Endereco endereco;
 	@Embedded
     private Login login;
+	@Embedded
+	private Auditoria auditoria;
+	@Embedded
+	private Geolocalizacao geolocalizacao;
 	private Boolean enabled;
-	
-	public String getEmail() {
-		return getLogin() == null ? null : getLogin().getEmail();
-	}
 }

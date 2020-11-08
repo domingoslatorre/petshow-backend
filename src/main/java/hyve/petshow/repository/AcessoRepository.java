@@ -1,7 +1,7 @@
 package hyve.petshow.repository;
 
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Login;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

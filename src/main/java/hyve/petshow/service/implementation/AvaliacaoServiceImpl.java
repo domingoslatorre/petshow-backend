@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService {
@@ -30,6 +33,8 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 
 	@Override
 	public Avaliacao adicionarAvaliacao(Avaliacao avaliacao) {
+		avaliacao.setAuditoria(geraAuditoriaInsercao(Optional.of(avaliacao.getClienteId())));
+
 		return repository.save(avaliacao);
 	}
 

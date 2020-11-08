@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.VerificationToken;
 import hyve.petshow.domain.enums.TipoConta;
@@ -23,6 +23,8 @@ import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
+
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
@@ -52,16 +54,17 @@ public class AcessoServiceImpl implements AcessoService {
         return conta;
     }
 
-    //TODO MELHORAR CODIGO DESTE MÉTODO
     @Override
     public Conta adicionarConta(Conta conta) throws BusinessException {
         var tipoConta = conta.getTipo();
         criptografarSenha(conta.getLogin());
 
-        if(TipoConta.CLIENTE.equals(tipoConta)){
+        conta.setAuditoria(geraAuditoriaInsercao(Optional.empty()));
+
+        if(tipoConta.equals(TipoConta.CLIENTE)){
             var cliente = new Cliente(conta);
             conta = clienteRepository.save(cliente);
-        } else if(TipoConta.PRESTADOR_AUTONOMO.equals(tipoConta)){
+        } else if(tipoConta.equals(TipoConta.PRESTADOR_AUTONOMO)){
             var prestador = new Prestador(conta);
             conta = prestadorRepository.save(prestador);
         } else {
@@ -75,7 +78,7 @@ public class AcessoServiceImpl implements AcessoService {
         var senha = login.getSenha();
         login.setSenha(passwordEncoder.encode(senha));
     }
-    
+
     public Conta buscarConta(String email) throws Exception {
     	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
     }
@@ -94,14 +97,14 @@ public class AcessoServiceImpl implements AcessoService {
 
 	@Override
 	public Conta ativaConta(String token) throws Exception {
-		var tokenVerificacao = buscarTokenVerificacao(token);		
-		var conta = buscarConta(tokenVerificacao.getConta().getEmail());
+		var tokenVerificacao = buscarTokenVerificacao(token);
+		var conta = buscarConta(tokenVerificacao.getConta().getLogin().getEmail());
 		if(conta.getEnabled()) {
 			throw new BusinessException("Conta já ativa");
 		}
 		conta.setEnabled(true);
 		return acessoRepository.save(conta);
-		
+
 	}
 
 	@Override
@@ -112,6 +115,6 @@ public class AcessoServiceImpl implements AcessoService {
 		}
 		return conta;
 	}
-	
-	
+
+
 }

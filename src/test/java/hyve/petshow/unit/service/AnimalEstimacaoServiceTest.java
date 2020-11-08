@@ -1,200 +1,131 @@
 package hyve.petshow.unit.service;
 
-import static hyve.petshow.mock.AnimalEstimacaoMock.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-
+import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.repository.AnimalEstimacaoRepository;
+import hyve.petshow.service.implementation.AnimalEstimacaoServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.domain.AnimalEstimacao;
-import hyve.petshow.repository.AnimalEstimacaoRepository;
-import hyve.petshow.service.port.AnimalEstimacaoService;
+import java.util.List;
+import java.util.Optional;
 
-@SpringBootTest
+import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@ActiveProfiles("test")
 public class AnimalEstimacaoServiceTest {
+    @Mock
+    private AnimalEstimacaoRepository repository;
+    @InjectMocks
+    private AnimalEstimacaoServiceImpl service;
 
-	@Autowired
-    private AnimalEstimacaoService animalEstimacaoService;
+    private AnimalEstimacao animalEstimacao = animalEstimacao();
+    private List<AnimalEstimacao> animaisEstimacao = singletonList(animalEstimacao);
 
-    @MockBean
-    private AnimalEstimacaoRepository animalEstimacaoRepository;
+    @BeforeEach
+    public void init() {
+        initMocks(this);
+
+        doReturn(animalEstimacao).when(repository).save(animalEstimacao);
+        doReturn(Optional.of(animalEstimacao)).when(repository).findById(1L);
+        doReturn(animaisEstimacao).when(repository).findAll();
+        doReturn(animaisEstimacao).when(repository).findByDonoId(1L);
+        doNothing().when(repository).delete(any(AnimalEstimacao.class));
+    }
 
     @Test
     public void deve_retornar_animal_com_sucesso() {
-        //dado
-        var expected = animalEstimacao();
-        var animalEstimacao = animalEstimacao();
+        var actual = service.adicionarAnimalEstimacao(animalEstimacao);
 
-        when(animalEstimacaoRepository.save(animalEstimacao)).thenReturn(expected);
-
-        //quando
-        var actual = animalEstimacaoService.adicionarAnimalEstimacao(animalEstimacao);
-
-        //entao
-        assertEquals(expected, actual);
+        assertNotNull(actual);
     }
 
     @Test
     public void deve_trazer_animal_correto() throws NotFoundException {
-        //dado
-        var repositoryResponse = Optional.of(animalEstimacao());
-        var expected = repositoryResponse.get();
-        var id = 1L;
+        var actual = service.buscarAnimalEstimacaoPorId(1L);
 
-        when(animalEstimacaoRepository.findById(id)).thenReturn(repositoryResponse);
-
-        //quando
-        var actual = animalEstimacaoService.buscarAnimalEstimacaoPorId(id);
-
-        //entao
-        assertEquals(expected, actual);
+        assertNotNull(actual);
     }
 
     @Test
     public void deve_retornar_lista_de_animais() throws NotFoundException {
-        //dado
-        var expected = Arrays.asList(animalEstimacao());
-        var id = 1L;
+        var actual = service.buscarAnimaisEstimacaoPorDono(1L);
 
-        when(animalEstimacaoRepository.findAll()).thenReturn(expected);
-        when(animalEstimacaoRepository.findByDonoId(Mockito.anyLong())).thenReturn(expected);
-
-        //quando
-        var actual = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(id);
-
-        //entao
-        assertEquals(expected, actual);
+        assertNotNull(actual);
     }
 
     @Test
     public void deve_retornar_animal_atualizado() throws NotFoundException, BusinessException {
-        //dado
-        var animalEstimacao = Optional.of(animalEstimacao());
-        AnimalEstimacao requestBody = animalEstimacaoAlt();
-        var expected = requestBody;
-        var id = 1L;
+        var animalEstimacaoRequest = animalEstimacao;
+        animalEstimacaoRequest.setNome("arnaldo antunes");
 
-        when(animalEstimacaoRepository.findById(id)).thenReturn(animalEstimacao);
-        when(animalEstimacaoRepository.save(requestBody)).thenReturn(expected);
+        doReturn(animalEstimacaoRequest).when(repository).save(animalEstimacaoRequest);
 
-        //quando
-        var actual = animalEstimacaoService.atualizarAnimalEstimacao(id, requestBody);
+        var actual = service.atualizarAnimalEstimacao(1L, animalEstimacaoRequest);
 
-        //entao
-        assertEquals(expected, actual);
+        assertEquals(animalEstimacao.getNome(), actual.getNome());
     }
 
     @Test
-    public void deve_retornar_vazio_se_animal_nao_existir() throws NotFoundException {
-        //dado
-        Optional<AnimalEstimacao> animalEstimacao = Optional.empty();
-        var requestBody = animalEstimacaoAlt();
-        var id = 1L;
-
-        when(animalEstimacaoRepository.findById(id)).thenReturn(animalEstimacao);
-
-        //entao
-        assertThrows(NotFoundException.class, () -> {
-            animalEstimacaoService.atualizarAnimalEstimacao(id, requestBody);
-        });
+    public void deve_retornar_vazio_se_animal_nao_existir() {
+        assertThrows(NotFoundException.class, () -> service.atualizarAnimalEstimacao(3L, animalEstimacao));
     }
 
     @Test
-    public void deve_remover_animal_de_estimacao() throws NotFoundException, BusinessException {
-        //dado
-        var id = 1L;
-        var donoId = 1L;
-        var expected = mensagemRepresentationSucesso();
-        var animalEstimacao = new AnimalEstimacao();
-        animalEstimacao.setId(id);
-        animalEstimacao.setDonoId(donoId);
-        
-        
-		when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(animalEstimacao));
-        when(animalEstimacaoRepository.existsById(id)).thenReturn(Boolean.FALSE);
+    public void deve_retornar_mensagem_sucesso_ao_remover_elemento() throws Exception {
+        var mensagem = service.removerAnimalEstimacao(1L, 1L);
 
-        //quando
-        var actual = animalEstimacaoService.removerAnimalEstimacao(id, donoId);
+        doReturn(FALSE).when(repository).existsById(1L);
 
-        //entao
-        assertEquals(expected, actual);
+        assertAll(
+                () -> assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, mensagem.getMensagem()),
+                () -> assertTrue(mensagem.getSucesso()));
     }
 
     @Test
     public void deve_retornar_excecao_de_nao_encontrado() {
-    	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-    	assertThrows(NotFoundException.class, () -> {
-    		animalEstimacaoService.buscarAnimalEstimacaoPorId(1l);
-    	});
+    	assertThrows(NotFoundException.class, () -> service.buscarAnimalEstimacaoPorId(3L));
     }
     
     @Test
     public void deve_retornar_excecao_por_lista_nao_encontrada() {
-    	Mockito.when(animalEstimacaoRepository.findByDonoId(Mockito.anyLong())).thenReturn(new ArrayList<>());
-    	
-    	assertThrows(NotFoundException.class, () -> {
-    		animalEstimacaoService.buscarAnimaisEstimacaoPorDono(1l);
-    	});
+    	assertThrows(NotFoundException.class, () -> service.buscarAnimaisEstimacaoPorDono(2L));
     }
     
     @Test
     public void deve_retornar_excecao_por_donos_diferentes() {
-    	AnimalEstimacao animalRequest = new AnimalEstimacao();
-    	AnimalEstimacao animalDb = new AnimalEstimacao();
-    	
-    	animalRequest.setDonoId(1l);
-        animalDb.setDonoId(2l);
-    	
-    	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(animalDb));
-    	
-    	assertThrows(BusinessException.class, () -> {
-    		animalEstimacaoService.atualizarAnimalEstimacao(2l, animalRequest);
-    	});
+    	var animalRequest = animalEstimacao();
+    	animalRequest.setDonoId(2L);
+
+    	assertThrows(BusinessException.class, () -> service.atualizarAnimalEstimacao(1L, animalRequest));
     }
     
     @Test
     public void deve_retornar_excecao_por_donos_diferentes_delecao() {
-    	AnimalEstimacao animalRequest = new AnimalEstimacao();
-    	AnimalEstimacao animalDb = new AnimalEstimacao();
-    	
-    	animalRequest.setDonoId(1l);
-        animalDb.setDonoId(2l);
-    	
-    	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(animalDb));
-    	
-    	assertThrows(BusinessException.class, () -> {
-    		animalEstimacaoService.removerAnimalEstimacao(2l, animalRequest.getDonoId());
-    	});
+        var animalRequest = animalEstimacao();
+        animalRequest.setDonoId(2L);
+
+        assertThrows(BusinessException.class, () -> service.removerAnimalEstimacao(1L, animalRequest.getDonoId()));
     }
     
     @Test
     public void deve_retornar_mensagem_de_falha() throws BusinessException, NotFoundException {
-    	AnimalEstimacao animalRequest = new AnimalEstimacao();
-    	animalRequest.setDonoId(1l);
-    	
-    	Mockito.when(animalEstimacaoRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(animalRequest));
-    	Mockito.when(animalEstimacaoRepository.existsById(Mockito.anyLong())).thenReturn(true);
-    	
-    	var removerAnimalEstimacao = animalEstimacaoService.removerAnimalEstimacao(1l, animalRequest.getDonoId());
+    	doReturn(TRUE).when(repository).existsById(1L);
+
+    	var removerAnimalEstimacao = service.removerAnimalEstimacao(1L, animalEstimacao.getDonoId());
+
     	assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerAnimalEstimacao.getMensagem());
-    	
-    	
     }
 }

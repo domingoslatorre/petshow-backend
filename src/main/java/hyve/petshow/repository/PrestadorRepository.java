@@ -1,6 +1,6 @@
 package hyve.petshow.repository;
 
-import hyve.petshow.domain.Login;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.Prestador;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Transactional
 public interface PrestadorRepository extends ContaRepository<Prestador> {
-    Optional<Prestador> findByLogin(Login login);
     @Query("select p from Prestador p left join fetch p.servicosPrestados where p.id = ?1")
     Optional<Prestador> findById(Long id);
 }

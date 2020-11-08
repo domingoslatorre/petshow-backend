@@ -32,7 +32,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 		var token = criaToken();
 		acessoService.criaTokenVerificacao(conta, token);
 		
-		var emailDestino = conta.getEmail();
+		var emailDestino = conta.getLogin().getEmail();
 		var assunto = "Confirmação de cadastro";
 		var urlConfirmacao = event.getAppUrl() + "/confirmacao-registro?token=" + token;
 		var message = "Obrigado por se cadastrar em Petshow!\nSegue link para ativação de sua conta";		

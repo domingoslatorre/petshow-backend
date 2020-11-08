@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+
 @Entity
 @DiscriminatorValue(value = "C") // Cliente
 @EqualsAndHashCode(callSuper = true)
@@ -19,7 +20,8 @@ public class Cliente extends Conta {
 
 	public Cliente(Conta conta) {
 		super(conta.getId(), conta.getNome(), conta.getNomeSocial(), conta.getCpf(), conta.getTelefone(),
-				conta.getTipo(), conta.getFoto(), conta.getEndereco(), conta.getLogin(), false);
+				conta.getMediaAvaliacao(), conta.getFoto(), conta.getTipo(), conta.getEndereco(),
+				conta.getLogin(), conta.getAuditoria(), conta.getGeolocalizacao(), conta.getEnabled());
 	}
 
 	public Cliente(Conta conta, List<AnimalEstimacao> animaisEstimacao){

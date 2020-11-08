@@ -1,4 +1,4 @@
-package hyve.petshow.domain;
+package hyve.petshow.domain.embeddables;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,10 +9,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 @NoArgsConstructor
 public class Login {
-	private String email;
-	private String senha;
-
 	public Login(String email){
 		this.email = email;
 	}
+
+	private String email;
+	private String senha;
 }
