@@ -27,7 +27,7 @@ public class ServicoDetalhado {
     private Long prestadorId;
     
     public void addAvaliacao(Avaliacao avaliacao) {
-    	avaliacoes.add(avaliacao);
     	avaliacao.setServicoAvaliadoId(this.getId());
+        this.avaliacoes.add(avaliacao);
     }
 }

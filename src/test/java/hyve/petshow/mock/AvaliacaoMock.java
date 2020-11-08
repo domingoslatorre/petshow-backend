@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
@@ -18,6 +19,10 @@ import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 public class AvaliacaoMock {
 	public static Avaliacao avaliacao() {
@@ -56,70 +61,16 @@ public class AvaliacaoMock {
 	}
 
 	public static AvaliacaoRepresentation avaliacaoRepresentation() {
+		var converter = new AvaliacaoConverter();
 
-		var tipo = new ServicoRepresentation();
-		tipo.setId(1);
-		tipo.setNome("Banho");
-		tipo.setDescricao("Banho");
-
-		var servicoAvaliado = new ServicoDetalhadoRepresentation();
-		servicoAvaliado.setId(1l);
-		servicoAvaliado.setPreco(BigDecimal.valueOf(30.5));
-		servicoAvaliado.setTipo(tipo);
-		servicoAvaliado.setAvaliacoes(new ArrayList<>());
-		
-		var prestador = new PrestadorRepresentation();
-		prestador.setId(1l);
-		prestador.setNome("TestePrestador");
-		
-		servicoAvaliado.setPrestadorId(prestador.getId());
-
-		var cliente = new ClienteRepresentation();
-		cliente.setId(1l);
-		cliente.setNome("Teste");
-
-		var avaliacao = new AvaliacaoRepresentation();
-		avaliacao.setServicoAvaliadoId(servicoAvaliado.getId());
-		avaliacao.setAtencao(5);
-		avaliacao.setQualidadeProdutos(5);
-		avaliacao.setCustoBeneficio(5);
-		avaliacao.setInfraestrutura(5);
-		avaliacao.setQualidadeServico(5);
-		avaliacao.setComentario("Muito bom");
-		avaliacao.setMedia(5d);
-		avaliacao.setClienteId(cliente.getId());
-		return avaliacao;
+		return converter.toRepresentation(avaliacao());
 	}
 
 	public static List<Avaliacao> avaliacaoList() {
-		var tipo = new Servico();
-		tipo.setId(1);
-		tipo.setNome("Banho");
+		var avaliacaoList = new ArrayList<Avaliacao>();
 
-		var servicoAvaliado = new ServicoDetalhado();
-		servicoAvaliado.setId(1l);
-		servicoAvaliado.setPreco(BigDecimal.valueOf(30.5));
-		servicoAvaliado.setTipo(tipo);
-		var cliente = new Cliente();
-		cliente.setId(1l);
-		cliente.setNome("Teste");
-		return Stream.of(new Avaliacao(), new Avaliacao(), new Avaliacao()).map(avaliacao -> {
-			avaliacao.setServicoAvaliadoId(servicoAvaliado.getId());
-			var info = new CriteriosAvaliacao();
-			info.setAtencao(geraNota());
-			info.setQualidadeProdutos(geraNota());
-			info.setCustoBeneficio(geraNota());
-			info.setInfraestrutura(geraNota());
-			info.setQualidadeServico(geraNota());
-			info.setComentario("Muito bom");
-			avaliacao.setCriteriosAvaliacao(info);
-			avaliacao.setClienteId(cliente.getId());
-			return avaliacao;
-		}).collect(Collectors.toList());
+		avaliacaoList.add(avaliacao());
+
+		return avaliacaoList;
 	}
-
-	private static Integer geraNota() {
-		return new Random().ints(1, 0, 5).boxed().findFirst().get();
-	}
-
 }
