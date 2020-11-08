@@ -1,167 +1,123 @@
 package hyve.petshow.unit.controller;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-
+import hyve.petshow.controller.AnimalEstimacaoController;
+import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
+import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
+import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.service.port.AnimalEstimacaoService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.http.ResponseEntity;
 
-import hyve.petshow.controller.AnimalEstimacaoController;
-import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
-import hyve.petshow.controller.converter.TipoAnimalEstimacaoConverter;
-import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.mock.AnimalEstimacaoMock;
-import hyve.petshow.service.port.AnimalEstimacaoService;
-import hyve.petshow.service.port.TipoAnimalEstimacaoService;
+import java.util.List;
 
-@SpringBootTest
+import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
+import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoRepresentation;
+import static hyve.petshow.mock.MensagemMock.mensagemRepresentationFalha;
+import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@ActiveProfiles("test")
 public class AnimalEstimacaoControllerTest {
-	@Autowired
-	private AnimalEstimacaoController animalEstimacaoController;
+	@Mock
+	private AnimalEstimacaoConverter converter;
+	@Mock
+	private AnimalEstimacaoService service;
+	@InjectMocks
+	private AnimalEstimacaoController controller;
 
-	@MockBean
-	private AnimalEstimacaoConverter animalEstimacaoConverter;
+	private AnimalEstimacaoRepresentation animalEstimacaoRepresentation = animalEstimacaoRepresentation();
+	private AnimalEstimacao animalEstimacao = animalEstimacao();
 
-	@MockBean
-	private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
+	private List<AnimalEstimacaoRepresentation> animalEstimacaoRepresentationList = singletonList(animalEstimacaoRepresentation);
+	private List<AnimalEstimacao> animalEstimacaoList = singletonList(animalEstimacao);
 
-	@MockBean
-	private AnimalEstimacaoService animalEstimacaoService;
+	private MensagemRepresentation mensagemSucesso = mensagemRepresentationSucesso();
+	private MensagemRepresentation mensagemFalha = mensagemRepresentationFalha();
 
-	@MockBean
-	private TipoAnimalEstimacaoService tipoAnimalEstimacaoService;
+	@BeforeEach
+	public void init() throws NotFoundException, BusinessException {
+		initMocks(this);
+
+		doReturn(animalEstimacao).when(converter).toDomain(any(AnimalEstimacaoRepresentation.class));
+		doReturn(animalEstimacaoRepresentation).when(converter).toRepresentation(any(AnimalEstimacao.class));
+		doReturn(animalEstimacaoRepresentationList).when(converter).toRepresentationList(anyList());
+		doReturn(animalEstimacao).when(service).adicionarAnimalEstimacao(any(AnimalEstimacao.class));
+		doReturn(animalEstimacaoList).when(service).buscarAnimaisEstimacaoPorDono(1L);
+		doThrow(NotFoundException.class).when(service).buscarAnimaisEstimacaoPorDono(2L);
+		doReturn(animalEstimacao).when(service).atualizarAnimalEstimacao(anyLong(), any(AnimalEstimacao.class));
+		doThrow(NotFoundException.class).when(service).atualizarAnimalEstimacao(2L, animalEstimacao);
+		doReturn(mensagemSucesso).when(service).removerAnimalEstimacao(1L, 1L);
+		doReturn(mensagemFalha).when(service).removerAnimalEstimacao(2L, 2L);
+	}
 
 	@Test
 	public void deve_retornar_animal_salvo() {
-		// dado
-		var expectedBody = AnimalEstimacaoMock.animalEstimacaoRepresentation();
-		var expectedStatus = HttpStatus.CREATED;
-		var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
-		var animalEstimacao = AnimalEstimacaoMock.animalEstimacao();
+		var expected = ResponseEntity.status(HttpStatus.CREATED).body(animalEstimacaoRepresentation);
 
-		when(animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation)).thenReturn(animalEstimacao);
-		when(animalEstimacaoService.adicionarAnimalEstimacao(animalEstimacao)).thenReturn(animalEstimacao);
-		when(animalEstimacaoConverter.toRepresentation(animalEstimacao)).thenReturn(expectedBody);
+		var actual = controller.adicionarAnimalEstimacao(animalEstimacaoRepresentation);
 
-		// quando
-		var actual = animalEstimacaoController.adicionarAnimalEstimacao(animalEstimacaoRepresentation);
-
-		// entao
-		assertAll(() -> assertEquals(expectedBody, actual.getBody()),
-				() -> assertEquals(expectedStatus, actual.getStatusCode()));
+		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void deve_obter_lista_de_animais() throws NotFoundException {
-		// dado
-		var expectedBody = Arrays.asList(AnimalEstimacaoMock.animalEstimacaoRepresentation());
-		var expectedStatus = HttpStatus.OK;
-		var animaisEstimacao = Arrays.asList(AnimalEstimacaoMock.animalEstimacao());
+		var expected = ResponseEntity.status(HttpStatus.OK).body(animalEstimacaoRepresentationList);
 
-		when(animalEstimacaoService.buscarAnimaisEstimacaoPorDono(Mockito.anyLong())).thenReturn(animaisEstimacao);
-		when(animalEstimacaoConverter.toRepresentationList(animaisEstimacao)).thenReturn(expectedBody);
+		var actual = controller.buscarAnimaisEstimacao(1L);
 
-		// quando
-		var actual = animalEstimacaoController.buscarAnimaisEstimacao(1l);
-
-		// entao
-		assertAll(() -> assertEquals(expectedBody, actual.getBody()),
-				() -> assertEquals(expectedStatus, actual.getStatusCode()));
+		assertEquals(expected, actual);
 	}
 
 	@Test
-	public void deve_lancar_not_found_exception() throws NotFoundException {
-		// dado
-		var expectedStatus = HttpStatus.NO_CONTENT;
-
-		when(animalEstimacaoService.buscarAnimaisEstimacaoPorDono(anyLong())).thenThrow(NotFoundException.class);
-
-		// entao
-		assertThrows(NotFoundException.class, () -> animalEstimacaoController.buscarAnimaisEstimacao(1l));
+	public void deve_lancar_not_found_exception() {
+		assertThrows(NotFoundException.class, () -> controller.buscarAnimaisEstimacao(2L));
 	}
 
 	@Test
 	public void deve_retornar_animal_atualizado() throws NotFoundException, BusinessException {
-		// dado
-		var expectedBody = AnimalEstimacaoMock.animalEstimacaoRepresentation();
-		var expectedStatus = HttpStatus.OK;
-		var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
-		var animalEstimacao = AnimalEstimacaoMock.animalEstimacao();
-		var id = 1L;
+		var expected = ResponseEntity.status(HttpStatus.OK).body(animalEstimacaoRepresentation);
 
-		when(animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation)).thenReturn(animalEstimacao);
-		when(animalEstimacaoService.atualizarAnimalEstimacao(id, animalEstimacao)).thenReturn(animalEstimacao);
-		when(animalEstimacaoConverter.toRepresentation(animalEstimacao)).thenReturn(expectedBody);
+		var actual = controller.atualizarAnimalEstimacao(1L, animalEstimacaoRepresentation);
 
-		// quando
-		var actual = animalEstimacaoController.atualizarAnimalEstimacao(id, animalEstimacaoRepresentation);
-
-		// entao
-		assertAll(() -> assertEquals(expectedBody, actual.getBody()),
-				() -> assertEquals(expectedStatus, actual.getStatusCode()));
+		assertEquals(expected, actual);
 	}
 
 	@Test
-	public void deve_lancar_not_found_exception_quando_animal_nao_existir()
-			throws NotFoundException, BusinessException {
-		// dado
-		var expectedStatus = HttpStatus.NO_CONTENT;
-		var animalEstimacaoRepresentation = AnimalEstimacaoMock.animalEstimacaoRepresentation();
-		var animalEstimacao = AnimalEstimacaoMock.animalEstimacao();
-		var id = 1L;
-
-		when(animalEstimacaoConverter.toDomain(animalEstimacaoRepresentation)).thenReturn(animalEstimacao);
-		when(animalEstimacaoService.atualizarAnimalEstimacao(id, animalEstimacao)).thenThrow(NotFoundException.class);
-
-		// entao
+	public void deve_lancar_not_found_exception_quando_animal_nao_existir() {
 		assertThrows(NotFoundException.class,
-				() -> animalEstimacaoController.atualizarAnimalEstimacao(id, animalEstimacaoRepresentation));
+				() -> controller.atualizarAnimalEstimacao(2L, animalEstimacaoRepresentation));
 	}
 
 	@Test
 	public void removerAnimalEstimacaoTestCase01() throws Exception {
-		// dado
-		var id = 1L;
-		var expectedStatus = HttpStatus.OK;
-		var expectedBody = AnimalEstimacaoMock.mensagemRepresentationSucesso();
+		var expected = ResponseEntity.status(HttpStatus.OK).body(mensagemSucesso);
 
-		when(animalEstimacaoService.removerAnimalEstimacao(id, id)).thenReturn(expectedBody);
+		var actual = controller.removerAnimalEstimacao(1L, 1L);
 
-		// quando
-		var actual = animalEstimacaoController.removerAnimalEstimacao(id, id);
-
-		// entao
-		assertAll(() -> assertEquals(expectedBody, actual.getBody()),
-				() -> assertEquals(expectedStatus, actual.getStatusCode()));
+		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void deve_retornar_falha_quando_nao_tiver_o_que_remover() throws Exception {
-		// dado
-		var id = 1L;
-		var expected = AnimalEstimacaoMock.mensagemRepresentationSucesso();
+		var expected = ResponseEntity.status(HttpStatus.OK).body(mensagemFalha);
 
-		when(animalEstimacaoService.removerAnimalEstimacao(id, id)).thenReturn(expected);
+		var actual = controller.removerAnimalEstimacao(2L, 2L);
 
-		// quando
-		var actual = animalEstimacaoController.removerAnimalEstimacao(id, id);
-
-		// entao
-		assertEquals(expected, actual.getBody());
+		assertEquals(expected, actual);
 	}
 }

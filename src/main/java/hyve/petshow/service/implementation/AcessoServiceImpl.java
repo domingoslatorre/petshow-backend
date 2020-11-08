@@ -2,13 +2,16 @@ package hyve.petshow.service.implementation;
 
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.Login;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.VerificationToken;
+import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AcessoRepository;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
+import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -20,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+
 @Service
 public class AcessoServiceImpl implements AcessoService {
     @Autowired
@@ -30,6 +35,8 @@ public class AcessoServiceImpl implements AcessoService {
     private PrestadorRepository prestadorRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private VerificationTokenRepository tokenRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -46,11 +53,12 @@ public class AcessoServiceImpl implements AcessoService {
         return conta;
     }
 
-    //TODO MELHORAR CODIGO DESTE MÉTODO
     @Override
     public Conta adicionarConta(Conta conta) throws BusinessException {
         var tipoConta = conta.getTipo();
         criptografarSenha(conta.getLogin());
+
+        conta.setAuditoria(geraAuditoriaInsercao(Optional.empty()));
 
         if(tipoConta.equals(TipoConta.CLIENTE)){
             var cliente = new Cliente(conta);
@@ -69,4 +77,43 @@ public class AcessoServiceImpl implements AcessoService {
         var senha = login.getSenha();
         login.setSenha(passwordEncoder.encode(senha));
     }
+
+    public Conta buscarConta(String email) throws Exception {
+    	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
+    }
+
+	@Override
+	public Conta criaTokenVerificacao(Conta conta, String token) {
+		var verificationToken = new VerificationToken(conta, token);
+		tokenRepository.save(verificationToken);
+		return conta;
+	}
+
+	@Override
+	public VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception {
+		return tokenRepository.findByToken(tokenVerificadcao).orElseThrow(() -> new NotFoundException("Token informado não encontrado"));
+	}
+
+	@Override
+	public Conta ativaConta(String token) throws Exception {
+		var tokenVerificacao = buscarTokenVerificacao(token);
+		var conta = buscarConta(tokenVerificacao.getConta().getLogin().getEmail());
+		if(conta.getEnabled()) {
+			throw new BusinessException("Conta já ativa");
+		}
+		conta.setEnabled(true);
+		return acessoRepository.save(conta);
+
+	}
+
+	@Override
+	public Conta buscarContaPorEmail(String email) throws Exception {
+		var conta = buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
+		if(!conta.getEnabled()) {
+			throw new BusinessException("Conta informada ainda não foi ativada");
+		}
+		return conta;
+	}
+
+
 }

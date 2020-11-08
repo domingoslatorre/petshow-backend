@@ -1,24 +1,22 @@
 package hyve.petshow.unit.service;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import hyve.petshow.domain.TipoAnimalEstimacao;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.repository.TipoAnimalEstimacaoRepository;
+import hyve.petshow.service.implementation.TipoAnimalEstimacaoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
-import hyve.petshow.domain.TipoAnimalEstimacao;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.repository.TipoAnimalEstimacaoRepository;
-import hyve.petshow.service.implementation.TipoAnimalEstimacaoServiceImpl;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class TipoAnimalEstimacaoServiceTest {
@@ -29,24 +27,20 @@ public class TipoAnimalEstimacaoServiceTest {
 	
 	@BeforeEach
 	public void init() {
-		MockitoAnnotations.initMocks(this);
+		initMocks(this);
 	}
-	
-	
+
 	@Test
 	public void deve_retornar_lista() throws NotFoundException {
-		Mockito.when(repository.findAll()).thenReturn(Arrays.asList(new TipoAnimalEstimacao()));
+		doReturn(singletonList(new TipoAnimalEstimacao())).when(repository).findAll();
+
 		assertFalse(service.buscarTiposAnimalEstimacao().isEmpty());
 	}
 	
 	@Test
-	public void deve_disparar_excecao() {
-		Mockito.when(repository.findAll()).thenReturn(new ArrayList<>());
-		assertThrows(NotFoundException.class, () -> {
-			service.buscarTiposAnimalEstimacao();
-		});
-	}
-	
-	
+	public void deve_disparar_excecao_ao_lista_vazia() {
+		doReturn(emptyList()).when(repository).findAll();
 
+		assertThrows(NotFoundException.class, () -> service.buscarTiposAnimalEstimacao());
+	}
 }

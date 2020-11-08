@@ -15,7 +15,7 @@ public interface ServicoDetalhadoService {
 
 	List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer id) throws NotFoundException;
 	
-	ServicoDetalhado atualizarServicoDetalhado(Long id, ServicoDetalhado servicoDetalhadoRequest) throws BusinessException, NotFoundException;
+	ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, ServicoDetalhado servicoDetalhadoRequest) throws BusinessException, NotFoundException;
 
     MensagemRepresentation removerServicoDetalhado(Long id, Long prestadorId) throws BusinessException, NotFoundException;
     
@@ -23,6 +23,5 @@ public interface ServicoDetalhadoService {
     
     List<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId) throws NotFoundException;
     
-    ServicoDetalhado buscarPorPrestadorEId(Long prestadorId, Long servicoId) throws NotFoundException;
-    
+    ServicoDetalhado buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws NotFoundException;
 }

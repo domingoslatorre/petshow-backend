@@ -3,7 +3,7 @@ package hyve.petshow.controller;
 import hyve.petshow.controller.converter.PrestadorConverter;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.service.port.PrestadorService;
-import hyve.petshow.util.JwtUtil;
+import hyve.petshow.util.JwtUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,7 +22,7 @@ public class PrestadorController {
 	@Autowired
 	private PrestadorConverter converter;
 	@Autowired
-	private JwtUtil jwtUtil;
+	private JwtUtils jwtUtils;
 
 	@Operation(summary = "Busca prestador por id.")
 	@GetMapping("/{id}")

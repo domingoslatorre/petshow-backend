@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtUtil {
+public class JwtUtils {
     private static final Long expirationTime = System.currentTimeMillis() + 1000 * 60 * 60 * 10;
     private String secret = "hyve-petshow";
 
@@ -52,7 +52,6 @@ public class JwtUtil {
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
-
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(expirationTime))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();

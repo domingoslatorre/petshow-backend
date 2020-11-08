@@ -1,4 +1,4 @@
-package hyve.petshow.domain;
+package hyve.petshow.domain.embeddables;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

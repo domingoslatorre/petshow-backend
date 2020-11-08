@@ -11,5 +11,6 @@ public class ServicoDetalhadoRepresentation {
 	private BigDecimal preco;
 	private ServicoRepresentation tipo;
 	private List<AvaliacaoRepresentation> avaliacoes;
-    private Long prestadorId;
+	private Float mediaAvaliacao;
+	private Long prestadorId;
 }

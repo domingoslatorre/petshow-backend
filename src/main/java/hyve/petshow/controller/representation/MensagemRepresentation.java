@@ -1,10 +1,6 @@
 package hyve.petshow.controller.representation;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.AccessLevel;
+import lombok.*;
 
 @Data
 @NoArgsConstructor

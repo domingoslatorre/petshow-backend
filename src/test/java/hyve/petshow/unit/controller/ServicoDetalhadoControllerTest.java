@@ -1,162 +1,128 @@
-//package hyve.petshow.unit.controller;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertFalse;
-//import static org.junit.jupiter.api.Assertions.assertTrue;
-//
-//import java.math.BigDecimal;
-//import java.net.URI;
-//import java.net.URISyntaxException;
-//import java.util.List;
-//
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.TestMethodOrder;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-//import org.springframework.boot.test.web.client.TestRestTemplate;
-//import org.springframework.boot.web.server.LocalServerPort;
-//import org.springframework.core.ParameterizedTypeReference;
-//import org.springframework.http.HttpEntity;
-//import org.springframework.http.HttpHeaders;
-//import org.springframework.http.HttpMethod;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.test.annotation.DirtiesContext;
-//import org.springframework.test.annotation.DirtiesContext.ClassMode;
-//import org.springframework.test.context.ActiveProfiles;
-//
-//import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-//import hyve.petshow.domain.Prestador;
-//import hyve.petshow.domain.Servico;
-//import hyve.petshow.domain.ServicoDetalhado;
-//import hyve.petshow.mock.PrestadorMock;
-//import hyve.petshow.mock.ServicoDetalhadoMock;
-//import hyve.petshow.repository.PrestadorRepository;
-//import hyve.petshow.repository.ServicoDetalhadoRepository;
-//import hyve.petshow.repository.ServicoRepository;
-//
-//@TestMethodOrder(OrderAnnotation.class)
-//@ActiveProfiles("test")
-//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-//@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-//public class ServicoDetalhadoControllerTest {
-//	@LocalServerPort
-//	private Integer port;
-//
-//	@Autowired
-//	private TestRestTemplate template;
-//
-//	@Autowired
-//	private ServicoRepository servicoRepository;
-//
-//	@Autowired
-//	private PrestadorRepository prestadorRepository;
-//	
-//	private String url = "http://localhost:{port}/prestador/{idPrestador}/servico-detalhado/{idServico}";
-//	
-//	private Prestador prestador;
-//	
-//	private ServicoDetalhadoRepresentation servicoDetalhado;
-//	
-//	private Servico servico;
-//	
-//	@Autowired
-//	private ServicoDetalhadoRepository repository;
-//	
-//	@BeforeEach
-//	public void initRepository() {
-//		var prestador = PrestadorMock.criaPrestador();
-//		prestador.setServicosPrestados(null);
-//		this.prestador = prestadorRepository.save(prestador);
-//		servicoDetalhado = ServicoDetalhadoMock.criarServicoDetalhadoRepresentation();
-//		servicoDetalhado.setId(null);
-//		
-//		servico = servicoRepository.save(ServicoDetalhadoMock.criarServicoDetalhado().getTipo());
-//	}
-//
-//	@BeforeEach
-//	public void init() {
-//		this.url = this.url.replace("{port}",port.toString());
-//	}
-//	
-//	@AfterEach
-//	public void limpaLista() {
-//		repository.deleteAll();
-//		prestadorRepository.deleteAll();
-//	}
-//
-//	@Test
-//	public void deve_salvar_servico_detalhado() throws URISyntaxException {
-//		var urlPost = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", "");
-//		var uri = new URI(urlPost);
-//		
-//		var request = new HttpEntity<ServicoDetalhadoRepresentation>(this.servicoDetalhado, new HttpHeaders());
-//	
-//		var response = template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
-//		
-//		assertEquals(prestador.getId(), response.getBody().getPrestadorId());
-//		
-//		var prestadorDb = prestadorRepository.findById(prestador.getId());
-//	
-//		assertFalse(prestadorDb.get().getServicosPrestados().isEmpty());
-//	}
-//
-//	@Test
-//	public void deve_remover_servico_detalhado() throws Exception {
-//		var url = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", "");
-//		var uri = new URI(url);
-//		
-//		var request = new HttpEntity<ServicoDetalhadoRepresentation>(this.servicoDetalhado, new HttpHeaders());
-//	
-//		var response = template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
-//		
-//		url = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", response.getBody().getId().toString());
-//		
-//		
-//		template.delete(new URI(url));
-//		var prestadorDb = prestadorRepository.findById(prestador.getId());
-//		assertTrue(prestadorDb.get().getServicosPrestados().isEmpty());
-//		
-//		
-//	}
-//		
-//	@Test
-//	public void deve_retornar_lista() throws Exception {
-//		var urlPost = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", "");
-//		var uri = new URI(urlPost);
-//		
-//		var request = new HttpEntity<ServicoDetalhadoRepresentation>(this.servicoDetalhado, new HttpHeaders());
-//	
-//		template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
-//	
-//		this.url = "http://localhost:"+this.port+"/servico-detalhado/tipo-servico/"+servico.getId().toString();
-//		var response = template.exchange(url, HttpMethod.GET, null,  new ParameterizedTypeReference<List<ServicoDetalhado>>() {
-//		});
-//		
-//		assertEquals(HttpStatus.OK, response.getStatusCode());
-//		assertFalse(response.getBody().isEmpty());
-//	
-//	}
-////	
-////	@Test
-////	public void deve_retornar_servico_detalhado_atualizado() throws Exception {
-////		var url = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", "");
-////		var uri = new URI(url);
-////		
-////		var request = new HttpEntity<ServicoDetalhadoRepresentation>(this.servicoDetalhado, new HttpHeaders());
-////	
-////		var response = template.postForEntity(uri, request, ServicoDetalhadoRepresentation.class);
-////		
-////		var servicoDetalhado = response.getBody();
-////		servicoDetalhado.setPreco(new BigDecimal(23));
-////		
-////		url = this.url.replace("{idPrestador}", prestador.getId().toString()).replace("{idServico}", servicoDetalhado.getId().toString());
-////		
-////		template.put(url, servicoDetalhado);
-////	}
-//	
-//
-//}
+package hyve.petshow.unit.controller;
+
+import hyve.petshow.controller.ServicoDetalhadoController;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.facade.AvaliacaoFacade;
+import hyve.petshow.service.port.ServicoDetalhadoService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
+import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
+import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
+import static hyve.petshow.mock.ServicoDetalhadoMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+public class ServicoDetalhadoControllerTest {
+    @Mock
+    private ServicoDetalhadoService service;
+    @Mock
+    private ServicoDetalhadoConverter converter;
+    @Mock
+    private AvaliacaoFacade avaliacaoFacade;
+    @InjectMocks
+    private ServicoDetalhadoController controller;
+
+    private ServicoDetalhado servicoDetalhado = servicoDetalhado();
+    private ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = servicoDetalhadoRepresentation();
+
+    private List<ServicoDetalhado> servicoDetalhadoList = servicoDetalhadoList();
+    private List<ServicoDetalhadoRepresentation> servicoDetalhadoRepresentationList = servicoDetalhadoRepresentationList();
+
+    private MensagemRepresentation mensagemRepresentation = mensagemRepresentationSucesso();
+
+    private AvaliacaoRepresentation avaliacaoRepresentation = avaliacaoRepresentation();
+
+    @BeforeEach
+    public void init() throws Exception {
+        initMocks(this);
+
+        doReturn(servicoDetalhadoList).when(service).buscarPorPrestadorId(anyLong());
+        doReturn(servicoDetalhado).when(service).adicionarServicoDetalhado(any(ServicoDetalhado.class));
+        doReturn(mensagemRepresentation).when(service).removerServicoDetalhado(anyLong(), anyLong());
+        doReturn(servicoDetalhado).when(service).buscarPorPrestadorIdEServicoId(anyLong(), anyLong());
+        doReturn(servicoDetalhado).when(service).atualizarServicoDetalhado(anyLong(), anyLong(), any(ServicoDetalhado.class));
+        doReturn(servicoDetalhadoList).when(service).buscarServicosDetalhadosPorTipoServico(anyInt());
+        doReturn(servicoDetalhado).when(converter).toDomain(any(ServicoDetalhadoRepresentation.class));
+        doReturn(servicoDetalhadoRepresentation).when(converter).toRepresentation(any(ServicoDetalhado.class));
+        doReturn(servicoDetalhadoRepresentationList).when(converter).toRepresentationList(anyList());
+        doNothing().when(avaliacaoFacade).adicionarAvaliacao(any(AvaliacaoRepresentation.class), anyLong(), anyLong());
+    }
+
+    @Test
+    public void deve_retornar_todos_os_servicos_detalhados_de_um_prestador() throws Exception {
+        var expected = ResponseEntity.ok(servicoDetalhadoRepresentationList);
+
+        var actual = controller.buscarServicosDetalhadosPorPrestador(1L);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deve_adicionar_e_retornar_servico_detalhado(){
+        var expected = ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoRepresentation);
+
+        var actual = controller.adicionarServicoDetalhado(1L, servicoDetalhadoRepresentation);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deve_remover_servico_detalhado() throws Exception {
+        var expected = ResponseEntity.ok(mensagemRepresentation);
+
+        var actual = controller.removerServicoDetalhado(1L, 1L);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deve_adicionar_avaliacao_e_retornar_servico_avaliado() throws Exception {
+        var expected = ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoRepresentation);
+
+        var actual = controller.adicionarAvaliacao(1L, 1L, avaliacaoRepresentation);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deve_retornar_servico_detalhado() throws Exception {
+        var expected = ResponseEntity.ok(servicoDetalhadoRepresentation);
+
+        var actual = controller.buscarServicoDetalhadoPorPrestador(1L, 1L);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deve_atualizar_e_retornar_servico_detalhado() throws Exception {
+        var expected = ResponseEntity.ok(servicoDetalhadoRepresentation);
+
+        var actual = controller.atualizarServicoDetalhado(1L, 1L, servicoDetalhadoRepresentation);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deve_retornar_todos_os_servicos_detalhados_de_um_tipo() throws NotFoundException {
+        var expected = ResponseEntity.ok(servicoDetalhadoRepresentationList);
+
+        var actual = controller.buscarServicosDetalhadosPorTipoServico(1);
+
+        assertEquals(expected, actual);
+    }
+}
