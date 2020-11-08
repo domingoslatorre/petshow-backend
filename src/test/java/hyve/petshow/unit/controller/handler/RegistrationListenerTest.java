@@ -39,7 +39,7 @@ public class RegistrationListenerTest {
 		
 		listener.onApplicationEvent(event);
 		
-		verify(sender, times(1)).send(any(SimpleMailMessage.class));;
+		verify(sender, times(1)).send(any(SimpleMailMessage.class));
 	}
 	
 	

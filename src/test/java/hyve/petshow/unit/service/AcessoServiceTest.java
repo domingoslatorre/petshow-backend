@@ -37,8 +37,6 @@ public class AcessoServiceTest {
 	private PrestadorRepository prestadorRepository;
 	@Mock
 	private PasswordEncoder passwordEncoder;
-	@Mock
-	private VerificationTokenRepository tokenRepository;
 	@InjectMocks
 	private AcessoServiceImpl service;
 

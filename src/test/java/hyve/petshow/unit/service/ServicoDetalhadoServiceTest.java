@@ -12,7 +12,6 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,7 +23,9 @@ import static java.lang.Boolean.TRUE;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 
@@ -45,9 +46,9 @@ public class ServicoDetalhadoServiceTest {
 
 		doReturn(Optional.of(servicoDetalhado)).when(repository).findById(1L);
 		doReturn(servicoDetalhadoList).when(repository).findAll();
-		doReturn(servicoDetalhadoList).when(repository).findByPrestadorId(Mockito.anyLong());
+		doReturn(servicoDetalhadoList).when(repository).findByPrestadorId(anyLong());
 		doReturn(servicoDetalhadoList).when(repository).findByTipo(anyInt());
-		doReturn(Optional.of(servicoDetalhado)).when(repository).findByIdAndPrestadorId(Mockito.anyLong(), Mockito.anyLong());
+		doReturn(Optional.of(servicoDetalhado)).when(repository).findByIdAndPrestadorId(anyLong(), anyLong());
 		doNothing().when(repository).delete(any(ServicoDetalhado.class));
 	}
     
@@ -114,7 +115,7 @@ public class ServicoDetalhadoServiceTest {
 	
 	@Test
 	public void deve_retornar_erro_por_nao_encontrado() {
-		doReturn(emptyList()).when(repository).findByPrestadorId(Mockito.anyLong());
+		doReturn(emptyList()).when(repository).findByPrestadorId(anyLong());
 		
 		assertThrows(NotFoundException.class, () -> service.buscarPorPrestadorId(1L));
 	}
@@ -128,7 +129,7 @@ public class ServicoDetalhadoServiceTest {
 	
 	@Test
 	public void deve_retornar_excecao_por_nao_encontrar_por_id_e_prestador() {
-		doReturn(Optional.empty()).when(repository).findByIdAndPrestadorId(Mockito.anyLong(), Mockito.anyLong());
+		doReturn(Optional.empty()).when(repository).findByIdAndPrestadorId(anyLong(), anyLong());
 		
 		assertThrows(NotFoundException.class, () -> service.buscarPorPrestadorIdEServicoId(1L, 1L));
 	}
@@ -147,7 +148,7 @@ public class ServicoDetalhadoServiceTest {
 	
 	@Test
 	public void deve_retornar_mensagem_de_falha_em_delecao() throws BusinessException, NotFoundException {
-		doReturn(TRUE).when(repository).existsById(Mockito.anyLong());
+		doReturn(TRUE).when(repository).existsById(anyLong());
 
 		var mensagem = service.removerServicoDetalhado(servicoDetalhado.getId(), servicoDetalhado.getPrestadorId());
 
