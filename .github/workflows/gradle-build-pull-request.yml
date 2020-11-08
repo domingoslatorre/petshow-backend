@@ -22,7 +22,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ${{ secrets.CODECOV_PATH }}
           fail_ci_if_error: true
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
