@@ -43,7 +43,7 @@ public class ContaMock {
         conta.setTipo(TipoConta.PRESTADOR_AUTONOMO);
         conta.setFoto("");
         conta.setEndereco(new Endereco());
-        conta.setLogin(new Login());
+        conta.setLogin(login());
         conta.setGeolocalizacao(new Geolocalizacao());
         conta.setMediaAvaliacao(1.5F);
         conta.setAuditoria(auditoria("S"));
@@ -62,7 +62,7 @@ public class ContaMock {
         contaRepresentation.setTipo(TipoConta.CLIENTE.getTipo());
         contaRepresentation.setFoto("");
         contaRepresentation.setEndereco(new Endereco());
-        contaRepresentation.setLogin(new Login());
+        contaRepresentation.setLogin(login());
         contaRepresentation.setGeolocalizacao(new Geolocalizacao());
         contaRepresentation.setMediaAvaliacao(1.5F);
 

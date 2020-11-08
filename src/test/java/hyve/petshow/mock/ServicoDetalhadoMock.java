@@ -5,8 +5,6 @@ import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static hyve.petshow.mock.AuditoriaMock.auditoria;
@@ -32,14 +30,17 @@ public class ServicoDetalhadoMock {
 
 	public static ServicoDetalhadoRepresentation servicoDetalhadoRepresentation() {
 		var converter = new ServicoDetalhadoConverter();
-		var servicoDetalhadoRepresentation = converter.toRepresentation(servicoDetalhado());
 
-		return servicoDetalhadoRepresentation;
+		return converter.toRepresentation(servicoDetalhado());
 	}
 
 	public static List<ServicoDetalhado> servicoDetalhadoList(){
-		var servicoDetalhadoList = singletonList(servicoDetalhado());
+		return singletonList(servicoDetalhado());
+	}
 
-		return servicoDetalhadoList;
+	public static List<ServicoDetalhadoRepresentation> servicoDetalhadoRepresentationList(){
+		var converter = new ServicoDetalhadoConverter();
+
+		return converter.toRepresentationList(servicoDetalhadoList());
 	}
 }

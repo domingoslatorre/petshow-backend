@@ -1,5 +1,7 @@
 package hyve.petshow.mock;
 
+import hyve.petshow.controller.converter.ClienteConverter;
+import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.embeddables.Login;
@@ -15,8 +17,12 @@ import static hyve.petshow.mock.ContaMock.contaCliente;
 
 public class ClienteMock {
 	public static Cliente cliente() {
-		var cliente = new Cliente(contaCliente(), Arrays.asList(animalEstimacao()));
+		return new Cliente(contaCliente(), Arrays.asList(animalEstimacao()));
+	}
 
-		return cliente;
+	public static ClienteRepresentation clienteRepresentation() {
+		var converter = new ClienteConverter();
+
+		return converter.toRepresentation(cliente());
 	}
 }

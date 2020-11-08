@@ -10,12 +10,8 @@ import java.util.List;
 
 @Component
 public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, ServicoDetalhadoRepresentation>{
-	@Autowired
-	private PrestadorConverter prestadorConverter;
-	@Autowired
-	private ServicoConverter servicoConverter;
-	@Autowired
-	private AvaliacaoConverter avaliacaoConverter;
+	private ServicoConverter servicoConverter = new ServicoConverter();
+	private AvaliacaoConverter avaliacaoConverter = new AvaliacaoConverter();
 	
 	@Override
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {

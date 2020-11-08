@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class PrestadorConverter implements Converter<Prestador, PrestadorRepresentation> {
-	@Autowired
-	private ServicoDetalhadoConverter servicoConverter;
+	private ServicoDetalhadoConverter servicoConverter = new ServicoDetalhadoConverter();
 
     @Override
     public PrestadorRepresentation toRepresentation(Prestador domain) {

@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Component
 public class ContaConverter implements Converter<Conta, ContaRepresentation> {
-
 	@Override
 	public ContaRepresentation toRepresentation(Conta domain) {
 		var representation = new ContaRepresentation();

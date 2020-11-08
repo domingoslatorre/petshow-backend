@@ -23,7 +23,7 @@ public class ServicoController {
 	private ServicoService service;
 
 	@Autowired
-	private  ServicoConverter converter;
+	private ServicoConverter converter;
 
     @Operation(summary = "Busca todos os tipos de servicos.")
     @GetMapping

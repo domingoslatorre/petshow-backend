@@ -53,22 +53,6 @@ public class AnimalEstimacaoMock {
         return animalEstimacaoRepresentation;
     }
 
-    public static MensagemRepresentation mensagemRepresentationSucesso(){
-        var mensagemRepresentation = new MensagemRepresentation(1L);
-
-        mensagemRepresentation.setSucesso(Boolean.TRUE);
-
-        return mensagemRepresentation;
-    }
-
-    public static MensagemRepresentation mensagemRepresentationFalha(){
-        var mensagemRepresentation = new MensagemRepresentation(1L);
-
-        mensagemRepresentation.setSucesso(Boolean.FALSE);
-
-        return mensagemRepresentation;
-    }
-
     public static TipoAnimalEstimacao tipoAnimalEstimacao(){
         var tipoAnimalEstimacao = new TipoAnimalEstimacao();
 

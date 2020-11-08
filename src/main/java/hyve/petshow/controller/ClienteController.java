@@ -21,8 +21,6 @@ public class ClienteController {
 	private ClienteService clienteService;
 	@Autowired
 	private ClienteConverter clienteConverter;
-	@Autowired
-	private JwtUtils jwtUtils;
 
 	@Operation(summary = "Busca cliente por id.")
 	@GetMapping("/{id}")

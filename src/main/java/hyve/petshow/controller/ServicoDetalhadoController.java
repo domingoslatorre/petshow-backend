@@ -28,18 +28,14 @@ public class ServicoDetalhadoController {
 	private ServicoDetalhadoConverter converter;
 	@Autowired
 	private AvaliacaoFacade avaliacaoFacade;
-	@Autowired
-	private ServicoDetalhadoConverter servicoDetalhadoConverter;
-	@Autowired
-	private ServicoDetalhadoService servicoDetalhadoService;
 
 	@Operation(summary = "Busca todos os serviços detalhados por prestador.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado")
-	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicoDetalhadoPorPrestador(
+	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorPrestador(
 			@Parameter(description = "Id do prestador.")
 			@PathVariable Long prestadorId) throws Exception {
-		var servico = servicoDetalhadoService.buscarPorPrestadorId(prestadorId);
-		var representation = servicoDetalhadoConverter.toRepresentationList(servico);
+		var servico = service.buscarPorPrestadorId(prestadorId);
+		var representation = converter.toRepresentationList(servico);
 
 		return ResponseEntity.ok(representation);
 	}
@@ -84,8 +80,8 @@ public class ServicoDetalhadoController {
 
 		avaliacaoFacade.adicionarAvaliacao(avaliacao, clienteId, id);
 
-		var servico = servicoDetalhadoService.buscarPorPrestadorEId(prestadorId, id);
-		var representation = servicoDetalhadoConverter.toRepresentation(servico);
+		var servico = service.buscarPorPrestadorIdEServicoId(prestadorId, id);
+		var representation = converter.toRepresentation(servico);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
 	}
@@ -97,8 +93,8 @@ public class ServicoDetalhadoController {
 			@PathVariable Long prestadorId,
 			@Parameter(description = "Id do serviço detalhado.")
 			@PathVariable Long servicoId) throws Exception {
-		var servico = servicoDetalhadoService.buscarPorPrestadorEId(prestadorId, servicoId);
-		var representation = servicoDetalhadoConverter.toRepresentation(servico);
+		var servico = service.buscarPorPrestadorIdEServicoId(prestadorId, servicoId);
+		var representation = converter.toRepresentation(servico);
 
 		return ResponseEntity.ok(representation);
 	}
@@ -113,7 +109,7 @@ public class ServicoDetalhadoController {
             @Parameter(description = "Serviço detalhado a ser atualizado")
             @RequestBody ServicoDetalhadoRepresentation request) throws Exception{
 		var servico = converter.toDomain(request);
-		servico = service.atualizarServicoDetalhado(idServico, servico);
+		servico = service.atualizarServicoDetalhado(idServico, idPrestador, servico);
 		var representation = converter.toRepresentation(servico);
 
 		return ResponseEntity.ok(representation);

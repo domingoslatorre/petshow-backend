@@ -44,11 +44,11 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	}
 
 	@Override
-	public ServicoDetalhado atualizarServicoDetalhado(Long id, ServicoDetalhado request)
+	public ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, ServicoDetalhado request)
 			throws BusinessException, NotFoundException {
 		var servicoDetalhado = buscarPorId(id);
 
-		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), request.getPrestadorId())){
+		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){
 			servicoDetalhado.setPreco(request.getPreco());
 			servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ATIVO));
 			var response = repository.save(servicoDetalhado);
@@ -92,7 +92,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	}
 
 	@Override
-	public ServicoDetalhado buscarPorPrestadorEId(Long prestadorId, Long servicoId) throws NotFoundException {
+	public ServicoDetalhado buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws NotFoundException {
 		return repository.findByIdAndPrestadorId(servicoId, prestadorId).orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO));
 	}
 }

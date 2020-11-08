@@ -1,13 +1,8 @@
 package hyve.petshow.mock;
 
+import hyve.petshow.controller.converter.ServicoConverter;
 import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.domain.Servico;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ServicoMock {
 	public static Servico servico() {
@@ -17,5 +12,11 @@ public class ServicoMock {
 		servico.setNome("Banho e Tosa");
 
 		return servico;
+	}
+
+	public static ServicoRepresentation servicoRepresentation(){
+		var converter = new ServicoConverter();
+
+		return converter.toRepresentation(servico());
 	}
 }

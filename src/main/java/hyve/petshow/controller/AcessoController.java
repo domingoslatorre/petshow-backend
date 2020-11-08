@@ -65,16 +65,11 @@ public class AcessoController {
     public ResponseEntity<String> realizarCadastro(
             @Parameter(description = "Objeto da conta que será cadastrada.")
             @RequestBody ContaRepresentation contaRepresentation) throws BusinessException {
-        try {
-            verificarEmailExistente(contaRepresentation.getLogin().getEmail());
-            var conta = adicionarConta(contaRepresentation);
-            var token = gerarToken(conta);
+        verificarEmailExistente(contaRepresentation.getLogin().getEmail());
+        var conta = adicionarConta(contaRepresentation);
+        var token = gerarToken(conta);
 
-            return ResponseEntity.ok(token);
-        } catch (AuthenticationException e) {
-            log.error("{}, mensagem: {}, causa: {}", mensagemErro, e.getMessage(), e.getCause());
-            throw new BusinessException(mensagemErro);
-        }
+        return ResponseEntity.ok(token);
     }
 
     private void realizarAutenticacao(Login login) throws AuthenticationException{
@@ -85,15 +80,12 @@ public class AcessoController {
     private String gerarToken(String email) throws NotFoundException {
         var conta = acessoService.buscarPorEmail(email)
                 .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
-        var token = jwtUtils.generateToken(email, conta.getId(), conta.getTipo());
 
-        return token;
+        return jwtUtils.generateToken(email, conta.getId(), conta.getTipo());
     }
 
     private String gerarToken(Conta conta) {
-        var token = jwtUtils.generateToken(conta.getLogin().getEmail(), conta.getId(), conta.getTipo());
-
-        return token;
+        return jwtUtils.generateToken(conta.getLogin().getEmail(), conta.getId(), conta.getTipo());
     }
 
     private void verificarEmailExistente(String email) throws BusinessException {
@@ -104,8 +96,7 @@ public class AcessoController {
 
     private Conta adicionarConta(ContaRepresentation contaRepresentation) throws BusinessException {
         var request = contaConverter.toDomain(contaRepresentation);
-        var conta = acessoService.adicionarConta(request);
 
-        return conta;
+        return acessoService.adicionarConta(request);
     }
 }

@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoList;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.emptyList;
@@ -69,7 +68,7 @@ public class ServicoDetalhadoServiceTest {
 
 		doReturn(servicoDetalhadoRequest).when(repository).save(servicoDetalhadoRequest);
 
-		var actual = service.atualizarServicoDetalhado(1L, servicoDetalhadoRequest);
+		var actual = service.atualizarServicoDetalhado(1L, 1L, servicoDetalhadoRequest);
 
 		assertEquals(actual.getPreco(), servicoDetalhado.getPreco());
 	}
@@ -122,7 +121,7 @@ public class ServicoDetalhadoServiceTest {
 	
 	@Test
 	public void deve_retornar_servico_por_prestador_e_id() throws NotFoundException {
-		var servico = service.buscarPorPrestadorEId(1L, 1L);
+		var servico = service.buscarPorPrestadorIdEServicoId(1L, 1L);
 
 		assertNotNull(servico);
 	}
@@ -131,15 +130,14 @@ public class ServicoDetalhadoServiceTest {
 	public void deve_retornar_excecao_por_nao_encontrar_por_id_e_prestador() {
 		doReturn(Optional.empty()).when(repository).findByIdAndPrestadorId(Mockito.anyLong(), Mockito.anyLong());
 		
-		assertThrows(NotFoundException.class, () -> service.buscarPorPrestadorEId(1L, 1L));
+		assertThrows(NotFoundException.class, () -> service.buscarPorPrestadorIdEServicoId(1L, 1L));
 	}
 	
 	@Test
 	public void deve_retornar_excecao_por_donos_diferentes_em_atualizacao() {
 		var servicoRequest = servicoDetalhado();
-		servicoRequest.setPrestadorId(2L);
 
-		assertThrows(BusinessException.class, () -> service.atualizarServicoDetalhado(1L, servicoRequest));
+		assertThrows(BusinessException.class, () -> service.atualizarServicoDetalhado(1L, 2L, servicoRequest));
 	}
 	
 	@Test

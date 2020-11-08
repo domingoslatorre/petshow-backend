@@ -10,8 +10,7 @@ import java.util.List;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
-    @Autowired
-    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
+    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter = new TipoAnimalEstimacaoConverter();
 
     @Override
     public AnimalEstimacaoRepresentation toRepresentation(AnimalEstimacao domain) {
