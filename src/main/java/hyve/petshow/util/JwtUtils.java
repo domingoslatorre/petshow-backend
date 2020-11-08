@@ -25,11 +25,6 @@ public class JwtUtils {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public Long extractId(String token){
-        token = token.substring(7);
-        return Long.valueOf((Integer) extractClaim(token, claims -> claims.get("id")));
-    }
-
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
