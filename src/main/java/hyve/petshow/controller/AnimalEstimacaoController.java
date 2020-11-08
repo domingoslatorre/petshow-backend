@@ -33,8 +33,6 @@ public class AnimalEstimacaoController {
     private AnimalEstimacaoConverter animalEstimacaoConverter;
     @Autowired
     private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
-    @Autowired
-    private JwtUtils jwtUtils;
 
     @Operation(summary = "Adiciona um animal de estimação ao sistema.")
     @PostMapping("/cliente/animal-estimacao")
