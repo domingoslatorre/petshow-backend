@@ -21,8 +21,6 @@ public class PrestadorController {
 	private PrestadorService service;
 	@Autowired
 	private PrestadorConverter converter;
-	@Autowired
-	private JwtUtils jwtUtils;
 
 	@Operation(summary = "Busca prestador por id.")
 	@GetMapping("/{id}")
