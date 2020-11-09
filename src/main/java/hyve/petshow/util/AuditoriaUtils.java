@@ -15,7 +15,7 @@ public class AuditoriaUtils {
         auditoria.setDataCriacao(LocalDate.now());
         auditoria.setDataAtualizacao(LocalDate.now());
         auditoria.setUsuarioCriacao(usuarioId.isPresent() ? usuarioId.get() : null);
-        auditoria.setFlagAtivo(ATIVO);
+        auditoria.setFlagAtivo(INATIVO);
 
         return auditoria;
     }

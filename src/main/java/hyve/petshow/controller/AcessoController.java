@@ -90,10 +90,8 @@ public class AcessoController {
         authenticationManager.authenticate(token);
     }
 
-    private String gerarToken(String email) throws NotFoundException {
-        var conta = acessoService.buscarPorEmail(email)
-                .orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
-
+    private String gerarToken(String email) throws Exception {
+    	var conta = acessoService.buscarContaPorEmail(email);
         return jwtUtils.generateToken(email, conta.getId(), conta.getTipo());
     }
 
