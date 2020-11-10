@@ -11,8 +11,10 @@ import java.util.List;
 
 @Service
 public class TipoAnimalEstimacaoServiceImpl extends TipoService<TipoAnimalEstimacao> implements TipoAnimalEstimacaoService {
-    public TipoAnimalEstimacaoServiceImpl() {
-    	super("Nenhum tipo animal de estimação encontrado");
+    private static final String NENHUM_TIPO_ANIMAL_ENCONTRADO = "NENHUM_TIPO_ANIMAL_ENCONTRADO";//Nenhum tipo animal de estimação encontrado
+
+	public TipoAnimalEstimacaoServiceImpl() {
+    	super(NENHUM_TIPO_ANIMAL_ENCONTRADO);
     }
     
     @Autowired

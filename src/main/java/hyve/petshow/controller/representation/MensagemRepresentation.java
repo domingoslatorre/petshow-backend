@@ -6,8 +6,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MensagemRepresentation {
-	public static final String MENSAGEM_SUCESSO = "Operação concluída com sucesso";
-	public static final String MENSAGEM_FALHA = "Falha durante a execução da operação";
+	public static final String MENSAGEM_SUCESSO = "MENSAGEM_SUCESSO";//"Operação concluída com sucesso";
+	public static final String MENSAGEM_FALHA = "MENSAGEM_FALHA";//"Falha durante a execução da operação";
 	
 	private Long id;
 	@Setter(value = AccessLevel.NONE)

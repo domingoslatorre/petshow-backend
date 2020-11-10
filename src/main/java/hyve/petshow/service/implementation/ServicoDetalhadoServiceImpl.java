@@ -17,10 +17,10 @@ import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 @Service
 public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
-	private static final String SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO = "Serviço não encontrado para prestador mencionado";
-	private final String SERVICO_DETALHADO_NAO_ENCONTRADO = "Serviço detalhado não encontrado";
-	private final String NENHUM_SERVICO_DETALHADO_ENCONTRADO = "Nenhum serviço detalhado encontrado";
-	private final String USUARIO_NAO_PROPRIETARIO = "Este serviço não pertence a este usuário";
+	private static final String SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO = "SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO";//"Serviço não encontrado para prestador mencionado";
+	private static final String SERVICO_DETALHADO_NAO_ENCONTRADO = "SERVICO_DETALHADO_NAO_ENCONTRADO";//"Serviço detalhado não encontrado";
+	private static final String NENHUM_SERVICO_DETALHADO_ENCONTRADO = "NENHUM_SERVICO_DETALHADO_ENCONTRADO";//"Nenhum serviço detalhado encontrado";
+	private static final String USUARIO_NAO_PROPRIETARIO_SERVICO = "USUARIO_NAO_PROPRIETARIO_SERVICO";//"Este serviço não pertence a este usuário";
 
 	@Autowired
 	private ServicoDetalhadoRepository repository;
@@ -54,7 +54,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			var response = repository.save(servicoDetalhado);
 			return response;
 		} else {
-			throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
+			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			response.setSucesso(sucesso);
 			return response;
 		} else {
-			throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
+			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
     }
 

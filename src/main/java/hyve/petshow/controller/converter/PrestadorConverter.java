@@ -6,9 +6,6 @@ import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class PrestadorConverter implements Converter<Prestador, PrestadorRepresentation> {
 	private ServicoDetalhadoConverter servicoConverter = new ServicoDetalhadoConverter();
@@ -52,12 +49,5 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
         domain.setDescricao(representation.getDescricao());
 
         return domain;
-    }
-
-    public List<PrestadorRepresentation> toRepresentationList(List<Prestador> domainList){
-        var representationList = new ArrayList<PrestadorRepresentation>();
-
-        domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
-        return representationList;
     }
 }

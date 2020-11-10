@@ -5,9 +5,6 @@ import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoRepresentation> {
 	@Override
@@ -50,17 +47,5 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		domain.setCriteriosAvaliacao(info);
 
 		return domain;
-	}
-	
-	public List<AvaliacaoRepresentation> toRepresentationList(List<Avaliacao> domainList) {
-		return domainList.stream()
-				.map(el -> toRepresentation(el))
-				.collect(Collectors.toList());
-	}
-	
-	public List<Avaliacao> toDomainList(List<AvaliacaoRepresentation> representationList) {
-		return representationList.stream()
-				.map(el -> toDomain(el))
-				.collect(Collectors.toList());
 	}
 }
