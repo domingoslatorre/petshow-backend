@@ -21,7 +21,7 @@ public class Cliente extends Conta {
 	public Cliente(Conta conta) {
 		super(conta.getId(), conta.getNome(), conta.getNomeSocial(), conta.getCpf(), conta.getTelefone(),
 				conta.getMediaAvaliacao(), conta.getFoto(), conta.getTipo(), conta.getEndereco(),
-				conta.getLogin(), conta.getAuditoria(), conta.getGeolocalizacao(), conta.getEnabled());
+				conta.getLogin(), conta.getAuditoria(), conta.getGeolocalizacao());
 	}
 
 	public Cliente(Conta conta, List<AnimalEstimacao> animaisEstimacao){

@@ -13,6 +13,7 @@ import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
@@ -97,11 +100,11 @@ public class AcessoServiceImpl implements AcessoService {
 	@Override
 	public Conta ativaConta(String token) throws Exception {
 		var tokenVerificacao = buscarTokenVerificacao(token);
-		var conta = buscarConta(tokenVerificacao.getConta().getLogin().getEmail());
-		if(conta.getEnabled()) {
+		var conta = buscarConta(tokenVerificacao.getConta().getEmail());
+		if(conta.isAtivo()) {
 			throw new BusinessException("Conta já ativa");
 		}
-		conta.setEnabled(true);
+		conta.setAuditoria(atualizaAuditoria(conta.getAuditoria(), ATIVO));
 		return acessoRepository.save(conta);
 
 	}
@@ -109,11 +112,11 @@ public class AcessoServiceImpl implements AcessoService {
 	@Override
 	public Conta buscarContaPorEmail(String email) throws Exception {
 		var conta = buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
-		if(!conta.getEnabled()) {
+		if(!conta.isAtivo()) {
 			throw new BusinessException("Conta informada ainda não foi ativada");
 		}
 		return conta;
 	}
 
-
+	
 }
