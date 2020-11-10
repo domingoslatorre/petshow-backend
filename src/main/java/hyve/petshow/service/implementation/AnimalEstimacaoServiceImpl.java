@@ -7,6 +7,7 @@ import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,8 +39,8 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     }
 
     @Override
-    public List<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id) throws NotFoundException {
-        var animaisEstimacao = animalEstimacaoRepository.findByDonoId(id);
+    public List<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id, Pageable pageable) throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoRepository.findByDonoId(id, pageable);
 
         if(animaisEstimacao.isEmpty()) {
             throw new NotFoundException(NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO);

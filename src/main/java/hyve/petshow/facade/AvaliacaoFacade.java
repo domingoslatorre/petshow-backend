@@ -6,6 +6,7 @@ import hyve.petshow.service.port.AvaliacaoService;
 import hyve.petshow.service.port.ClienteService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -33,9 +34,10 @@ public class AvaliacaoFacade {
 		avaliacaoService.adicionarAvaliacao(avaliacao);
 	}
 
-	public List<AvaliacaoRepresentation> buscarAvaliacaoPorServico(Long idServicoPrestado) throws Exception {
+	public List<AvaliacaoRepresentation> buscarAvaliacaoPorServico(Long idServicoPrestado, Pageable pageable)
+			throws Exception {
 		var servico = servicoDetalhadoService.buscarPorId(idServicoPrestado);
-		var avaliacoes = avaliacaoService.buscarAvaliacoesPorServicoId(servico.getId());
+		var avaliacoes = avaliacaoService.buscarAvaliacoesPorServicoId(servico.getId(), pageable);
 
 		return converter.toRepresentationList(avaliacoes);
 	}

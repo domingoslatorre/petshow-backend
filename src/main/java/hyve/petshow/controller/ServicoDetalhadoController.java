@@ -1,5 +1,6 @@
 package hyve.petshow.controller;
 
+import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
+
 @RestController
 @RequestMapping
 @OpenAPIDefinition(info = @Info(title = "API servico detalhado", description = "API para CRUD de servico detalhado"))
@@ -27,17 +30,52 @@ public class ServicoDetalhadoController {
 	@Autowired
 	private ServicoDetalhadoConverter converter;
 	@Autowired
+	private AvaliacaoConverter avaliacaoConverter;
+	@Autowired
 	private AvaliacaoFacade avaliacaoFacade;
 
 	@Operation(summary = "Busca todos os serviços detalhados por prestador.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado")
 	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorPrestador(
 			@Parameter(description = "Id do prestador.")
-			@PathVariable Long prestadorId) throws Exception {
-		var servico = service.buscarPorPrestadorId(prestadorId);
+			@PathVariable Long prestadorId,
+			@Parameter(description = "Número da página")
+			@RequestParam("pagina") Integer pagina,
+			@Parameter(description = "Número de itens")
+			@RequestParam("quantidadeItens") Integer quantidadeItens) throws Exception {
+		var servico = service.buscarPorPrestadorId(prestadorId, geraPageable(pagina, quantidadeItens));
 		var representation = converter.toRepresentationList(servico);
 
 		return ResponseEntity.ok(representation);
+	}
+
+	@Operation(summary = "Busca serviços detalhados por tipo de serviço.")
+	@GetMapping("/servico-detalhado/tipo-servico/{id}")
+	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorTipoServico(
+			@Parameter(description = "Id do tipo de serviço.")
+			@PathVariable Integer id,
+			@Parameter(description = "Número da página")
+			@RequestParam("pagina") Integer pagina,
+			@Parameter(description = "Número de itens")
+			@RequestParam("quantidadeItens") Integer quantidadeItens) throws NotFoundException {
+		var servicosDetalhados = service.buscarServicosDetalhadosPorTipoServico(id, geraPageable(pagina, quantidadeItens));
+		var representation = converter.toRepresentationList(servicosDetalhados);
+
+		return ResponseEntity.ok(representation);
+	}
+
+	@Operation(summary = "Busca avaliações por serviço detalhado.")
+	@GetMapping("/servico-detalhado/{id}/avaliacoes")
+	public ResponseEntity<List<AvaliacaoRepresentation>> buscarAvaliacoesPorServicoDetalhado(
+			@Parameter(description = "Id do serviço detalhado.")
+			@PathVariable Long id,
+			@Parameter(description = "Número da página")
+			@RequestParam("pagina") Integer pagina,
+			@Parameter(description = "Número de itens")
+			@RequestParam("quantidadeItens") Integer quantidadeItens) throws Exception {
+		var avaliacoes = avaliacaoFacade.buscarAvaliacaoPorServico(id, geraPageable(pagina, quantidadeItens));
+
+		return ResponseEntity.ok(avaliacoes);
 	}
 
 	@Operation(summary = "Adiciona serviço detalhado para prestador.")
@@ -88,7 +126,7 @@ public class ServicoDetalhadoController {
 
 	@Operation(summary = "Busca serviço detalhado.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado/{servicoId}")
-	public ResponseEntity<ServicoDetalhadoRepresentation> buscarServicoDetalhadoPorPrestador(
+	public ResponseEntity<ServicoDetalhadoRepresentation> buscarPorPrestadorIdEServicoId(
 			@Parameter(description = "Id do prestador.")
 			@PathVariable Long prestadorId,
 			@Parameter(description = "Id do serviço detalhado.")
@@ -111,17 +149,6 @@ public class ServicoDetalhadoController {
 		var servico = converter.toDomain(request);
 		servico = service.atualizarServicoDetalhado(idServico, idPrestador, servico);
 		var representation = converter.toRepresentation(servico);
-
-		return ResponseEntity.ok(representation);
-	}
-
-	@Operation(summary = "Busca serviços detalhados por tipo de serviço.")
-	@GetMapping("/servico-detalhado/tipo-servico/{id}")
-	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorTipoServico(
-			@Parameter(description = "Id do tipo de serviço.")
-			@PathVariable Integer id) throws NotFoundException {
-		var servicosDetalhados = service.buscarServicosDetalhadosPorTipoServico(id);
-		var representation = converter.toRepresentationList(servicosDetalhados);
 
 		return ResponseEntity.ok(representation);
 	}

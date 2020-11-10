@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
+
 @RestController
 @OpenAPIDefinition(info = @Info(title = "API animal de estimação",
         description = "API para CRUD de animal de estimação"))
@@ -51,8 +53,12 @@ public class AnimalEstimacaoController {
     @GetMapping("/cliente/{donoId}/animal-estimacao")
     public ResponseEntity<List<AnimalEstimacaoRepresentation>> buscarAnimaisEstimacao(
             @Parameter(description = "Id do dono dos animais.")
-            @PathVariable Long donoId) throws NotFoundException {
-        var animaisEstimacao = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(donoId);
+            @PathVariable Long donoId,
+            @Parameter(description = "Número da página")
+            @RequestParam("pagina") Integer pagina,
+            @Parameter(description = "Número de itens")
+            @RequestParam("quantidadeItens") Integer quantidadeItens) throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(donoId, geraPageable(pagina, quantidadeItens));
 
         var representation = animalEstimacaoConverter.toRepresentationList(animaisEstimacao);
 

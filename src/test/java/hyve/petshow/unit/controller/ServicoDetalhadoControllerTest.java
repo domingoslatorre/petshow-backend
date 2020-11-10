@@ -103,7 +103,7 @@ public class ServicoDetalhadoControllerTest {
     public void deve_retornar_servico_detalhado() throws Exception {
         var expected = ResponseEntity.ok(servicoDetalhadoRepresentation);
 
-        var actual = controller.buscarServicoDetalhadoPorPrestador(1L, 1L);
+        var actual = controller.buscarPorPrestadorIdEServicoId(1L, 1L);
 
         assertEquals(expected, actual);
     }
