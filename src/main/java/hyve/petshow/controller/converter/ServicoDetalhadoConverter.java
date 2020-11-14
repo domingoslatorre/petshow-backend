@@ -38,16 +38,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         domain.setPrestadorId(representation.getPrestadorId());
         domain.setAvaliacoes(avaliacaoConverter.toDomainList(representation.getAvaliacoes()));
         domain.setMediaAvaliacao(representation.getMediaAvaliacao());
-
         return domain;
-    }
-
-    public List<ServicoDetalhadoRepresentation> toRepresentationList(List<ServicoDetalhado> domainList){
-        var representationList = new ArrayList<ServicoDetalhadoRepresentation>();
-
-        domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
-
-        return representationList;
     }
 
     public Page<ServicoDetalhadoRepresentation> toRepresentationPage(Page<ServicoDetalhado> domainPage){

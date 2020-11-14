@@ -54,7 +54,7 @@ public class AcessoControllerTest {
     private String token = "AS48QWE48Q94W89R4QW984AW8D4DW848E";
 
     @BeforeEach
-    public void init() throws BusinessException {
+    public void init() throws Exception {
         initMocks(this);
 
         doReturn(null).when(authenticationManager).authenticate(any(Authentication.class));
@@ -63,12 +63,13 @@ public class AcessoControllerTest {
         doReturn(conta).when(converter).toDomain(any(ContaRepresentation.class));
         doReturn(conta).when(service).adicionarConta(any(Conta.class));
         doNothing().when(eventPublisher).publishEvent(any(OnRegistrationCompleteEvent.class));
+        
     }
 
     @Test
     public void deve_retornar_token_apos_realizar_login() throws Exception {
+    	doReturn(conta).when(service).buscarContaPorEmail(anyString());
         var expected = ResponseEntity.ok(token);
-
         var actual = controller.realizarLogin(conta.getLogin());
 
         assertEquals(expected, actual);
@@ -82,9 +83,8 @@ public class AcessoControllerTest {
     }
 
     @Test
-    public void deve_lancar_not_found_exception_quando_nao_encontrar_conta() {
-        doReturn(Optional.empty()).when(service).buscarPorEmail(anyString());
-
+    public void deve_lancar_not_found_exception_quando_nao_encontrar_conta() throws Exception {
+        doThrow(NotFoundException.class).when(service).buscarContaPorEmail(anyString());
         assertThrows(NotFoundException.class, () -> controller.realizarLogin(conta.getLogin()));
     }
 

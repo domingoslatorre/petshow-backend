@@ -16,8 +16,8 @@ import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService {
-	private final String AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada";
-	private final String NENHUMA_AVALIACAO_ENCONTRADA = "Nenhuma avaliação encontrada";
+	private static final String AVALIACAO_NAO_ENCONTRADA = "AVALIACAO_NAO_ENCONTRADA";//Avaliação não encontrada
+	private static final String NENHUMA_AVALIACAO_ENCONTRADA = "NENHUMA_AVALIACAO_ENCONTRADA";//Nenhuma avaliação encontrada
 
 	@Autowired
 	private AvaliacaoRepository repository;

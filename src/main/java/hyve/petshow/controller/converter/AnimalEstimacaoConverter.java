@@ -1,15 +1,12 @@
 package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
-import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
-import hyve.petshow.domain.Avaliacao;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
@@ -50,13 +47,5 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
                 domainPage.getTotalElements());
 
         return representationPage;
-    }
-
-    public List<AnimalEstimacaoRepresentation> toRepresentationList(List<AnimalEstimacao> domainList){
-        var representationList = new ArrayList<AnimalEstimacaoRepresentation>();
-
-        domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
-
-        return representationList;
     }
 }

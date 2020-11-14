@@ -30,7 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 @OpenAPIDefinition(info = @Info(title = "API de acesso à aplicação",
         description = "API utilizada para a realização de login e cadastro"))
 public class AcessoController {
-    @Autowired
+    private static final String EMAIL_JA_CADASTRADO = "EMAIL_JA_CADASTRADO";
+    private static final String USUARIO_SENHA_INCORRETO = "USUARIO_SENHA_INCORRETO"; //Erro durante a autenticação, usuário ou senha incorretos
+    
+	@Autowired
     private JwtUtils jwtUtils;
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -41,7 +44,6 @@ public class AcessoController {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
-    private final String mensagemErro = "Erro durante a autenticação, usuário ou senha incorretos";
 
     @Operation(summary = "Realiza o login, gerando um token para ser utilizado nas demais APIs.")
     @PostMapping("/login")
@@ -54,8 +56,8 @@ public class AcessoController {
 
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
-            log.error("{}, mensagem: {}, causa: {}", mensagemErro, e.getMessage(), e.getCause());
-            throw new BusinessException(mensagemErro);
+            log.error("{}, mensagem: {}, causa: {}", USUARIO_SENHA_INCORRETO, e.getMessage(), e.getCause());
+            throw new BusinessException(USUARIO_SENHA_INCORRETO);
         } catch (NotFoundException e) {
             log.error(e.getMessage());
             throw e;
@@ -80,8 +82,8 @@ public class AcessoController {
 
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
-            log.error("{}, mensagem: {}, causa: {}", mensagemErro, e.getMessage(), e.getCause());
-            throw new BusinessException(mensagemErro);
+            log.error("{}, mensagem: {}, causa: {}", USUARIO_SENHA_INCORRETO, e.getMessage(), e.getCause());
+            throw new BusinessException(USUARIO_SENHA_INCORRETO);
         }
     }
 
@@ -101,7 +103,7 @@ public class AcessoController {
 
     private void verificarEmailExistente(String email) throws BusinessException {
         if(acessoService.buscarPorEmail(email).isPresent()){
-            throw new BusinessException("Email já cadastrado no sistema");
+            throw new BusinessException(EMAIL_JA_CADASTRADO);//Email já cadastrado no sistema
         }
     }
 

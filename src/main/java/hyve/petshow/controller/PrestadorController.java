@@ -3,7 +3,6 @@ package hyve.petshow.controller;
 import hyve.petshow.controller.converter.PrestadorConverter;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.service.port.PrestadorService;
-import hyve.petshow.util.JwtUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

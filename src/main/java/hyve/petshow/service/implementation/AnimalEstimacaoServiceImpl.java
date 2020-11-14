@@ -22,9 +22,9 @@ import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 @Service
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
-    private final String ANIMAL_ESTIMACAO_NAO_ENCONTRADO = "Animal de estimação não encontrado";
-    private final String NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO = "Nenhum animal de estimação encontrado";
-    private final String USUARIO_NAO_PROPRIETARIO = "Este animal não pertence a este usuário";
+    private static final String ANIMAL_ESTIMACAO_NAO_ENCONTRADO = "ANIMAL_ESTIMACAO_NAO_ENCONTRADO";//"Animal de estimação não encontrado";
+    private static final String NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO = "NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO";// "Nenhum animal de estimação encontrado";
+    private static final String USUARIO_NAO_PROPRIETARIO_ANIMAL = "USUARIO_NAO_PROPRIETARIO_ANIMAL";//"Este animal não pertence a este usuário";
 
     @Autowired
     private AnimalEstimacaoRepository animalEstimacaoRepository;
@@ -70,7 +70,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
             return response;
         } else {
-            throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
         }
     }
 
@@ -89,7 +89,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
             return response;
         } else {
-            throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
         }
     }
 }
