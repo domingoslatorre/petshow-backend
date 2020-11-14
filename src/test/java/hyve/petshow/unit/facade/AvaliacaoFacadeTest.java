@@ -15,6 +15,9 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ import static hyve.petshow.mock.AvaliacaoMock.avaliacao;
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
 import static hyve.petshow.mock.ClienteMock.cliente;
 import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,6 +53,8 @@ public class AvaliacaoFacadeTest {
 	private AvaliacaoRepresentation avaliacaoRepresentation = avaliacaoRepresentation();
 	private List<Avaliacao> avaliacoes = new ArrayList<>();
 	private Avaliacao avaliacao = avaliacao();
+	private Page<Avaliacao> avaliacaoPage = new PageImpl<>(avaliacoes);
+	private Page<AvaliacaoRepresentation> avaliacaoRepresentationPage = new PageImpl<>(singletonList(avaliacaoRepresentation));
 
 	@BeforeEach
 	public void init() throws Exception {
@@ -57,8 +63,9 @@ public class AvaliacaoFacadeTest {
 		doReturn(cliente).when(clienteService).buscarPorId(anyLong());
 		doReturn(servicoDetalhado).when(servicoDetalhadoService).buscarPorId(anyLong());
 		doReturn(avaliacao).when(converter).toDomain(any(AvaliacaoRepresentation.class));
+		doReturn(avaliacaoRepresentationPage).when(converter).toRepresentationPage(any(Page.class));
 		doReturn(singletonList(avaliacaoRepresentation)).when(converter).toRepresentationList(any(List.class));
-		doReturn(singletonList(avaliacao())).when(avaliacaoService).buscarAvaliacoesPorServicoId(anyLong());
+		doReturn(avaliacaoPage).when(avaliacaoService).buscarAvaliacoesPorServicoId(anyLong(), any(Pageable.class));
 		doAnswer(a -> {
 			avaliacoes.add(avaliacao);
 			return null;
@@ -75,9 +82,9 @@ public class AvaliacaoFacadeTest {
 	@Test
 	public void deve_retornar_avaliacao_em_lista() throws Exception {
 		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L);
-		
+
 		// quando
-		var avaliacoes = facade.buscarAvaliacaoPorServico(1L);
+		var avaliacoes = facade.buscarAvaliacaoPorServico(1L, geraPageable(0, 5));
 		
 		assertFalse(avaliacoes.isEmpty());
 	}

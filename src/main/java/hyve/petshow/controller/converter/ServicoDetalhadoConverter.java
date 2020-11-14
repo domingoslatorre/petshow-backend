@@ -47,13 +47,4 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
 
         return representationPage;
     }
-
-
-    public List<ServicoDetalhado> toDomainList(List<ServicoDetalhadoRepresentation> representationList){
-        var domainList = new ArrayList<ServicoDetalhado>();
-
-        representationList.forEach(representation -> domainList.add(this.toDomain(representation)));
-
-        return domainList;
-    }
 }

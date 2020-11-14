@@ -12,12 +12,16 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.emptyList;
@@ -39,15 +43,17 @@ public class ServicoDetalhadoServiceTest {
 
 	private ServicoDetalhado servicoDetalhado = servicoDetalhado();
 	private List<ServicoDetalhado> servicoDetalhadoList = singletonList(servicoDetalhado);
+	private Page<ServicoDetalhado> servicoDetalhadoPage = new PageImpl<>(servicoDetalhadoList);
+	private Pageable pageable = geraPageable(0, 5);
 
-    @BeforeEach
+	@BeforeEach
     public void init() {
 		initMocks(this);
 
 		doReturn(Optional.of(servicoDetalhado)).when(repository).findById(1L);
 		doReturn(servicoDetalhadoList).when(repository).findAll();
-		doReturn(servicoDetalhadoList).when(repository).findByPrestadorId(anyLong());
-		doReturn(servicoDetalhadoList).when(repository).findByTipo(anyInt());
+		doReturn(servicoDetalhadoPage).when(repository).findByPrestadorId(anyLong(), any(Pageable.class));
+		doReturn(servicoDetalhadoPage).when(repository).findByTipo(anyInt(), any(Pageable.class));
 		doReturn(Optional.of(servicoDetalhado)).when(repository).findByIdAndPrestadorId(anyLong(), anyLong());
 		doNothing().when(repository).delete(any(ServicoDetalhado.class));
 	}
@@ -87,16 +93,16 @@ public class ServicoDetalhadoServiceTest {
 
 	@Test
 	public void deve_retornar_por_tipo() throws NotFoundException {
-		var lista = service.buscarServicosDetalhadosPorTipoServico(1);
+		var lista = service.buscarServicosDetalhadosPorTipoServico(1, pageable);
 
 		assertFalse(lista.isEmpty());
 	}
 	
 	@Test
 	public void deve_retornar_excecao_em_busca_por_tipo_nao_encontrada() {
-		doReturn(emptyList()).when(repository).findByTipo(anyInt());
+		doReturn(Page.empty()).when(repository).findByTipo(anyInt(), any(Pageable.class));
 
-		assertThrows(NotFoundException.class, () -> service.buscarServicosDetalhadosPorTipoServico(1));
+		assertThrows(NotFoundException.class, () -> service.buscarServicosDetalhadosPorTipoServico(1, pageable));
 	}
 	
 	@Test
@@ -108,16 +114,16 @@ public class ServicoDetalhadoServiceTest {
 	
 	@Test
 	public void deve_retornar_por_id_prestador() throws NotFoundException {
-		var lista = service.buscarPorPrestadorId(1L);
+		var lista = service.buscarPorPrestadorId(1L, pageable);
 
 		assertFalse(lista.isEmpty());
 	}
 	
 	@Test
 	public void deve_retornar_erro_por_nao_encontrado() {
-		doReturn(emptyList()).when(repository).findByPrestadorId(anyLong());
+		doReturn(Page.empty()).when(repository).findByPrestadorId(anyLong(), any(Pageable.class));
 		
-		assertThrows(NotFoundException.class, () -> service.buscarPorPrestadorId(1L));
+		assertThrows(NotFoundException.class, () -> service.buscarPorPrestadorId(1L, pageable));
 	}
 	
 	@Test

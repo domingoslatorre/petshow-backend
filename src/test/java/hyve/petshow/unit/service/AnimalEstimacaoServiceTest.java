@@ -12,11 +12,15 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.singletonList;
@@ -33,6 +37,8 @@ public class AnimalEstimacaoServiceTest {
 
     private AnimalEstimacao animalEstimacao = animalEstimacao();
     private List<AnimalEstimacao> animaisEstimacao = singletonList(animalEstimacao);
+    private Page<AnimalEstimacao> animalEstimacaoPage = new PageImpl<>(animaisEstimacao);
+    private Pageable pageable = geraPageable(0, 5);
 
     @BeforeEach
     public void init() {
@@ -41,7 +47,7 @@ public class AnimalEstimacaoServiceTest {
         doReturn(animalEstimacao).when(repository).save(animalEstimacao);
         doReturn(Optional.of(animalEstimacao)).when(repository).findById(1L);
         doReturn(animaisEstimacao).when(repository).findAll();
-        doReturn(animaisEstimacao).when(repository).findByDonoId(1L);
+        doReturn(animalEstimacaoPage).when(repository).findByDonoId(1L, pageable);
         doNothing().when(repository).delete(any(AnimalEstimacao.class));
     }
 
@@ -61,7 +67,7 @@ public class AnimalEstimacaoServiceTest {
 
     @Test
     public void deve_retornar_lista_de_animais() throws NotFoundException {
-        var actual = service.buscarAnimaisEstimacaoPorDono(1L);
+        var actual = service.buscarAnimaisEstimacaoPorDono(1L, pageable);
 
         assertNotNull(actual);
     }
@@ -101,7 +107,9 @@ public class AnimalEstimacaoServiceTest {
     
     @Test
     public void deve_retornar_excecao_por_lista_nao_encontrada() {
-    	assertThrows(NotFoundException.class, () -> service.buscarAnimaisEstimacaoPorDono(2L));
+        doReturn(Page.empty()).when(repository).findByDonoId(2L, pageable);
+
+        assertThrows(NotFoundException.class, () -> service.buscarAnimaisEstimacaoPorDono(2L, pageable));
     }
     
     @Test

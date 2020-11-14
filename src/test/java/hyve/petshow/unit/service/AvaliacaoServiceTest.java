@@ -11,12 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 import static hyve.petshow.mock.AvaliacaoMock.avaliacao;
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoList;
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,12 +38,14 @@ public class AvaliacaoServiceTest {
 
 	private Avaliacao avaliacao = avaliacao();
 	private List<Avaliacao> avaliacoes = avaliacaoList();
+	private Page<Avaliacao> avaliacaoPage = new PageImpl<>(avaliacoes);
+	private Pageable pageable = geraPageable(0, 5);
 
 	@BeforeEach
 	public void init() {
 		initMocks(this);
 
-		doReturn(avaliacoes).when(repository).findByServicoAvaliadoId(anyLong());
+		doReturn(avaliacaoPage).when(repository).findByServicoAvaliadoId(anyLong(), any(Pageable.class));
 		doReturn(Optional.of(avaliacao())).when(repository).findById(Mockito.anyLong());
 	}
 
@@ -54,16 +60,16 @@ public class AvaliacaoServiceTest {
 
 	@Test
 	public void deve_retornar_avaliacoes() throws NotFoundException {
-		var actual = service.buscarAvaliacoesPorServicoId(1L);
+		var actual = service.buscarAvaliacoesPorServicoId(1L, pageable);
 
-		assertEquals(avaliacoes, actual);
+		assertEquals(avaliacaoPage, actual);
 	}
 
 	@Test
 	public void deve_retornar_excecao_de_nenhuma_encontrada_por_servico() {
-		doReturn(emptyList()).when(repository).findByServicoAvaliadoId(Mockito.anyLong());
+		doReturn(Page.empty()).when(repository).findByServicoAvaliadoId(anyLong(), any(Pageable.class));
 
-		assertThrows(NotFoundException.class, () -> service.buscarAvaliacoesPorServicoId(10L));
+		assertThrows(NotFoundException.class, () -> service.buscarAvaliacoesPorServicoId(10L, pageable));
 	}
 	
 	@Test

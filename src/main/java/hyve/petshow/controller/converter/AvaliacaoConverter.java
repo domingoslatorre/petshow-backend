@@ -57,10 +57,4 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 
 		return representationPage;
 	}
-
-	public List<Avaliacao> toDomainList(List<AvaliacaoRepresentation> representationList) {
-		return representationList.stream()
-				.map(el -> toDomain(el))
-				.collect(Collectors.toList());
-	}
 }
