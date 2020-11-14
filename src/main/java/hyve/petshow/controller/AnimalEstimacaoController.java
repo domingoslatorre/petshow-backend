@@ -14,11 +14,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 
 @RestController
 @OpenAPIDefinition(info = @Info(title = "API animal de estimação",
@@ -49,12 +52,16 @@ public class AnimalEstimacaoController {
 
     @Operation(summary = "Busca animais de estimação por dono.")
     @GetMapping("/cliente/{donoId}/animal-estimacao")
-    public ResponseEntity<List<AnimalEstimacaoRepresentation>> buscarAnimaisEstimacao(
+    public ResponseEntity<Page<AnimalEstimacaoRepresentation>> buscarAnimaisEstimacao(
             @Parameter(description = "Id do dono dos animais.")
-            @PathVariable Long donoId) throws NotFoundException {
-        var animaisEstimacao = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(donoId);
+            @PathVariable Long donoId,
+            @Parameter(description = "Número da página")
+            @RequestParam("pagina") Integer pagina,
+            @Parameter(description = "Número de itens")
+            @RequestParam("quantidadeItens") Integer quantidadeItens) throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(donoId, geraPageable(pagina, quantidadeItens));
 
-        var representation = animalEstimacaoConverter.toRepresentationList(animaisEstimacao);
+        var representation = animalEstimacaoConverter.toRepresentationPage(animaisEstimacao);
 
         return ResponseEntity.status(HttpStatus.OK).body(representation);
     }

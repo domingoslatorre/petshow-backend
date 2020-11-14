@@ -7,6 +7,8 @@ import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,8 +35,8 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	}
 
 	@Override
-	public List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer id) throws NotFoundException {
-		var servicosDetalhados = repository.findByTipo(id);
+	public Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer id, Pageable pageable) throws NotFoundException {
+		var servicosDetalhados = repository.findByTipo(id, pageable);
 
 		if(servicosDetalhados.isEmpty()){
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);
@@ -81,8 +83,8 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	}
 
 	@Override
-	public List<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId) throws NotFoundException {
-		var servicosDetalhados = repository.findByPrestadorId(prestadorId);
+	public Page<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId, Pageable pageable) throws NotFoundException {
+		var servicosDetalhados = repository.findByPrestadorId(prestadorId, pageable);
 
 		if(servicosDetalhados.isEmpty()){
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);

@@ -13,14 +13,12 @@ import static hyve.petshow.util.UrlUtils.*;
 
 @SpringBootApplication
 public class Application {
-	
 	@Value("${spring.mail.host}")
 	private String smtpHost;
 	@Value("${spring.mail.username}")
 	private String mail;
 	@Value("${spring.mail.password}")
 	private String password;
-	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

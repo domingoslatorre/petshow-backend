@@ -4,6 +4,8 @@ import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 public interface ServicoDetalhadoService {
 	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado);
 
-	List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer id) throws NotFoundException;
+	Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer tipoServicoId, Pageable pageable) throws NotFoundException;
 	
 	ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, ServicoDetalhado servicoDetalhadoRequest) throws BusinessException, NotFoundException;
 
@@ -21,7 +23,7 @@ public interface ServicoDetalhadoService {
     
     ServicoDetalhado buscarPorId(Long id) throws NotFoundException;
     
-    List<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId) throws NotFoundException;
+    Page<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId, Pageable pageable) throws NotFoundException;
     
     ServicoDetalhado buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws NotFoundException;
 }

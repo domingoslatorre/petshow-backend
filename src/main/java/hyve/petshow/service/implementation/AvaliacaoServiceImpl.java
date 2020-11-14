@@ -5,6 +5,8 @@ import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.service.port.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 	private AvaliacaoRepository repository;
 	
 	@Override
-	public List<Avaliacao> buscarAvaliacoesPorServicoId(Long id) throws NotFoundException {
-		var avaliacoes = repository.findByServicoAvaliadoId(id);
+	public Page<Avaliacao> buscarAvaliacoesPorServicoId(Long id, Pageable pageable) throws NotFoundException {
+		var avaliacoes = repository.findByServicoAvaliadoId(id, pageable);
 
 		if(avaliacoes.isEmpty()){
 			throw new NotFoundException(NENHUMA_AVALIACAO_ENCONTRADA);

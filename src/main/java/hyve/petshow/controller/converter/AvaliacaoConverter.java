@@ -3,6 +3,8 @@ package hyve.petshow.controller.converter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -47,5 +49,12 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		domain.setCriteriosAvaliacao(info);
 
 		return domain;
+	}
+
+	public Page<AvaliacaoRepresentation> toRepresentationPage(Page<Avaliacao> domainPage){
+		var representationPage = new PageImpl<>(toRepresentationList(domainPage.getContent()), domainPage.getPageable(),
+				domainPage.getTotalElements());
+
+		return representationPage;
 	}
 }

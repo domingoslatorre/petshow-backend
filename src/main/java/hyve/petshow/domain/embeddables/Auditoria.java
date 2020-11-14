@@ -1,6 +1,7 @@
 package hyve.petshow.domain.embeddables;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 @Data
 @Embeddable
+@NoArgsConstructor
 public class Auditoria {
     private LocalDate dataCriacao;
     private LocalDate dataAtualizacao;

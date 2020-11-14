@@ -108,7 +108,7 @@ public class AcessoServiceImpl implements AcessoService {
 	@Override
 	public Conta ativaConta(String token) throws Exception {
 		var tokenVerificacao = buscarTokenVerificacao(token);
-		var conta = buscarConta(tokenVerificacao.getConta().getEmail());
+		var conta = buscarConta(tokenVerificacao.getFkConta().getEmail());
 		if(conta.isAtivo()) {
 			throw new BusinessException(CONTA_JA_ATIVA);
 		}
