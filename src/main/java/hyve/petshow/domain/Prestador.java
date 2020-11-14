@@ -21,7 +21,7 @@ public class Prestador extends Conta {
 	public Prestador(Conta conta){
 		super(conta.getId(), conta.getNome(), conta.getNomeSocial(), conta.getCpf(), conta.getTelefone(),
 				conta.getMediaAvaliacao(), conta.getFoto(), conta.getTipo(), conta.getEndereco(),
-				conta.getLogin(), conta.getAuditoria(), conta.getGeolocalizacao(), false);
+				conta.getLogin(), conta.getAuditoria(), conta.getGeolocalizacao());
 	}
 
 	public Prestador(Conta conta, List<ServicoDetalhado> servicosDetalhados){

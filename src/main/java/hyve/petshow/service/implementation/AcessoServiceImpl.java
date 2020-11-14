@@ -13,6 +13,7 @@ import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,10 +25,20 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
-    @Autowired
+    private static final String CONTA_INFORMADA_INATIVA = "CONTA_INFORMADA_INATIVA";// "Conta informada ainda não foi ativada";
+	private static final String LOGIN_INFORMADO_NAO_ENCONTRADO = "LOGIN_INFORMADO_NAO_ENCONTRADO";//"Login informado não encontrado no sistema";
+	private static final String CONTA_JA_ATIVA = "CONTA_JA_ATIVA";//"Conta já ativa";
+	private static final String TOKEN_NAO_ENCONTRADO = "TOKEN_NAO_ENCONTRADO";//Token informado não encontrado
+	private static final String TIPO_DE_CLIENTE_INEXISTENTE = "TIPO_DE_CLIENTE_INEXISTENTE";//Tipo de cliente inexistente
+	private static final String CONTA_NAO_ENCONTRADA = "CONTA_NAO_ENCONTRADA"; //Conta não encontrada
+	
+	
+	@Autowired
     private AcessoRepository acessoRepository;
     @Autowired
     private ClienteRepository clienteRepository;
@@ -41,7 +52,7 @@ public class AcessoServiceImpl implements AcessoService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var conta = acessoRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new UsernameNotFoundException(CONTA_NAO_ENCONTRADA));
         var login = conta.getLogin();
         var user = new User(login.getEmail(), login.getSenha(), new ArrayList<>());
         return user;
@@ -67,7 +78,7 @@ public class AcessoServiceImpl implements AcessoService {
             var prestador = new Prestador(conta);
             conta = prestadorRepository.save(prestador);
         } else {
-            throw new BusinessException("Tipo de cliente inexistente");
+            throw new BusinessException(TIPO_DE_CLIENTE_INEXISTENTE);
         }
 
         return conta;
@@ -79,7 +90,7 @@ public class AcessoServiceImpl implements AcessoService {
     }
 
     public Conta buscarConta(String email) throws Exception {
-    	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Conta não encontrada"));
+    	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
     }
 
 	@Override
@@ -91,29 +102,29 @@ public class AcessoServiceImpl implements AcessoService {
 
 	@Override
 	public VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception {
-		return tokenRepository.findByToken(tokenVerificadcao).orElseThrow(() -> new NotFoundException("Token informado não encontrado"));
+		return tokenRepository.findByToken(tokenVerificadcao).orElseThrow(() -> new NotFoundException(TOKEN_NAO_ENCONTRADO));
 	}
 
 	@Override
 	public Conta ativaConta(String token) throws Exception {
 		var tokenVerificacao = buscarTokenVerificacao(token);
-		var conta = buscarConta(tokenVerificacao.getConta().getLogin().getEmail());
-		if(conta.getEnabled()) {
-			throw new BusinessException("Conta já ativa");
+		var conta = buscarConta(tokenVerificacao.getConta().getEmail());
+		if(conta.isAtivo()) {
+			throw new BusinessException(CONTA_JA_ATIVA);
 		}
-		conta.setEnabled(true);
+		conta.setAuditoria(atualizaAuditoria(conta.getAuditoria(), ATIVO));
 		return acessoRepository.save(conta);
 
 	}
 
 	@Override
 	public Conta buscarContaPorEmail(String email) throws Exception {
-		var conta = buscarPorEmail(email).orElseThrow(() -> new NotFoundException("Login informado não encontrado no sistema"));
-		if(!conta.getEnabled()) {
-			throw new BusinessException("Conta informada ainda não foi ativada");
+		var conta = buscarPorEmail(email).orElseThrow(() -> new NotFoundException(LOGIN_INFORMADO_NAO_ENCONTRADO));
+		if(!conta.isAtivo()) {
+			throw new BusinessException(CONTA_INFORMADA_INATIVA);
 		}
 		return conta;
 	}
 
-
+	
 }

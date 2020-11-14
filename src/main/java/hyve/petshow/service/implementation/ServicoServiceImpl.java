@@ -11,8 +11,10 @@ import java.util.List;
 
 @Service
 public class ServicoServiceImpl extends TipoService<Servico> implements ServicoService {
-    public ServicoServiceImpl() {
-		super("Nenhum serviço encontrado");
+    private static final String NENHUM_SERVICO_ENCONTRADO = "NENHUM_SERVICO_ENCONTRADO";//"Nenhum serviço encontrado";
+
+	public ServicoServiceImpl() {
+		super(NENHUM_SERVICO_ENCONTRADO);
 	}
 
     @Autowired

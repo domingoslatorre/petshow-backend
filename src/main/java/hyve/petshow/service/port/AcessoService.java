@@ -14,8 +14,6 @@ public interface AcessoService extends UserDetailsService {
 
     Optional<Conta> buscarPorEmail(String email);
     
-    Conta buscarContaPorEmail(String email) throws Exception;
-    
     Conta criaTokenVerificacao(Conta conta, String token);
 
 	VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception;
@@ -23,4 +21,6 @@ public interface AcessoService extends UserDetailsService {
 	Conta ativaConta(String token) throws Exception;
 	
 	Conta buscarConta(String email) throws Exception;
+	
+	Conta buscarContaPorEmail(String email) throws Exception;
 }

@@ -1,11 +1,9 @@
 package hyve.petshow.controller.converter;
 
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.ServicoDetalhado;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.ServicoDetalhado;
 
 @Component
 public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, ServicoDetalhadoRepresentation>{
@@ -36,23 +34,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         domain.setPrestadorId(representation.getPrestadorId());
         domain.setAvaliacoes(avaliacaoConverter.toDomainList(representation.getAvaliacoes()));
         domain.setMediaAvaliacao(representation.getMediaAvaliacao());
-
         return domain;
-    }
-
-    public List<ServicoDetalhadoRepresentation> toRepresentationList(List<ServicoDetalhado> domainList){
-        var representationList = new ArrayList<ServicoDetalhadoRepresentation>();
-
-        domainList.forEach(domain -> representationList.add(this.toRepresentation(domain)));
-
-        return representationList;
-    }
-
-    public List<ServicoDetalhado> toDomainList(List<ServicoDetalhadoRepresentation> representationList){
-        var domainList = new ArrayList<ServicoDetalhado>();
-
-        representationList.forEach(representation -> domainList.add(this.toDomain(representation)));
-
-        return domainList;
     }
 }

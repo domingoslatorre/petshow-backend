@@ -40,5 +40,12 @@ public class Conta {
 	private Auditoria auditoria;
 	@Embedded
 	private Geolocalizacao geolocalizacao;
-	private Boolean enabled;
+	
+	public String getEmail() {
+		return getLogin() == null ? null : getLogin().getEmail();
+	}
+	
+	public Boolean isAtivo() {
+		return getAuditoria() == null ? false: getAuditoria().isAtivo();
+	}
 }
