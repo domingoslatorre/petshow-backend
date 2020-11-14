@@ -17,10 +17,10 @@ public class VerificationToken {
 	
 	@OneToOne(targetEntity = Conta.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "conta_id")
-	private Conta conta;
+	private Conta fkConta;
 
 	public VerificationToken(Conta conta, String token) {
-		setConta(conta);
+		setFkConta(conta);
 		setToken(token);
 	}
 }

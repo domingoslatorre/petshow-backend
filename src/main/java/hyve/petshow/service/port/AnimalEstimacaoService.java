@@ -4,6 +4,7 @@ import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public interface AnimalEstimacaoService {
 
     AnimalEstimacao buscarAnimalEstimacaoPorId(Long id) throws NotFoundException;
 
-    List<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id, Pageable pageable) throws NotFoundException;
+    Page<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id, Pageable pageable) throws NotFoundException;
 
     AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao animalEstimacao) throws NotFoundException, BusinessException;
 

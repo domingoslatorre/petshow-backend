@@ -1,7 +1,11 @@
 package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.domain.Avaliacao;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -39,6 +43,13 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
         domain.setDonoId(representation.getDonoId());
 
         return domain;
+    }
+
+    public Page<AnimalEstimacaoRepresentation> toRepresentationPage(Page<AnimalEstimacao> domainPage){
+        var representationPage = new PageImpl<>(toRepresentationList(domainPage.getContent()), domainPage.getPageable(),
+                domainPage.getTotalElements());
+
+        return representationPage;
     }
 
     public List<AnimalEstimacaoRepresentation> toRepresentationList(List<AnimalEstimacao> domainList){

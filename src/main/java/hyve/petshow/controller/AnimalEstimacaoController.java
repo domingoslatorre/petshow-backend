@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class AnimalEstimacaoController {
 
     @Operation(summary = "Busca animais de estimação por dono.")
     @GetMapping("/cliente/{donoId}/animal-estimacao")
-    public ResponseEntity<List<AnimalEstimacaoRepresentation>> buscarAnimaisEstimacao(
+    public ResponseEntity<Page<AnimalEstimacaoRepresentation>> buscarAnimaisEstimacao(
             @Parameter(description = "Id do dono dos animais.")
             @PathVariable Long donoId,
             @Parameter(description = "Número da página")
@@ -60,7 +61,7 @@ public class AnimalEstimacaoController {
             @RequestParam("quantidadeItens") Integer quantidadeItens) throws NotFoundException {
         var animaisEstimacao = animalEstimacaoService.buscarAnimaisEstimacaoPorDono(donoId, geraPageable(pagina, quantidadeItens));
 
-        var representation = animalEstimacaoConverter.toRepresentationList(animaisEstimacao);
+        var representation = animalEstimacaoConverter.toRepresentationPage(animaisEstimacao);
 
         return ResponseEntity.status(HttpStatus.OK).body(representation);
     }

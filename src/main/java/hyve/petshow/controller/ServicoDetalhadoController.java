@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class ServicoDetalhadoController {
 
 	@Operation(summary = "Busca todos os serviços detalhados por prestador.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado")
-	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorPrestador(
+	public ResponseEntity<Page<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorPrestador(
 			@Parameter(description = "Id do prestador.")
 			@PathVariable Long prestadorId,
 			@Parameter(description = "Número da página")
@@ -44,14 +45,14 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Número de itens")
 			@RequestParam("quantidadeItens") Integer quantidadeItens) throws Exception {
 		var servico = service.buscarPorPrestadorId(prestadorId, geraPageable(pagina, quantidadeItens));
-		var representation = converter.toRepresentationList(servico);
+		var representation = converter.toRepresentationPage(servico);
 
 		return ResponseEntity.ok(representation);
 	}
 
 	@Operation(summary = "Busca serviços detalhados por tipo de serviço.")
 	@GetMapping("/servico-detalhado/tipo-servico/{id}")
-	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorTipoServico(
+	public ResponseEntity<Page<ServicoDetalhadoRepresentation>> buscarServicosDetalhadosPorTipoServico(
 			@Parameter(description = "Id do tipo de serviço.")
 			@PathVariable Integer id,
 			@Parameter(description = "Número da página")
@@ -59,14 +60,14 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Número de itens")
 			@RequestParam("quantidadeItens") Integer quantidadeItens) throws NotFoundException {
 		var servicosDetalhados = service.buscarServicosDetalhadosPorTipoServico(id, geraPageable(pagina, quantidadeItens));
-		var representation = converter.toRepresentationList(servicosDetalhados);
+		var representation = converter.toRepresentationPage(servicosDetalhados);
 
 		return ResponseEntity.ok(representation);
 	}
 
 	@Operation(summary = "Busca avaliações por serviço detalhado.")
 	@GetMapping("/servico-detalhado/{id}/avaliacoes")
-	public ResponseEntity<List<AvaliacaoRepresentation>> buscarAvaliacoesPorServicoDetalhado(
+	public ResponseEntity<Page<AvaliacaoRepresentation>> buscarAvaliacoesPorServicoDetalhado(
 			@Parameter(description = "Id do serviço detalhado.")
 			@PathVariable Long id,
 			@Parameter(description = "Número da página")

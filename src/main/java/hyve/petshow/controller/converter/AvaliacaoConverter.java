@@ -1,8 +1,12 @@
 package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Avaliacao;
+import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -57,7 +61,14 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 				.map(el -> toRepresentation(el))
 				.collect(Collectors.toList());
 	}
-	
+
+	public Page<AvaliacaoRepresentation> toRepresentationPage(Page<Avaliacao> domainPage){
+		var representationPage = new PageImpl<>(toRepresentationList(domainPage.getContent()), domainPage.getPageable(),
+				domainPage.getTotalElements());
+
+		return representationPage;
+	}
+
 	public List<Avaliacao> toDomainList(List<AvaliacaoRepresentation> representationList) {
 		return representationList.stream()
 				.map(el -> toDomain(el))

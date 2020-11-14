@@ -15,7 +15,7 @@ import java.util.List;
 public interface ServicoDetalhadoService {
 	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado);
 
-	List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer tipoServicoId, Pageable pageable) throws NotFoundException;
+	Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer tipoServicoId, Pageable pageable) throws NotFoundException;
 	
 	ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, ServicoDetalhado servicoDetalhadoRequest) throws BusinessException, NotFoundException;
 
@@ -23,7 +23,7 @@ public interface ServicoDetalhadoService {
     
     ServicoDetalhado buscarPorId(Long id) throws NotFoundException;
     
-    List<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId, Pageable pageable) throws NotFoundException;
+    Page<ServicoDetalhado> buscarPorPrestadorId(Long prestadorId, Pageable pageable) throws NotFoundException;
     
     ServicoDetalhado buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws NotFoundException;
 }
