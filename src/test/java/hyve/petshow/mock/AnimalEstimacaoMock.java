@@ -1,11 +1,11 @@
 package hyve.petshow.mock;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
-import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.TipoAnimalEstimacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.TipoAnimalEstimacao;
+import hyve.petshow.domain.embeddables.Auditoria;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +22,7 @@ public class AnimalEstimacaoMock {
         animalEstimacao.setNome("pedrinho");
         animalEstimacao.setFoto("hahah");
         animalEstimacao.setTipo(tipoAnimalEstimacao());
+        animalEstimacao.setAuditoria(new Auditoria());
         animalEstimacao.setDonoId(1L);
 
         return animalEstimacao;
@@ -34,6 +35,7 @@ public class AnimalEstimacaoMock {
         animalEstimacao.setNome("andrezinho");
         animalEstimacao.setFoto("aaaaa");
         animalEstimacao.setTipo(tipoAnimalEstimacao());
+        animalEstimacao.setAuditoria(new Auditoria());
         animalEstimacao.setDonoId(1L);
 
         return animalEstimacao;
@@ -48,22 +50,6 @@ public class AnimalEstimacaoMock {
         animalEstimacaoRepresentation.setDonoId(1L);
 
         return animalEstimacaoRepresentation;
-    }
-
-    public static MensagemRepresentation mensagemRepresentationSucesso(){
-        var mensagemRepresentation = new MensagemRepresentation(1L);
-
-        mensagemRepresentation.setSucesso(Boolean.TRUE);
-
-        return mensagemRepresentation;
-    }
-
-    public static MensagemRepresentation mensagemRepresentationFalha(){
-        var mensagemRepresentation = new MensagemRepresentation(1L);
-
-        mensagemRepresentation.setSucesso(Boolean.FALSE);
-
-        return mensagemRepresentation;
     }
 
     public static TipoAnimalEstimacao tipoAnimalEstimacao(){

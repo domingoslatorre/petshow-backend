@@ -5,21 +5,26 @@ import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.service.port.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService {
-	private final String AVALIACAO_NAO_ENCONTRADA = "Avaliação não encontrada";
-	private final String NENHUMA_AVALIACAO_ENCONTRADA = "Nenhuma avaliação encontrada";
+	private static final String AVALIACAO_NAO_ENCONTRADA = "AVALIACAO_NAO_ENCONTRADA";//Avaliação não encontrada
+	private static final String NENHUMA_AVALIACAO_ENCONTRADA = "NENHUMA_AVALIACAO_ENCONTRADA";//Nenhuma avaliação encontrada
 
 	@Autowired
 	private AvaliacaoRepository repository;
 	
 	@Override
-	public List<Avaliacao> buscarAvaliacoesPorServicoId(Long id) throws NotFoundException {
-		var avaliacoes = repository.findByServicoAvaliadoId(id);
+	public Page<Avaliacao> buscarAvaliacoesPorServicoId(Long id, Pageable pageable) throws NotFoundException {
+		var avaliacoes = repository.findByServicoAvaliadoId(id, pageable);
 
 		if(avaliacoes.isEmpty()){
 			throw new NotFoundException(NENHUMA_AVALIACAO_ENCONTRADA);
@@ -30,6 +35,8 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 
 	@Override
 	public Avaliacao adicionarAvaliacao(Avaliacao avaliacao) {
+		avaliacao.setAuditoria(geraAuditoriaInsercao(Optional.of(avaliacao.getClienteId())));
+
 		return repository.save(avaliacao);
 	}
 

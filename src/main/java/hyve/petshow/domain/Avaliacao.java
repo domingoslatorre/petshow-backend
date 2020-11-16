@@ -1,5 +1,7 @@
 package hyve.petshow.domain;
 
+import hyve.petshow.domain.embeddables.Auditoria;
+import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,6 +15,8 @@ public class Avaliacao {
 	private Long id;
 	@Embedded
 	private CriteriosAvaliacao criteriosAvaliacao;
+	@Embedded
+	private Auditoria auditoria;
 	@Column(name = "fk_servico_detalhado")
 	private Long servicoAvaliadoId;
 	@Column(name = "fk_conta")

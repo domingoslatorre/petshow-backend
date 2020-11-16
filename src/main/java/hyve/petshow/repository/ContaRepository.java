@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @NoRepositoryBean
 public interface ContaRepository<T extends Conta> extends JpaRepository<T, Long> {
-	Optional<T> findByCpf(String cpf);
 	@Query("select c from conta c where c.login.email = ?1")
 	Optional<T> findByEmail(String email);
 }

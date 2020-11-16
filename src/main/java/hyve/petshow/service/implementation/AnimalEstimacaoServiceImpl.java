@@ -1,29 +1,38 @@
 package hyve.petshow.service.implementation;
 
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 @Service
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
-    private final String ANIMAL_ESTIMACAO_NAO_ENCONTRADO = "Animal de estimação não encontrado";
-    private final String NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO = "Nenhum animal de estimação encontrado";
-    private final String USUARIO_NAO_PROPRIETARIO = "Este animal não pertence a este usuário";
+    private static final String ANIMAL_ESTIMACAO_NAO_ENCONTRADO = "ANIMAL_ESTIMACAO_NAO_ENCONTRADO";//"Animal de estimação não encontrado";
+    private static final String NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO = "NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO";// "Nenhum animal de estimação encontrado";
+    private static final String USUARIO_NAO_PROPRIETARIO_ANIMAL = "USUARIO_NAO_PROPRIETARIO_ANIMAL";//"Este animal não pertence a este usuário";
 
     @Autowired
     private AnimalEstimacaoRepository animalEstimacaoRepository;
 
     @Override
     public AnimalEstimacao adicionarAnimalEstimacao(AnimalEstimacao animalEstimacao) {
+        animalEstimacao.setAuditoria(geraAuditoriaInsercao(Optional.of(animalEstimacao.getDonoId())));
+
         return animalEstimacaoRepository.save(animalEstimacao);
     }
 
@@ -34,8 +43,8 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     }
 
     @Override
-    public List<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id) throws NotFoundException {
-        var animaisEstimacao = animalEstimacaoRepository.findByDonoId(id);
+    public Page<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id, Pageable pageable) throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoRepository.findByDonoId(id, pageable);
 
         if(animaisEstimacao.isEmpty()) {
             throw new NotFoundException(NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO);
@@ -53,10 +62,15 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
             animalEstimacao.setNome(request.getNome());
             animalEstimacao.setTipo(request.getTipo());
             animalEstimacao.setFoto(request.getFoto());
+            animalEstimacao.setPorte(request.getPorte());
+            animalEstimacao.setPelagem(request.getPelagem());
+            animalEstimacao.setAuditoria(atualizaAuditoria(animalEstimacao.getAuditoria(), ATIVO));
+
             var response = animalEstimacaoRepository.save(animalEstimacao);
+
             return response;
         } else {
-            throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
         }
     }
 
@@ -75,7 +89,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
             return response;
         } else {
-            throw new BusinessException(USUARIO_NAO_PROPRIETARIO);
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
         }
     }
 }

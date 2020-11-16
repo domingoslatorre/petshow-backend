@@ -8,20 +8,27 @@ import hyve.petshow.service.port.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+
+import static hyve.petshow.util.AuditoriaUtils.*;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
-	private final String CONTA_NAO_ENCONTRADA = "Conta não encontrada";
+	private static final String CONTA_NAO_ENCONTRADA = "CONTA_NAO_ENCONTRADA";//"Conta não encontrada";
+	private static final String CONTA_DESATIVADA = "CONTA_DESATIVADA";//"Conta desativada";
 
 	@Autowired
 	private ClienteRepository repository;
 
 	@Override
 	public Cliente buscarPorId(Long id) throws NotFoundException {
-		return repository.findById(id)
+		var cliente = repository.findById(id)
 				.orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
+
+		if(cliente.getAuditoria().getFlagAtivo().equals(INATIVO))
+			throw new NotFoundException(CONTA_DESATIVADA);
+
+		return cliente;
 	}
 
 	@Override
@@ -30,22 +37,23 @@ public class ClienteServiceImpl implements ClienteService {
 
 		conta.setTelefone(request.getTelefone());
 		conta.setEndereco(request.getEndereco());
+		conta.setAuditoria(atualizaAuditoria(conta.getAuditoria(), ATIVO));
 
 		return repository.save(conta);
 	}
 
 	@Override
-	public MensagemRepresentation removerConta(Long id) {
-		repository.deleteById(id);
-		MensagemRepresentation mensagem = new MensagemRepresentation();
-		mensagem.setId(id);
-		mensagem.setSucesso(!repository.existsById(id));
-		return mensagem;
-	}
+	public MensagemRepresentation desativarConta(Long id) throws NotFoundException {
+		var cliente = buscarPorId(id);
+		var mensagem = new MensagemRepresentation();
 
-	@Override
-	public List<Cliente> buscarContas() {
-		return repository.findAll();
+		cliente.setAuditoria(atualizaAuditoria(cliente.getAuditoria(), INATIVO));
+		cliente = repository.save(cliente);
+
+		mensagem.setId(id);
+		mensagem.setSucesso(cliente.getAuditoria().getFlagAtivo().equals(INATIVO));
+
+		return mensagem;
 	}
 
 	@Override
