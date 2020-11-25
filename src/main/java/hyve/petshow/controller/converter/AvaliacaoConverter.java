@@ -3,15 +3,21 @@ package hyve.petshow.controller.converter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoRepresentation> {
+	@Autowired
+	private ClienteConverter clienteConverter;
+
 	@Override
 	public AvaliacaoRepresentation toRepresentation(Avaliacao domain) {
 		var representation = new AvaliacaoRepresentation();
+		//var clienteConverter = new ClienteConverter();
+
 
 		representation.setId(domain.getId());
 		if (domain.getCriteriosAvaliacao() != null) {
@@ -23,7 +29,7 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 			representation.setQualidadeServico(info.getQualidadeServico());
 			representation.setComentario(info.getComentario());
 		}
-		representation.setClienteId(domain.getClienteId());
+		representation.setCliente(clienteConverter.toRepresentation(domain.getCliente()));
 		representation.setServicoAvaliadoId(domain.getServicoAvaliadoId());
 		representation.setMedia(domain.getMediaAvaliacao());
 
@@ -33,9 +39,10 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 	@Override
 	public Avaliacao toDomain(AvaliacaoRepresentation representation) {
 		var domain = new Avaliacao();
+		//var clienteConverter = new ClienteConverter();
 
 		domain.setId(representation.getId());
-		domain.setClienteId(representation.getClienteId());
+		domain.setCliente(clienteConverter.toDomain(representation.getCliente()));
 		domain.setServicoAvaliadoId(representation.getServicoAvaliadoId());
 		
 		var info = new CriteriosAvaliacao();

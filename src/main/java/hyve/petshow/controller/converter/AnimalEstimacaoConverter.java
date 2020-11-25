@@ -3,6 +3,7 @@ package hyve.petshow.controller.converter;
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
-    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter = new TipoAnimalEstimacaoConverter();
+    @Autowired
+    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
 
     @Override
     public AnimalEstimacaoRepresentation toRepresentation(AnimalEstimacao domain) {

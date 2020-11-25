@@ -4,11 +4,13 @@ import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClienteConverter implements Converter<Cliente, ClienteRepresentation> {
-	private AnimalEstimacaoConverter animalConverter = new AnimalEstimacaoConverter();
+	@Autowired
+	private AnimalEstimacaoConverter animalConverter;
 
 	@Override
 	public ClienteRepresentation toRepresentation(Cliente domain) {

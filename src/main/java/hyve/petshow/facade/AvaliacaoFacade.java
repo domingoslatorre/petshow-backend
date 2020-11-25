@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class AvaliacaoFacade {
 	@Autowired
@@ -30,7 +28,7 @@ public class AvaliacaoFacade {
 		var avaliacao = converter.toDomain(request);
 
 		servicoDetalhado.addAvaliacao(avaliacao);
-		avaliacao.setClienteId(cliente.getId());
+		avaliacao.setCliente(cliente);
 
 		avaliacaoService.adicionarAvaliacao(avaliacao);
 	}

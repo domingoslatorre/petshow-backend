@@ -4,11 +4,13 @@ import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PrestadorConverter implements Converter<Prestador, PrestadorRepresentation> {
-	private ServicoDetalhadoConverter servicoConverter = new ServicoDetalhadoConverter();
+	@Autowired
+    private ServicoDetalhadoConverter servicoConverter;
 
     @Override
     public PrestadorRepresentation toRepresentation(Prestador domain) {

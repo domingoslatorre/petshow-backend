@@ -7,6 +7,7 @@ import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
+import hyve.petshow.facade.ServicoDetalhadoFacade;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +35,8 @@ public class ServicoDetalhadoController {
 	private AvaliacaoConverter avaliacaoConverter;
 	@Autowired
 	private AvaliacaoFacade avaliacaoFacade;
+	@Autowired
+	private ServicoDetalhadoFacade servicoDetalhadoFacade;
 
 	@Operation(summary = "Busca todos os serviços detalhados por prestador.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado")
@@ -58,11 +61,11 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Número da página")
 			@RequestParam("pagina") Integer pagina,
 			@Parameter(description = "Número de itens")
-			@RequestParam("quantidadeItens") Integer quantidadeItens) throws NotFoundException {
-		var servicosDetalhados = service.buscarServicosDetalhadosPorTipoServico(id, geraPageable(pagina, quantidadeItens));
-		var representation = converter.toRepresentationPage(servicosDetalhados);
+			@RequestParam("quantidadeItens") Integer quantidadeItens) throws Exception {
+		var servicosDetalhados = servicoDetalhadoFacade
+				.buscarServicosDetalhadosPorTipoServico(id, geraPageable(pagina, quantidadeItens));
 
-		return ResponseEntity.ok(representation);
+		return ResponseEntity.ok(servicosDetalhados);
 	}
 
 	@Operation(summary = "Busca avaliações por serviço detalhado.")
@@ -115,7 +118,7 @@ public class ServicoDetalhadoController {
 			@PathVariable Long id,
 			@Parameter(description = "Avaliação que será inserida")
 			@RequestBody AvaliacaoRepresentation avaliacao) throws Exception {
-		var clienteId = avaliacao.getClienteId();
+		var clienteId = avaliacao.getCliente().getId();
 
 		avaliacaoFacade.adicionarAvaliacao(avaliacao, clienteId, id);
 
@@ -132,10 +135,9 @@ public class ServicoDetalhadoController {
 			@PathVariable Long prestadorId,
 			@Parameter(description = "Id do serviço detalhado.")
 			@PathVariable Long servicoId) throws Exception {
-		var servico = service.buscarPorPrestadorIdEServicoId(prestadorId, servicoId);
-		var representation = converter.toRepresentation(servico);
+		var servicoDetalhado = servicoDetalhadoFacade.buscarPorPrestadorIdEServicoId(prestadorId, servicoId);
 
-		return ResponseEntity.ok(representation);
+		return ResponseEntity.ok(servicoDetalhado);
 	}
 
 	@Operation(summary = "Atualiza serviço detalhado.")
