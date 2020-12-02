@@ -15,7 +15,7 @@ import static hyve.petshow.util.AuditoriaUtils.*;
 @Service
 public class ClienteServiceImpl implements ClienteService {
 	private static final String CONTA_NAO_ENCONTRADA = "CONTA_NAO_ENCONTRADA";//"Conta não encontrada";
-	private static final String CONTA_DESATIVADA = "CONTA_DESATIVADA";//"Conta desativada";
+//	private static final String CONTA_DESATIVADA = "CONTA_DESATIVADA";//"Conta desativada";
 
 	@Autowired
 	private ClienteRepository repository;
@@ -25,8 +25,8 @@ public class ClienteServiceImpl implements ClienteService {
 		var cliente = repository.findById(id)
 				.orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
 
-		if(cliente.getAuditoria().getFlagAtivo().equals(INATIVO))
-			throw new NotFoundException(CONTA_DESATIVADA);
+//		if(cliente.getAuditoria().getFlagAtivo().equals(INATIVO))
+//			throw new NotFoundException(CONTA_DESATIVADA);
 
 		return cliente;
 	}

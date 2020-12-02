@@ -24,6 +24,7 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 		representation.setNomeSocial(domain.getNomeSocial());
 		representation.setTelefone(domain.getTelefone());
 		representation.setTipo(domain.getTipo() == null ? null : domain.getTipo().getTipo());
+		representation.setIsAtivo(domain.isAtivo());
 		representation.setAnimaisEstimacao(animalConverter.toRepresentationList(domain.getAnimaisEstimacao()));
 
 		return representation;

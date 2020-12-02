@@ -119,5 +119,13 @@ public class AcessoController {
     	var tokenRetorno = gerarToken(conta.getLogin().getEmail());
     	return ResponseEntity.ok(tokenRetorno);
     }
+    
+    @PostMapping("/reenvia-ativacao/")
+    public ResponseEntity<String> reenviaSolicitacao(@RequestBody String email, HttpServletRequest request) throws Exception {
+    	var conta = acessoService.buscarConta(email);
+    	var appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(conta, request.getLocale(), appUrl));
+    	return ResponseEntity.ok("Reenviado");
+    }
 
 }

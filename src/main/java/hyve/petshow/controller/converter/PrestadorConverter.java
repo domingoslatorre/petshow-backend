@@ -26,6 +26,7 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
 		representation.setTelefone(domain.getTelefone());
 		representation.setTipo(domain.getTipo() == null ? null : domain.getTipo().getTipo());
         representation.setServicos(servicoConverter.toRepresentationList(domain.getServicosPrestados()));
+        representation.setIsAtivo(domain.isAtivo());
 		representation.setDescricao(domain.getDescricao());
 
         return representation;
