@@ -2,7 +2,6 @@ package hyve.petshow.unit.service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Cliente;
-import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.service.implementation.ClienteServiceImpl;
 import org.junit.jupiter.api.*;
@@ -72,8 +71,7 @@ public class ClienteServiceTest {
 
 		assertAll(
 				() -> assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, mensagem.getMensagem()),
-				() -> assertTrue(mensagem.getSucesso()),
-				() -> assertThrows(NotFoundException.class, () -> service.buscarPorId(1L)));
+				() -> assertTrue(mensagem.getSucesso()));
 	}
 
 	@Test
