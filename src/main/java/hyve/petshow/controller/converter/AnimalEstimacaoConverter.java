@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, AnimalEstimacaoRepresentation>{
-	@Autowired
-    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter = new TipoAnimalEstimacaoConverter();
+    @Autowired
+    private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
 
     @Override
     public AnimalEstimacaoRepresentation toRepresentation(AnimalEstimacao domain) {

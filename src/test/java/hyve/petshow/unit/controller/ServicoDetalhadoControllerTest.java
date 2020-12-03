@@ -9,6 +9,7 @@ import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
+import hyve.petshow.facade.ServicoDetalhadoFacade;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,8 @@ public class ServicoDetalhadoControllerTest {
     private ServicoDetalhadoConverter converter;
     @Mock
     private AvaliacaoFacade avaliacaoFacade;
+    @Mock
+    private ServicoDetalhadoFacade servicoDetalhadoFacade;
     @InjectMocks
     private ServicoDetalhadoController controller;
 
@@ -69,6 +72,8 @@ public class ServicoDetalhadoControllerTest {
         doReturn(servicoDetalhadoRepresentationList).when(converter).toRepresentationList(anyList());
         doReturn(servicoDetalhadoRepresentationPage).when(converter).toRepresentationPage(any(Page.class));
         doNothing().when(avaliacaoFacade).adicionarAvaliacao(any(AvaliacaoRepresentation.class), anyLong(), anyLong());
+        doReturn(servicoDetalhadoRepresentation).when(servicoDetalhadoFacade).buscarPorPrestadorIdEServicoId(anyLong(), anyLong());
+        doReturn(servicoDetalhadoRepresentationPage).when(servicoDetalhadoFacade).buscarServicosDetalhadosPorTipoServico(anyInt(), any(Pageable.class));
     }
 
     @Test
@@ -126,7 +131,7 @@ public class ServicoDetalhadoControllerTest {
     }
 
     @Test
-    public void deve_retornar_todos_os_servicos_detalhados_de_um_tipo() throws NotFoundException {
+    public void deve_retornar_todos_os_servicos_detalhados_de_um_tipo() throws Exception {
         var expected = ResponseEntity.ok(servicoDetalhadoRepresentationPage);
 
         var actual = controller.buscarServicosDetalhadosPorTipoServico(1, 0, 5);

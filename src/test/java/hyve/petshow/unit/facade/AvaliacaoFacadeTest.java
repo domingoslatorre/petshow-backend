@@ -63,6 +63,7 @@ public class AvaliacaoFacadeTest {
 		doReturn(cliente).when(clienteService).buscarPorId(anyLong());
 		doReturn(servicoDetalhado).when(servicoDetalhadoService).buscarPorId(anyLong());
 		doReturn(avaliacao).when(converter).toDomain(any(AvaliacaoRepresentation.class));
+		doReturn(avaliacaoRepresentation).when(converter).toRepresentation(any(Avaliacao.class));
 		doReturn(avaliacaoRepresentationPage).when(converter).toRepresentationPage(any(Page.class));
 		doReturn(singletonList(avaliacaoRepresentation)).when(converter).toRepresentationList(any(List.class));
 		doReturn(avaliacaoPage).when(avaliacaoService).buscarAvaliacoesPorServicoId(anyLong(), any(Pageable.class));
@@ -83,7 +84,6 @@ public class AvaliacaoFacadeTest {
 	public void deve_retornar_avaliacao_em_lista() throws Exception {
 		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L);
 
-		// quando
 		var avaliacoes = facade.buscarAvaliacaoPorServico(1L, geraPageable(0, 5));
 		
 		assertFalse(avaliacoes.isEmpty());

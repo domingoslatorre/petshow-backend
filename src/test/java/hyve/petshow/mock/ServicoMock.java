@@ -15,8 +15,12 @@ public class ServicoMock {
 	}
 
 	public static ServicoRepresentation servicoRepresentation(){
-		var converter = new ServicoConverter();
+		var servico = new Servico();
+		var servicoRepresentation = new ServicoRepresentation();
 
-		return converter.toRepresentation(servico());
+		servicoRepresentation.setId(servico.getId());
+		servicoRepresentation.setNome(servico.getNome());
+
+		return servicoRepresentation;
 	}
 }
