@@ -2,8 +2,12 @@ package hyve.petshow.unit.controller;
 
 import hyve.petshow.controller.PrestadorController;
 import hyve.petshow.controller.converter.PrestadorConverter;
+import hyve.petshow.controller.converter.ServicoConverter;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.service.port.PrestadorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -15,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 import static hyve.petshow.mock.PrestadorMock.prestador;
 import static hyve.petshow.mock.PrestadorMock.prestadorRepresentation;
+import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -26,12 +31,15 @@ public class PrestadorControllerTest {
     @Mock
     private PrestadorService service;
     @Mock
-    private PrestadorConverter converter;
+    private PrestadorConverter prestadorConverter;
+    @Mock
+    private ServicoDetalhadoConverter servicoDetalhadoConverter;
     @InjectMocks
     private PrestadorController controller;
 
     private Prestador prestador = prestador();
     private PrestadorRepresentation prestadorRepresentation = prestadorRepresentation();
+    private ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = servicoDetalhadoRepresentation();
 
     @BeforeEach
     public void init() throws Exception {
@@ -39,8 +47,9 @@ public class PrestadorControllerTest {
 
         doReturn(prestador).when(service).buscarPorId(anyLong());
         doReturn(prestador).when(service).atualizarConta(anyLong(), any(Prestador.class));
-        doReturn(prestadorRepresentation).when(converter).toRepresentation(any(Prestador.class));
-        doReturn(prestador).when(converter).toDomain(any(PrestadorRepresentation.class));
+        doReturn(prestadorRepresentation).when(prestadorConverter).toRepresentation(any(Prestador.class));
+        doReturn(servicoDetalhadoRepresentation).when(servicoDetalhadoConverter).toRepresentation(any(ServicoDetalhado.class));
+        doReturn(prestador).when(prestadorConverter).toDomain(any(PrestadorRepresentation.class));
     }
 
     @Test

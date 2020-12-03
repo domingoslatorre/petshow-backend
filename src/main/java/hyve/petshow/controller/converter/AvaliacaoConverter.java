@@ -16,8 +16,6 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 	@Override
 	public AvaliacaoRepresentation toRepresentation(Avaliacao domain) {
 		var representation = new AvaliacaoRepresentation();
-		//var clienteConverter = new ClienteConverter();
-
 
 		representation.setId(domain.getId());
 		if (domain.getCriteriosAvaliacao() != null) {

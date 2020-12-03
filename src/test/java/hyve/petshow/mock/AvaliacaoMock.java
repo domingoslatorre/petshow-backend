@@ -1,6 +1,5 @@
 package hyve.petshow.mock;
 
-import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.*;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
@@ -8,6 +7,8 @@ import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static hyve.petshow.mock.ClienteMock.clienteRepresentation;
 
 public class AvaliacaoMock {
 	public static Avaliacao avaliacao() {
@@ -40,15 +41,27 @@ public class AvaliacaoMock {
 		info.setQualidadeServico(5);
 		info.setComentario("Muito bom");
 		avaliacao.setCriteriosAvaliacao(info);
-		avaliacao.setClienteId(cliente.getId());
+		avaliacao.setCliente(cliente);
 
 		return avaliacao;
 	}
 
 	public static AvaliacaoRepresentation avaliacaoRepresentation() {
-		var converter = new AvaliacaoConverter();
+		var avaliacao = avaliacao();
+		var avaliacaoRepresentation = new AvaliacaoRepresentation();
 
-		return converter.toRepresentation(avaliacao());
+		avaliacaoRepresentation.setId(avaliacao.getId());
+		avaliacaoRepresentation.setAtencao(avaliacao.getCriteriosAvaliacao().getAtencao());
+		avaliacaoRepresentation.setQualidadeProdutos(avaliacao.getCriteriosAvaliacao().getQualidadeProdutos());
+		avaliacaoRepresentation.setCustoBeneficio(avaliacao.getCriteriosAvaliacao().getCustoBeneficio());
+		avaliacaoRepresentation.setInfraestrutura(avaliacao.getCriteriosAvaliacao().getInfraestrutura());
+		avaliacaoRepresentation.setQualidadeServico(avaliacao.getCriteriosAvaliacao().getQualidadeServico());
+		avaliacaoRepresentation.setComentario(avaliacao.getCriteriosAvaliacao().getComentario());
+		avaliacaoRepresentation.setMedia(avaliacao.getMediaAvaliacao());
+		avaliacaoRepresentation.setCliente(clienteRepresentation());
+		avaliacaoRepresentation.setServicoAvaliadoId(avaliacao.getServicoAvaliadoId());
+
+		return avaliacaoRepresentation;
 	}
 
 	public static List<Avaliacao> avaliacaoList() {
