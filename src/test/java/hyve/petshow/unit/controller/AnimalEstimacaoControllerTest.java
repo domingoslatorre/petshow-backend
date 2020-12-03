@@ -2,12 +2,15 @@ package hyve.petshow.unit.controller;
 
 import hyve.petshow.controller.AnimalEstimacaoController;
 import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
+import hyve.petshow.controller.converter.TipoAnimalEstimacaoConverter;
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AnimalEstimacaoService;
+import hyve.petshow.service.port.TipoAnimalEstimacaoService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -41,6 +44,10 @@ public class AnimalEstimacaoControllerTest {
 	private AnimalEstimacaoConverter converter;
 	@Mock
 	private AnimalEstimacaoService service;
+	@Mock
+	private TipoAnimalEstimacaoService tipoService;
+	@Mock
+	private TipoAnimalEstimacaoConverter tipoConverter;
 	@InjectMocks
 	private AnimalEstimacaoController controller;
 

@@ -73,8 +73,7 @@ public class PrestadorServiceTest {
 
         assertAll(
                 () -> assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, mensagem.getMensagem()),
-                () -> assertTrue(mensagem.getSucesso()),
-                () -> assertThrows(NotFoundException.class, () -> service.buscarPorId(1L)));
+                () -> assertTrue(mensagem.getSucesso()));
     }
 
     @Test
