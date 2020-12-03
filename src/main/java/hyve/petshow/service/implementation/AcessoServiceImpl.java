@@ -30,7 +30,7 @@ import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
-    private static final String CONTA_INFORMADA_INATIVA = "CONTA_INFORMADA_INATIVA";// "Conta informada ainda não foi ativada";
+//    private static final String CONTA_INFORMADA_INATIVA = "CONTA_INFORMADA_INATIVA";// "Conta informada ainda não foi ativada";
 	private static final String LOGIN_INFORMADO_NAO_ENCONTRADO = "LOGIN_INFORMADO_NAO_ENCONTRADO";//"Login informado não encontrado no sistema";
 	private static final String CONTA_JA_ATIVA = "CONTA_JA_ATIVA";//"Conta já ativa";
 	private static final String TOKEN_NAO_ENCONTRADO = "TOKEN_NAO_ENCONTRADO";//Token informado não encontrado
@@ -120,9 +120,9 @@ public class AcessoServiceImpl implements AcessoService {
 	@Override
 	public Conta buscarContaPorEmail(String email) throws Exception {
 		var conta = buscarPorEmail(email).orElseThrow(() -> new NotFoundException(LOGIN_INFORMADO_NAO_ENCONTRADO));
-		if(!conta.isAtivo()) {
-			throw new BusinessException(CONTA_INFORMADA_INATIVA);
-		}
+//		if(!conta.isAtivo()) {
+//			throw new BusinessException(CONTA_INFORMADA_INATIVA);
+//		}
 		return conta;
 	}
 

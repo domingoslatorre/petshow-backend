@@ -24,6 +24,7 @@ public class ContaConverter implements Converter<Conta, ContaRepresentation> {
 		representation.setTipo(domain.getTipo().getTipo());
 		representation.setMediaAvaliacao(domain.getMediaAvaliacao());
 		representation.setGeolocalizacao(domain.getGeolocalizacao());
+		representation.setIsAtivo(domain.isAtivo());
 
 		return representation;
 	}

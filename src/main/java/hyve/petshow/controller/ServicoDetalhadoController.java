@@ -1,6 +1,5 @@
 package hyve.petshow.controller;
 
-import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
@@ -19,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 
@@ -31,8 +29,8 @@ public class ServicoDetalhadoController {
 	private ServicoDetalhadoService service;
 	@Autowired
 	private ServicoDetalhadoConverter converter;
-	@Autowired
-	private AvaliacaoConverter avaliacaoConverter;
+//	@Autowired
+//	private AvaliacaoConverter avaliacaoConverter;
 	@Autowired
 	private AvaliacaoFacade avaliacaoFacade;
 	@Autowired
@@ -110,7 +108,7 @@ public class ServicoDetalhadoController {
     }
 
 	@Operation(summary = "Adiciona avaliação.")
-	@PostMapping("/prestador/{prestadorId}/servico-detalhado/{id}/avaliacao")
+	@PostMapping("/prestador/{prestadorId}/servico-detalhado/{id}/avaliacoes")
 	public ResponseEntity<ServicoDetalhadoRepresentation> adicionarAvaliacao(
 			@Parameter(description = "Id do prestador.")
 			@PathVariable Long prestadorId,

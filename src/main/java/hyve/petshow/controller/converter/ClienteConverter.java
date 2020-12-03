@@ -2,8 +2,6 @@ package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.embeddables.Login;
-import hyve.petshow.domain.enums.TipoConta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,21 +9,14 @@ import org.springframework.stereotype.Component;
 public class ClienteConverter implements Converter<Cliente, ClienteRepresentation> {
 	@Autowired
 	private AnimalEstimacaoConverter animalConverter;
+	@Autowired
+	private ContaConverter contaConverter;
 
 	@Override
 	public ClienteRepresentation toRepresentation(Cliente domain) {
-		var representation = new ClienteRepresentation();
-		var login = new Login(domain.getLogin().getEmail());
+		var contaRepresentation = contaConverter.toRepresentation(domain);
 
-		representation.setId(domain.getId());
-		representation.setCpf(domain.getCpf());
-		representation.setEndereco(domain.getEndereco());
-		representation.setFoto(domain.getFoto());
-		representation.setLogin(login);
-		representation.setNome(domain.getNome());
-		representation.setNomeSocial(domain.getNomeSocial());
-		representation.setTelefone(domain.getTelefone());
-		representation.setTipo(domain.getTipo() == null ? null : domain.getTipo().getTipo());
+		var representation = new ClienteRepresentation(contaRepresentation);
 		representation.setAnimaisEstimacao(animalConverter.toRepresentationList(domain.getAnimaisEstimacao()));
 
 		return representation;
@@ -33,17 +24,10 @@ public class ClienteConverter implements Converter<Cliente, ClienteRepresentatio
 
 	@Override
 	public Cliente toDomain(ClienteRepresentation representation) {
-		var domain = new Cliente();
+		var contaDomain = contaConverter.toDomain(representation);
+		var domain = new Cliente(contaDomain);
 
-		domain.setCpf(representation.getCpf());
-		domain.setEndereco(representation.getEndereco());
-		domain.setFoto(representation.getFoto());
-		domain.setId(representation.getId());
-		domain.setLogin(representation.getLogin());
-		domain.setNome(representation.getNome());
-		domain.setNomeSocial(representation.getNomeSocial());
-		domain.setTelefone(representation.getTelefone());
-		domain.setTipo(TipoConta.getTipoByInteger(representation.getTipo()));
+		domain.setAnimaisEstimacao(animalConverter.toDomainList(representation.getAnimaisEstimacao()));
 
 		return domain;
 	}
