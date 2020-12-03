@@ -35,7 +35,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 
 	@Override
 	public Avaliacao adicionarAvaliacao(Avaliacao avaliacao) {
-		avaliacao.setAuditoria(geraAuditoriaInsercao(Optional.of(avaliacao.getClienteId())));
+		avaliacao.setAuditoria(geraAuditoriaInsercao(Optional.of(avaliacao.getCliente().getId())));
 
 		return repository.save(avaliacao);
 	}

@@ -13,4 +13,5 @@ public class ServicoDetalhadoRepresentation {
 	private List<AvaliacaoRepresentation> avaliacoes;
 	private Float mediaAvaliacao;
 	private Long prestadorId;
+	private PrestadorRepresentation prestador;
 }
