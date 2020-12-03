@@ -9,6 +9,7 @@ public interface Converter<T, Y> {
     Y toRepresentation(T domain);
     T toDomain( Y representation);
     
+    
     default List<Y> toRepresentationList(List<T> domainList) {
     	return Optional.ofNullable(domainList).map(lista -> {
     		return lista.stream().map(el -> toRepresentation(el)).collect(Collectors.toList());
