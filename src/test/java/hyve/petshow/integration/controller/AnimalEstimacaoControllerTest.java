@@ -50,8 +50,8 @@ public class AnimalEstimacaoControllerTest {
 	private TipoAnimalEstimacaoRepository tipoRepository;
 	@Autowired
 	private AnimalEstimacaoRepository repository;
-    @Autowired
-    private AnimalEstimacaoConverter converter;
+    	@Autowired
+    	private AnimalEstimacaoConverter converter;
 	private Cliente cliente;
 	private TipoAnimalEstimacao tipo;
 	private AnimalEstimacao animal;
