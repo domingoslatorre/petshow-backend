@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import static hyve.petshow.util.AuditoriaUtils.*;
@@ -50,14 +49,14 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			throws BusinessException, NotFoundException {
 		var servicoDetalhado = buscarPorId(id);
 
-		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){
-			servicoDetalhado.setPreco(request.getPreco());
-			servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ATIVO));
-			var response = repository.save(servicoDetalhado);
-			return response;
-		} else {
+		if(!verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)) {
 			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
+		
+		servicoDetalhado.setPreco(request.getPreco());
+		servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ATIVO));
+		var response = repository.save(servicoDetalhado);
+		return response;
 	}
 
 	@Override
@@ -65,15 +64,14 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			throws BusinessException, NotFoundException{
 		var servicoDetalhado = buscarPorId(id);
 
-		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){
-			repository.deleteById(id);
-			var sucesso = !repository.existsById(id);
-			var response = new MensagemRepresentation(id);
-			response.setSucesso(sucesso);
-			return response;
-		} else {
+		if(!verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)) {
 			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
+		repository.deleteById(id);
+		var sucesso = !repository.existsById(id);
+		var response = new MensagemRepresentation(id);
+		response.setSucesso(sucesso);
+		return response;
     }
 
 	@Override
