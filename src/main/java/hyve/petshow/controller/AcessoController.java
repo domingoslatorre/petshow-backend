@@ -119,6 +119,7 @@ public class AcessoController {
     	var tokenRetorno = gerarToken(conta.getLogin().getEmail());
     	return ResponseEntity.ok(tokenRetorno);
     }
+    
     @Operation(summary = "Reenvia token de ativação de conta")
     @PostMapping("/reenvia-ativacao")
     public ResponseEntity<String> reenviaSolicitacao(

@@ -4,7 +4,6 @@ import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.facade.ServicoDetalhadoFacade;
 import hyve.petshow.service.port.ServicoDetalhadoService;
@@ -29,8 +28,6 @@ public class ServicoDetalhadoController {
 	private ServicoDetalhadoService service;
 	@Autowired
 	private ServicoDetalhadoConverter converter;
-//	@Autowired
-//	private AvaliacaoConverter avaliacaoConverter;
 	@Autowired
 	private AvaliacaoFacade avaliacaoFacade;
 	@Autowired

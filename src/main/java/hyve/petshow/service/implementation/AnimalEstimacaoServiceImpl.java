@@ -1,24 +1,23 @@
 package hyve.petshow.service.implementation;
 
-import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
-import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AnimalEstimacaoRepository;
 import hyve.petshow.service.port.AnimalEstimacaoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-
-import static hyve.petshow.util.AuditoriaUtils.*;
-import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 @Service
 public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
@@ -57,21 +56,20 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     public AnimalEstimacao atualizarAnimalEstimacao(Long id, AnimalEstimacao request)
             throws NotFoundException, BusinessException {
         var animalEstimacao = buscarAnimalEstimacaoPorId(id);
-
-        if(verificarIdentidade(animalEstimacao.getDonoId(), request.getDonoId())){
-            animalEstimacao.setNome(request.getNome());
-            animalEstimacao.setTipo(request.getTipo());
-            animalEstimacao.setFoto(request.getFoto());
-            animalEstimacao.setPorte(request.getPorte());
-            animalEstimacao.setPelagem(request.getPelagem());
-            animalEstimacao.setAuditoria(atualizaAuditoria(animalEstimacao.getAuditoria(), ATIVO));
-
-            var response = animalEstimacaoRepository.save(animalEstimacao);
-
-            return response;
-        } else {
-            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
+        
+        if (!verificarIdentidade(animalEstimacao.getDonoId(), request.getDonoId())) {
+        	throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
         }
+        animalEstimacao.setNome(request.getNome());
+        animalEstimacao.setTipo(request.getTipo());
+        animalEstimacao.setFoto(request.getFoto());
+        animalEstimacao.setPorte(request.getPorte());
+        animalEstimacao.setPelagem(request.getPelagem());
+        animalEstimacao.setAuditoria(atualizaAuditoria(animalEstimacao.getAuditoria(), ATIVO));
+
+        var response = animalEstimacaoRepository.save(animalEstimacao);
+
+        return response;
     }
 
     @Override
@@ -79,17 +77,17 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
             throws BusinessException, NotFoundException {
         var animalEstimacao =  buscarAnimalEstimacaoPorId(id);
 
-        if(verificarIdentidade(animalEstimacao.getDonoId(), donoId)) {
-            animalEstimacaoRepository.deleteById(id);
-
-            var sucesso = !animalEstimacaoRepository.existsById(id);
-            var response = new MensagemRepresentation(id);
-
-            response.setSucesso(sucesso);
-
-            return response;
-        } else {
-            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
+        if(!verificarIdentidade(animalEstimacao.getDonoId(), donoId)) {
+        	throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
         }
+        
+        animalEstimacaoRepository.deleteById(id);
+
+        var sucesso = !animalEstimacaoRepository.existsById(id);
+        var response = new MensagemRepresentation(id);
+
+        response.setSucesso(sucesso);
+
+        return response;
     }
 }

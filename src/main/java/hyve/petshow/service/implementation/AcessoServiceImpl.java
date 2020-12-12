@@ -1,5 +1,19 @@
 package hyve.petshow.service.implementation;
 
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+
+import java.util.ArrayList;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Prestador;
@@ -14,24 +28,8 @@ import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
-import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
-import static hyve.petshow.util.AuditoriaUtils.ATIVO;
-
 @Service
 public class AcessoServiceImpl implements AcessoService {
-//    private static final String CONTA_INFORMADA_INATIVA = "CONTA_INFORMADA_INATIVA";// "Conta informada ainda não foi ativada";
-	private static final String LOGIN_INFORMADO_NAO_ENCONTRADO = "LOGIN_INFORMADO_NAO_ENCONTRADO";//"Login informado não encontrado no sistema";
 	private static final String CONTA_JA_ATIVA = "CONTA_JA_ATIVA";//"Conta já ativa";
 	private static final String TOKEN_NAO_ENCONTRADO = "TOKEN_NAO_ENCONTRADO";//Token informado não encontrado
 	private static final String TIPO_DE_CLIENTE_INEXISTENTE = "TIPO_DE_CLIENTE_INEXISTENTE";//Tipo de cliente inexistente
@@ -45,9 +43,9 @@ public class AcessoServiceImpl implements AcessoService {
     @Autowired
     private PrestadorRepository prestadorRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
     private VerificationTokenRepository tokenRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -71,10 +69,10 @@ public class AcessoServiceImpl implements AcessoService {
 
         conta.setAuditoria(geraAuditoriaInsercao(Optional.empty()));
 
-        if(tipoConta.equals(TipoConta.CLIENTE)){
+        if(TipoConta.CLIENTE.equals(tipoConta)){
             var cliente = new Cliente(conta);
             conta = clienteRepository.save(cliente);
-        } else if(tipoConta.equals(TipoConta.PRESTADOR_AUTONOMO)){
+        } else if(TipoConta.PRESTADOR_AUTONOMO.equals(tipoConta)){
             var prestador = new Prestador(conta);
             conta = prestadorRepository.save(prestador);
         } else {
@@ -119,11 +117,7 @@ public class AcessoServiceImpl implements AcessoService {
 
 	@Override
 	public Conta buscarContaPorEmail(String email) throws Exception {
-		var conta = buscarPorEmail(email).orElseThrow(() -> new NotFoundException(LOGIN_INFORMADO_NAO_ENCONTRADO));
-//		if(!conta.isAtivo()) {
-//			throw new BusinessException(CONTA_INFORMADA_INATIVA);
-//		}
-		return conta;
+		return buscarConta(email);
 	}
 
 	

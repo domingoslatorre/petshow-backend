@@ -2,6 +2,8 @@ package hyve.petshow.unit.service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Cliente;
+import static hyve.petshow.mock.AuditoriaMock.auditoria;
+import static hyve.petshow.mock.ContaMock.contaCliente;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.service.implementation.ClienteServiceImpl;
 import org.junit.jupiter.api.*;
@@ -76,10 +78,10 @@ public class ClienteServiceTest {
 
 	@Test
 	public void deve_retornar_mensagem_de_erro() throws Exception {
-		var clienteAtivo = cliente();
-
+		var clienteAtivo = new Cliente(contaCliente());//cliente();
+		clienteAtivo.setAuditoria(auditoria(ATIVO));
 		doReturn(clienteAtivo).when(repository).save(cliente);
-
+		
 		var removerConta = service.desativarConta(1L);
 
 		assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerConta.getMensagem());
