@@ -1,5 +1,10 @@
 package hyve.petshow.controller.converter;
 
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.ServicoDetalhado;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +26,9 @@ public interface Converter<T, Y> {
     		return lista.stream().map(el -> toDomain(el)).collect(Collectors.toList());
     	}).orElse(new ArrayList<T>());
     }
-    
+
+    default Page<Y> toRepresentationPage(Page<T> domainPage){
+        return new PageImpl<>(toRepresentationList(domainPage.getContent()), domainPage.getPageable(),
+                domainPage.getTotalElements());
+    }
 }

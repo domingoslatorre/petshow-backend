@@ -55,11 +55,4 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 
 		return domain;
 	}
-
-	public Page<AvaliacaoRepresentation> toRepresentationPage(Page<Avaliacao> domainPage){
-		var representationPage = new PageImpl<>(toRepresentationList(domainPage.getContent()), domainPage.getPageable(),
-				domainPage.getTotalElements());
-
-		return representationPage;
-	}
 }

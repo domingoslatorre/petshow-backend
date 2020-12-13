@@ -43,11 +43,4 @@ public class AnimalEstimacaoConverter implements Converter<AnimalEstimacao, Anim
 
         return domain;
     }
-
-    public Page<AnimalEstimacaoRepresentation> toRepresentationPage(Page<AnimalEstimacao> domainPage){
-        var representationPage = new PageImpl<>(toRepresentationList(domainPage.getContent()), domainPage.getPageable(),
-                domainPage.getTotalElements());
-
-        return representationPage;
-    }
 }
