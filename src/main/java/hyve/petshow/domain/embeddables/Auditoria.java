@@ -7,13 +7,14 @@ import javax.persistence.Embeddable;
 
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Embeddable
 @NoArgsConstructor
 public class Auditoria {
-    private LocalDate dataCriacao;
-    private LocalDate dataAtualizacao;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
     private Long usuarioCriacao;
     private String flagAtivo;
     

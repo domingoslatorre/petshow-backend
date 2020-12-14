@@ -3,10 +3,13 @@ package hyve.petshow.domain;
 import hyve.petshow.domain.embeddables.Auditoria;
 import hyve.petshow.domain.embeddables.Endereco;
 import lombok.Data;
+import org.springframework.objenesis.instantiator.annotations.Instantiator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,16 +20,10 @@ public class Agendamento {
     private Long id;
     private BigDecimal precoFinal;
     private Float mediaAvaliacao;
-    private LocalDate data;
+    private LocalDateTime data;
     private String comentario;
     private Endereco endereco;
     private Auditoria auditoria;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(joinColumns = @JoinColumn(name = "fk_animal_estimacao"))
-    private List<AnimalEstimacao> animaisAtendidos;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(joinColumns = @JoinColumn(name = "fk_servico_detalhado"))
-    private List<ServicoDetalhado> servicosDetalhados;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_status_agendamento")
     private StatusAgendamento status;
@@ -36,4 +33,8 @@ public class Agendamento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_prestador")
     private Prestador prestador;
+    @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL)
+    private List<AnimalEstimacaoAgendamento> animaisAtendidos = new ArrayList<>();
+    @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL)
+    private List<ServicoDetalhadoAgendamento> servicosPrestados = new ArrayList<>();
 }

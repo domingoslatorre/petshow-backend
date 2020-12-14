@@ -4,7 +4,7 @@ import hyve.petshow.domain.embeddables.Endereco;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -12,7 +12,7 @@ public class AgendamentoRepresentation {
     private Long id;
     private BigDecimal precoFinal;
     private Float mediaAvaliacao;
-    private LocalDate data;
+    private LocalDateTime data;
     private String comentario;
     private Endereco endereco;
     private List<AnimalEstimacaoRepresentation> animaisAtendidos;

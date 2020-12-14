@@ -3,6 +3,7 @@ package hyve.petshow.util;
 import hyve.petshow.domain.embeddables.Auditoria;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class AuditoriaUtils {
@@ -12,8 +13,8 @@ public class AuditoriaUtils {
     public static Auditoria geraAuditoriaInsercao(Optional<Long> usuarioId){
         var auditoria = new Auditoria();
 
-        auditoria.setDataCriacao(LocalDate.now());
-        auditoria.setDataAtualizacao(LocalDate.now());
+        auditoria.setDataCriacao(LocalDateTime.now());
+        auditoria.setDataAtualizacao(LocalDateTime.now());
         auditoria.setUsuarioCriacao(usuarioId.isPresent() ? usuarioId.get() : null);
         auditoria.setFlagAtivo(INATIVO);
 
@@ -21,7 +22,7 @@ public class AuditoriaUtils {
     }
 
     public static Auditoria atualizaAuditoria(Auditoria auditoria, String flagAtivo){
-        auditoria.setDataAtualizacao(LocalDate.now());
+        auditoria.setDataAtualizacao(LocalDateTime.now());
         auditoria.setFlagAtivo(flagAtivo);
 
         return auditoria;

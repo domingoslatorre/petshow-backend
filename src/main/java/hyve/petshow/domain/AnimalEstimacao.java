@@ -1,9 +1,12 @@
 package hyve.petshow.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hyve.petshow.domain.embeddables.Auditoria;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity(name = "animal_estimacao")

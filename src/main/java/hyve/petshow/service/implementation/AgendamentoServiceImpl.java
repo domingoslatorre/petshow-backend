@@ -37,7 +37,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
         if(!verificarIdentidade(agendamentos.get()
                 .findFirst().get()
-                .getPrestador().getId(), id)) {
+                .getCliente().getId(), id)) {
             throw new BusinessException(USUARIO_NAO_PROPRIETARIO_AGENDAMENTO);
         }
 
