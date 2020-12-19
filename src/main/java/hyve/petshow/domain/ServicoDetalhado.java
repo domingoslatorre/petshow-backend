@@ -36,6 +36,9 @@ public class ServicoDetalhado {
     private Servico tipo;
     @Column(name = "fk_conta")
     private Long prestadorId;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "fk_servico")
+    private List<Adicional> adicionais = new ArrayList<Adicional>();
     
     public void addAvaliacao(Avaliacao avaliacao) {
     	avaliacao.setServicoAvaliadoId(this.getId());

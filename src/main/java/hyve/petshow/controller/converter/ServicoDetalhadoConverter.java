@@ -3,8 +3,6 @@ package hyve.petshow.controller.converter;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 
@@ -14,6 +12,8 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     private ServicoConverter servicoConverter;
 	@Autowired
 	private AvaliacaoConverter avaliacaoConverter;
+	@Autowired
+	private AdicionalConverter adicionalConverter;
 	
 	@Override
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {
@@ -25,7 +25,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         representation.setPrestadorId(domain.getPrestadorId());
         representation.setAvaliacoes(avaliacaoConverter.toRepresentationList(domain.getAvaliacoes()));
         representation.setMediaAvaliacao(domain.getMediaAvaliacao());
-
+        representation.setAdicionais(adicionalConverter.toRepresentationList(domain.getAdicionais()));
         return representation;
     }
 
@@ -39,6 +39,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         domain.setPrestadorId(representation.getPrestadorId());
         domain.setAvaliacoes(avaliacaoConverter.toDomainList(representation.getAvaliacoes()));
         domain.setMediaAvaliacao(representation.getMediaAvaliacao());
+        domain.setAdicionais(adicionalConverter.toDomainList(representation.getAdicionais()));
 
         return domain;
     }

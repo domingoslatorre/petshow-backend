@@ -2,7 +2,6 @@ package hyve.petshow.util;
 
 import hyve.petshow.domain.embeddables.Auditoria;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 

@@ -14,4 +14,5 @@ public class ServicoDetalhadoRepresentation {
 	private Float mediaAvaliacao;
 	private Long prestadorId;
 	private PrestadorRepresentation prestador;
+	private List<AdicionalRepresentation> adicionais;
 }

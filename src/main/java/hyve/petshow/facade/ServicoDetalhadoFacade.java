@@ -1,18 +1,15 @@
 package hyve.petshow.facade;
 
-import hyve.petshow.controller.converter.PrestadorConverter;
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.service.port.PrestadorService;
-import hyve.petshow.service.port.ServicoDetalhadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import hyve.petshow.controller.converter.PrestadorConverter;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.service.port.PrestadorService;
+import hyve.petshow.service.port.ServicoDetalhadoService;
 
 @Component
 public class ServicoDetalhadoFacade {
