@@ -39,7 +39,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         domain.setPrestadorId(representation.getPrestadorId());
         domain.setAvaliacoes(avaliacaoConverter.toDomainList(representation.getAvaliacoes()));
         domain.setMediaAvaliacao(representation.getMediaAvaliacao());
-        domain.setAdicionais(adicionalConverter.toDomainList(representation.getAdicionais()));
+        domain.setAdicionais(adicionalConverter.toDomainSet(representation.getAdicionais()));
 
         return domain;
     }

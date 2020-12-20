@@ -2,10 +2,10 @@ package hyve.petshow.unit.controller;
 
 import hyve.petshow.controller.ServicoDetalhadoController;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.AdicionalRepresentation;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.AnimalEstimacao;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
@@ -15,22 +15,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
 import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
 import static hyve.petshow.mock.ServicoDetalhadoMock.*;
-import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ServicoDetalhadoControllerTest {
@@ -137,5 +141,45 @@ public class ServicoDetalhadoControllerTest {
         var actual = controller.buscarServicosDetalhadosPorTipoServico(1, 0, 5);
 
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void deve_retornar_todos_os_adicionais_de_um_servico() throws Exception {
+    	var adicionais = new ArrayList<AdicionalRepresentation>() {
+			private static final long serialVersionUID = 1L;
+
+		{
+    		add(AdicionalRepresentation.builder().id(1l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(10)).build());
+    		add(AdicionalRepresentation.builder().id(2l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(10)).build());
+    	}};
+    	var expected = ResponseEntity.ok(adicionais);
+    	
+    	doReturn(adicionais).when(servicoDetalhadoFacade).buscarAdicionais(anyLong(), anyLong());
+    	
+    	var busca = controller.buscarAdicionais(1l, 1l);
+    	
+    	assertEquals(expected, busca);
+    }
+    
+    @Test
+    public void deve_retornar_excecao_ao_nao_encontrar_servicos() throws Exception {
+    	doThrow(NotFoundException.class).when(servicoDetalhadoFacade).buscarAdicionais(anyLong(), anyLong());
+    	assertThrows(NotFoundException.class, () -> controller.buscarAdicionais(1l, 1l));
+    }
+    
+    @Test
+    public void deve_criar_novo_adicional() throws Exception {
+    	var adicionalTeste = AdicionalRepresentation.builder().id(1l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(23)).build();
+    	
+    	var dbMock = new ArrayList<AdicionalRepresentation>();
+    	Mockito.doAnswer(mock -> {
+    		var adicional = (AdicionalRepresentation) mock.getArgument(2);
+    		dbMock.add(adicional);
+    		return adicional;
+    	}).when(servicoDetalhadoFacade).criaAdicional(anyLong(), anyLong(), any());
+    	
+    	controller.criarAdicional(1l, 1l, adicionalTeste);
+    	
+    	assertEquals(1, dbMock.size());
     }
 }

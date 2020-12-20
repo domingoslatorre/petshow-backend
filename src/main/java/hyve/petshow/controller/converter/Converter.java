@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public interface Converter<T, Y> {
@@ -25,6 +27,18 @@ public interface Converter<T, Y> {
     	return Optional.ofNullable(representationList).map(lista -> {
     		return lista.stream().map(el -> toDomain(el)).collect(Collectors.toList());
     	}).orElse(new ArrayList<T>());
+    }
+    
+    default List<Y> toRepresentationList(Set<T> domainList) {
+    	return Optional.ofNullable(domainList).map(lista -> {
+    		return lista.stream().map(el -> toRepresentation(el)).collect(Collectors.toList());
+    	}).orElse(new ArrayList<Y>());
+    }
+    
+    default Set<T> toDomainSet(List<Y> representationList) {
+    	return Optional.ofNullable(representationList).map(lista -> {
+    		return lista.stream().map(el -> toDomain(el)).collect(Collectors.toSet());
+    	}).orElse(Collections.emptySet());
     }
 
     default Page<Y> toRepresentationPage(Page<T> domainPage){

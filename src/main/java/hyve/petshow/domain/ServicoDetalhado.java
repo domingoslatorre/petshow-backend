@@ -2,7 +2,9 @@ package hyve.petshow.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,7 +40,7 @@ public class ServicoDetalhado {
     private Long prestadorId;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "fk_servico")
-    private List<Adicional> adicionais = new ArrayList<Adicional>();
+    private Set<Adicional> adicionais = Collections.emptySet();
     
     public void addAvaliacao(Avaliacao avaliacao) {
     	avaliacao.setServicoAvaliadoId(this.getId());

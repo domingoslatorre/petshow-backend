@@ -13,6 +13,7 @@ import hyve.petshow.domain.embeddables.Auditoria;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -24,11 +25,16 @@ public class Adicional {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@EqualsAndHashCode.Exclude
 	private String nome;
+	@EqualsAndHashCode.Exclude
 	private String descricao;
+	@EqualsAndHashCode.Exclude
 	private BigDecimal preco;
 	@Column(name = "fk_servico")
+	@EqualsAndHashCode.Exclude
 	private Long idServicoDetalhado;
 	@Embedded
+	@EqualsAndHashCode.Exclude
 	private Auditoria auditoria;
 }

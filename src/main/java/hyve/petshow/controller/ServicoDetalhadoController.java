@@ -1,6 +1,7 @@
 package hyve.petshow.controller;
 
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.AdicionalRepresentation;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
+
+import java.util.List;
 
 @RestController
 @RequestMapping
@@ -149,5 +152,26 @@ public class ServicoDetalhadoController {
 		var representation = converter.toRepresentation(servico);
 
 		return ResponseEntity.ok(representation);
+	}
+	@Operation(summary = "Busca adicionais atrelados a um serviço")
+	@GetMapping("/prestador/{idPrestador}/servico-detalhado/{idServico}/adicional")
+	public ResponseEntity<List<AdicionalRepresentation>> buscarAdicionais(
+			@Parameter(description = "Id do prestador")
+			@PathVariable Long idPrestador, 
+			@Parameter(description = "Id do Serviço")
+			@PathVariable Long idServico) throws Exception {
+		return ResponseEntity.ok(servicoDetalhadoFacade.buscarAdicionais(idPrestador, idServico));
+	}
+	@Operation(summary = "Cria novo adicional para um serviço")
+	@PostMapping("/prestador/{idPrestador}/servico-detalhado/{idServico}/adicional")
+	public ResponseEntity<AdicionalRepresentation> criarAdicional(
+			@Parameter(description = "Id do prestador")
+			@PathVariable Long idPrestador, 
+			@Parameter(description = "Id do serviço")
+			@PathVariable Long idServico, 
+			@Parameter(description = "Corpo do adicional a adicionar")
+			@RequestBody AdicionalRepresentation request) throws Exception {
+		return ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoFacade.criaAdicional(idPrestador, idServico, request));
+			
 	}
 }
