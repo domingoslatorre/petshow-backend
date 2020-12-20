@@ -1,18 +1,20 @@
 package hyve.petshow.facade;
 
-import hyve.petshow.controller.converter.PrestadorConverter;
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.service.port.PrestadorService;
-import hyve.petshow.service.port.ServicoDetalhadoService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import hyve.petshow.controller.converter.AdicionalConverter;
+import hyve.petshow.controller.converter.PrestadorConverter;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.AdicionalRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.service.port.AdicionalService;
+import hyve.petshow.service.port.PrestadorService;
+import hyve.petshow.service.port.ServicoDetalhadoService;
 
 @Component
 public class ServicoDetalhadoFacade {
@@ -24,6 +26,10 @@ public class ServicoDetalhadoFacade {
     private ServicoDetalhadoConverter servicoDetalhadoConverter;
     @Autowired
     private PrestadorConverter prestadorConverter;
+    @Autowired
+    private AdicionalService adicionalService;
+    @Autowired
+    private AdicionalConverter adicionalConverter;
 
     public Page<ServicoDetalhadoRepresentation> buscarServicosDetalhadosPorTipoServico(Integer id, Pageable pageable) throws Exception {
         var servicosDetalhados = servicoDetalhadoConverter.toRepresentationPage(
@@ -48,5 +54,21 @@ public class ServicoDetalhadoFacade {
         representation.setPrestador(prestador);
 
         return representation;
+    }
+    
+    public List<AdicionalRepresentation> buscarAdicionais(Long prestadorId, Long servicoId) throws Exception {
+    	var prestador = prestadorService.buscarPorId(prestadorId);
+    	var servicoDetalhado = servicoDetalhadoService.buscarPorPrestadorIdEServicoId(prestador.getId(), servicoId);
+    	var adicionais = adicionalService.buscarPorServicoDetalhado(servicoDetalhado.getId());
+    	return adicionalConverter.toRepresentationList(adicionais);
+    }
+    
+    public AdicionalRepresentation criaAdicional(Long idPrestador, Long idServico, AdicionalRepresentation novoAdicional) throws Exception {
+    	var prestador = prestadorService.buscarPorId(idPrestador);
+    	var servico = servicoDetalhadoService.buscarPorPrestadorIdEServicoId(prestador.getId(), idServico);
+    	novoAdicional.setIdServicoDetalhado(servico.getId());
+    	var domain = adicionalConverter.toDomain(novoAdicional);
+    	var adicional = adicionalService.criarAdicional(domain);
+    	return adicionalConverter.toRepresentation(adicional);
     }
 }

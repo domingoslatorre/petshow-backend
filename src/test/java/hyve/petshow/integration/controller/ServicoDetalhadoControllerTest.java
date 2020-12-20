@@ -4,6 +4,7 @@ import static hyve.petshow.mock.ContaMock.contaCliente;
 import static hyve.petshow.mock.ContaMock.contaPrestador;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -27,6 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.AdicionalRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
@@ -34,6 +36,7 @@ import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
+import hyve.petshow.repository.AdicionalRepository;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
@@ -61,6 +64,8 @@ public class ServicoDetalhadoControllerTest {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private AvaliacaoRepository avaliacaoRepository;
+	@Autowired
+	private AdicionalRepository adicionalRepository;
 	@Autowired
 	private ServicoDetalhadoConverter converter;
 	@Autowired
@@ -98,6 +103,7 @@ public class ServicoDetalhadoControllerTest {
 	
 	@AfterEach
 	public void limpaRepositorio() {
+		adicionalRepository.deleteAll();
 		avaliacaoRepository.deleteAll();
 		repository.deleteAll();
 		servicoRepository.deleteAll();
@@ -240,5 +246,25 @@ public class ServicoDetalhadoControllerTest {
 		var response = template.getForEntity(uri, String.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		
+	}
+	
+	@Test
+	public void deve_criar_adicionais_para_servicos() throws Exception {
+		var servicoAdd = service.adicionarServicoDetalhado(servico);
+		var adicional = AdicionalRepresentation.builder()
+						.idServicoDetalhado(servicoAdd.getId())
+						.nome("Teste adicional")
+						.preco(BigDecimal.valueOf(23))
+						.build();
+		
+		var uri = new URI(this.url + "/" + servicoAdd.getId() + "/adicional");
+		var entity = new HttpEntity<>(adicional, new HttpHeaders());
+		var response = template.postForEntity(uri, entity, AdicionalRepresentation.class);;
+	
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		var busca = adicionalRepository.findById(response.getBody().getId());
+		assertTrue(busca.isPresent());
+		var buscaServico = repository.findById(servicoAdd.getId()).get();
+		assertTrue(buscaServico.getAdicionais().contains(busca.get()));
 	}
 }
