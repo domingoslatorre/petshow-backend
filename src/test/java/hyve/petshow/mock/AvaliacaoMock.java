@@ -18,7 +18,6 @@ public class AvaliacaoMock {
 
 		var servicoAvaliado = new ServicoDetalhado();
 		servicoAvaliado.setId(1l);
-		servicoAvaliado.setPreco(BigDecimal.valueOf(30.5));
 		servicoAvaliado.setTipo(tipo);
 
 		var prestador = new Prestador();

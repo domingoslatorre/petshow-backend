@@ -61,7 +61,6 @@ public class ServicoDetalhadoServiceTest {
 		servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setPrestadorId(prestadorDb.getId());
 		servicoDetalhado.setTipo(tipo);
-		servicoDetalhado.setPreco(BigDecimal.valueOf(23.5));
 	}
 	@AfterEach
 	public void removeTipos() {
@@ -85,13 +84,15 @@ public class ServicoDetalhadoServiceTest {
 		var servico = service.adicionarServicoDetalhado(servicoDetalhado);
 		
 		// When
-		var precoAtualizado = BigDecimal.valueOf(25);
-		servico.setPreco(precoAtualizado);
+		var tipoAtualizado = new Servico();
+		tipoAtualizado.setNome("Outro nome");
+		servico.setTipo(tipoAtualizado);
 		var servicoAtualizado = service.atualizarServicoDetalhado(servico.getId(), servico.getPrestadorId(), servico);
 		
 		// Then
-		var servicoDb = repository.findById(servicoAtualizado.getId());
-		assertEquals(precoAtualizado.doubleValue(), servicoDb.get().getPreco().doubleValue(), 0.001);
+		var servicoDb = repository.findById(servicoAtualizado.getId()).get();
+		var tipoServicoDb = servicoDb.getTipo();
+		assertEquals(tipoAtualizado.getNome(), tipoServicoDb.getNome());
 	}
 	
 	@Test
@@ -100,8 +101,10 @@ public class ServicoDetalhadoServiceTest {
 		var servico = service.adicionarServicoDetalhado(servicoDetalhado);
 		
 		// When
-		var precoAtualizado = BigDecimal.valueOf(25);
-		servico.setPreco(precoAtualizado);
+		var outroTipo = new Servico();
+		outroTipo.setNome("Outro nome");
+		var tipoAtualizado = outroTipo;
+		servico.setTipo(tipoAtualizado);
 		
 		assertThrows(BusinessException.class, () -> {
 			service.atualizarServicoDetalhado(servico.getId(), servico.getPrestadorId() + 1, servico);

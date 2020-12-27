@@ -89,9 +89,6 @@ public class ServicoDetalhadoControllerTest {
 		servico = new ServicoDetalhado();
 		servico.setTipo(tipoServico);
 		servico.setPrestadorId(prestador.getId());
-		servico.setPreco(BigDecimal.valueOf(30));
-		
-		
 		
 		url = "http://localhost:" + port + "/prestador/" + prestador.getId() + "/servico-detalhado";
 	}
@@ -196,12 +193,15 @@ public class ServicoDetalhadoControllerTest {
 	public void deve_atualizar_servico() throws Exception {
 		var servicoAdd = service.adicionarServicoDetalhado(servico);
 		var uri = new URI(this.url + "/"+servico.getId());
-		servicoAdd.setPreco(BigDecimal.valueOf(25));
+		var tipoServico = new Servico();
+		tipoServico.setNome("Banho e tosa");
+		servicoAdd.setTipo(tipoServico);
 		var body = new HttpEntity<>(servicoAdd, new HttpHeaders());
 		template.exchange(uri, HttpMethod.PUT, body, Void.class);
 		
-		var busca = repository.findById(servicoAdd.getId()).get();;
-		assertEquals(25, busca.getPreco().doubleValue() , 0.001);
+		var busca = repository.findById(servicoAdd.getId()).get();
+		var tipo = busca.getTipo();
+		assertEquals("Banho e tosa", tipo.getNome());
 	}
 	
 	@Test

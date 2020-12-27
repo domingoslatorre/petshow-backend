@@ -20,7 +20,6 @@ public class ServicoDetalhadoMock {
 		var servicoDetalhado = new ServicoDetalhado();
 
 		servicoDetalhado.setId(1L);
-		servicoDetalhado.setPreco(BigDecimal.valueOf(1000L));
 		servicoDetalhado.setMediaAvaliacao(4.5F);
 		servicoDetalhado.setAuditoria(auditoria(ATIVO));
 		servicoDetalhado.setAvaliacoes(avaliacaoList());
@@ -35,7 +34,6 @@ public class ServicoDetalhadoMock {
 		var servicoDetalhado = servicoDetalhado();
 
 		servicoDetalhadoRepresentation.setId(servicoDetalhado.getId());
-		servicoDetalhadoRepresentation.setPreco(servicoDetalhado.getPreco());;
 		servicoDetalhadoRepresentation.setMediaAvaliacao(servicoDetalhado.getMediaAvaliacao());
 		servicoDetalhadoRepresentation.setAvaliacoes(singletonList(avaliacaoRepresentation()));
 		servicoDetalhadoRepresentation.setTipo(servicoRepresentation());

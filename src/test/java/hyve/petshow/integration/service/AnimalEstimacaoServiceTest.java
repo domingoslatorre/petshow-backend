@@ -54,14 +54,15 @@ public class AnimalEstimacaoServiceTest {
 		
 		tipoAnimal = new TipoAnimalEstimacao();
 		tipoAnimal.setNome("Cachorro");
+		tipoAnimal.setPelagem("Peludo");
+		tipoAnimal.setPorte("Pequeno");	
 		tipoRepository.save(tipoAnimal);
 		
 		animalEstimacao = new AnimalEstimacao();
 		animalEstimacao.setDonoId(cliente.getId());
 		animalEstimacao.setTipo(tipoAnimal);
 		animalEstimacao.setNome("Bidu");
-		animalEstimacao.setPelagem("Peludo");
-		animalEstimacao.setPorte("Pequeno");	
+
 	}
 	
 	@AfterEach
