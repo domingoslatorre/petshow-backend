@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import hyve.petshow.domain.Adicional;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
@@ -199,6 +201,40 @@ public class ServicoDetalhadoServiceTest {
 		assertThrows(NotFoundException.class, () -> {
 			service.buscarPorPrestadorIdEServicoId(prestador.getId(), 10l);
 		});
+	}
+	
+	@Test
+	public void deve_inserir_com_um_adicional() throws Exception {
+		// Given
+		servicoDetalhado.setAdicionais(new HashSet<Adicional>() {
+			private static final long serialVersionUID = 1L;
+
+		{
+			add(Adicional.builder().nome("Teste").descricao("Descricao").preco(BigDecimal.valueOf(10)).build());
+		}});
 		
+		// When
+		service.adicionarServicoDetalhado(servicoDetalhado);
+		var servico = service.buscarPorId(servicoDetalhado.getId());
+		// Then
+		assertEquals(1, servico.getAdicionais().size());
+	}
+	
+	@Test
+	public void deve_inserir_com_dois_adicionais() throws Exception {
+		// Given
+		servicoDetalhado.setAdicionais(new HashSet<Adicional>() {
+			private static final long serialVersionUID = 1L;
+
+		{
+			add(Adicional.builder().nome("Teste").descricao("Descricao").preco(BigDecimal.valueOf(10)).build());
+			add(Adicional.builder().nome("Teste2").descricao("Descricao2").preco(BigDecimal.valueOf(15)).build());
+		}});
+		
+		// When
+		service.adicionarServicoDetalhado(servicoDetalhado);
+		var servico = service.buscarPorId(servicoDetalhado.getId());
+		// Then
+		assertEquals(2, servico.getAdicionais().size());
 	}
 }

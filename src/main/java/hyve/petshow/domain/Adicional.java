@@ -29,10 +29,10 @@ public class Adicional {
 	private String nome;
 	@EqualsAndHashCode.Exclude
 	private String descricao;
-	@EqualsAndHashCode.Exclude
+	//@EqualsAndHashCode.Exclude
 	private BigDecimal preco;
 	@Column(name = "fk_servico")
-	@EqualsAndHashCode.Exclude
+	//@EqualsAndHashCode.Exclude
 	private Long idServicoDetalhado;
 	@Embedded
 	@EqualsAndHashCode.Exclude
