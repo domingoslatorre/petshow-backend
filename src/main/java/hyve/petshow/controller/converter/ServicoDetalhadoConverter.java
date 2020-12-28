@@ -19,6 +19,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
 	private AvaliacaoConverter avaliacaoConverter;
 	@Autowired
     private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
+	@Autowired
 	private AdicionalConverter adicionalConverter;
 	
 	@Override
