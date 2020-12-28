@@ -29,6 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
+import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
@@ -175,6 +176,7 @@ public class ServicoDetalhadoControllerTest {
 		var response = template.postForEntity(uri, body, ServicoDetalhadoRepresentation.class);
 		
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
 	}
 	
 	@Test

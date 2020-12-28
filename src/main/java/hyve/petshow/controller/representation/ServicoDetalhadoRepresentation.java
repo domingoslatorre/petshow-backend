@@ -14,9 +14,6 @@ public class ServicoDetalhadoRepresentation {
 	private Float mediaAvaliacao;
 	private Long prestadorId;
 	private PrestadorRepresentation prestador;
-<<<<<<< HEAD
 	private List<PrecoPorTipoRepresentation> precoPorTipo = new ArrayList<>();
-=======
 	private List<AdicionalRepresentation> adicionais;
->>>>>>> 205f6d1885fb0d324b30f2dcbf89d541b8164383
 }
