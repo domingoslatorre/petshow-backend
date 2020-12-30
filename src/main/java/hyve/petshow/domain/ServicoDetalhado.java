@@ -2,7 +2,7 @@ package hyve.petshow.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class ServicoDetalhado {
     private Float mediaAvaliacao;
     @Embedded
     private Auditoria auditoria;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_servico_detalhado")
     private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
     @ManyToOne
@@ -38,9 +39,9 @@ public class ServicoDetalhado {
     private Servico tipo;
     @Column(name = "fk_conta")
     private Long prestadorId;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_servico")
-    private Set<Adicional> adicionais = Collections.emptySet();
+    private Set<Adicional> adicionais = new HashSet<Adicional>();
     
     public void addAvaliacao(Avaliacao avaliacao) {
     	avaliacao.setServicoAvaliadoId(this.getId());
