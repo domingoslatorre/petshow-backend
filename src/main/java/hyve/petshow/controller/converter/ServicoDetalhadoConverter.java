@@ -16,8 +16,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
 	@Autowired
     private ServicoConverter servicoConverter;
 	@Autowired
-	private AvaliacaoConverter avaliacaoConverter;
-	@Autowired
     private TipoAnimalEstimacaoConverter tipoAnimalEstimacaoConverter;
 	@Autowired
 	private AdicionalConverter adicionalConverter;
@@ -29,7 +27,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     	representation.setId(domain.getId());
         representation.setTipo(servicoConverter.toRepresentation(domain.getTipo()));
         representation.setPrestadorId(domain.getPrestadorId());
-        representation.setAvaliacoes(avaliacaoConverter.toRepresentationList(domain.getAvaliacoes()));
         representation.setMediaAvaliacao(domain.getMediaAvaliacao());
         domain.getTiposAnimaisAceitos().stream()
             .forEach(tipoAnimalAceito -> {
@@ -51,7 +48,6 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     	domain.setId(representation.getId());
         domain.setTipo(servicoConverter.toDomain(representation.getTipo()));
         domain.setPrestadorId(representation.getPrestadorId());
-        domain.setAvaliacoes(avaliacaoConverter.toDomainList(representation.getAvaliacoes()));
         domain.setMediaAvaliacao(representation.getMediaAvaliacao());
         representation.getPrecoPorTipo().stream()
                 .forEach(precoPorTipo -> domain.getTiposAnimaisAceitos().add(
@@ -59,7 +55,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
                                 tipoAnimalEstimacaoConverter.toDomain(precoPorTipo.getTipoAnimal()),
                                 precoPorTipo.getPreco())
                 ));
-        domain.setAdicionais(adicionalConverter.toDomainSet(representation.getAdicionais()));
+        domain.setAdicionais(adicionalConverter.toDomainList(representation.getAdicionais()));
 
         return domain;
     }

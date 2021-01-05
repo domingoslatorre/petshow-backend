@@ -19,6 +19,8 @@ public class Avaliacao {
 	private Auditoria auditoria;
 	@Column(name = "fk_servico_detalhado")
 	private Long servicoAvaliadoId;
+		@Column(name = "fk_agendamento")
+	private Long agendamentoAvaliadoId;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_conta")
 	private Cliente cliente;

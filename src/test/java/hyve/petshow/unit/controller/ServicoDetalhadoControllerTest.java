@@ -149,8 +149,8 @@ public class ServicoDetalhadoControllerTest {
 			private static final long serialVersionUID = 1L;
 
 		{
-    		add(AdicionalRepresentation.builder().id(1l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(10)).build());
-    		add(AdicionalRepresentation.builder().id(2l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(10)).build());
+    		add(AdicionalRepresentation.builder().id(1l).nome("Teste").servicoDetalhadoId(1l).preco(BigDecimal.valueOf(10)).build());
+    		add(AdicionalRepresentation.builder().id(2l).nome("Teste").servicoDetalhadoId(1l).preco(BigDecimal.valueOf(10)).build());
     	}};
     	var expected = ResponseEntity.ok(adicionais);
     	
@@ -169,7 +169,7 @@ public class ServicoDetalhadoControllerTest {
     
     @Test
     public void deve_criar_novo_adicional() throws Exception {
-    	var adicionalTeste = AdicionalRepresentation.builder().id(1l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(23)).build();
+    	var adicionalTeste = AdicionalRepresentation.builder().id(1l).nome("Teste").servicoDetalhadoId(1l).preco(BigDecimal.valueOf(23)).build();
     	
     	var dbMock = new ArrayList<AdicionalRepresentation>();
     	Mockito.doAnswer(mock -> {

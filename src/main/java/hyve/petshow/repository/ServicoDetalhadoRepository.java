@@ -12,13 +12,10 @@ import java.util.Optional;
 
 @Repository
 public interface ServicoDetalhadoRepository extends JpaRepository<ServicoDetalhado, Long> {
-	@Query("select s from servico_detalhado s left join fetch s.avaliacoes left join fetch s.adicionais where s.id=?1")
 	Optional<ServicoDetalhado> findById(Long id);
 
-	@Query("select s from servico_detalhado s where s.prestadorId=?1")
 	Page<ServicoDetalhado> findByPrestadorId(Long prestadorId, Pageable pageable);
 	
-	@Query("select s from servico_detalhado s left join fetch s.avaliacoes left join fetch s.adicionais where s.id=?1 and s.prestadorId=?2")
 	Optional<ServicoDetalhado> findByIdAndPrestadorId(Long idServico, Long idPrestador);
 
 	@Query("select s from servico_detalhado s where s.tipo.id=?1")

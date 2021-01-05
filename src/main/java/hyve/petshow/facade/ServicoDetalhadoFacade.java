@@ -66,7 +66,7 @@ public class ServicoDetalhadoFacade {
     public AdicionalRepresentation criaAdicional(Long idPrestador, Long idServico, AdicionalRepresentation novoAdicional) throws Exception {
     	var prestador = prestadorService.buscarPorId(idPrestador);
     	var servico = servicoDetalhadoService.buscarPorPrestadorIdEServicoId(prestador.getId(), idServico);
-    	novoAdicional.setIdServicoDetalhado(servico.getId());
+    	novoAdicional.setServicoDetalhadoId(servico.getId());
     	var domain = adicionalConverter.toDomain(novoAdicional);
     	var adicional = adicionalService.criarAdicional(domain);
     	return adicionalConverter.toRepresentation(adicional);
