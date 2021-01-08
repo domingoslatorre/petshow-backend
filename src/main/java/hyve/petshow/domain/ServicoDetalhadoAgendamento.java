@@ -1,6 +1,5 @@
 package hyve.petshow.domain;
 
-import lombok.AllArgsConstructor;
 import java.io.Serializable;
 
 import javax.persistence.Entity;

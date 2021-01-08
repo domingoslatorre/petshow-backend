@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
@@ -68,8 +67,6 @@ public class ServicoDetalhadoControllerTest {
 	private AdicionalRepository adicionalRepository;
 	@Autowired
 	private ServicoDetalhadoConverter converter;
-	@Autowired
-	private AvaliacaoConverter avaliacaoConverter;
 	private String url;
 	
 	private Prestador prestador;
@@ -209,23 +206,6 @@ public class ServicoDetalhadoControllerTest {
 		var busca = repository.findById(servicoAdd.getId()).get();
 		var tipo = busca.getTipo();
 		assertEquals("Banho e tosa", tipo.getNome());
-	}
-	
-	@Test
-	public void deve_adicionar_avaliacao() throws Exception {
-		var servicoAdd = service.adicionarServicoDetalhado(servico);
-		var uri = new URI(this.url + "/"+servico.getId()+ "/avaliacoes");
-		
-		var avaliacao = new Avaliacao();
-		avaliacao.setServicoAvaliadoId(servicoAdd.getId());
-		avaliacao.setCliente(cliente);
-		avaliacao.setCriteriosAvaliacao(new CriteriosAvaliacao());
-		
-		var representation = avaliacaoConverter.toRepresentation(avaliacao);
-		var body = new HttpEntity<>(representation, new HttpHeaders());
-		
-		var response = template.postForEntity(uri, body, ServicoDetalhadoRepresentation.class);
-		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 	}
 	
 	@Test

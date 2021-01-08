@@ -2,7 +2,6 @@ package hyve.petshow.domain;
 
 import hyve.petshow.domain.embeddables.Auditoria;
 import lombok.Data;
-import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;

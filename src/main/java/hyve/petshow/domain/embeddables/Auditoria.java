@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
