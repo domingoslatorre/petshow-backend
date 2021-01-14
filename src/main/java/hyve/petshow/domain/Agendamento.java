@@ -44,4 +44,7 @@ public class Agendamento {
     private List<AnimalEstimacaoAgendamento> animaisAtendidos = new ArrayList<>();
     @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL)
     private List<ServicoDetalhadoAgendamento> servicosPrestados = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "fk_agendamento")
+    private List<Avaliacao> avaliacoes;
 }
