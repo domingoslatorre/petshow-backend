@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import hyve.petshow.domain.embeddables.Auditoria;
 import hyve.petshow.domain.embeddables.Endereco;
@@ -44,7 +45,7 @@ public class Agendamento {
     private List<AnimalEstimacaoAgendamento> animaisAtendidos = new ArrayList<>();
     @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL)
     private List<ServicoDetalhadoAgendamento> servicosPrestados = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "fk_agendamento")
-    private List<Avaliacao> avaliacoes;
+    private Avaliacao avaliacao;
 }
