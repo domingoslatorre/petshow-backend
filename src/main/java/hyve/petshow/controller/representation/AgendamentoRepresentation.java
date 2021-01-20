@@ -17,6 +17,7 @@ public class AgendamentoRepresentation {
     private Endereco endereco;
     private List<AnimalEstimacaoRepresentation> animaisAtendidos;
     private List<ServicoDetalhadoRepresentation> servicosDetalhados;
+    private Long servicoDetalhadoId;
     private Integer statusId;
     private StatusAgendamentoRepresentation status;
     private Long clienteId;
