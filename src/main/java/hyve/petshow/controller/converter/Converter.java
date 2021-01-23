@@ -1,7 +1,5 @@
 package hyve.petshow.controller.converter;
 
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.ServicoDetalhado;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
