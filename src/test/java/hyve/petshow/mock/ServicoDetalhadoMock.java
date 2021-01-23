@@ -1,14 +1,11 @@
 package hyve.petshow.mock;
 
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static hyve.petshow.mock.AuditoriaMock.auditoria;
-import static hyve.petshow.mock.AvaliacaoMock.avaliacaoList;
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
 import static hyve.petshow.mock.ServicoMock.servico;
 import static hyve.petshow.mock.ServicoMock.servicoRepresentation;
@@ -22,7 +19,6 @@ public class ServicoDetalhadoMock {
 		servicoDetalhado.setId(1L);
 		servicoDetalhado.setMediaAvaliacao(4.5F);
 		servicoDetalhado.setAuditoria(auditoria(ATIVO));
-		servicoDetalhado.setAvaliacoes(avaliacaoList());
 		servicoDetalhado.setTipo(servico());
 		servicoDetalhado.setPrestadorId(1L);
 

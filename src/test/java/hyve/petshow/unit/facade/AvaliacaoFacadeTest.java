@@ -75,14 +75,14 @@ public class AvaliacaoFacadeTest {
 
 	@Test
 	public void deve_criar_avaliacao() throws Exception {
-		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L);
+		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L, 1L);
 
 		assertFalse(avaliacoes.isEmpty());
 	}
 	
 	@Test
 	public void deve_retornar_avaliacao_em_lista() throws Exception {
-		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L);
+		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L, 1L);
 
 		var avaliacoes = facade.buscarAvaliacaoPorServico(1L, geraPageable(0, 5));
 		

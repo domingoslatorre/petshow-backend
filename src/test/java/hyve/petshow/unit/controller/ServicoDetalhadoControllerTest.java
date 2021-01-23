@@ -75,7 +75,7 @@ public class ServicoDetalhadoControllerTest {
         doReturn(servicoDetalhadoRepresentation).when(converter).toRepresentation(any(ServicoDetalhado.class));
         doReturn(servicoDetalhadoRepresentationList).when(converter).toRepresentationList(anyList());
         doReturn(servicoDetalhadoRepresentationPage).when(converter).toRepresentationPage(any(Page.class));
-        doNothing().when(avaliacaoFacade).adicionarAvaliacao(any(AvaliacaoRepresentation.class), anyLong(), anyLong());
+//        doNothing().when(avaliacaoFacade).adicionarAvaliacao(any(AvaliacaoRepresentation.class), anyLong(), anyLong());
         doReturn(servicoDetalhadoRepresentation).when(servicoDetalhadoFacade).buscarPorPrestadorIdEServicoId(anyLong(), anyLong());
         doReturn(servicoDetalhadoRepresentationPage).when(servicoDetalhadoFacade).buscarServicosDetalhadosPorTipoServico(anyInt(), any(Pageable.class));
     }
@@ -107,14 +107,14 @@ public class ServicoDetalhadoControllerTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    public void deve_adicionar_avaliacao_e_retornar_servico_avaliado() throws Exception {
-        var expected = ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoRepresentation);
-
-        var actual = controller.adicionarAvaliacao(1L, 1L, avaliacaoRepresentation);
-
-        assertEquals(expected, actual);
-    }
+//    @Test
+//    public void deve_adicionar_avaliacao_e_retornar_servico_avaliado() throws Exception {
+//        var expected = ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoRepresentation);
+//
+//        var actual = controller.adicionarAvaliacao(1L, 1L, avaliacaoRepresentation);
+//
+//        assertEquals(expected, actual);
+//    }
 
     @Test
     public void deve_retornar_servico_detalhado() throws Exception {

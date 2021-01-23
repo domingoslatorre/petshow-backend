@@ -2,7 +2,6 @@ package hyve.petshow.domain;
 
 import hyve.petshow.domain.embeddables.Auditoria;
 import lombok.Data;
-import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -19,7 +18,7 @@ public class ServicoDetalhado {
     private Float mediaAvaliacao;
     @Embedded
     private Auditoria auditoria;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_servico_detalhado")
     private List<Adicional> adicionais = new ArrayList<>();
     @ManyToOne
@@ -29,4 +28,5 @@ public class ServicoDetalhado {
     private Long prestadorId;
     @OneToMany(mappedBy = "servicoDetalhado", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
     private List<ServicoDetalhadoTipoAnimalEstimacao> tiposAnimaisAceitos = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true);
 }

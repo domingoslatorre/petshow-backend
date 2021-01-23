@@ -4,7 +4,6 @@ import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.*;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class AvaliacaoMock {
 		prestador.setNome("TestePrestador");
 
 		servicoAvaliado.setPrestadorId(prestador.getId());
-		servicoAvaliado.setAvaliacoes(new ArrayList<>());
+//		servicoAvaliado.setAvaliacoes(new ArrayList<>());
 		var cliente = new Cliente();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
