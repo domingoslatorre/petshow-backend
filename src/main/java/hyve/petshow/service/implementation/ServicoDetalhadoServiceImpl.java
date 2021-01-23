@@ -53,6 +53,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 		return servicosDetalhados;
 	}
 
+	// TODO: Ajustar metodo de atualizar para realmente atualizar | Ajustar teste
 	@Override
 	public ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, ServicoDetalhado request)
 			throws BusinessException, NotFoundException {
@@ -62,7 +63,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
 		
-		servicoDetalhado.setPreco(request.getPreco());
+		//servicoDetalhado.setPreco(request.getPreco());
 		servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ATIVO));
 		var response = repository.save(servicoDetalhado);
 		return response;

@@ -13,6 +13,8 @@ public class TipoAnimalEstimacaoConverter implements Converter<TipoAnimalEstimac
 
         representation.setId(domain.getId());
         representation.setNome(domain.getNome());
+        representation.setPelagem(domain.getPelagem());
+        representation.setPorte(domain.getPorte());
 
         return representation;
     }
@@ -23,6 +25,8 @@ public class TipoAnimalEstimacaoConverter implements Converter<TipoAnimalEstimac
 
         domain.setId(representation.getId());
         domain.setNome(representation.getNome());
+        domain.setPelagem(representation.getPelagem());
+        domain.setPorte(representation.getPorte());
 
         return domain;
     }

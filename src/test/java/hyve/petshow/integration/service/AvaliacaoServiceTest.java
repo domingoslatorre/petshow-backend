@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static hyve.petshow.mock.ContaMock.contaCliente;
 
-import java.math.BigDecimal;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -75,7 +73,6 @@ public class AvaliacaoServiceTest {
 		servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setPrestadorId(prestadorDb.getId());
 		servicoDetalhado.setTipo(tipo);
-		servicoDetalhado.setPreco(BigDecimal.valueOf(23.5));
 		var servico = servicoDetalhadoRepository.save(servicoDetalhado);
 		
 		avaliacao = new Avaliacao();

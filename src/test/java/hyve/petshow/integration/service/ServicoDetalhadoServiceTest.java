@@ -63,7 +63,6 @@ public class ServicoDetalhadoServiceTest {
 		servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setPrestadorId(prestadorDb.getId());
 		servicoDetalhado.setTipo(tipo);
-		servicoDetalhado.setPreco(BigDecimal.valueOf(23.5));
 	}
 
 	@AfterEach
@@ -82,7 +81,7 @@ public class ServicoDetalhadoServiceTest {
 		assertTrue(repository.findById(servico.getId()).isPresent());
 	}
 
-	@Test
+  @Test
 	public void deve_atualizar_servico() throws BusinessException, NotFoundException {
 		// Given
 		var servico = service.adicionarServicoDetalhado(servicoDetalhado);
@@ -105,7 +104,6 @@ public class ServicoDetalhadoServiceTest {
 		// When
 		var precoAtualizado = BigDecimal.valueOf(25);
 		servico.setPreco(precoAtualizado);
-
 		assertThrows(BusinessException.class, () -> {
 			service.atualizarServicoDetalhado(servico.getId(), servico.getPrestadorId() + 1, servico);
 		});

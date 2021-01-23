@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
@@ -68,8 +67,6 @@ public class ServicoDetalhadoControllerTest {
 	private AdicionalRepository adicionalRepository;
 	@Autowired
 	private ServicoDetalhadoConverter converter;
-	@Autowired
-	private AvaliacaoConverter avaliacaoConverter;
 	private String url;
 	
 	private Prestador prestador;
@@ -94,9 +91,6 @@ public class ServicoDetalhadoControllerTest {
 		servico = new ServicoDetalhado();
 		servico.setTipo(tipoServico);
 		servico.setPrestadorId(prestador.getId());
-		servico.setPreco(BigDecimal.valueOf(30));
-		
-		
 		
 		url = "http://localhost:" + port + "/prestador/" + prestador.getId() + "/servico-detalhado";
 	}
@@ -178,6 +172,7 @@ public class ServicoDetalhadoControllerTest {
 		var response = template.postForEntity(uri, body, ServicoDetalhadoRepresentation.class);
 		
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
 	}
 	
 	@Test
@@ -202,29 +197,15 @@ public class ServicoDetalhadoControllerTest {
 	public void deve_atualizar_servico() throws Exception {
 		var servicoAdd = service.adicionarServicoDetalhado(servico);
 		var uri = new URI(this.url + "/"+servico.getId());
-		servicoAdd.setPreco(BigDecimal.valueOf(25));
+		var tipoServico = new Servico();
+		tipoServico.setNome("Banho e tosa");
+		servicoAdd.setTipo(tipoServico);
 		var body = new HttpEntity<>(servicoAdd, new HttpHeaders());
 		template.exchange(uri, HttpMethod.PUT, body, Void.class);
 		
-		var busca = repository.findById(servicoAdd.getId()).get();;
-		assertEquals(25, busca.getPreco().doubleValue() , 0.001);
-	}
-	
-	@Test
-	public void deve_adicionar_avaliacao() throws Exception {
-		var servicoAdd = service.adicionarServicoDetalhado(servico);
-		var uri = new URI(this.url + "/"+servico.getId()+ "/avaliacoes");
-		
-		var avaliacao = new Avaliacao();
-		avaliacao.setServicoAvaliadoId(servicoAdd.getId());
-		avaliacao.setCliente(cliente);
-		avaliacao.setCriteriosAvaliacao(new CriteriosAvaliacao());
-		
-		var representation = avaliacaoConverter.toRepresentation(avaliacao);
-		var body = new HttpEntity<>(representation, new HttpHeaders());
-		
-		var response = template.postForEntity(uri, body, ServicoDetalhadoRepresentation.class);
-		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		var busca = repository.findById(servicoAdd.getId()).get();
+		var tipo = busca.getTipo();
+		assertEquals("Banho e tosa", tipo.getNome());
 	}
 	
 	@Test
@@ -252,7 +233,7 @@ public class ServicoDetalhadoControllerTest {
 	public void deve_criar_adicionais_para_servicos() throws Exception {
 		var servicoAdd = service.adicionarServicoDetalhado(servico);
 		var adicional = AdicionalRepresentation.builder()
-						.idServicoDetalhado(servicoAdd.getId())
+						.servicoDetalhadoId(servicoAdd.getId())
 						.nome("Teste adicional")
 						.preco(BigDecimal.valueOf(23))
 						.build();

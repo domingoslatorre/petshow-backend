@@ -70,6 +70,8 @@ public class AnimalEstimacaoControllerTest {
 		
 		tipo = new TipoAnimalEstimacao();
 		tipo.setNome("Cachorro");
+		tipo.setPelagem("Pelagem");
+		tipo.setPorte("Porte");
 		tipoRepository.save(tipo);
 		
 		cliente = new Cliente(contaCliente());
@@ -81,8 +83,6 @@ public class AnimalEstimacaoControllerTest {
 		animal.setDonoId(cliente.getId());
 		animal.setTipo(tipo);
 		animal.setNome("Bidu");
-		animal.setPelagem("Pelagem");
-		animal.setPorte("Porte");
 		animal.setAuditoria(auditoria(ATIVO));
 	}
 	
@@ -118,12 +118,12 @@ public class AnimalEstimacaoControllerTest {
 		repository.save(animal);
 		var uri = new URI(url + "/" + animal.getId());
 		var expected = "P";
-		animal.setPelagem(expected);
+		animal.setNome(expected);
 		var body = new HttpEntity<>(converter.toRepresentation(animal), new HttpHeaders());
 		template.exchange(uri, HttpMethod.PUT, body, String.class);
 		
 		var busca = repository.findById(animal.getId());
-		assertEquals(expected, busca.get().getPelagem());
+		assertEquals(expected, busca.get().getNome());
 	}
 	
 	@Test

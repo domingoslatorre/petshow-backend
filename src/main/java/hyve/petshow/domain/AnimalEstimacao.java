@@ -21,8 +21,6 @@ public class AnimalEstimacao {
     private Long id;
     private String nome;
     private String foto;
-    private String porte;
-    private String pelagem;
     @Embedded
     private Auditoria auditoria;
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,7 @@
 package hyve.petshow.unit.service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,6 @@ import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -71,13 +70,15 @@ public class ServicoDetalhadoServiceTest {
     @Test
 	public void deve_atualizar_servico_detalhado() throws Exception {
 		var servicoDetalhadoRequest = servicoDetalhado;
-		servicoDetalhadoRequest.setPreco(BigDecimal.valueOf(100L));
+		var tipo = new Servico();
+		tipo.setNome("Banho");
+		servicoDetalhadoRequest.setTipo(tipo);
 
 		doReturn(servicoDetalhadoRequest).when(repository).save(servicoDetalhadoRequest);
 
 		var actual = service.atualizarServicoDetalhado(1L, 1L, servicoDetalhadoRequest);
 
-		assertEquals(actual.getPreco(), servicoDetalhado.getPreco());
+		assertEquals(actual.getTipo().getNome(), servicoDetalhado.getTipo().getNome());
 	}
 
 	@Test

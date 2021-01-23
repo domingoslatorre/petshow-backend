@@ -16,5 +16,5 @@ public class AdicionalRepresentation {
 	private String nome;
 	private String descricao;
 	private BigDecimal preco;
-	private Long idServicoDetalhado;
+	private Long servicoDetalhadoId;
 }

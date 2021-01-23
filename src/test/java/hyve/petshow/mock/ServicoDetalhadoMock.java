@@ -3,11 +3,9 @@ package hyve.petshow.mock;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static hyve.petshow.mock.AuditoriaMock.auditoria;
-import static hyve.petshow.mock.AvaliacaoMock.avaliacaoList;
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
 import static hyve.petshow.mock.ServicoMock.servico;
 import static hyve.petshow.mock.ServicoMock.servicoRepresentation;
@@ -19,10 +17,8 @@ public class ServicoDetalhadoMock {
 		var servicoDetalhado = new ServicoDetalhado();
 
 		servicoDetalhado.setId(1L);
-		servicoDetalhado.setPreco(BigDecimal.valueOf(1000L));
 		servicoDetalhado.setMediaAvaliacao(4.5F);
 		servicoDetalhado.setAuditoria(auditoria(ATIVO));
-		servicoDetalhado.setAvaliacoes(avaliacaoList());
 		servicoDetalhado.setTipo(servico());
 		servicoDetalhado.setPrestadorId(1L);
 
@@ -34,7 +30,6 @@ public class ServicoDetalhadoMock {
 		var servicoDetalhado = servicoDetalhado();
 
 		servicoDetalhadoRepresentation.setId(servicoDetalhado.getId());
-		servicoDetalhadoRepresentation.setPreco(servicoDetalhado.getPreco());;
 		servicoDetalhadoRepresentation.setMediaAvaliacao(servicoDetalhado.getMediaAvaliacao());
 		servicoDetalhadoRepresentation.setAvaliacoes(singletonList(avaliacaoRepresentation()));
 		servicoDetalhadoRepresentation.setTipo(servicoRepresentation());

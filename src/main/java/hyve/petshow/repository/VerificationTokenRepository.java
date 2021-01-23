@@ -1,6 +1,5 @@
 package hyve.petshow.repository;
 
-import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.VerificationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 

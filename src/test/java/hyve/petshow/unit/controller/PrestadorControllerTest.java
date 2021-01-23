@@ -2,7 +2,6 @@ package hyve.petshow.unit.controller;
 
 import hyve.petshow.controller.PrestadorController;
 import hyve.petshow.controller.converter.PrestadorConverter;
-import hyve.petshow.controller.converter.ServicoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;

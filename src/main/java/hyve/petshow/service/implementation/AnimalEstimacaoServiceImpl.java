@@ -63,8 +63,6 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
         animalEstimacao.setNome(request.getNome());
         animalEstimacao.setTipo(request.getTipo());
         animalEstimacao.setFoto(request.getFoto());
-        animalEstimacao.setPorte(request.getPorte());
-        animalEstimacao.setPelagem(request.getPelagem());
         animalEstimacao.setAuditoria(atualizaAuditoria(animalEstimacao.getAuditoria(), ATIVO));
 
         var response = animalEstimacaoRepository.save(animalEstimacao);

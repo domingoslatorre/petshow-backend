@@ -2,25 +2,17 @@ package hyve.petshow.domain;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import hyve.petshow.domain.embeddables.Auditoria;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "adicional")
 public class Adicional {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +20,8 @@ public class Adicional {
 	private String nome;
 	private String descricao;
 	private BigDecimal preco;
-	@Column(name = "fk_servico")
-	@EqualsAndHashCode.Exclude
-	private Long idServicoDetalhado;
+	@Column(name = "fk_servico_detalhado")
+	private Long servicoDetalhadoId;
 	@Embedded
-	@EqualsAndHashCode.Exclude
 	private Auditoria auditoria;
 }

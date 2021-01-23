@@ -6,4 +6,6 @@ import lombok.Data;
 public class TipoAnimalEstimacaoRepresentation {
     private Integer id;
     private String nome;
+    private String porte;
+    private String pelagem;
 }
