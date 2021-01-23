@@ -11,7 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
@@ -29,7 +31,14 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	@Override
 	public ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
 		servicoDetalhado.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
-
+		servicoDetalhado.setAdicionais(Optional.ofNullable(servicoDetalhado.getAdicionais())
+		.map(lista -> {
+			return lista.stream().map(el -> {
+				el.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
+				return el;
+			}).collect(Collectors.toSet());
+		}).orElse(new HashSet<>()));
+		
 		return repository.save(servicoDetalhado);
 	}
 

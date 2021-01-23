@@ -18,7 +18,7 @@ public class ServicoDetalhado {
     private Float mediaAvaliacao;
     @Embedded
     private Auditoria auditoria;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_servico_detalhado")
     private List<Adicional> adicionais = new ArrayList<>();
     @ManyToOne
@@ -28,7 +28,5 @@ public class ServicoDetalhado {
     private Long prestadorId;
     @OneToMany(mappedBy = "servicoDetalhado", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
     private List<ServicoDetalhadoTipoAnimalEstimacao> tiposAnimaisAceitos = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "fk_servico_detalhado")
-    private List<Avaliacao> avaliacoes = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true);
 }
