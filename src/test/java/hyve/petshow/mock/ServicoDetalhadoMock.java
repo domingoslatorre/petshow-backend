@@ -12,6 +12,11 @@ import static hyve.petshow.mock.ServicoMock.servicoRepresentation;
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 import static java.util.Collections.singletonList;
 
+import java.util.List;
+
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.ServicoDetalhado;
+
 public class ServicoDetalhadoMock {
 	public static ServicoDetalhado servicoDetalhado() {
 		var servicoDetalhado = new ServicoDetalhado();

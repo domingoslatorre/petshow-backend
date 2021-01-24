@@ -1,9 +1,9 @@
 package hyve.petshow.controller.representation;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Data;
 
 @Data
 public class ServicoDetalhadoRepresentation {

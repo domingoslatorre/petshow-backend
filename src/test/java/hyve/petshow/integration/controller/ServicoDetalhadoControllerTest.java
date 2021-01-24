@@ -67,6 +67,7 @@ public class ServicoDetalhadoControllerTest {
 	private AdicionalRepository adicionalRepository;
 	@Autowired
 	private ServicoDetalhadoConverter converter;
+	
 	private String url;
 	
 	private Prestador prestador;
