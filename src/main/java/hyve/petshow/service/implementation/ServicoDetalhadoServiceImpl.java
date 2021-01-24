@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,8 +37,8 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			return lista.stream().map(el -> {
 				el.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
 				return el;
-			}).collect(Collectors.toSet());
-		}).orElse(new HashSet<>()));
+			}).collect(Collectors.toList());
+		}).orElse(new ArrayList<>()));
 		
 		return repository.save(servicoDetalhado);
 	}

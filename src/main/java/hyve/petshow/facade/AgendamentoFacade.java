@@ -26,9 +26,9 @@ public class AgendamentoFacade {
 
     public AgendamentoRepresentation adicionarAgendamento(AgendamentoRepresentation request) throws Exception {
         var agendamento = agendamentoConverter.toDomain(request);
-        var status = new StatusAgendamento(1, "AGENDADO");
         var cliente = clienteService.buscarPorId(request.getClienteId());
         var prestador = prestadorService.buscarPorId(request.getPrestadorId());
+        var status = new StatusAgendamento(1, "AGENDADO");
 
         agendamento.setStatus(status);
         agendamento.setCliente(cliente);

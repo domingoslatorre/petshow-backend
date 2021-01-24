@@ -22,7 +22,7 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
     public ServicoDetalhadoRepresentation toRepresentation(ServicoDetalhado domain) {
     	var representation = new ServicoDetalhadoRepresentation();
     	
-git sta    	representation.setId(domain.getId());
+    	representation.setId(domain.getId());
         representation.setTipo(servicoConverter.toRepresentation(domain.getTipo()));
         representation.setPrestadorId(domain.getPrestadorId());
         representation.setMediaAvaliacao(domain.getMediaAvaliacao());
