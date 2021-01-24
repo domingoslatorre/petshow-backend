@@ -75,7 +75,6 @@ public class AvaliacaoServiceTest {
 		servicoDetalhado = new ServicoDetalhado();
 		servicoDetalhado.setPrestadorId(prestadorDb.getId());
 		servicoDetalhado.setTipo(tipo);
-		servicoDetalhado.setPreco(BigDecimal.valueOf(23.5));
 		var servico = servicoDetalhadoRepository.save(servicoDetalhado);
 		
 		avaliacao = new Avaliacao();

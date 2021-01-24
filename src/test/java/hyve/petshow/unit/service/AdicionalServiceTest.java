@@ -27,7 +27,7 @@ import java.util.Optional;
 import hyve.petshow.domain.Adicional;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AdicionalRepository;
-import hyve.petshow.service.implementation.AdicionalImpl;
+import hyve.petshow.service.implementation.AdicionalServiceImpl;
 import hyve.petshow.util.AuditoriaUtils;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -35,7 +35,7 @@ public class AdicionalServiceTest {
 	@Mock
 	private AdicionalRepository repository;
 	@InjectMocks
-	private AdicionalImpl service;
+	private AdicionalServiceImpl service;
 
 	@BeforeEach
 	public void init() {
@@ -49,12 +49,12 @@ public class AdicionalServiceTest {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(Adicional.builder().id(1l).idServicoDetalhado(1l).nome("Teste").descricao("Teste").build());
-				add(Adicional.builder().id(2l).idServicoDetalhado(1l).nome("Teste2").descricao("Teste2").build());
+				add(new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null));
+				add(new Adicional(null, "Teste2", "Descricao2", BigDecimal.valueOf(15), null, null));
 			}
 		};
 
-		doReturn(esperado).when(repository).findByServicoDetalhado(anyLong());
+		doReturn(esperado).when(repository).findByServicoDetalhadoId(anyLong());
 
 		// Then
 		assertEquals(esperado, service.buscarPorServicoDetalhado(1l));
@@ -63,7 +63,7 @@ public class AdicionalServiceTest {
 	@Test
 	public void deve_retornar_erro_por_lista_de_adicionais_vazia() {
 		// Given
-		doReturn(Collections.emptyList()).when(repository).findByServicoDetalhado(anyLong());
+		doReturn(Collections.emptyList()).when(repository).findByServicoDetalhadoId(anyLong());
 
 		// Then
 		assertThrows(NotFoundException.class, () -> {
@@ -82,7 +82,7 @@ public class AdicionalServiceTest {
 			return adicional;
 		}).when(repository).save(any());
 
-		var adicional = Adicional.builder().nome("Teste").descricao("Teste").idServicoDetalhado(1l).build();
+		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
 		service.criarAdicional(adicional);
 
 		assertTrue(mockDb.contains(adicional));
@@ -90,7 +90,7 @@ public class AdicionalServiceTest {
 
 	@Test
 	public void deve_adicionar_auditoria_para_adicional() {
-		var adicional = Adicional.builder().nome("Teste").descricao("Teste").idServicoDetalhado(1l).build();
+		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
 		doReturn(adicional).when(repository).save(any());
 
 		service.criarAdicional(adicional);
@@ -100,7 +100,7 @@ public class AdicionalServiceTest {
 
 	@Test
 	public void deve_adicionar_auditoria_ativa() {
-		var adicional = Adicional.builder().nome("Teste").descricao("Teste").idServicoDetalhado(1l).build();
+		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
 		doReturn(adicional).when(repository).save(any());
 
 		service.criarAdicional(adicional);
@@ -110,7 +110,7 @@ public class AdicionalServiceTest {
 
 	@Test
 	public void deve_retornar_por_id() throws Exception {
-		var adicional = Adicional.builder().id(1l).nome("Teste").descricao("Teste").idServicoDetalhado(1l).build();
+		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
 		doReturn(Optional.ofNullable(adicional)).when(repository).findById(anyLong());
 
 		assertEquals(adicional, service.buscarPorId(1l));
@@ -126,11 +126,9 @@ public class AdicionalServiceTest {
 	
 	@Test
 	public void deve_atualizar_adicional() throws Exception {
-		var adicional = Adicional.builder().id(1l).nome("Teste").descricao("Teste")
-						.idServicoDetalhado(1l).preco(BigDecimal.valueOf(20))
-						.auditoria(AuditoriaUtils.geraAuditoriaInsercao(Optional.empty())).build();
-		var esperado = Adicional.builder().id(1l).nome("Teste2").descricao("Teste2")
-						.idServicoDetalhado(1l).preco(BigDecimal.valueOf(20)).build();
+		var adicional = new Adicional(1l, "Teste", "Descricao", BigDecimal.valueOf(10), 1l, AuditoriaUtils.geraAuditoriaInsercao(Optional.empty()));
+		var esperado = new Adicional(1l, "Teste2", "Teste2", BigDecimal.valueOf(20), 1l, AuditoriaUtils.geraAuditoriaInsercao(Optional.empty()));
+			
 		
 		doReturn(Optional.ofNullable(adicional)).when(repository).findById(anyLong());
 		doReturn(adicional).when(repository).save(any());
@@ -144,9 +142,7 @@ public class AdicionalServiceTest {
 	public void deve_desativar_adicional() throws Exception {
 		var auditoria = AuditoriaUtils.geraAuditoriaInsercao(Optional.empty());
 		auditoria.setFlagAtivo("S");
-		var adicional = Adicional.builder().id(1l).nome("Teste").descricao("Teste")
-				.idServicoDetalhado(1l).preco(BigDecimal.valueOf(20))
-				.auditoria(auditoria).build();
+		var adicional = new Adicional(1l, "Teste", "Teste", BigDecimal.valueOf(20), 1l,  auditoria);
 		doReturn(Optional.ofNullable(adicional)).when(repository).findById(anyLong());
 		doReturn(adicional).when(repository).save(any());
 		

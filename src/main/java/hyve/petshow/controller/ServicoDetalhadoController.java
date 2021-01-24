@@ -1,5 +1,6 @@
 package hyve.petshow.controller;
 
+import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
@@ -35,6 +36,8 @@ public class ServicoDetalhadoController {
 	private AvaliacaoFacade avaliacaoFacade;
 	@Autowired
 	private ServicoDetalhadoFacade servicoDetalhadoFacade;
+	@Autowired
+	private AvaliacaoConverter avaliacaoConverter;
 
 	@Operation(summary = "Busca todos os serviços detalhados por prestador.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado")
@@ -108,20 +111,17 @@ public class ServicoDetalhadoController {
     }
 
 	@Operation(summary = "Adiciona avaliação.")
-	@PostMapping("/prestador/{prestadorId}/servico-detalhado/{id}/avaliacoes")
-	public ResponseEntity<ServicoDetalhadoRepresentation> adicionarAvaliacao(
-			@Parameter(description = "Id do prestador.")
-			@PathVariable Long prestadorId,
+	@PostMapping("/prestador/servico-detalhado/{servicoDetalhadoId}/agendamento/{agendamentoId}/avaliacoes")
+	public ResponseEntity<AvaliacaoRepresentation> adicionarAvaliacao(
 			@Parameter(description = "Id do serviço detalhado.")
-			@PathVariable Long id,
+			@PathVariable Long servicoDetalhadoId,
+			@Parameter(description = "Id do agendamento.")
+			@PathVariable Long agendamentoId,
 			@Parameter(description = "Avaliação que será inserida")
 			@RequestBody AvaliacaoRepresentation avaliacao) throws Exception {
 		var clienteId = avaliacao.getCliente().getId();
-
-		avaliacaoFacade.adicionarAvaliacao(avaliacao, clienteId, id);
-
-		var servico = service.buscarPorPrestadorIdEServicoId(prestadorId, id);
-		var representation = converter.toRepresentation(servico);
+		var avaliacaoAdicionada = avaliacaoFacade.adicionarAvaliacao(avaliacao, clienteId, servicoDetalhadoId, agendamentoId);
+		var representation = avaliacaoConverter.toRepresentation(avaliacaoAdicionada);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
 	}

@@ -20,7 +20,7 @@ import hyve.petshow.repository.AdicionalRepository;
 import hyve.petshow.service.port.AdicionalService;
 
 @Service
-public class AdicionalImpl implements AdicionalService {
+public class AdicionalServiceImpl implements AdicionalService {
 	private static final String ADICIONAL_NAO_ENCONTRADO = "ADICIONAL_NAO_ENCONTRADO";
 	private static final String ADICIONAIS_NAO_ENCONTRADOS = "ADICIONAIS_NAO_ENCONTRADOS";
 	@Autowired
@@ -28,7 +28,7 @@ public class AdicionalImpl implements AdicionalService {
 
 	@Override
 	public List<Adicional> buscarPorServicoDetalhado(Long idServico) throws Exception {
-		var adicionais = repository.findByServicoDetalhado(idServico);
+		var adicionais = repository.findByServicoDetalhadoId(idServico);
 		if (adicionais.isEmpty()) {
 			throw new NotFoundException(ADICIONAIS_NAO_ENCONTRADOS);
 		}

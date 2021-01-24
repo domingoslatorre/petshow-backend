@@ -17,7 +17,7 @@ public class AdicionalConverter implements Converter<Adicional, AdicionalReprese
 			representation.setDescricao(adicional.getDescricao());
 			representation.setNome(adicional.getNome());
 			representation.setPreco(adicional.getPreco());
-			representation.setIdServicoDetalhado(adicional.getIdServicoDetalhado());
+			representation.setServicoDetalhadoId(adicional.getServicoDetalhadoId());
 			return representation;
 		}).orElse(new AdicionalRepresentation());
 	}
@@ -30,7 +30,7 @@ public class AdicionalConverter implements Converter<Adicional, AdicionalReprese
 			domain.setNome(adicional.getNome());
 			domain.setDescricao(adicional.getDescricao());
 			domain.setPreco(adicional.getPreco());
-			domain.setIdServicoDetalhado(adicional.getIdServicoDetalhado());
+			domain.setServicoDetalhadoId(adicional.getServicoDetalhadoId());
 			return domain;
 		}).orElse(new Adicional());
 	}

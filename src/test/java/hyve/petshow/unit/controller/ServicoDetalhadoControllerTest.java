@@ -1,16 +1,24 @@
 package hyve.petshow.unit.controller;
 
-import hyve.petshow.controller.ServicoDetalhadoController;
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.AdicionalRepresentation;
-import hyve.petshow.controller.representation.AvaliacaoRepresentation;
-import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.facade.AvaliacaoFacade;
-import hyve.petshow.facade.ServicoDetalhadoFacade;
-import hyve.petshow.service.port.ServicoDetalhadoService;
+import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
+import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
+import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoList;
+import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentation;
+import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentationList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,20 +30,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
-import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
-import static hyve.petshow.mock.ServicoDetalhadoMock.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.MockitoAnnotations.initMocks;
+import hyve.petshow.controller.ServicoDetalhadoController;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.representation.AdicionalRepresentation;
+import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.facade.AvaliacaoFacade;
+import hyve.petshow.facade.ServicoDetalhadoFacade;
+import hyve.petshow.service.port.ServicoDetalhadoService;
 
 public class ServicoDetalhadoControllerTest {
     @Mock
@@ -59,8 +63,6 @@ public class ServicoDetalhadoControllerTest {
 
     private MensagemRepresentation mensagemRepresentation = mensagemRepresentationSucesso();
 
-    private AvaliacaoRepresentation avaliacaoRepresentation = avaliacaoRepresentation();
-
     @BeforeEach
     public void init() throws Exception {
         initMocks(this);
@@ -75,7 +77,6 @@ public class ServicoDetalhadoControllerTest {
         doReturn(servicoDetalhadoRepresentation).when(converter).toRepresentation(any(ServicoDetalhado.class));
         doReturn(servicoDetalhadoRepresentationList).when(converter).toRepresentationList(anyList());
         doReturn(servicoDetalhadoRepresentationPage).when(converter).toRepresentationPage(any(Page.class));
-        doNothing().when(avaliacaoFacade).adicionarAvaliacao(any(AvaliacaoRepresentation.class), anyLong(), anyLong());
         doReturn(servicoDetalhadoRepresentation).when(servicoDetalhadoFacade).buscarPorPrestadorIdEServicoId(anyLong(), anyLong());
         doReturn(servicoDetalhadoRepresentationPage).when(servicoDetalhadoFacade).buscarServicosDetalhadosPorTipoServico(anyInt(), any(Pageable.class));
     }
@@ -103,15 +104,6 @@ public class ServicoDetalhadoControllerTest {
         var expected = ResponseEntity.ok(mensagemRepresentation);
 
         var actual = controller.removerServicoDetalhado(1L, 1L);
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void deve_adicionar_avaliacao_e_retornar_servico_avaliado() throws Exception {
-        var expected = ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoRepresentation);
-
-        var actual = controller.adicionarAvaliacao(1L, 1L, avaliacaoRepresentation);
 
         assertEquals(expected, actual);
     }
@@ -149,8 +141,8 @@ public class ServicoDetalhadoControllerTest {
 			private static final long serialVersionUID = 1L;
 
 		{
-    		add(AdicionalRepresentation.builder().id(1l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(10)).build());
-    		add(AdicionalRepresentation.builder().id(2l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(10)).build());
+    		add(AdicionalRepresentation.builder().id(1l).nome("Teste").servicoDetalhadoId(1l).preco(BigDecimal.valueOf(10)).build());
+    		add(AdicionalRepresentation.builder().id(2l).nome("Teste").servicoDetalhadoId(1l).preco(BigDecimal.valueOf(10)).build());
     	}};
     	var expected = ResponseEntity.ok(adicionais);
     	
@@ -169,7 +161,7 @@ public class ServicoDetalhadoControllerTest {
     
     @Test
     public void deve_criar_novo_adicional() throws Exception {
-    	var adicionalTeste = AdicionalRepresentation.builder().id(1l).nome("Teste").idServicoDetalhado(1l).preco(BigDecimal.valueOf(23)).build();
+    	var adicionalTeste = AdicionalRepresentation.builder().id(1l).nome("Teste").servicoDetalhadoId(1l).preco(BigDecimal.valueOf(23)).build();
     	
     	var dbMock = new ArrayList<AdicionalRepresentation>();
     	Mockito.doAnswer(mock -> {

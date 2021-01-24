@@ -14,4 +14,6 @@ public class TipoAnimalEstimacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+    private String porte;
+    private String pelagem;
 }

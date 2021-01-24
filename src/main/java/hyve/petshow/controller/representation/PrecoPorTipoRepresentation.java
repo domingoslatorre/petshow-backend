@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdicionalRepresentation {
-	private Long id;
-	private String nome;
-	private String descricao;
-	private BigDecimal preco;
-	private Long servicoDetalhadoId;
+
+public class PrecoPorTipoRepresentation {
+    private TipoAnimalEstimacaoRepresentation tipoAnimal;
+    private BigDecimal preco;
 }

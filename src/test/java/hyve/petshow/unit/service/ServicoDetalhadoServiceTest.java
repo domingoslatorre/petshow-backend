@@ -1,6 +1,7 @@
 package hyve.petshow.unit.service;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
@@ -71,13 +72,15 @@ public class ServicoDetalhadoServiceTest {
     @Test
 	public void deve_atualizar_servico_detalhado() throws Exception {
 		var servicoDetalhadoRequest = servicoDetalhado;
-		servicoDetalhadoRequest.setPreco(BigDecimal.valueOf(100L));
+		var tipo = new Servico();
+		tipo.setNome("Banho");
+		servicoDetalhadoRequest.setTipo(tipo);
 
 		doReturn(servicoDetalhadoRequest).when(repository).save(servicoDetalhadoRequest);
 
 		var actual = service.atualizarServicoDetalhado(1L, 1L, servicoDetalhadoRequest);
 
-		assertEquals(actual.getPreco(), servicoDetalhado.getPreco());
+		assertEquals(actual.getTipo().getNome(), servicoDetalhado.getTipo().getNome());
 	}
 
 	@Test

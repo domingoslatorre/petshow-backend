@@ -2,6 +2,7 @@ package hyve.petshow.facade;
 
 import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.service.port.AvaliacaoService;
 import hyve.petshow.service.port.ClienteService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
@@ -21,16 +22,17 @@ public class AvaliacaoFacade {
 	@Autowired
 	private AvaliacaoConverter converter;
 
-	public void adicionarAvaliacao(AvaliacaoRepresentation request, Long clienteId, Long servicoDetalhadoId)
+	public Avaliacao adicionarAvaliacao(AvaliacaoRepresentation request, Long clienteId,
+										Long servicoDetalhadoId, Long agendamentoId)
 			throws Exception {
 		var cliente = clienteService.buscarPorId(clienteId);
-		var servicoDetalhado = servicoDetalhadoService.buscarPorId(servicoDetalhadoId);
 		var avaliacao = converter.toDomain(request);
 
-		servicoDetalhado.addAvaliacao(avaliacao);
 		avaliacao.setCliente(cliente);
+		avaliacao.setServicoAvaliadoId(servicoDetalhadoId);
+		avaliacao.setAgendamentoAvaliadoId(agendamentoId);
 
-		avaliacaoService.adicionarAvaliacao(avaliacao);
+		return avaliacaoService.adicionarAvaliacao(avaliacao);
 	}
 
 	public Page<AvaliacaoRepresentation> buscarAvaliacaoPorServico(Long idServicoPrestado, Pageable pageable)

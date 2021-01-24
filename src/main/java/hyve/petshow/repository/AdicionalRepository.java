@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import hyve.petshow.domain.Adicional;
 
 public interface AdicionalRepository extends JpaRepository<Adicional, Long> {
-	@Query("select a from Adicional a where a.idServicoDetalhado = ?1")
-	List<Adicional> findByServicoDetalhado(Long idServico);
+	List<Adicional> findByServicoDetalhadoId(Long idServico);
 }
