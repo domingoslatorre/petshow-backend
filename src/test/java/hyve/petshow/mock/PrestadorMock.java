@@ -1,5 +1,10 @@
 package hyve.petshow.mock;
 
+import hyve.petshow.controller.representation.PrestadorRepresentation;
+import hyve.petshow.domain.Prestador;
+
+import java.util.Arrays;
+
 import static hyve.petshow.mock.ContaMock.contaPrestador;
 import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
 import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentationList;

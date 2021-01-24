@@ -11,6 +11,9 @@ import hyve.petshow.controller.representation.PrecoPorTipoRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.domain.ServicoDetalhadoTipoAnimalEstimacao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 
 
 @Component

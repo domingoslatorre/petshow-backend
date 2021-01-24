@@ -21,7 +21,6 @@ import java.util.Optional;
 import static hyve.petshow.mock.AvaliacaoMock.avaliacao;
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoList;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
-import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;

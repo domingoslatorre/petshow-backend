@@ -19,16 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
 import hyve.petshow.domain.Adicional;
 import hyve.petshow.exceptions.NotFoundException;
+import static hyve.petshow.mock.AdicionalMock.criaAdicional;
 import hyve.petshow.repository.AdicionalRepository;
 import hyve.petshow.service.implementation.AdicionalServiceImpl;
-import hyve.petshow.util.AuditoriaUtils;
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AdicionalServiceTest {
@@ -49,8 +49,8 @@ public class AdicionalServiceTest {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null));
-				add(new Adicional(null, "Teste2", "Descricao2", BigDecimal.valueOf(15), null, null));
+				add(criaAdicional(1l));
+				add(criaAdicional(2l));
 			}
 		};
 
@@ -82,7 +82,7 @@ public class AdicionalServiceTest {
 			return adicional;
 		}).when(repository).save(any());
 
-		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
+		var adicional = criaAdicional(1l);
 		service.criarAdicional(adicional);
 
 		assertTrue(mockDb.contains(adicional));
@@ -90,7 +90,7 @@ public class AdicionalServiceTest {
 
 	@Test
 	public void deve_adicionar_auditoria_para_adicional() {
-		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
+		var adicional = criaAdicional(1l);
 		doReturn(adicional).when(repository).save(any());
 
 		service.criarAdicional(adicional);
@@ -100,7 +100,7 @@ public class AdicionalServiceTest {
 
 	@Test
 	public void deve_adicionar_auditoria_ativa() {
-		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
+		var adicional = criaAdicional(1l);
 		doReturn(adicional).when(repository).save(any());
 
 		service.criarAdicional(adicional);
@@ -110,7 +110,7 @@ public class AdicionalServiceTest {
 
 	@Test
 	public void deve_retornar_por_id() throws Exception {
-		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
+		var adicional = criaAdicional(1l);
 		doReturn(Optional.ofNullable(adicional)).when(repository).findById(anyLong());
 
 		assertEquals(adicional, service.buscarPorId(1l));
@@ -126,9 +126,11 @@ public class AdicionalServiceTest {
 	
 	@Test
 	public void deve_atualizar_adicional() throws Exception {
-		var adicional = new Adicional(1l, "Teste", "Descricao", BigDecimal.valueOf(10), 1l, AuditoriaUtils.geraAuditoriaInsercao(Optional.empty()));
-		var esperado = new Adicional(1l, "Teste2", "Teste2", BigDecimal.valueOf(20), 1l, AuditoriaUtils.geraAuditoriaInsercao(Optional.empty()));
-			
+		var adicional = criaAdicional(1l);
+		adicional.setAuditoria(geraAuditoriaInsercao(Optional.empty()));
+		var esperado = criaAdicional(1l);
+		esperado.setNome("Teste2");
+		esperado.setDescricao("Teste2");
 		
 		doReturn(Optional.ofNullable(adicional)).when(repository).findById(anyLong());
 		doReturn(adicional).when(repository).save(any());
@@ -140,9 +142,10 @@ public class AdicionalServiceTest {
 	
 	@Test
 	public void deve_desativar_adicional() throws Exception {
-		var auditoria = AuditoriaUtils.geraAuditoriaInsercao(Optional.empty());
+		var auditoria = geraAuditoriaInsercao(Optional.empty());
 		auditoria.setFlagAtivo("S");
-		var adicional = new Adicional(1l, "Teste", "Teste", BigDecimal.valueOf(20), 1l,  auditoria);
+		var adicional = criaAdicional(1l);
+		adicional.setAuditoria(auditoria);
 		doReturn(Optional.ofNullable(adicional)).when(repository).findById(anyLong());
 		doReturn(adicional).when(repository).save(any());
 		

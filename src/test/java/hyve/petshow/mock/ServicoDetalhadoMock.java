@@ -1,5 +1,10 @@
 package hyve.petshow.mock;
 
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.ServicoDetalhado;
+
+import java.util.List;
+
 import static hyve.petshow.mock.AuditoriaMock.auditoria;
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
 import static hyve.petshow.mock.ServicoMock.servico;

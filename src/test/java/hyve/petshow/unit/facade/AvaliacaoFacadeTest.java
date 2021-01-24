@@ -5,6 +5,7 @@ import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
 import static hyve.petshow.mock.ClienteMock.cliente;
 import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
 import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
@@ -17,6 +18,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,7 @@ import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.service.port.AvaliacaoService;
 import hyve.petshow.service.port.ClienteService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AvaliacaoFacadeTest {
@@ -69,5 +72,21 @@ public class AvaliacaoFacadeTest {
 			avaliacoes.add(avaliacao);
 			return null;
 		}).when(avaliacaoService).adicionarAvaliacao(any(Avaliacao.class));
+	}
+
+	@Test
+	public void deve_criar_avaliacao() throws Exception {
+		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L, 1L);
+
+		assertFalse(avaliacoes.isEmpty());
+	}
+	
+	@Test
+	public void deve_retornar_avaliacao_em_lista() throws Exception {
+		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L, 1L);
+
+		var avaliacoes = facade.buscarAvaliacaoPorServico(1L, geraPageable(0, 5));
+		
+		assertFalse(avaliacoes.isEmpty());
 	}
 }
