@@ -41,5 +41,5 @@ public class Agendamento {
     @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL)
     private List<AnimalEstimacaoAgendamento> animaisAtendidos = new ArrayList<>();
     @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL)
-    private List<AgendamentoAdicional> adicionais = new ArrayList<>();
+    private List<AdicionalAgendamento> adicionais = new ArrayList<>();
 }

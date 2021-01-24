@@ -3,11 +3,10 @@ package hyve.petshow.controller.converter;
 import hyve.petshow.controller.representation.AgendamentoRepresentation;
 import hyve.petshow.domain.Agendamento;
 import hyve.petshow.domain.AnimalEstimacaoAgendamento;
-import hyve.petshow.domain.AgendamentoAdicional;
+import hyve.petshow.domain.AdicionalAgendamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.DataOutput;
 import java.util.stream.Collectors;
 
 @Component
@@ -44,8 +43,9 @@ public class AgendamentoConverter implements Converter<Agendamento, AgendamentoR
         representation.setPrestador(prestadorConverter.toRepresentation(domain.getPrestador()));
         representation.setServicoDetalhadoId(domain.getServicoDetalhado().getId());
         representation.setServicoDetalhado(servicoDetalhadoConverter.toRepresentation(domain.getServicoDetalhado()));
-        representation.setAvaliacao(avaliacaoConverter.toRepresentation(domain.getAvaliacao()));
-
+        if(domain.getAvaliacao() != null){
+            representation.setAvaliacao(avaliacaoConverter.toRepresentation(domain.getAvaliacao()));
+        }
         representation.setAnimaisAtendidos(
                 animalConverter.toRepresentationList(domain.getAnimaisAtendidos().stream()
                         .map(animalEstimacaoAgendamento -> animalEstimacaoAgendamento.getAnimalEstimacao())
@@ -53,7 +53,7 @@ public class AgendamentoConverter implements Converter<Agendamento, AgendamentoR
 
         representation.setAdicionais(
                 adicionalConverter.toRepresentationList(domain.getAdicionais().stream()
-                        .map(agendamentoAdicional -> agendamentoAdicional.getAdicional())
+                        .map(adicionalAgendamento -> adicionalAgendamento.getAdicional())
                         .collect(Collectors.toList())));
 
         return representation;
@@ -75,7 +75,7 @@ public class AgendamentoConverter implements Converter<Agendamento, AgendamentoR
 
         adicionalConverter.toDomainList(representation.getAdicionais()).stream()
                 .forEach(adicionais -> domain.getAdicionais()
-                        .add(new AgendamentoAdicional(domain, adicionais)));
+                        .add(new AdicionalAgendamento(domain, adicionais)));
 
         return domain;
     }

@@ -1,9 +1,15 @@
 package hyve.petshow.controller;
 
 import hyve.petshow.controller.converter.AgendamentoConverter;
+import hyve.petshow.controller.converter.StatusAgendamentoConverter;
 import hyve.petshow.controller.representation.AgendamentoRepresentation;
+import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.controller.representation.StatusAgendamentoRepresentation;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AgendamentoFacade;
 import hyve.petshow.service.port.AgendamentoService;
+import hyve.petshow.service.port.StatusAgendamentoService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 
@@ -22,9 +30,13 @@ public class AgendamentoController {
     @Autowired
     private AgendamentoService agendamentoService;
     @Autowired
+    private StatusAgendamentoService statusAgendamentoService;
+    @Autowired
     private AgendamentoFacade agendamentoFacade;
     @Autowired
     private AgendamentoConverter agendamentoConverter;
+    @Autowired
+    private StatusAgendamentoConverter statusAgendamentoConverter;
 
     @Operation(summary = "Adiciona um novo agendamento.")
     @PostMapping
@@ -64,5 +76,45 @@ public class AgendamentoController {
         var representation = agendamentoConverter.toRepresentationPage(agendamentos);
 
         return ResponseEntity.ok(representation);
+    }
+
+    @Operation(summary = "Recupera um agendamento por ID.")
+    @GetMapping("/{id}/usuario/{usuarioId}")
+    public ResponseEntity<AgendamentoRepresentation> buscarAgendamentoPorId(
+            @Parameter(description = "Id do agendamento")
+            @PathVariable Long id,
+            @Parameter(description = "Id do usuario que realiza a busca, para verificar se o mesmo pode ter acesso às informações")
+            @PathVariable Long usuarioId) throws Exception {
+        var agendamento = agendamentoService.buscarPorId(id, usuarioId);
+        var representation = agendamentoConverter.toRepresentation(agendamento);
+
+        return ResponseEntity.ok(representation);
+    }
+
+    @Operation(summary = "Retorna todos os status de agendamento")
+    @GetMapping("/statuses")
+    public ResponseEntity<List<StatusAgendamentoRepresentation>> buscarStatusAgendamento() throws NotFoundException {
+        var statuses = statusAgendamentoService.buscarStatusAgendamento();
+        var representation = statusAgendamentoConverter.toRepresentationList(statuses);
+
+        return ResponseEntity.ok(representation);
+    }
+    /*ATENCAO AO UTILIZAR STATUS EM PRODUCAO DEVIDO AO ID PULAR DE 2 EM 2*/
+    @Operation(summary = "Atualiza status do agendamento.")
+    @PatchMapping("/{id}/prestador/{prestadorId}/status/{statusId}")
+    public ResponseEntity<MensagemRepresentation> atualizarStatusAgendamento(
+            @Parameter(description = "Id do agendamento")
+            @PathVariable Long id,
+            @Parameter(description = "Id do prestador responsável pelo agendamento")
+            @PathVariable Long prestadorId,
+            @Parameter(description = "Id do novo status do agendamento")
+            @PathVariable Integer statusId) throws NotFoundException, BusinessException {
+        var mensagem = new MensagemRepresentation();
+        var response = agendamentoFacade.atualizarStatusAgendamento(id, prestadorId, statusId);
+
+        mensagem.setId(id);
+        mensagem.setSucesso(response);
+
+        return ResponseEntity.ok(mensagem);
     }
 }

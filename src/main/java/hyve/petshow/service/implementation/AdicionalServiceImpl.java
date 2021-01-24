@@ -41,14 +41,20 @@ public class AdicionalServiceImpl implements AdicionalService {
 	}
 
 	@Override
-	public Adicional criarAdicional(Adicional adicional) {
-		adicional.setAuditoria(geraAuditoriaAdicional());
-		return repository.save(adicional);
+	public List<Adicional> buscarAdicionaisPorIds(Long servicoDetalhadoId, List<Long> adicionaisIds) throws Exception {
+		var adicionais = repository.findByServicoDetalhadoIdAndIdIn(servicoDetalhadoId, adicionaisIds);
+
+		if(adicionais.isEmpty()) {
+			throw new NotFoundException(ADICIONAIS_NAO_ENCONTRADOS);
+		}
+
+		return adicionais;
 	}
 
-	private Auditoria geraAuditoriaAdicional() {
-		var auditoria = geraAuditoriaInsercao(Optional.empty());
-		return atualizaAuditoria(auditoria, ATIVO);
+	@Override
+	public Adicional criarAdicional(Adicional adicional, Long prestadorId) {
+		adicional.setAuditoria(geraAuditoriaInsercao(Optional.of(prestadorId)));
+		return repository.save(adicional);
 	}
 
 	@Override
@@ -70,11 +76,11 @@ public class AdicionalServiceImpl implements AdicionalService {
 	}
 
 	@Override
-	public List<Adicional> criarAdicionais(List<Adicional> adicionais) {
+	public List<Adicional> criarAdicionais(List<Adicional> adicionais, Long prestadorId) {
 		return Optional.ofNullable(adicionais).map(lista -> {
 			return lista.stream()
 					.map(el -> {
-						return criarAdicional(el);
+						return criarAdicional(el, prestadorId);
 					}).collect(Collectors.toList());
 		}).orElse(new ArrayList<>());
 	}

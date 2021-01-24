@@ -5,6 +5,7 @@ import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
 import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,17 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
     public AnimalEstimacao buscarAnimalEstimacaoPorId(Long id) throws NotFoundException {
         return animalEstimacaoRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(ANIMAL_ESTIMACAO_NAO_ENCONTRADO));
+    }
+
+    @Override
+    public List<AnimalEstimacao> buscarAnimaisEstimacaoPorIds(Long donoId, List<Long> animaisEstimacaoIds) throws NotFoundException {
+        var animaisEstimacao = animalEstimacaoRepository.findByDonoIdAndIdIn(donoId, animaisEstimacaoIds);
+
+        if(animaisEstimacao.isEmpty()) {
+            throw new NotFoundException(NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO);
+        }
+
+        return animaisEstimacao;
     }
 
     @Override

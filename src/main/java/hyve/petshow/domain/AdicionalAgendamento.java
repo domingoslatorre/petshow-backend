@@ -15,7 +15,7 @@ import lombok.ToString;
 @Data
 @Entity
 @NoArgsConstructor
-public class AgendamentoAdicional implements Serializable {
+public class AdicionalAgendamento implements Serializable {
     private static final long serialVersionUID = 368702712017722297L;
 
     @Id
@@ -29,7 +29,7 @@ public class AgendamentoAdicional implements Serializable {
     @JoinColumn(name = "fk_adicional", referencedColumnName = "id", nullable = false)
     private Adicional adicional;
     
-    public AgendamentoAdicional(Agendamento agendamento, Adicional adicional){
+    public AdicionalAgendamento(Agendamento agendamento, Adicional adicional){
         this.agendamento = agendamento;
         this.adicional = adicional;
     }

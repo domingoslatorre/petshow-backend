@@ -23,6 +23,8 @@ public class AgendamentoRepresentation {
     private Long servicoDetalhadoId;
     private ServicoDetalhadoRepresentation servicoDetalhado;
     private AvaliacaoRepresentation avaliacao;
+    private List<Long> animaisAtendidosIds;
     private List<AnimalEstimacaoRepresentation> animaisAtendidos;
+    private List<Long> adicionaisIds;
     private List<AdicionalRepresentation> adicionais;
 }
