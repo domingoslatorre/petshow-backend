@@ -9,6 +9,7 @@ import hyve.petshow.service.port.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,20 @@ public class AgendamentoFacade {
                 request.getClienteId(), request.getAnimaisAtendidosIds(), agendamento);
         var adicionais = this.processaAgendamentoAdicional(
                 request.getServicoDetalhadoId(), request.getAdicionaisIds(), agendamento);
+        var precoFinal = new BigDecimal(0);
 
+        /*TODO: UTILIZAR LAMBDA FUNCTION COMO MELHORIA DE PERFOMANCE*/
+        for (var animal : animaisAtendidos) {
+            for(var tipoAnimal : servicoDetalhado.getTiposAnimaisAceitos()){
+                if(animal.getAnimalEstimacao().getTipo().equals(tipoAnimal.getTipoAnimalEstimacao()))
+                    precoFinal = precoFinal.add(tipoAnimal.getPreco());
+            }
+        }
+        for(var adicional : adicionais){
+            precoFinal = precoFinal.add(adicional.getAdicional().getPreco());
+        }
+
+        agendamento.setPrecoFinal(precoFinal);
         agendamento.setAuditoria(auditoria);
         agendamento.setStatus(status);
         agendamento.setCliente(cliente);
