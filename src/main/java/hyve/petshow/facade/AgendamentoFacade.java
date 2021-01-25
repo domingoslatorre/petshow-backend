@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,10 +57,13 @@ public class AgendamentoFacade {
                     precoFinal = precoFinal.add(tipoAnimal.getPreco());
             }
         }
+
         for(var adicional : adicionais){
             precoFinal = precoFinal.add(adicional.getAdicional().getPreco());
         }
 
+        /*TODO: INSERIR REGRA PARA ENDEREÇO DE PRESTADOR*/
+        agendamento.setEndereco(prestador.getEndereco());
         agendamento.setPrecoFinal(precoFinal);
         agendamento.setAuditoria(auditoria);
         agendamento.setStatus(status);

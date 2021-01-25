@@ -66,8 +66,6 @@ public class AgendamentoConverter implements Converter<Agendamento, AgendamentoR
         domain.setId(representation.getId());
         domain.setData(representation.getData());
         domain.setComentario(representation.getComentario());
-        domain.setEndereco(representation.getEndereco());
-        domain.setPrecoFinal(representation.getPrecoFinal());
 
         animalConverter.toDomainList(representation.getAnimaisAtendidos()).stream()
                 .forEach(animalAtendido -> domain.getAnimaisAtendidos()
