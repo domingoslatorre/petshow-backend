@@ -1,5 +1,12 @@
 package hyve.petshow.controller.converter;
 
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import hyve.petshow.controller.representation.PrecoPorTipoRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
@@ -26,14 +33,15 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         representation.setTipo(servicoConverter.toRepresentation(domain.getTipo()));
         representation.setPrestadorId(domain.getPrestadorId());
         representation.setMediaAvaliacao(domain.getMediaAvaliacao());
-        domain.getTiposAnimaisAceitos().stream()
-            .forEach(tipoAnimalAceito -> {
-                representation.getPrecoPorTipo().add(PrecoPorTipoRepresentation.builder()
-                                .preco(tipoAnimalAceito.getPreco())
-                                .tipoAnimal(tipoAnimalEstimacaoConverter.toRepresentation(tipoAnimalAceito.getTipoAnimalEstimacao()))
-                                .build()
-                );
-            });
+        
+        var precosPorTipo = Optional.ofNullable(domain.getTiposAnimaisAceitos())
+        .map(tiposAceitos -> tiposAceitos.stream()
+        		.map(tipoAceito -> PrecoPorTipoRepresentation.builder()
+        				.preco(tipoAceito.getPreco())
+        				.tipoAnimal(tipoAnimalEstimacaoConverter.toRepresentation(tipoAceito.getTipoAnimalEstimacao()))
+        				.build()).collect(Collectors.toList())).orElse(new ArrayList<>());
+        
+        representation.setPrecoPorTipo(precosPorTipo);
 
         representation.setAdicionais(adicionalConverter.toRepresentationList(domain.getAdicionais()));
         return representation;
@@ -47,12 +55,15 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         domain.setTipo(servicoConverter.toDomain(representation.getTipo()));
         domain.setPrestadorId(representation.getPrestadorId());
         domain.setMediaAvaliacao(representation.getMediaAvaliacao());
-        representation.getPrecoPorTipo().stream()
-                .forEach(precoPorTipo -> domain.getTiposAnimaisAceitos().add(
-                        new ServicoDetalhadoTipoAnimalEstimacao(domain,
-                                tipoAnimalEstimacaoConverter.toDomain(precoPorTipo.getTipoAnimal()),
-                                precoPorTipo.getPreco())
-                ));
+        
+        var tiposAnimaisAceitos = Optional.ofNullable(representation.getPrecoPorTipo())
+        		.map(precos -> precos.stream()
+        				.map(preco -> new ServicoDetalhadoTipoAnimalEstimacao(domain, tipoAnimalEstimacaoConverter.toDomain(preco.getTipoAnimal()), preco.getPreco()))
+        				.collect(Collectors.toList()))
+        		.orElse(new ArrayList<>());
+        
+        
+        domain.setTiposAnimaisAceitos(tiposAnimaisAceitos);
         domain.setAdicionais(adicionalConverter.toDomainList(representation.getAdicionais()));
 
         return domain;

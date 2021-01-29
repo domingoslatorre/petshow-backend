@@ -1,5 +1,19 @@
 package hyve.petshow.service.implementation;
 
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
+
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.BusinessException;

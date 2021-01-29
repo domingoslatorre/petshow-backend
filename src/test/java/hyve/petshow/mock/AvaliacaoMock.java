@@ -1,13 +1,17 @@
 package hyve.petshow.mock;
 
-import hyve.petshow.controller.representation.AvaliacaoRepresentation;
-import hyve.petshow.domain.*;
-import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
+import static hyve.petshow.mock.ClienteMock.clienteRepresentation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static hyve.petshow.mock.ClienteMock.clienteRepresentation;
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.domain.Avaliacao;
+import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.Servico;
+import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 
 public class AvaliacaoMock {
 	public static Avaliacao avaliacao() {
@@ -24,7 +28,6 @@ public class AvaliacaoMock {
 		prestador.setNome("TestePrestador");
 
 		servicoAvaliado.setPrestadorId(prestador.getId());
-//		servicoAvaliado.setAvaliacoes(new ArrayList<>());
 		var cliente = new Cliente();
 		cliente.setId(1l);
 		cliente.setNome("Teste");

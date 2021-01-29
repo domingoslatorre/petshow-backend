@@ -1,12 +1,17 @@
 package hyve.petshow.controller.representation;
 
-import lombok.Builder;
-import lombok.Getter;
-
 import java.math.BigDecimal;
 
-@Getter
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class PrecoPorTipoRepresentation {
     private TipoAnimalEstimacaoRepresentation tipoAnimal;
     private BigDecimal preco;

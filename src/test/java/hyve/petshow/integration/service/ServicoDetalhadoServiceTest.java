@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,33 +80,6 @@ public class ServicoDetalhadoServiceTest {
 		assertTrue(repository.findById(servico.getId()).isPresent());
 	}
 
-  @Test
-	public void deve_atualizar_servico() throws BusinessException, NotFoundException {
-		// Given
-		var servico = service.adicionarServicoDetalhado(servicoDetalhado);
-
-		// When
-		var precoAtualizado = BigDecimal.valueOf(25);
-		servico.setPreco(precoAtualizado);
-		var servicoAtualizado = service.atualizarServicoDetalhado(servico.getId(), servico.getPrestadorId(), servico);
-
-		// Then
-		var servicoDb = repository.findById(servicoAtualizado.getId());
-		assertEquals(precoAtualizado.doubleValue(), servicoDb.get().getPreco().doubleValue(), 0.001);
-	}
-
-	@Test
-	public void deve_retornar_erro_ao_atualizar_por_nao_pertencer_ao_prestador() {
-		// Given
-		var servico = service.adicionarServicoDetalhado(servicoDetalhado);
-
-		// When
-		var precoAtualizado = BigDecimal.valueOf(25);
-		servico.setPreco(precoAtualizado);
-		assertThrows(BusinessException.class, () -> {
-			service.atualizarServicoDetalhado(servico.getId(), servico.getPrestadorId() + 1, servico);
-		});
-	}
 
 	@Test
 	public void deve_remover_servico() throws BusinessException, NotFoundException {
@@ -205,11 +177,11 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	public void deve_inserir_com_um_adicional() throws Exception {
 		// Given
-		servicoDetalhado.setAdicionais(new HashSet<Adicional>() {
+		servicoDetalhado.setAdicionais(new ArrayList<Adicional>() {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(Adicional.builder().nome("Teste").descricao("Descricao").preco(BigDecimal.valueOf(10)).build());
+				add(new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null));
 			}
 		});
 
@@ -223,12 +195,12 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	public void deve_inserir_com_dois_adicionais() throws Exception {
 		// Given
-		servicoDetalhado.setAdicionais(new HashSet<Adicional>() {
+		servicoDetalhado.setAdicionais(new ArrayList<Adicional>() {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(Adicional.builder().nome("Teste").descricao("Descricao").preco(BigDecimal.valueOf(10)).build());
-				add(Adicional.builder().nome("Teste2").descricao("Descricao2").preco(BigDecimal.valueOf(15)).build());
+				add(new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null));
+				add(new Adicional(null, "Teste2", "Descricao2", BigDecimal.valueOf(15), null, null));
 			}
 		});
 
@@ -242,11 +214,11 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	public void adicional_deve_ter_auditoria() throws NotFoundException {
 		// Given
-		servicoDetalhado.setAdicionais(new HashSet<Adicional>() {
+		servicoDetalhado.setAdicionais(new ArrayList<Adicional>() {
 			private static final long serialVersionUID = 1L;
 
 			{
-				add(Adicional.builder().nome("Teste").descricao("Descricao").preco(BigDecimal.valueOf(10)).build());
+				add(new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null));
 			}
 		});
 
