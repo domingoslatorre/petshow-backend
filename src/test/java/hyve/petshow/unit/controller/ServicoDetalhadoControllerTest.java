@@ -33,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import hyve.petshow.controller.ServicoDetalhadoController;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
+import hyve.petshow.controller.representation.ComparacaoWrapper;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
@@ -206,6 +207,6 @@ public class ServicoDetalhadoControllerTest {
 			}
 		};
 		assertEquals(HttpStatus.OK, controller.buscarServicosParaComparacao(idsServico).getStatusCode());
-		assertEquals(servicosRepresentation, controller.buscarServicosParaComparacao(idsServico).getBody());
+		assertEquals(new ComparacaoWrapper(servicosRepresentation), controller.buscarServicosParaComparacao(idsServico).getBody());
 	}
 }

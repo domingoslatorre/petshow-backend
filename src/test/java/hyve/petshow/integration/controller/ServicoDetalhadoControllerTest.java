@@ -30,6 +30,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
+import hyve.petshow.controller.representation.ComparacaoWrapper;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
@@ -259,9 +260,9 @@ public class ServicoDetalhadoControllerTest {
 				.queryParam("ids", servico.getId())
 				.toUriString();
 		
-		var response = template.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<List<ServicoDetalhadoRepresentation>>() {});
+		var response = template.exchange(uri, HttpMethod.GET, null, ComparacaoWrapper.class);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertFalse(response.getBody().isEmpty());
+		assertFalse(response.getBody().getComparacoes().isEmpty());
 	}
 }

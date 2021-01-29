@@ -4,6 +4,7 @@ import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.controller.representation.ComparacaoWrapper;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.facade.AvaliacaoFacade;
@@ -177,10 +178,10 @@ public class ServicoDetalhadoController {
 	
 	@Operation(summary = "Busca serviços detalhados para comparação")
 	@GetMapping("/servico-detalhado")
-	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosParaComparacao (
+	public ResponseEntity<ComparacaoWrapper> buscarServicosParaComparacao (
 			@Parameter(description="Lista de ID's a buscar")
 			@RequestParam(name = "ids") List<Long> idsServicos) {
 		var servicos = servicoDetalhadoFacade.buscarServicosDetalhadosPorIds(idsServicos);
-		return ResponseEntity.status(HttpStatus.OK).body(servicos);
+		return ResponseEntity.status(HttpStatus.OK).body(new ComparacaoWrapper(servicos));
 	}
 }
