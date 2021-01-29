@@ -83,7 +83,7 @@ public class AdicionalServiceTest {
 		}).when(repository).save(any());
 
 		var adicional = criaAdicional(1l);
-		service.criarAdicional(adicional);
+		service.criarAdicional(adicional,1l);
 
 		assertTrue(mockDb.contains(adicional));
 	}
@@ -93,7 +93,7 @@ public class AdicionalServiceTest {
 		var adicional = criaAdicional(1l);
 		doReturn(adicional).when(repository).save(any());
 
-		service.criarAdicional(adicional);
+		service.criarAdicional(adicional, 1l);
 
 		assertNotNull(adicional.getAuditoria());
 	}
@@ -103,7 +103,7 @@ public class AdicionalServiceTest {
 		var adicional = criaAdicional(1l);
 		doReturn(adicional).when(repository).save(any());
 
-		service.criarAdicional(adicional);
+		service.criarAdicional(adicional, 1l);
 
 		assertTrue(adicional.getAuditoria().isAtivo());
 	}

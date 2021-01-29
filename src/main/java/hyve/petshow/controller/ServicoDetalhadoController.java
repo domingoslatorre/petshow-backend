@@ -174,4 +174,13 @@ public class ServicoDetalhadoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoFacade.criaAdicional(idPrestador, idServico, request));
 			
 	}
+	
+	@Operation(summary = "Busca serviços detalhados para comparação")
+	@GetMapping("/servico-detalhado")
+	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscarServicosParaComparacao (
+			@Parameter(description="Lista de ID's a buscar")
+			@RequestParam(name = "ids") List<Long> idsServicos) {
+		var servicos = servicoDetalhadoFacade.buscarServicosDetalhadosPorIds(idsServicos);
+		return ResponseEntity.status(HttpStatus.OK).body(servicos);
+	}
 }

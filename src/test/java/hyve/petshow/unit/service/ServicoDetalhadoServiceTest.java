@@ -17,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -160,5 +162,20 @@ public class ServicoDetalhadoServiceTest {
 		var mensagem = service.removerServicoDetalhado(servicoDetalhado.getId(), servicoDetalhado.getPrestadorId());
 
 		assertEquals(MensagemRepresentation.MENSAGEM_FALHA, mensagem.getMensagem());
+	}
+	
+	@Test
+	public void deve_retornar_dois_servicos() {
+		var servicosDetalhados = new ArrayList<ServicoDetalhado>() {
+			private static final long serialVersionUID = 1L;
+
+		{
+			add(new ServicoDetalhado());
+			add(new ServicoDetalhado());
+		}};
+		
+		doReturn(servicosDetalhados).when(repository).findAllById(anyIterable());
+		
+		assertEquals(servicosDetalhados, service.buscarServicosDetalhadosPorIds(Arrays.asList(new Long[] {1l,2l})));
 	}
 }
