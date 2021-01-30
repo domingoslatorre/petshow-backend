@@ -1,9 +1,5 @@
 package hyve.petshow.service.implementation;
 
-import static hyve.petshow.util.AuditoriaUtils.ATIVO;
-import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
-import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -27,6 +23,8 @@ import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
+
+import static hyve.petshow.util.AuditoriaUtils.*;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
@@ -67,7 +65,7 @@ public class AcessoServiceImpl implements AcessoService {
         var tipoConta = conta.getTipo();
         criptografarSenha(conta.getLogin());
 
-        conta.setAuditoria(geraAuditoriaInsercao(Optional.empty()));
+        conta.setAuditoria(geraAuditoriaInsercaoConta(Optional.empty()));
 
         if(TipoConta.CLIENTE.equals(tipoConta)){
             var cliente = new Cliente(conta);

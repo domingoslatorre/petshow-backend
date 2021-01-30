@@ -9,8 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,13 +86,13 @@ public class ServicoDetalhadoServiceTest {
 		var servico = service.adicionarServicoDetalhado(servicoDetalhado);
 
 		// When
-		var precoAtualizado = BigDecimal.valueOf(25);
-		servico.setPreco(precoAtualizado);
+		var mediaAvaliacao = Float.valueOf(5);
+		servico.setMediaAvaliacao(mediaAvaliacao);
 		var servicoAtualizado = service.atualizarServicoDetalhado(servico.getId(), servico.getPrestadorId(), servico);
 
 		// Then
 		var servicoDb = repository.findById(servicoAtualizado.getId());
-		assertEquals(precoAtualizado.doubleValue(), servicoDb.get().getPreco().doubleValue(), 0.001);
+		assertEquals(mediaAvaliacao.doubleValue(), servicoDb.get().getMediaAvaliacao().doubleValue(), 0.001);
 	}
 
 	@Test
@@ -102,8 +101,8 @@ public class ServicoDetalhadoServiceTest {
 		var servico = service.adicionarServicoDetalhado(servicoDetalhado);
 
 		// When
-		var precoAtualizado = BigDecimal.valueOf(25);
-		servico.setPreco(precoAtualizado);
+		var mediaAvaliacao = Float.valueOf(5);
+		servico.setMediaAvaliacao(mediaAvaliacao);
 		assertThrows(BusinessException.class, () -> {
 			service.atualizarServicoDetalhado(servico.getId(), servico.getPrestadorId() + 1, servico);
 		});
@@ -205,13 +204,10 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	public void deve_inserir_com_um_adicional() throws Exception {
 		// Given
-		servicoDetalhado.setAdicionais(new HashSet<Adicional>() {
-			private static final long serialVersionUID = 1L;
+		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
+		var adicionais = new ArrayList<>(Arrays.asList(adicional));
 
-			{
-				add(Adicional.builder().nome("Teste").descricao("Descricao").preco(BigDecimal.valueOf(10)).build());
-			}
-		});
+		servicoDetalhado.setAdicionais(adicionais);
 
 		// When
 		service.adicionarServicoDetalhado(servicoDetalhado);
@@ -223,14 +219,11 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	public void deve_inserir_com_dois_adicionais() throws Exception {
 		// Given
-		servicoDetalhado.setAdicionais(new HashSet<Adicional>() {
-			private static final long serialVersionUID = 1L;
+		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
+		var adicional2 = new Adicional(null, "Teste2", "Descricao2", BigDecimal.valueOf(15), null, null);
+		var adicionais = new ArrayList<>(Arrays.asList(adicional, adicional2));
 
-			{
-				add(Adicional.builder().nome("Teste").descricao("Descricao").preco(BigDecimal.valueOf(10)).build());
-				add(Adicional.builder().nome("Teste2").descricao("Descricao2").preco(BigDecimal.valueOf(15)).build());
-			}
-		});
+		servicoDetalhado.setAdicionais(adicionais);
 
 		// When
 		service.adicionarServicoDetalhado(servicoDetalhado);
@@ -242,13 +235,10 @@ public class ServicoDetalhadoServiceTest {
 	@Test
 	public void adicional_deve_ter_auditoria() throws NotFoundException {
 		// Given
-		servicoDetalhado.setAdicionais(new HashSet<Adicional>() {
-			private static final long serialVersionUID = 1L;
+		var adicional = new Adicional(null, "Teste", "Descricao", BigDecimal.valueOf(10), null, null);
+		var adicionais = new ArrayList<>(Arrays.asList(adicional));
 
-			{
-				add(Adicional.builder().nome("Teste").descricao("Descricao").preco(BigDecimal.valueOf(10)).build());
-			}
-		});
+		servicoDetalhado.setAdicionais(adicionais);
 
 		// When
 		service.adicionarServicoDetalhado(servicoDetalhado);

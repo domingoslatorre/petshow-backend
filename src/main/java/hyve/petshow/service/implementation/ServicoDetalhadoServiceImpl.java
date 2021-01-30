@@ -64,7 +64,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
 		
-		//servicoDetalhado.setPreco(request.getPreco());
+		servicoDetalhado.setMediaAvaliacao(request.getMediaAvaliacao());
 		servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ATIVO));
 		var response = repository.save(servicoDetalhado);
 		return response;

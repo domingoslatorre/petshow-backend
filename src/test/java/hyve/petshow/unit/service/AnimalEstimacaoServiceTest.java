@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +50,7 @@ public class AnimalEstimacaoServiceTest {
         doReturn(Optional.of(animalEstimacao)).when(repository).findById(1L);
         doReturn(animaisEstimacao).when(repository).findAll();
         doReturn(animalEstimacaoPage).when(repository).findByDonoId(1L, pageable);
+        doReturn(animaisEstimacao).when(repository).findByDonoIdAndIdIn(anyLong(), anyList());
         doNothing().when(repository).delete(any(AnimalEstimacao.class));
     }
 
@@ -135,5 +138,20 @@ public class AnimalEstimacaoServiceTest {
     	var removerAnimalEstimacao = service.removerAnimalEstimacao(1L, animalEstimacao.getDonoId());
 
     	assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerAnimalEstimacao.getMensagem());
+    }
+
+    @Test
+    public void deve_retornar_lista_animais_de_estimacao() throws NotFoundException {
+        var actual = service.buscarAnimaisEstimacaoPorIds(1L, Arrays.asList(1L, 2L));
+
+        assertEquals(animaisEstimacao, actual);
+    }
+
+    @Test
+    public void deve_lancar_not_found_exception_ao_nao_encontrar_animais() throws NotFoundException {
+        doReturn(Collections.emptyList()).when(repository).findByDonoIdAndIdIn(1L, Arrays.asList(1L, 2L));
+
+        assertThrows(NotFoundException.class, () ->
+                service.buscarAnimaisEstimacaoPorIds(1L, Arrays.asList(1L, 2L)));
     }
 }
