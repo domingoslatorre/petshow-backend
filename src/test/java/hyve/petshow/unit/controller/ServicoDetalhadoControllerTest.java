@@ -33,7 +33,6 @@ import org.springframework.http.ResponseEntity;
 import hyve.petshow.controller.ServicoDetalhadoController;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
-import hyve.petshow.controller.representation.ComparacaoWrapper;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
@@ -41,6 +40,7 @@ import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.facade.ServicoDetalhadoFacade;
 import hyve.petshow.service.port.ServicoDetalhadoService;
+import hyve.petshow.util.ComparacaoUtils;
 
 public class ServicoDetalhadoControllerTest {
 	@Mock
@@ -183,30 +183,5 @@ public class ServicoDetalhadoControllerTest {
 		controller.criarAdicional(1l, 1l, adicionalTeste);
 
 		assertEquals(1, dbMock.size());
-	}
-
-	@Test
-	public void deve_retornar_lista_de_servicos_detalhados() {
-		var servicosRepresentation = new ArrayList<ServicoDetalhadoRepresentation>() {
-			private static final long serialVersionUID = 1L;
-
-			{
-				add(new ServicoDetalhadoRepresentation());
-				add(new ServicoDetalhadoRepresentation());
-			}
-		};
-
-		doReturn(servicosRepresentation).when(servicoDetalhadoFacade).buscarServicosDetalhadosPorIds(anyList());
-
-		var idsServico = new ArrayList<Long>() {
-			private static final long serialVersionUID = 1L;
-
-			{
-				add(1l);
-				add(2l);
-			}
-		};
-		assertEquals(HttpStatus.OK, controller.buscarServicosParaComparacao(idsServico).getStatusCode());
-		assertEquals(new ComparacaoWrapper(servicosRepresentation), controller.buscarServicosParaComparacao(idsServico).getBody());
 	}
 }
