@@ -104,12 +104,15 @@ public class AgendamentoFacade {
 
     private List<AdicionalAgendamento> processaAgendamentoAdicional(Long servicoDetalhadoId, List<Long> adicionaisIds,
                                                                     Agendamento agendamento) throws Exception {
-        var adicionaisBuscados = adicionalService
-                .buscarAdicionaisPorIds(servicoDetalhadoId, adicionaisIds);
         var adicionais = new ArrayList<AdicionalAgendamento>();
 
-        for (Adicional adicional : adicionaisBuscados) {
-            adicionais.add(new AdicionalAgendamento(agendamento, adicional));
+        if(! adicionaisIds.isEmpty()) {
+            var adicionaisBuscados = adicionalService
+                    .buscarAdicionaisPorIds(servicoDetalhadoId, adicionaisIds);
+
+            for (Adicional adicional : adicionaisBuscados) {
+                adicionais.add(new AdicionalAgendamento(agendamento, adicional));
+            }
         }
 
         return adicionais;

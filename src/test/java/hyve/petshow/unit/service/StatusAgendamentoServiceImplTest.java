@@ -29,12 +29,12 @@ public class StatusAgendamentoServiceImplTest {
     public void init() {
         initMocks(this);
 
-        doReturn(Optional.of(servicoDetalhado)).when(repository).findById(1L);
+       /* doReturn(Optional.of(servicoDetalhado)).when(repository).findById(1L);
         doReturn(servicoDetalhadoList).when(repository).findAll();
         doReturn(servicoDetalhadoPage).when(repository).findByPrestadorId(anyLong(), any(Pageable.class));
         doReturn(servicoDetalhadoPage).when(repository).findByTipo(anyInt(), any(Pageable.class));
         doReturn(Optional.of(servicoDetalhado)).when(repository).findByIdAndPrestadorId(anyLong(), anyLong());
-        doNothing().when(repository).delete(any(ServicoDetalhado.class));
+        doNothing().when(repository).delete(any(ServicoDetalhado.class));*/
     }
 
     @Test
