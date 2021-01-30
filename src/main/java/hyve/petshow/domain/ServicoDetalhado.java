@@ -37,10 +37,4 @@ public class ServicoDetalhado {
     private Long prestadorId;
     @OneToMany(mappedBy = "servicoDetalhado", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
     private List<ServicoDetalhadoTipoAnimalEstimacao> tiposAnimaisAceitos = new ArrayList<>();
-    
-//    public void addAvaliacao(Avaliacao avaliacao) {
-//    	avaliacao.setServicoAvaliadoId(this.getId());
-//        this.avaliacoes.add(avaliacao);
-//    }
-//    
 }

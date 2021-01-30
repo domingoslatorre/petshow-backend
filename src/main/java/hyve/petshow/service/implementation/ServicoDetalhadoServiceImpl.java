@@ -6,6 +6,7 @@ import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -107,5 +108,10 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	@Override
 	public ServicoDetalhado buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws NotFoundException {
 		return repository.findByIdAndPrestadorId(servicoId, prestadorId).orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO));
+	}
+
+	@Override
+	public List<ServicoDetalhado> buscarServicosDetalhadosPorIds(List<Long> idsServicos) {
+		return repository.findAllById(idsServicos);
 	}
 }

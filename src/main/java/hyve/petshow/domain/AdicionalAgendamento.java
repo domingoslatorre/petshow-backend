@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@Entity(name = "servico_detalhado_agendamento")
+@Entity
 @NoArgsConstructor
-public class ServicoDetalhadoAgendamento implements Serializable {
+public class AdicionalAgendamento implements Serializable {
     private static final long serialVersionUID = 368702712017722297L;
 
     @Id
@@ -26,11 +26,11 @@ public class ServicoDetalhadoAgendamento implements Serializable {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_servico_detalhado", referencedColumnName = "id", nullable = false)
-    private ServicoDetalhado servicoDetalhado;
+    @JoinColumn(name = "fk_adicional", referencedColumnName = "id", nullable = false)
+    private Adicional adicional;
     
-    public ServicoDetalhadoAgendamento(Agendamento agendamento, ServicoDetalhado servicoDetalhado){
+    public AdicionalAgendamento(Agendamento agendamento, Adicional adicional){
         this.agendamento = agendamento;
-        this.servicoDetalhado = servicoDetalhado;
+        this.adicional = adicional;
     }
 }

@@ -1,10 +1,12 @@
 package hyve.petshow.service.implementation;
 
 import hyve.petshow.domain.Agendamento;
+import hyve.petshow.domain.StatusAgendamento;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AgendamentoRepository;
 import hyve.petshow.service.port.AgendamentoService;
+import hyve.petshow.service.port.StatusAgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,14 +62,21 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     }
 
     @Override
-    public Agendamento buscarPorId(Long id) throws NotFoundException {
-        return repository.findById(id)
+    public Agendamento buscarPorId(Long id, Long usuarioId) throws NotFoundException, BusinessException {
+        var agendamento = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(AGENDAMENTO_NAO_ENCONTRADO));
+
+        if(!(verificarIdentidade(agendamento.getCliente().getId(), usuarioId) ||
+           verificarIdentidade(agendamento.getPrestador().getId(), usuarioId))){
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_AGENDAMENTO);
+        }
+
+        return agendamento;
     }
 
     @Override
     public Agendamento atualizarAgendamento(Long id, Long prestadorId, Agendamento request) throws BusinessException, NotFoundException {
-        var agendamento = buscarPorId(id);
+        var agendamento = buscarPorId(id, prestadorId);
 
         if(!verificarIdentidade(agendamento.getPrestador().getId(), prestadorId)) {
             throw new BusinessException(USUARIO_NAO_PROPRIETARIO_AGENDAMENTO);
@@ -75,8 +84,21 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
         agendamento.setComentario(request.getComentario());
         agendamento.setEndereco(request.getEndereco());
-        agendamento.setStatus(request.getStatus());
         agendamento.setAuditoria(atualizaAuditoria(agendamento.getAuditoria(), ATIVO));
+
+        return repository.save(agendamento);
+    }
+
+    @Override
+    public Agendamento atualizarStatusAgendamento(Long id, Long prestadorId, StatusAgendamento statusAgendamento)
+            throws BusinessException, NotFoundException {
+        var agendamento = buscarPorId(id, prestadorId);
+
+        if(!verificarIdentidade(agendamento.getPrestador().getId(), prestadorId)) {
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_AGENDAMENTO);
+        }
+
+        agendamento.setStatus(statusAgendamento);
 
         return repository.save(agendamento);
     }

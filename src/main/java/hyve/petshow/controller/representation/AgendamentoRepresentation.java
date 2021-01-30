@@ -10,18 +10,21 @@ import java.util.List;
 @Data
 public class AgendamentoRepresentation {
     private Long id;
-    private BigDecimal precoFinal;
-    private Float mediaAvaliacao;
     private LocalDateTime data;
     private String comentario;
     private Endereco endereco;
-    private List<AnimalEstimacaoRepresentation> animaisAtendidos;
-    private List<ServicoDetalhadoRepresentation> servicosDetalhados;
-    private Long servicoDetalhadoId;
+    private BigDecimal precoFinal;
     private Integer statusId;
     private StatusAgendamentoRepresentation status;
     private Long clienteId;
     private ClienteRepresentation cliente;
     private Long prestadorId;
     private PrestadorRepresentation prestador;
+    private Long servicoDetalhadoId;
+    private ServicoDetalhadoRepresentation servicoDetalhado;
+    private AvaliacaoRepresentation avaliacao;
+    private List<Long> animaisAtendidosIds;
+    private List<AnimalEstimacaoRepresentation> animaisAtendidos;
+    private List<Long> adicionaisIds;
+    private List<AdicionalRepresentation> adicionais;
 }
