@@ -1,10 +1,7 @@
 package hyve.petshow.facade;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-import hyve.petshow.util.AuditoriaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -74,5 +71,16 @@ public class ServicoDetalhadoFacade {
     	var adicional = adicionalService.criarAdicional(domain, idPrestador);
     	return adicionalConverter.toRepresentation(adicional);
     }
+
+	public List<ServicoDetalhadoRepresentation> buscarServicosDetalhadosPorIds(List<Long> idsServicos) throws Exception {
+		var servicosDb = servicoDetalhadoService.buscarServicosDetalhadosPorIds(idsServicos);
+		var representationList = servicoDetalhadoConverter.toRepresentationList(servicosDb);
+		
+		for(var representation: representationList) {
+			var prestadorRepresentation = prestadorConverter.toRepresentation(prestadorService.buscarPorId(representation.getPrestadorId()));
+			representation.setPrestador(prestadorRepresentation);
+		}
+		return representationList;
+	}
     
 }

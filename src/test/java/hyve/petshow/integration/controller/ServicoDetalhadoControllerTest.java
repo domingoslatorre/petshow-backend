@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,6 +30,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
+import hyve.petshow.controller.representation.ComparacaoWrapper;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
@@ -67,6 +70,7 @@ public class ServicoDetalhadoControllerTest {
 	private AdicionalRepository adicionalRepository;
 	@Autowired
 	private ServicoDetalhadoConverter converter;
+	
 	private String url;
 	
 	private Prestador prestador;
@@ -247,5 +251,18 @@ public class ServicoDetalhadoControllerTest {
 		assertTrue(busca.isPresent());
 		var buscaServico = repository.findById(servicoAdd.getId()).get();
 		assertTrue(buscaServico.getAdicionais().contains(busca.get()));
+	}
+	
+	@Test
+	public void deve_retornar_lista_com_servicos_para_comparacao() {
+		service.adicionarServicoDetalhado(servico);
+		var uri = UriComponentsBuilder.fromHttpUrl("http://localhost:"+this.port+"/servico-detalhado")
+				.queryParam("ids", servico.getId())
+				.toUriString();
+		
+		var response = template.exchange(uri, HttpMethod.GET, null, ComparacaoWrapper.class);
+		
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertFalse(response.getBody().getComparacoes().isEmpty());
 	}
 }
