@@ -54,7 +54,7 @@ public class ServicoDetalhadoServiceTest {
 		doReturn(Optional.of(servicoDetalhado)).when(repository).findById(1L);
 		doReturn(servicoDetalhadoList).when(repository).findAll();
 		doReturn(servicoDetalhadoPage).when(repository).findByPrestadorId(anyLong(), any(Pageable.class));
-		doReturn(servicoDetalhadoPage).when(repository).findByTipo(anyInt(), any(Pageable.class));
+		doReturn(servicoDetalhadoPage).when(repository).findAllByTipo(anyInt(), any(Pageable.class));
 		doReturn(Optional.of(servicoDetalhado)).when(repository).findByIdAndPrestadorId(anyLong(), anyLong());
 		doNothing().when(repository).delete(any(ServicoDetalhado.class));
 	}
@@ -103,7 +103,7 @@ public class ServicoDetalhadoServiceTest {
 	
 	@Test
 	public void deve_retornar_excecao_em_busca_por_tipo_nao_encontrada() {
-		doReturn(Page.empty()).when(repository).findByTipo(anyInt(), any(Pageable.class));
+		doReturn(Page.empty()).when(repository).findAllByTipo(anyInt(), any(Pageable.class));
 
 		assertThrows(NotFoundException.class, () -> service.buscarServicosDetalhadosPorTipoServico(1, pageable));
 	}

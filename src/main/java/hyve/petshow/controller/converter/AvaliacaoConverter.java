@@ -6,6 +6,8 @@ import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static hyve.petshow.util.NullUtils.isNotNull;
+
 @Component
 public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoRepresentation> {
 	@Autowired
@@ -16,7 +18,7 @@ public class AvaliacaoConverter implements Converter<Avaliacao, AvaliacaoReprese
 		var representation = new AvaliacaoRepresentation();
 
 		representation.setId(domain.getId());
-		if (domain.getCriteriosAvaliacao() != null) {
+		if (isNotNull(domain.getCriteriosAvaliacao())) {
 			var info = domain.getCriteriosAvaliacao();
 			representation.setAtencao(info.getAtencao());
 			representation.setQualidadeProdutos(info.getQualidadeProdutos());

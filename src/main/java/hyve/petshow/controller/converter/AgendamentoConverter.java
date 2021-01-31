@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
+import static hyve.petshow.util.NullUtils.isNotNull;
+
 @Component
 public class AgendamentoConverter implements Converter<Agendamento, AgendamentoRepresentation> {
     @Autowired
@@ -43,7 +45,7 @@ public class AgendamentoConverter implements Converter<Agendamento, AgendamentoR
         representation.setPrestador(prestadorConverter.toRepresentation(domain.getPrestador()));
         representation.setServicoDetalhadoId(domain.getServicoDetalhado().getId());
         representation.setServicoDetalhado(servicoDetalhadoConverter.toRepresentation(domain.getServicoDetalhado()));
-        if(domain.getAvaliacao() != null){
+        if(isNotNull(domain.getAvaliacao())){
             representation.setAvaliacao(avaliacaoConverter.toRepresentation(domain.getAvaliacao()));
         }
         representation.setAnimaisAtendidos(

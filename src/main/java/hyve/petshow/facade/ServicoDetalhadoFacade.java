@@ -2,6 +2,7 @@ package hyve.petshow.facade;
 
 import java.util.List;
 
+import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,9 +32,10 @@ public class ServicoDetalhadoFacade {
     @Autowired
     private AdicionalConverter adicionalConverter;
 
-    public Page<ServicoDetalhadoRepresentation> buscarServicosDetalhadosPorTipoServico(Integer id, Pageable pageable) throws Exception {
+    public Page<ServicoDetalhadoRepresentation> buscarServicosDetalhadosPorTipoServico(Pageable pageable,
+                                                                                       ServicoDetalhadoFilter filtragem) throws Exception {
         var servicosDetalhados = servicoDetalhadoConverter.toRepresentationPage(
-                servicoDetalhadoService.buscarServicosDetalhadosPorTipoServico(id, pageable));
+                servicoDetalhadoService.buscarServicosDetalhadosPorTipoServico(pageable, filtragem));
 
         for (ServicoDetalhadoRepresentation servico : servicosDetalhados) {
             var prestador = prestadorConverter.toRepresentation(

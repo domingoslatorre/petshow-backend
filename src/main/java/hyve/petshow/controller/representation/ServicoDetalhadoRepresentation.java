@@ -16,7 +16,7 @@ public class ServicoDetalhadoRepresentation {
 	private PrestadorRepresentation prestador;
 	private List<PrecoPorTipoRepresentation> precoPorTipo = new ArrayList<>();
 	private List<AdicionalRepresentation> adicionais = new ArrayList<>();
-	
+
 	public Float getMedia() {
 		return Optional.ofNullable(getMediaAvaliacao())
 				.orElseGet(() ->(float) avaliacoes.stream().mapToDouble(el -> el.getMedia()).average().orElse(0));

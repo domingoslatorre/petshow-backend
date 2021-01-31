@@ -1,5 +1,6 @@
 package hyve.petshow.service.implementation;
 
+import static hyve.petshow.repository.specification.ServicoDetalhadoSpecification.geraSpecificationServicoDetalhado;
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
 import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,12 +49,15 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	}
 
 	@Override
-	public Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer id, Pageable pageable) throws NotFoundException {
-		var servicosDetalhados = repository.findByTipo(id, pageable);
+	public Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Pageable pageable,
+																		 ServicoDetalhadoFilter filtragem) throws NotFoundException {
+		var specification = geraSpecificationServicoDetalhado(filtragem);
 
-		if(servicosDetalhados.isEmpty()){
+		var servicosDetalhados = repository.findAll(specification, pageable);
+
+		/*if(servicosDetalhados.isEmpty()){
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);
-		}
+		}*/
 
 		return servicosDetalhados;
 	}
