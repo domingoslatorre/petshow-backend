@@ -22,14 +22,16 @@ public class AvaliacaoFacade {
 	@Autowired
 	private AvaliacaoConverter converter;
 
-	public Avaliacao adicionarAvaliacao(AvaliacaoRepresentation request, Long clienteId,
-										Long servicoDetalhadoId, Long agendamentoId)
+	public Avaliacao adicionarAvaliacao(AvaliacaoRepresentation request, Long agendamentoId)
 			throws Exception {
+		var clienteId = request.getCliente().getId();
+		var servicoAvaliadoId = request.getServicoAvaliadoId();
+
 		var cliente = clienteService.buscarPorId(clienteId);
 		var avaliacao = converter.toDomain(request);
 
 		avaliacao.setCliente(cliente);
-		avaliacao.setServicoAvaliadoId(servicoDetalhadoId);
+		avaliacao.setServicoAvaliadoId(servicoAvaliadoId);
 		avaliacao.setAgendamentoAvaliadoId(agendamentoId);
 
 		return avaliacaoService.adicionarAvaliacao(avaliacao);

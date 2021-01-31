@@ -125,24 +125,6 @@ public class ServicoDetalhadoController {
 		return ResponseEntity.ok(response);
 	}
 
-	@Operation(summary = "Adiciona avaliação.")
-	@PostMapping("/prestador/servico-detalhado/{servicoDetalhadoId}/agendamento/{agendamentoId}/avaliacoes")
-	public ResponseEntity<AvaliacaoRepresentation> adicionarAvaliacao(
-			@Parameter(description = "Id do serviço detalhado.")
-			@PathVariable Long servicoDetalhadoId,
-			@Parameter(description = "Id do agendamento.")
-			@PathVariable Long agendamentoId,
-			@Parameter(description = "Avaliação que será inserida")
-			@RequestBody AvaliacaoRepresentation avaliacao)
-			throws Exception {
-		var clienteId = avaliacao.getCliente().getId();
-		var avaliacaoAdicionada = avaliacaoFacade.adicionarAvaliacao(avaliacao, clienteId, servicoDetalhadoId,
-				agendamentoId);
-		var representation = avaliacaoConverter.toRepresentation(avaliacaoAdicionada);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(representation);
-	}
-
 	@Operation(summary = "Busca serviço detalhado.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado/{servicoId}")
 	public ResponseEntity<ServicoDetalhadoRepresentation> buscarPorPrestadorIdEServicoId(
