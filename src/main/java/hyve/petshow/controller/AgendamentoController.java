@@ -36,18 +36,18 @@ public class AgendamentoController {
     private AgendamentoService agendamentoService;
     @Autowired
     private StatusAgendamentoService statusAgendamentoService;
-    /*@Autowired
-    private AvaliacaoService avaliacaoService;*/
+    @Autowired
+    private AvaliacaoService avaliacaoService;
     @Autowired
     private AgendamentoFacade agendamentoFacade;
-    /*@Autowired
-    private AvaliacaoFacade avaliacaoFacade;*/
+    @Autowired
+    private AvaliacaoFacade avaliacaoFacade;
     @Autowired
     private AgendamentoConverter agendamentoConverter;
     @Autowired
     private StatusAgendamentoConverter statusAgendamentoConverter;
-    /*@Autowired
-    private AvaliacaoConverter avaliacaoConverter;*/
+    @Autowired
+    private AvaliacaoConverter avaliacaoConverter;
 
     @Operation(summary = "Adiciona um novo agendamento.")
     @PostMapping
@@ -128,23 +128,23 @@ public class AgendamentoController {
 
         return ResponseEntity.ok(mensagem);
     }
-/*
+
     @Operation(summary = "Adiciona avaliação.")
-    @PostMapping("/agendamento/{agendamentoId}/avaliacao")
+    @PostMapping("/{id}/avaliacao")
     public ResponseEntity<AvaliacaoRepresentation> adicionarAvaliacao(
             @Parameter(description = "Id do agendamento.")
-            @PathVariable Long agendamentoId,
+            @PathVariable Long id,
             @Parameter(description = "Avaliação que será inserida")
             @RequestBody AvaliacaoRepresentation request)
             throws Exception {
-        var avaliacao = avaliacaoFacade.adicionarAvaliacao(request, agendamentoId);
+        var avaliacao = avaliacaoFacade.adicionarAvaliacao(request, id);
         var representation = avaliacaoConverter.toRepresentation(avaliacao);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(representation);
     }
 
     @Operation(summary = "Busca avaliação por agendamento.")
-    @GetMapping("/agendamento/{id}/avaliacao")
+    @GetMapping("/{id}/avaliacao")
     public ResponseEntity<AvaliacaoRepresentation> buscarAvaliacaoPorAgendamento(
             @Parameter(description = "Id do agendamento.")
             @PathVariable Long id)
@@ -153,5 +153,5 @@ public class AgendamentoController {
         var representation = avaliacaoConverter.toRepresentation(avaliacao);
 
         return ResponseEntity.ok(representation);
-    }*/
+    }
 }

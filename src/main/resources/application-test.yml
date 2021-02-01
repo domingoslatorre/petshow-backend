@@ -1,5 +1,4 @@
 spring:
-  profiles: test
   datasource:
     url: jdbc:h2:file:~/Documentos/projeto-integrado/database/db_temp
     #url: jdbc:h2:mem:testdb
