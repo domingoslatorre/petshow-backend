@@ -2,7 +2,6 @@ package hyve.petshow.controller;
 
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
@@ -176,7 +175,6 @@ public class ServicoDetalhadoController {
 			throws Exception {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(servicoDetalhadoFacade.criaAdicional(idPrestador, idServico, request));
-
 	}
 
 	@Operation(summary = "Busca serviços detalhados para comparação")
@@ -186,5 +184,33 @@ public class ServicoDetalhadoController {
 			@RequestParam(name = "ids") List<Long> idsServicos) throws Exception {
 		var servicos = servicoDetalhadoFacade.buscarServicosDetalhadosPorIds(idsServicos);
 		return ResponseEntity.status(HttpStatus.OK).body(ComparacaoUtils.criaWrapper(servicos));
+	}
+
+	@Operation(summary = "Atualiza adicional de um serviço")
+	@PutMapping("/prestador/{idPrestador}/servico-detalhado/{idServico}/adicional/{idAdicional}")
+	public ResponseEntity<AdicionalRepresentation> atualizarAdicional(
+			@Parameter(description = "Id do prestador")
+			@PathVariable Long idPrestador,
+			@Parameter(description = "Id do serviço")
+			@PathVariable Long idServico,
+			@Parameter(description = "Id do adicional")
+			@PathVariable Long idAdicional,
+			@Parameter(description = "Corpo do adicional a atualizar")
+			@RequestBody AdicionalRepresentation request)
+			throws Exception {
+		return ResponseEntity.ok(servicoDetalhadoFacade.atualizarAdicional(idPrestador, idServico, idAdicional, request));
+	}
+
+	@Operation(summary = "Deleta adicional de um serviço")
+	@DeleteMapping("/prestador/{idPrestador}/servico-detalhado/{idServico}/adicional/{idAdicional}")
+	public ResponseEntity<MensagemRepresentation> desativarAdicional(
+			@Parameter(description = "Id do prestador")
+			@PathVariable Long idPrestador,
+			@Parameter(description = "Id do serviço")
+			@PathVariable Long idServico,
+			@Parameter(description = "Id do adicional")
+			@PathVariable Long idAdicional)
+			throws Exception {
+		return ResponseEntity.ok(servicoDetalhadoFacade.desativarAdicional(idPrestador, idServico, idAdicional));
 	}
 }

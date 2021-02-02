@@ -54,7 +54,7 @@ public class AdicionalServiceTest {
 			}
 		};
 
-		doReturn(esperado).when(repository).findByServicoDetalhadoId(anyLong());
+		doReturn(esperado).when(repository).findByServicoDetalhadoIdAndAuditoriaFlagAtivo(anyLong());
 
 		// Then
 		assertEquals(esperado, service.buscarPorServicoDetalhado(1l));
@@ -63,7 +63,7 @@ public class AdicionalServiceTest {
 	@Test
 	public void deve_retornar_erro_por_lista_de_adicionais_vazia() {
 		// Given
-		doReturn(Collections.emptyList()).when(repository).findByServicoDetalhadoId(anyLong());
+		doReturn(Collections.emptyList()).when(repository).findByServicoDetalhadoIdAndAuditoriaFlagAtivo(anyLong());
 
 		// Then
 		assertThrows(NotFoundException.class, () -> {

@@ -27,7 +27,7 @@ public class ServicoDetalhado {
     private Float mediaAvaliacao;
     @Embedded
     private Auditoria auditoria;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_servico_detalhado")
     private List<Adicional> adicionais = new ArrayList<>();
     @ManyToOne

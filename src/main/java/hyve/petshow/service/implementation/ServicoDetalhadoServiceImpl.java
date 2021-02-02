@@ -95,8 +95,16 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
 	@Override
 	public ServicoDetalhado buscarPorId(Long id) throws NotFoundException {
-		return repository.findById(id)
+		var servicoDetalhado = repository.findById(id)
 				.orElseThrow(() -> new NotFoundException(SERVICO_DETALHADO_NAO_ENCONTRADO));
+
+		/*TODO: ARRUMAR ESSE NEGOCIO NAO MUITO LEGAL*/
+		servicoDetalhado.setAdicionais(
+				servicoDetalhado.getAdicionais().stream()
+						.filter(adicional -> adicional.getAuditoria().isAtivo())
+						.collect(Collectors.toList()));
+
+		return servicoDetalhado;
 	}
 
 	@Override
@@ -107,12 +115,28 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);
 		}
 
+		/*TODO: ARRUMAR ESSE NEGOCIO NAO MUITO LEGAL*/
+		servicosDetalhados.get()
+				.forEach(servicoDetalhado -> servicoDetalhado.setAdicionais(
+						servicoDetalhado.getAdicionais().stream()
+								.filter(adicional -> adicional.getAuditoria().isAtivo())
+								.collect(Collectors.toList())));
+
 		return servicosDetalhados;
 	}
 
 	@Override
 	public ServicoDetalhado buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws NotFoundException {
-		return repository.findByIdAndPrestadorId(servicoId, prestadorId).orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO));
+		var servicoDetalhado = repository.findByIdAndPrestadorId(servicoId, prestadorId)
+				.orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO));
+
+		/*TODO: ARRUMAR ESSE NEGOCIO NAO MUITO LEGAL*/
+		servicoDetalhado.setAdicionais(
+				servicoDetalhado.getAdicionais().stream()
+						.filter(adicional -> adicional.getAuditoria().isAtivo())
+						.collect(Collectors.toList()));
+
+		return servicoDetalhado;
 	}
 
 	@Override

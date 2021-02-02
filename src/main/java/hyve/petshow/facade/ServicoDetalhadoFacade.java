@@ -3,6 +3,7 @@ package hyve.petshow.facade;
 import java.util.List;
 
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
+import hyve.petshow.controller.representation.MensagemRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -84,5 +85,28 @@ public class ServicoDetalhadoFacade {
 		}
 		return representationList;
 	}
-    
+
+    public AdicionalRepresentation atualizarAdicional(Long idPrestador, Long idServico, Long idAdicional,
+                                                      AdicionalRepresentation adicional) throws Exception {
+        var prestador = prestadorService.buscarPorId(idPrestador);
+        var servico = servicoDetalhadoService.buscarPorPrestadorIdEServicoId(prestador.getId(), idServico);
+        adicional.setServicoDetalhadoId(servico.getId());
+        var domain = adicionalConverter.toDomain(adicional);
+        var response = adicionalService.atualizarAdicional(idAdicional, domain);
+
+        return adicionalConverter.toRepresentation(response);
+    }
+
+    public MensagemRepresentation desativarAdicional(Long idPrestador, Long idServico, Long idAdicional) throws Exception {
+        var prestador = prestadorService.buscarPorId(idPrestador);
+        var servico = servicoDetalhadoService.buscarPorPrestadorIdEServicoId(prestador.getId(), idServico);
+
+        var response = adicionalService.desativarAdicional(idAdicional, servico.getId());
+
+        var mensagem = new MensagemRepresentation(idAdicional);
+
+        mensagem.setSucesso(response);
+
+        return mensagem;
+    }
 }
