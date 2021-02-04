@@ -29,6 +29,7 @@ import static hyve.petshow.mock.ContaMock.contaCliente;
 import static hyve.petshow.mock.ContaMock.contaPrestador;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled("Destativado enquanto não funcionar em PRD")
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
