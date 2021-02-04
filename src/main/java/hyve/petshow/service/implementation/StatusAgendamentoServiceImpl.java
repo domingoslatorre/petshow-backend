@@ -13,10 +13,10 @@ import java.util.List;
 public class StatusAgendamentoServiceImpl extends TipoService<StatusAgendamento> implements StatusAgendamentoService {
     private static final String NENHUM_STATUS_AGENDAMENTO_ENCONTRADO = "NENHUM_STATUS_AGENDAMENTO_ENCONTRADO";
 
-    public StatusAgendamentoServiceImpl(){super(NENHUM_STATUS_AGENDAMENTO_ENCONTRADO);}
-
     @Autowired
     private StatusAgendamentoRepository repository;
+
+    public StatusAgendamentoServiceImpl(){super(NENHUM_STATUS_AGENDAMENTO_ENCONTRADO);}
 
     @Override
     public List<StatusAgendamento> buscarStatusAgendamento() throws NotFoundException {
