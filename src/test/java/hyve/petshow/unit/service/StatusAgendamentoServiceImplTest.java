@@ -13,7 +13,7 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static hyve.petshow.mock.StatusAgendamentoMock.statusAgendamento;
+import static hyve.petshow.mock.StatusAgendamentoMock.criaStatusAgendamento;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +28,7 @@ public class StatusAgendamentoServiceImplTest {
     @InjectMocks
     private StatusAgendamentoServiceImpl service;
 
-    private StatusAgendamento statusAgendamento = statusAgendamento();
+    private StatusAgendamento statusAgendamento = criaStatusAgendamento();
 
     @BeforeEach
     public void init() {

@@ -21,7 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.*;
 
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhado;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -30,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 
@@ -42,7 +41,7 @@ public class ServicoDetalhadoServiceTest {
 	@InjectMocks
 	private ServicoDetalhadoServiceImpl service;
 
-	private ServicoDetalhado servicoDetalhado = servicoDetalhado();
+	private ServicoDetalhado servicoDetalhado = criaServicoDetalhado();
 	private List<ServicoDetalhado> servicoDetalhadoList = singletonList(servicoDetalhado);
 	private Page<ServicoDetalhado> servicoDetalhadoPage = new PageImpl<>(servicoDetalhadoList);
 	private Pageable pageable = geraPageable(0, 5);
@@ -138,7 +137,7 @@ public class ServicoDetalhadoServiceTest {
 	
 	@Test
 	public void deve_retornar_excecao_por_donos_diferentes_em_atualizacao() {
-		var servicoRequest = servicoDetalhado();
+		var servicoRequest = criaServicoDetalhado();
 
 		assertThrows(BusinessException.class, () -> service.atualizarServicoDetalhado(1L, 2L, servicoRequest));
 	}
@@ -174,7 +173,7 @@ public class ServicoDetalhadoServiceTest {
 
 	@Test
 	public void deve_salvar_com_lista_vazia_de_adicionais_ao_nenhum_ser_informado_ao_adicionar_servico_detalhado(){
-		var servicoDetalhadoRequest = servicoDetalhado();
+		var servicoDetalhadoRequest = criaServicoDetalhado();
 
 		servicoDetalhadoRequest.setAdicionais(Collections.emptyList());
 

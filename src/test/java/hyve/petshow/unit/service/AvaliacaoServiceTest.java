@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +17,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-import static hyve.petshow.mock.AvaliacaoMock.avaliacao;
-import static hyve.petshow.mock.AvaliacaoMock.avaliacaoList;
+import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacao;
+import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoList;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,8 +34,8 @@ public class AvaliacaoServiceTest {
 	@InjectMocks
 	private AvaliacaoServiceImpl service;
 
-	private Avaliacao avaliacao = avaliacao();
-	private List<Avaliacao> avaliacoes = avaliacaoList();
+	private Avaliacao avaliacao = criaAvaliacao();
+	private List<Avaliacao> avaliacoes = criaAvaliacaoList();
 	private Page<Avaliacao> avaliacaoPage = new PageImpl<>(avaliacoes);
 	private Pageable pageable = geraPageable(0, 5);
 

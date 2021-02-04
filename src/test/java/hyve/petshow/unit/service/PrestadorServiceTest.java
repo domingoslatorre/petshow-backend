@@ -12,7 +12,7 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static hyve.petshow.mock.PrestadorMock.prestador;
+import static hyve.petshow.mock.PrestadorMock.criaPrestador;
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,7 +26,7 @@ public class PrestadorServiceTest {
     @InjectMocks
     private PrestadorServiceImpl service;
 
-    private Prestador prestador = prestador();
+    private Prestador prestador = criaPrestador();
 
     @BeforeEach
     public void init() {
@@ -83,7 +83,7 @@ public class PrestadorServiceTest {
     
     @Test
     public void deve_retornar_mensagem_de_erro_em_execucao_de_delecao() throws Exception {
-        var prestadorAtivo = prestador();
+        var prestadorAtivo = criaPrestador();
 
         doReturn(prestadorAtivo).when(repository).save(prestador);
 

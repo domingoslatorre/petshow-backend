@@ -94,21 +94,7 @@ public class AcessoIntegrationTest {
 		
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
-	
-	@Test
-	public void deve_nao_encontrar_o_login_informado() throws Exception {
-		var uri = new URI(this.url + "/login");
-		var headers = new HttpHeaders();
-		
-		var login = new Login();
-		login.setEmail(conta.getEmail());
-		login.setSenha("ASLDGJjskldgja");
-		var requestBody = new HttpEntity<>(login, headers);
-		var response = template.postForEntity(uri, requestBody, String.class);
-		
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-	}
-	
+
 	@Test
 	public void deve_cadastrar_nova_conta() throws Exception {
 		var uri = new URI(this.url + "/cadastro");

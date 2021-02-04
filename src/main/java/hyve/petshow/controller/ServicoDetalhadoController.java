@@ -188,7 +188,8 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Lista de ID's a buscar")
 			@RequestParam(name = "ids") List<Long> idsServicos) throws Exception {
 		var servicos = servicoDetalhadoFacade.buscarServicosDetalhadosPorIds(idsServicos);
-		return ResponseEntity.status(HttpStatus.OK).body(ComparacaoUtils.criaWrapper(servicos));
+
+		return ResponseEntity.ok(ComparacaoUtils.criaWrapper(servicos));
 	}
 
 	@Operation(summary = "Atualiza adicional de um serviço")
@@ -203,7 +204,9 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Corpo do adicional a atualizar")
 			@RequestBody AdicionalRepresentation request)
 			throws Exception {
-		return ResponseEntity.ok(servicoDetalhadoFacade.atualizarAdicional(idPrestador, idServico, idAdicional, request));
+		var adicional = servicoDetalhadoFacade.atualizarAdicional(idPrestador, idServico, idAdicional, request);
+
+		return ResponseEntity.ok(adicional);
 	}
 
 	@Operation(summary = "Deleta adicional de um serviço")
@@ -216,6 +219,8 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Id do adicional")
 			@PathVariable Long idAdicional)
 			throws Exception {
-		return ResponseEntity.ok(servicoDetalhadoFacade.desativarAdicional(idPrestador, idServico, idAdicional));
+		var mensagem = servicoDetalhadoFacade.desativarAdicional(idPrestador, idServico, idAdicional);
+
+		return ResponseEntity.ok(mensagem);
 	}
 }

@@ -45,7 +45,7 @@ public class ContaServiceTest {
 	@Test
 	public void deve_retornar_conta() throws Exception {
 		// Given
-		var conta = Optional.of(ClienteMock.cliente());
+		var conta = Optional.of(ClienteMock.criaCliente());
 		
 		
 		doReturn(conta).when(repository).findById(anyLong());
@@ -72,7 +72,7 @@ public class ContaServiceTest {
 	@Test
 	public void deve_desativar_conta() throws Exception {
 		// Given
-		var conta = ClienteMock.cliente();
+		var conta = ClienteMock.criaCliente();
 		doReturn(conta).when(repository).save(any());
 		doReturn(Optional.of(conta)).when(repository).findById(anyLong());
 		
@@ -102,7 +102,7 @@ public class ContaServiceTest {
 	@Test
 	public void deve_buscar_por_email() {
 		// Given
-		doReturn(Optional.of(ClienteMock.cliente())).when(repository).findByEmail(anyString());
+		doReturn(Optional.of(ClienteMock.criaCliente())).when(repository).findByEmail(anyString());
 		//When
 		var busca = service.buscarPorEmail("sadfglksdjg");
 		// Then
@@ -123,8 +123,8 @@ public class ContaServiceTest {
 	@Test
 	public void deve_atualizar_conta() throws Exception {
 		// Given
-		var cliente = ClienteMock.cliente();
-		var clienteAtualizado = ClienteMock.cliente();
+		var cliente = ClienteMock.criaCliente();
+		var clienteAtualizado = ClienteMock.criaCliente();
 		doReturn(Optional.of(cliente)).when(repository).findById(anyLong());
 		doReturn(cliente).when(repository).save(any());
 		clienteAtualizado.setTelefone("398476239846");

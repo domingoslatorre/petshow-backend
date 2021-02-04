@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
+import static hyve.petshow.mock.AnimalEstimacaoMock.criaAnimalEstimacao;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -37,7 +37,7 @@ public class AnimalEstimacaoServiceTest {
     @InjectMocks
     private AnimalEstimacaoServiceImpl service;
 
-    private AnimalEstimacao animalEstimacao = animalEstimacao();
+    private AnimalEstimacao animalEstimacao = criaAnimalEstimacao();
     private List<AnimalEstimacao> animaisEstimacao = singletonList(animalEstimacao);
     private Page<AnimalEstimacao> animalEstimacaoPage = new PageImpl<>(animaisEstimacao);
     private Pageable pageable = geraPageable(0, 5);
@@ -117,7 +117,7 @@ public class AnimalEstimacaoServiceTest {
     
     @Test
     public void deve_retornar_excecao_por_donos_diferentes() {
-    	var animalRequest = animalEstimacao();
+    	var animalRequest = criaAnimalEstimacao();
     	animalRequest.setDonoId(2L);
 
     	assertThrows(BusinessException.class, () -> service.atualizarAnimalEstimacao(1L, animalRequest));
@@ -125,7 +125,7 @@ public class AnimalEstimacaoServiceTest {
     
     @Test
     public void deve_retornar_excecao_por_donos_diferentes_delecao() {
-        var animalRequest = animalEstimacao();
+        var animalRequest = criaAnimalEstimacao();
         animalRequest.setDonoId(2L);
 
         assertThrows(BusinessException.class, () -> service.removerAnimalEstimacao(1L, animalRequest.getDonoId()));

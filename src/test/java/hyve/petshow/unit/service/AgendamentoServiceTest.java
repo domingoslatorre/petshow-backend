@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static hyve.petshow.mock.AgendamentoMock.agendamento;
-import static hyve.petshow.mock.StatusAgendamentoMock.statusAgendamento;
+import static hyve.petshow.mock.AgendamentoMock.criaAgendamento;
+import static hyve.petshow.mock.StatusAgendamentoMock.criaStatusAgendamento;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -34,11 +34,11 @@ public class AgendamentoServiceTest {
     @InjectMocks
     private AgendamentoServiceImpl service;
 
-    private Agendamento agendamento = agendamento();
+    private Agendamento agendamento = criaAgendamento();
     private List<Agendamento> agendamentoList = Arrays.asList(agendamento);
     private Page<Agendamento> agendamentoPage = new PageImpl<>(agendamentoList);
 
-    private StatusAgendamento statusAgendamento = statusAgendamento();
+    private StatusAgendamento statusAgendamento = criaStatusAgendamento();
 
     private Pageable pageable = PageRequest.of(0, 10);
 
@@ -122,7 +122,7 @@ public class AgendamentoServiceTest {
 
     @Test
     public void deve_atualizar_agendamento() throws NotFoundException, BusinessException {
-        var request = agendamento();
+        var request = criaAgendamento();
 
         request.setComentario("alt");
 
@@ -135,8 +135,8 @@ public class AgendamentoServiceTest {
 
     @Test
     public void deve_atualizar_status_agendamento() throws NotFoundException, BusinessException {
-        var request = statusAgendamento();
-        var agendamentoResponse = agendamento();
+        var request = criaStatusAgendamento();
+        var agendamentoResponse = criaAgendamento();
 
         request.setId(2);
         agendamentoResponse.setStatus(request);

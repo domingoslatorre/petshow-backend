@@ -3,7 +3,6 @@ package hyve.petshow.unit.service;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.VerificationToken;
-import hyve.petshow.domain.enums.TipoConta;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AcessoRepository;
@@ -18,20 +17,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static hyve.petshow.domain.enums.TipoConta.PRESTADOR_AUTONOMO;
-import static hyve.petshow.mock.ClienteMock.cliente;
-import static hyve.petshow.mock.PrestadorMock.prestador;
+import static hyve.petshow.mock.ClienteMock.criaCliente;
+import static hyve.petshow.mock.PrestadorMock.criaPrestador;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -49,8 +44,8 @@ public class AcessoServiceTest {
 	@InjectMocks
 	private AcessoServiceImpl service;
 
-	private Cliente cliente = cliente();
-	private Prestador prestador = prestador();
+	private Cliente cliente = criaCliente();
+	private Prestador prestador = criaPrestador();
 
 	@BeforeEach
 	public void init() {

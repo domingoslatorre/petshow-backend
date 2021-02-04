@@ -3,7 +3,7 @@ package hyve.petshow.mock;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 
 public class MensagemMock {
-    public static MensagemRepresentation mensagemRepresentationSucesso(){
+    public static MensagemRepresentation criaMensagemRepresentationSucesso(){
         var mensagemRepresentation = new MensagemRepresentation(1L);
 
         mensagemRepresentation.setSucesso(Boolean.TRUE);
@@ -11,7 +11,7 @@ public class MensagemMock {
         return mensagemRepresentation;
     }
 
-    public static MensagemRepresentation mensagemRepresentationFalha(){
+    public static MensagemRepresentation criaMensagemRepresentationFalha(){
         var mensagemRepresentation = new MensagemRepresentation(1L);
 
         mensagemRepresentation.setSucesso(Boolean.FALSE);

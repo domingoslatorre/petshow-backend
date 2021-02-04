@@ -12,7 +12,7 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static hyve.petshow.mock.ClienteMock.cliente;
+import static hyve.petshow.mock.ClienteMock.criaCliente;
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,7 +26,7 @@ public class ClienteServiceTest {
 	@InjectMocks
 	private ClienteServiceImpl service;
 
-	private Cliente cliente = cliente();
+	private Cliente cliente = criaCliente();
 
 	@BeforeEach
 	public void init() {

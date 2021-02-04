@@ -1,16 +1,15 @@
 package hyve.petshow.unit.facade;
 
-import static hyve.petshow.mock.AvaliacaoMock.avaliacao;
-import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
-import static hyve.petshow.mock.ClienteMock.cliente;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
+import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacao;
+import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
+import static hyve.petshow.mock.ClienteMock.criaCliente;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhado;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +49,11 @@ public class AvaliacaoFacadeTest {
 	@InjectMocks
 	private AvaliacaoFacade facade;
 
-	private Cliente cliente = cliente();
-	private ServicoDetalhado servicoDetalhado = servicoDetalhado();
-	private AvaliacaoRepresentation avaliacaoRepresentation = avaliacaoRepresentation();
+	private Cliente cliente = criaCliente();
+	private ServicoDetalhado servicoDetalhado = criaServicoDetalhado();
+	private AvaliacaoRepresentation avaliacaoRepresentation = criaAvaliacaoRepresentation();
 	private List<Avaliacao> avaliacoes = new ArrayList<>();
-	private Avaliacao avaliacao = avaliacao();
+	private Avaliacao avaliacao = criaAvaliacao();
 	private Page<Avaliacao> avaliacaoPage = new PageImpl<>(avaliacoes);
 	private Page<AvaliacaoRepresentation> avaliacaoRepresentationPage = new PageImpl<>(singletonList(avaliacaoRepresentation));
 

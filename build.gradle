@@ -87,11 +87,14 @@ jacocoTestReport {
 			fileTree(dir: it,
 					exclude: ['hyve/petshow/domain/**',
 							  'hyve/petshow/controller/representation/**',
+							  'hyve/petshow/controller/filter/**',
+							  'hyve/petshow/controller/converter/**',
 							  'hyve/petshow/exceptions/**',
 							  'hyve/petshow/repository/**',
 							  'hyve/petshow/configuration/**',
 							  'hyve/petshow/filter/**',
-							  'hyve/petshow/configuration/**'
+							  'hyve/petshow/util/**'
+
 					])
 		})
 	}

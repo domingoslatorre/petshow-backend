@@ -14,7 +14,7 @@ import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 
 public class AvaliacaoMock {
-	public static Avaliacao avaliacao() {
+	public static Avaliacao criaAvaliacao() {
 		var tipo = new Servico();
 		tipo.setId(1);
 		tipo.setNome("Banho");
@@ -47,8 +47,8 @@ public class AvaliacaoMock {
 		return avaliacao;
 	}
 
-	public static AvaliacaoRepresentation avaliacaoRepresentation() {
-		var avaliacao = avaliacao();
+	public static AvaliacaoRepresentation criaAvaliacaoRepresentation() {
+		var avaliacao = criaAvaliacao();
 		var avaliacaoRepresentation = new AvaliacaoRepresentation();
 
 		avaliacaoRepresentation.setId(avaliacao.getId());
@@ -65,10 +65,10 @@ public class AvaliacaoMock {
 		return avaliacaoRepresentation;
 	}
 
-	public static List<Avaliacao> avaliacaoList() {
+	public static List<Avaliacao> criaAvaliacaoList() {
 		var avaliacaoList = new ArrayList<Avaliacao>();
 
-		avaliacaoList.add(avaliacao());
+		avaliacaoList.add(criaAvaliacao());
 
 		return avaliacaoList;
 	}

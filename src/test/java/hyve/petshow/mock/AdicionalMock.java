@@ -23,7 +23,7 @@ public class AdicionalMock {
 		return adicional;
 	}
 
-	public static AdicionalRepresentation criaRepresentation(Long idAdicional) {
+	public static AdicionalRepresentation criaAdicionalRepresentation(Long idAdicional) {
 		var adicional = new AdicionalRepresentation();
 		adicional.setId(idAdicional);
 		adicional.setNome(String.valueOf(idAdicional));

@@ -6,17 +6,17 @@ import hyve.petshow.domain.Cliente;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
+import static hyve.petshow.mock.AnimalEstimacaoMock.criaAnimalEstimacao;
 import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoRepresentation;
 import static hyve.petshow.mock.ContaMock.contaCliente;
 
 public class ClienteMock {
-	public static Cliente cliente() {
-		return new Cliente(contaCliente(), Arrays.asList(animalEstimacao()));
+	public static Cliente criaCliente() {
+		return new Cliente(contaCliente(), Arrays.asList(criaAnimalEstimacao()));
 	}
 
 	public static ClienteRepresentation clienteRepresentation() {
-		var cliente = cliente();
+		var cliente = criaCliente();
 		var clienteRepresentation = new ClienteRepresentation();
 
 		clienteRepresentation.setId(cliente.getId());

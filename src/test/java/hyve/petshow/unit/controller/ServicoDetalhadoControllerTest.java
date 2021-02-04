@@ -1,25 +1,30 @@
 package hyve.petshow.unit.controller;
 
-import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoList;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentation;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentationList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static hyve.petshow.mock.AdicionalMock.criaAdicionalRepresentation;
+import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
+import static hyve.petshow.mock.MensagemMock.criaMensagemRepresentationSucesso;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhado;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhadoList;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhadoRepresentation;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhadoRepresentationList;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
+import hyve.petshow.controller.representation.*;
+import hyve.petshow.domain.Adicional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,15 +38,11 @@ import org.springframework.http.ResponseEntity;
 
 import hyve.petshow.controller.ServicoDetalhadoController;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.AdicionalRepresentation;
-import hyve.petshow.controller.representation.MensagemRepresentation;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.facade.ServicoDetalhadoFacade;
 import hyve.petshow.service.port.ServicoDetalhadoService;
-import hyve.petshow.util.ComparacaoUtils;
 
 public class ServicoDetalhadoControllerTest {
 	@Mock
@@ -55,20 +56,26 @@ public class ServicoDetalhadoControllerTest {
 	@InjectMocks
 	private ServicoDetalhadoController controller;
 
-	private ServicoDetalhado servicoDetalhado = servicoDetalhado();
-	private ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = servicoDetalhadoRepresentation();
+	private ServicoDetalhado servicoDetalhado = criaServicoDetalhado();
+	private ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = criaServicoDetalhadoRepresentation();
 
-	private List<ServicoDetalhado> servicoDetalhadoList = servicoDetalhadoList();
-	private List<ServicoDetalhadoRepresentation> servicoDetalhadoRepresentationList = servicoDetalhadoRepresentationList();
+	private List<ServicoDetalhado> servicoDetalhadoList = criaServicoDetalhadoList();
+	private List<ServicoDetalhadoRepresentation> servicoDetalhadoRepresentationList = criaServicoDetalhadoRepresentationList();
 	private Page<ServicoDetalhado> servicoDetalhadoPage = new PageImpl<>(servicoDetalhadoList);
 	private Page<ServicoDetalhadoRepresentation> servicoDetalhadoRepresentationPage = new PageImpl<>(
 			servicoDetalhadoRepresentationList);
 
-	private MensagemRepresentation mensagemRepresentation = mensagemRepresentationSucesso();
+	private MensagemRepresentation mensagemRepresentation = criaMensagemRepresentationSucesso();
+
+	private Page<AvaliacaoRepresentation> avaliacaoRepresentationPage =
+			new PageImpl<>(Arrays.asList(criaAvaliacaoRepresentation()));
+
+	private ComparacaoWrapper comparacaoWrapper = new ComparacaoWrapper();
+	private AdicionalRepresentation adicionalRepresentation = criaAdicionalRepresentation(1L);
 
 	@BeforeEach
 	public void init() throws Exception {
-		initMocks(this);
+		openMocks(this);
 
 		doReturn(servicoDetalhadoPage).when(service).buscarPorPrestadorId(anyLong(), any(Pageable.class));
 		doReturn(servicoDetalhado).when(service).adicionarServicoDetalhado(any(ServicoDetalhado.class));
@@ -86,6 +93,13 @@ public class ServicoDetalhadoControllerTest {
 				anyLong());
 		doReturn(servicoDetalhadoRepresentationPage).when(servicoDetalhadoFacade)
 				.buscarServicosDetalhadosPorTipoServico(any(Pageable.class), any(ServicoDetalhadoFilter.class));
+		doReturn(avaliacaoRepresentationPage).when(avaliacaoFacade)
+				.buscarAvaliacaoPorServico(anyLong(), any(Pageable.class));
+		doReturn(servicoDetalhadoRepresentationList).when(servicoDetalhadoFacade)
+				.buscarServicosDetalhadosPorIds(anyList());
+		doReturn(adicionalRepresentation).when(servicoDetalhadoFacade)
+				.atualizarAdicional(anyLong(), anyLong(), anyLong(), any(AdicionalRepresentation.class));
+		doReturn(mensagemRepresentation).when(servicoDetalhadoFacade).desativarAdicional(anyLong(), anyLong(), anyLong());
 	}
 
 	@Test
@@ -185,5 +199,52 @@ public class ServicoDetalhadoControllerTest {
 		controller.criarAdicional(1l, 1l, adicionalTeste);
 
 		assertEquals(1, dbMock.size());
+	}
+
+	@Test
+	public void deve_retornar_no_content_e_lista_vazia_ao_buscar_servicos_detalhados_por_tipo_servico() throws Exception {
+		var paginaVazia = new PageImpl<ServicoDetalhadoRepresentation>(Collections.emptyList());
+
+		doReturn(paginaVazia).when(servicoDetalhadoFacade)
+				.buscarServicosDetalhadosPorTipoServico(any(Pageable.class), any(ServicoDetalhadoFilter.class));
+
+		var actual = controller.buscarServicosDetalhadosPorTipoServico(0, 1, new ServicoDetalhadoFilter());
+
+		assertAll(() -> {
+			assertEquals(paginaVazia, actual.getBody());
+			assertEquals(HttpStatus.NO_CONTENT, actual.getStatusCode());
+		});
+	}
+
+	@Test
+	public void deve_buscar_avaliacoes_por_servico_detalhado() throws Exception {
+		var actual = controller.buscarAvaliacoesPorServicoDetalhado(1L, 0,10);
+		var expected = ResponseEntity.ok(avaliacaoRepresentationPage);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void deve_buscar_servicos_para_comparacao() throws Exception {
+		var actual = controller.buscarServicosParaComparacao(Arrays.asList(1L, 2L));
+		var expected = ResponseEntity.ok(comparacaoWrapper);
+
+		assertEquals(expected.getStatusCode(), actual.getStatusCode());
+	}
+
+	@Test
+	public void deve_atualizar_adicional() throws Exception {
+		var actual = controller.atualizarAdicional(1L, 1L, 1L, adicionalRepresentation);
+		var expected = ResponseEntity.ok(adicionalRepresentation);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void deve_desativar_adicional() throws Exception {
+		var actual = controller.desativarAdicional(1L, 1L, 1L);
+		var expected = ResponseEntity.ok(mensagemRepresentation);
+
+		assertEquals(expected, actual);
 	}
 }

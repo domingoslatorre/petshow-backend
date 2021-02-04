@@ -50,8 +50,7 @@ public class ServicoDetalhadoFacade {
 
     public ServicoDetalhadoRepresentation buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws Exception {
         var servico = servicoDetalhadoService.buscarPorPrestadorIdEServicoId(prestadorId, servicoId);
-        var prestador = prestadorConverter.toRepresentation(
-                prestadorService.buscarPorId(servico.getPrestadorId()));
+        var prestador = prestadorConverter.toRepresentation(prestadorService.buscarPorId(servico.getPrestadorId()));
         var representation = servicoDetalhadoConverter.toRepresentation(servico);
 
         representation.setPrestador(prestador);
@@ -63,6 +62,7 @@ public class ServicoDetalhadoFacade {
     	var prestador = prestadorService.buscarPorId(prestadorId);
     	var servicoDetalhado = servicoDetalhadoService.buscarPorPrestadorIdEServicoId(prestador.getId(), servicoId);
     	var adicionais = adicionalService.buscarPorServicoDetalhado(servicoDetalhado.getId());
+
     	return adicionalConverter.toRepresentationList(adicionais);
     }
     
@@ -72,6 +72,7 @@ public class ServicoDetalhadoFacade {
     	novoAdicional.setServicoDetalhadoId(servico.getId());
     	var domain = adicionalConverter.toDomain(novoAdicional);
     	var adicional = adicionalService.criarAdicional(domain, idPrestador);
+
     	return adicionalConverter.toRepresentation(adicional);
     }
 
@@ -79,10 +80,11 @@ public class ServicoDetalhadoFacade {
 		var servicosDb = servicoDetalhadoService.buscarServicosDetalhadosPorIds(idsServicos);
 		var representationList = servicoDetalhadoConverter.toRepresentationList(servicosDb);
 		
-		for(var representation: representationList) {
+		for(var representation : representationList) {
 			var prestadorRepresentation = prestadorConverter.toRepresentation(prestadorService.buscarPorId(representation.getPrestadorId()));
 			representation.setPrestador(prestadorRepresentation);
 		}
+
 		return representationList;
 	}
 

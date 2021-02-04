@@ -35,7 +35,7 @@ public class ContaControllerTest {
 	
 	@Test
 	public void deve_retornar_um_corpo() throws Exception {
-		var conta = ClienteMock.cliente();
+		var conta = ClienteMock.criaCliente();
 		var esperado = new ResponseEntity<ContaRepresentation>(ClienteMock.clienteRepresentation(), HttpStatus.OK);
 		Mockito.doCallRealMethod().when(converter).toRepresentation(Mockito.any());
 		Mockito.doReturn(conta).when(service).buscarPorId(Mockito.anyLong());
