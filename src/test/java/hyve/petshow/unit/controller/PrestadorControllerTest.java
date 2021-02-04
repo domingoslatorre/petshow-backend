@@ -2,7 +2,6 @@ package hyve.petshow.unit.controller;
 
 import hyve.petshow.controller.PrestadorController;
 import hyve.petshow.controller.converter.PrestadorConverter;
-import hyve.petshow.controller.converter.ServicoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
@@ -17,9 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.ResponseEntity;
 
-import static hyve.petshow.mock.PrestadorMock.prestador;
-import static hyve.petshow.mock.PrestadorMock.prestadorRepresentation;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentation;
+import static hyve.petshow.mock.PrestadorMock.criaPrestador;
+import static hyve.petshow.mock.PrestadorMock.criaPrestadorRepresentation;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhadoRepresentation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -37,9 +36,9 @@ public class PrestadorControllerTest {
     @InjectMocks
     private PrestadorController controller;
 
-    private Prestador prestador = prestador();
-    private PrestadorRepresentation prestadorRepresentation = prestadorRepresentation();
-    private ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = servicoDetalhadoRepresentation();
+    private Prestador prestador = criaPrestador();
+    private PrestadorRepresentation prestadorRepresentation = criaPrestadorRepresentation();
+    private ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = criaServicoDetalhadoRepresentation();
 
     @BeforeEach
     public void init() throws Exception {

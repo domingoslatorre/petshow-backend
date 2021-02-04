@@ -1,6 +1,5 @@
 package hyve.petshow.mock;
 
-import hyve.petshow.controller.converter.ServicoConverter;
 import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.domain.Servico;
 

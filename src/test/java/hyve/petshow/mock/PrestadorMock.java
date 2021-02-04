@@ -1,23 +1,21 @@
 package hyve.petshow.mock;
 
-import hyve.petshow.controller.converter.PrestadorConverter;
-import hyve.petshow.controller.representation.ClienteRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Prestador;
 
 import java.util.Arrays;
 
 import static hyve.petshow.mock.ContaMock.contaPrestador;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
-import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhadoRepresentationList;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhado;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhadoRepresentationList;
 
 public class PrestadorMock {
-    public static Prestador prestador() {
-        return new Prestador(contaPrestador(), Arrays.asList(servicoDetalhado()));
+    public static Prestador criaPrestador() {
+        return new Prestador(contaPrestador(), Arrays.asList(criaServicoDetalhado()));
     }
 
-    public static PrestadorRepresentation prestadorRepresentation() {
-        var prestador = prestador();
+    public static PrestadorRepresentation criaPrestadorRepresentation() {
+        var prestador = criaPrestador();
         var prestadorRepresentation = new PrestadorRepresentation();
 
         prestadorRepresentation.setId(prestador.getId());
@@ -31,7 +29,7 @@ public class PrestadorMock {
         prestadorRepresentation.setEndereco(prestador.getEndereco());
         prestadorRepresentation.setLogin(prestador.getLogin());
         prestadorRepresentation.setGeolocalizacao(prestador.getGeolocalizacao());
-        prestadorRepresentation.setServicos(servicoDetalhadoRepresentationList());
+        prestadorRepresentation.setServicos(criaServicoDetalhadoRepresentationList());
 
         return prestadorRepresentation;
     }

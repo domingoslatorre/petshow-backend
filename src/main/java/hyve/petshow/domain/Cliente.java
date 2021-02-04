@@ -9,7 +9,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-
 @Entity
 @DiscriminatorValue(value = "C") // Cliente
 @EqualsAndHashCode(callSuper = true)

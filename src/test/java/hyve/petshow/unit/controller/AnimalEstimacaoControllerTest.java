@@ -5,12 +5,13 @@ import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
 import hyve.petshow.controller.converter.TipoAnimalEstimacaoConverter;
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.controller.representation.TipoAnimalEstimacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.domain.TipoAnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AnimalEstimacaoService;
 import hyve.petshow.service.port.TipoAnimalEstimacaoService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -23,12 +24,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
-import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoRepresentation;
-import static hyve.petshow.mock.MensagemMock.mensagemRepresentationFalha;
-import static hyve.petshow.mock.MensagemMock.mensagemRepresentationSucesso;
+import static hyve.petshow.mock.AnimalEstimacaoMock.*;
+import static hyve.petshow.mock.MensagemMock.criaMensagemRepresentationFalha;
+import static hyve.petshow.mock.MensagemMock.criaMensagemRepresentationSucesso;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AnimalEstimacaoControllerTest {
@@ -52,7 +53,7 @@ public class AnimalEstimacaoControllerTest {
 	private AnimalEstimacaoController controller;
 
 	private AnimalEstimacaoRepresentation animalEstimacaoRepresentation = animalEstimacaoRepresentation();
-	private AnimalEstimacao animalEstimacao = animalEstimacao();
+	private AnimalEstimacao animalEstimacao = criaAnimalEstimacao();
 
 	private List<AnimalEstimacaoRepresentation> animalEstimacaoRepresentationList = singletonList(animalEstimacaoRepresentation);
 	private List<AnimalEstimacao> animalEstimacaoList = singletonList(animalEstimacao);
@@ -61,12 +62,16 @@ public class AnimalEstimacaoControllerTest {
 
 	private Pageable pageable = geraPageable(0, 5);
 
-	private MensagemRepresentation mensagemSucesso = mensagemRepresentationSucesso();
-	private MensagemRepresentation mensagemFalha = mensagemRepresentationFalha();
+	private MensagemRepresentation mensagemSucesso = criaMensagemRepresentationSucesso();
+	private MensagemRepresentation mensagemFalha = criaMensagemRepresentationFalha();
+
+	private List<TipoAnimalEstimacaoRepresentation> tipoAnimalEstimacaoRepresentationList =
+			Arrays.asList(criaTipoAnimalEstimacaoRepresentation());
+	private List<TipoAnimalEstimacao> tipoAnimalEstimacaoList = Arrays.asList(criaTipoAnimalEstimacao());
 
 	@BeforeEach
 	public void init() throws NotFoundException, BusinessException {
-		initMocks(this);
+		openMocks(this);
 
 		doReturn(animalEstimacao).when(converter).toDomain(any(AnimalEstimacaoRepresentation.class));
 		doReturn(animalEstimacaoRepresentation).when(converter).toRepresentation(any(AnimalEstimacao.class));
@@ -79,6 +84,8 @@ public class AnimalEstimacaoControllerTest {
 		doThrow(NotFoundException.class).when(service).atualizarAnimalEstimacao(2L, animalEstimacao);
 		doReturn(mensagemSucesso).when(service).removerAnimalEstimacao(1L, 1L);
 		doReturn(mensagemFalha).when(service).removerAnimalEstimacao(2L, 2L);
+		doReturn(tipoAnimalEstimacaoList).when(tipoService).buscarTiposAnimalEstimacao();
+		doReturn(tipoAnimalEstimacaoRepresentationList).when(tipoConverter).toRepresentationList(anyList());
 	}
 
 	@Test
@@ -133,6 +140,15 @@ public class AnimalEstimacaoControllerTest {
 		var expected = ResponseEntity.status(HttpStatus.OK).body(mensagemFalha);
 
 		var actual = controller.removerAnimalEstimacao(2L, 2L);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void deve_buscar_tipos_animal_estimacao() throws NotFoundException {
+		var expected = ResponseEntity.ok(tipoAnimalEstimacaoRepresentationList);
+
+		var actual = controller.buscarTiposAnimalEstimacao();
 
 		assertEquals(expected, actual);
 	}

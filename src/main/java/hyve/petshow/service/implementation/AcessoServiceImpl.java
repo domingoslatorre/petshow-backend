@@ -13,7 +13,6 @@ import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,19 +23,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
-import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
-import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+import static hyve.petshow.util.AuditoriaUtils.*;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
-//    private static final String CONTA_INFORMADA_INATIVA = "CONTA_INFORMADA_INATIVA";// "Conta informada ainda não foi ativada";
-	private static final String LOGIN_INFORMADO_NAO_ENCONTRADO = "LOGIN_INFORMADO_NAO_ENCONTRADO";//"Login informado não encontrado no sistema";
 	private static final String CONTA_JA_ATIVA = "CONTA_JA_ATIVA";//"Conta já ativa";
 	private static final String TOKEN_NAO_ENCONTRADO = "TOKEN_NAO_ENCONTRADO";//Token informado não encontrado
 	private static final String TIPO_DE_CLIENTE_INEXISTENTE = "TIPO_DE_CLIENTE_INEXISTENTE";//Tipo de cliente inexistente
 	private static final String CONTA_NAO_ENCONTRADA = "CONTA_NAO_ENCONTRADA"; //Conta não encontrada
-	
 	
 	@Autowired
     private AcessoRepository acessoRepository;
@@ -45,9 +39,9 @@ public class AcessoServiceImpl implements AcessoService {
     @Autowired
     private PrestadorRepository prestadorRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
     private VerificationTokenRepository tokenRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -69,12 +63,12 @@ public class AcessoServiceImpl implements AcessoService {
         var tipoConta = conta.getTipo();
         criptografarSenha(conta.getLogin());
 
-        conta.setAuditoria(geraAuditoriaInsercao(Optional.empty()));
+        conta.setAuditoria(geraAuditoriaInsercaoConta(Optional.empty()));
 
-        if(tipoConta.equals(TipoConta.CLIENTE)){
+        if(TipoConta.CLIENTE.equals(tipoConta)){
             var cliente = new Cliente(conta);
             conta = clienteRepository.save(cliente);
-        } else if(tipoConta.equals(TipoConta.PRESTADOR_AUTONOMO)){
+        } else if(TipoConta.PRESTADOR_AUTONOMO.equals(tipoConta)){
             var prestador = new Prestador(conta);
             conta = prestadorRepository.save(prestador);
         } else {
@@ -90,7 +84,8 @@ public class AcessoServiceImpl implements AcessoService {
     }
 
     public Conta buscarConta(String email) throws Exception {
-    	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
+    	return buscarPorEmail(email)
+                .orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
     }
 
 	@Override
@@ -102,7 +97,8 @@ public class AcessoServiceImpl implements AcessoService {
 
 	@Override
 	public VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception {
-		return tokenRepository.findByToken(tokenVerificadcao).orElseThrow(() -> new NotFoundException(TOKEN_NAO_ENCONTRADO));
+		return tokenRepository.findByToken(tokenVerificadcao)
+                .orElseThrow(() -> new NotFoundException(TOKEN_NAO_ENCONTRADO));
 	}
 
 	@Override
@@ -116,15 +112,4 @@ public class AcessoServiceImpl implements AcessoService {
 		return acessoRepository.save(conta);
 
 	}
-
-	@Override
-	public Conta buscarContaPorEmail(String email) throws Exception {
-		var conta = buscarPorEmail(email).orElseThrow(() -> new NotFoundException(LOGIN_INFORMADO_NAO_ENCONTRADO));
-//		if(!conta.isAtivo()) {
-//			throw new BusinessException(CONTA_INFORMADA_INATIVA);
-//		}
-		return conta;
-	}
-
-	
 }

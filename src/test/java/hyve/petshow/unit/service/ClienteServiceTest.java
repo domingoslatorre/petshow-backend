@@ -10,7 +10,9 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static hyve.petshow.mock.ClienteMock.cliente;
+import static hyve.petshow.mock.AuditoriaMock.auditoria;
+import static hyve.petshow.mock.ClienteMock.criaCliente;
+import static hyve.petshow.mock.ContaMock.contaCliente;
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,7 +26,7 @@ public class ClienteServiceTest {
 	@InjectMocks
 	private ClienteServiceImpl service;
 
-	private Cliente cliente = cliente();
+	private Cliente cliente = criaCliente();
 
 	@BeforeEach
 	public void init() {
@@ -76,10 +78,10 @@ public class ClienteServiceTest {
 
 	@Test
 	public void deve_retornar_mensagem_de_erro() throws Exception {
-		var clienteAtivo = cliente();
-
+		var clienteAtivo = new Cliente(contaCliente());//cliente();
+		clienteAtivo.setAuditoria(auditoria(ATIVO));
 		doReturn(clienteAtivo).when(repository).save(cliente);
-
+		
 		var removerConta = service.desativarConta(1L);
 
 		assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerConta.getMensagem());

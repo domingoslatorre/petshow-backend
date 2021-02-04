@@ -4,7 +4,7 @@ import hyve.petshow.domain.embeddables.Auditoria;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,21 +13,17 @@ public class ServicoDetalhado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private BigDecimal preco;
     private Float mediaAvaliacao;
     @Embedded
     private Auditoria auditoria;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_servico_detalhado")
-    private List<Avaliacao> avaliacoes;
+    private List<Adicional> adicionais = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "fk_servico")
     private Servico tipo;
     @Column(name = "fk_conta")
     private Long prestadorId;
-    
-    public void addAvaliacao(Avaliacao avaliacao) {
-    	avaliacao.setServicoAvaliadoId(this.getId());
-        this.avaliacoes.add(avaliacao);
-    }
+    @OneToMany(mappedBy = "servicoDetalhado", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+    private List<ServicoDetalhadoTipoAnimalEstimacao> tiposAnimaisAceitos = new ArrayList<>();
 }

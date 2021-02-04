@@ -8,7 +8,7 @@ import hyve.petshow.domain.enums.TipoConta;
 
 import static hyve.petshow.mock.AuditoriaMock.auditoria;
 import static hyve.petshow.mock.LoginMock.login;
-import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+import static hyve.petshow.util.AuditoriaUtils.INATIVO;
 
 public class ContaMock {
     public static Conta contaCliente(){
@@ -25,7 +25,7 @@ public class ContaMock {
         conta.setLogin(login());
         conta.setGeolocalizacao(new Geolocalizacao());
         conta.setMediaAvaliacao(1.5F);
-        conta.setAuditoria(auditoria(ATIVO));
+        conta.setAuditoria(auditoria(INATIVO));
 
         return conta;
     }

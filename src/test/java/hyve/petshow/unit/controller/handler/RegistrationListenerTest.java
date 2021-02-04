@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.Locale;
 
-import static hyve.petshow.mock.ClienteMock.cliente;
+import static hyve.petshow.mock.ClienteMock.criaCliente;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -33,7 +33,7 @@ public class RegistrationListenerTest {
 	
 	@Test
 	public void deve_enviar_email() {
-		var cliente = cliente();
+		var cliente = criaCliente();
 		var event = new OnRegistrationCompleteEvent(cliente, Locale.US, "teste");
 		when(acessoService.criaTokenVerificacao(any(), anyString())).thenReturn(cliente);
 		

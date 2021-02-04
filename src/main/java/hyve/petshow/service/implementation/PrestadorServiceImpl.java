@@ -15,7 +15,6 @@ import static hyve.petshow.util.AuditoriaUtils.*;
 @Service
 public class PrestadorServiceImpl implements PrestadorService {
     private static final String CONTA_NAO_ENCONTRADA = "CONTA_NAO_ENCONTRADA";//"Conta não encontrada";
-//    private static final String CONTA_DESATIVADA = "CONTA_DESATIVADA";//"Conta desativada";
 
     @Autowired
     private PrestadorRepository repository;
@@ -24,9 +23,6 @@ public class PrestadorServiceImpl implements PrestadorService {
     public Prestador buscarPorId(Long id) throws Exception {
         var prestador = repository.findById(id).orElseThrow(
                 () -> new NotFoundException(CONTA_NAO_ENCONTRADA));
-
-//        if(prestador.getAuditoria().getFlagAtivo().equals(INATIVO))
-//            throw new NotFoundException(CONTA_DESATIVADA);
 
         return prestador;
     }

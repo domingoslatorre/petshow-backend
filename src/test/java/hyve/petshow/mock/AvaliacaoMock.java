@@ -4,21 +4,19 @@ import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.*;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import static hyve.petshow.mock.ClienteMock.clienteRepresentation;
 
 public class AvaliacaoMock {
-	public static Avaliacao avaliacao() {
+	public static Avaliacao criaAvaliacao() {
 		var tipo = new Servico();
 		tipo.setId(1);
 		tipo.setNome("Banho");
 
 		var servicoAvaliado = new ServicoDetalhado();
 		servicoAvaliado.setId(1l);
-		servicoAvaliado.setPreco(BigDecimal.valueOf(30.5));
 		servicoAvaliado.setTipo(tipo);
 
 		var prestador = new Prestador();
@@ -26,7 +24,6 @@ public class AvaliacaoMock {
 		prestador.setNome("TestePrestador");
 
 		servicoAvaliado.setPrestadorId(prestador.getId());
-		servicoAvaliado.setAvaliacoes(new ArrayList<>());
 		var cliente = new Cliente();
 		cliente.setId(1l);
 		cliente.setNome("Teste");
@@ -46,8 +43,8 @@ public class AvaliacaoMock {
 		return avaliacao;
 	}
 
-	public static AvaliacaoRepresentation avaliacaoRepresentation() {
-		var avaliacao = avaliacao();
+	public static AvaliacaoRepresentation criaAvaliacaoRepresentation() {
+		var avaliacao = criaAvaliacao();
 		var avaliacaoRepresentation = new AvaliacaoRepresentation();
 
 		avaliacaoRepresentation.setId(avaliacao.getId());
@@ -64,10 +61,10 @@ public class AvaliacaoMock {
 		return avaliacaoRepresentation;
 	}
 
-	public static List<Avaliacao> avaliacaoList() {
+	public static List<Avaliacao> criaAvaliacaoList() {
 		var avaliacaoList = new ArrayList<Avaliacao>();
 
-		avaliacaoList.add(avaliacao());
+		avaliacaoList.add(criaAvaliacao());
 
 		return avaliacaoList;
 	}

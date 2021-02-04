@@ -16,17 +16,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacao;
+import static hyve.petshow.mock.AnimalEstimacaoMock.criaAnimalEstimacao;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AnimalEstimacaoServiceTest {
@@ -35,19 +37,20 @@ public class AnimalEstimacaoServiceTest {
     @InjectMocks
     private AnimalEstimacaoServiceImpl service;
 
-    private AnimalEstimacao animalEstimacao = animalEstimacao();
+    private AnimalEstimacao animalEstimacao = criaAnimalEstimacao();
     private List<AnimalEstimacao> animaisEstimacao = singletonList(animalEstimacao);
     private Page<AnimalEstimacao> animalEstimacaoPage = new PageImpl<>(animaisEstimacao);
     private Pageable pageable = geraPageable(0, 5);
 
     @BeforeEach
     public void init() {
-        initMocks(this);
+        openMocks(this);
 
         doReturn(animalEstimacao).when(repository).save(animalEstimacao);
         doReturn(Optional.of(animalEstimacao)).when(repository).findById(1L);
         doReturn(animaisEstimacao).when(repository).findAll();
         doReturn(animalEstimacaoPage).when(repository).findByDonoId(1L, pageable);
+        doReturn(animaisEstimacao).when(repository).findByDonoIdAndIdIn(anyLong(), anyList());
         doNothing().when(repository).delete(any(AnimalEstimacao.class));
     }
 
@@ -114,7 +117,7 @@ public class AnimalEstimacaoServiceTest {
     
     @Test
     public void deve_retornar_excecao_por_donos_diferentes() {
-    	var animalRequest = animalEstimacao();
+    	var animalRequest = criaAnimalEstimacao();
     	animalRequest.setDonoId(2L);
 
     	assertThrows(BusinessException.class, () -> service.atualizarAnimalEstimacao(1L, animalRequest));
@@ -122,7 +125,7 @@ public class AnimalEstimacaoServiceTest {
     
     @Test
     public void deve_retornar_excecao_por_donos_diferentes_delecao() {
-        var animalRequest = animalEstimacao();
+        var animalRequest = criaAnimalEstimacao();
         animalRequest.setDonoId(2L);
 
         assertThrows(BusinessException.class, () -> service.removerAnimalEstimacao(1L, animalRequest.getDonoId()));
@@ -135,5 +138,20 @@ public class AnimalEstimacaoServiceTest {
     	var removerAnimalEstimacao = service.removerAnimalEstimacao(1L, animalEstimacao.getDonoId());
 
     	assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerAnimalEstimacao.getMensagem());
+    }
+
+    @Test
+    public void deve_retornar_lista_animais_de_estimacao() throws NotFoundException {
+        var actual = service.buscarAnimaisEstimacaoPorIds(1L, Arrays.asList(1L, 2L));
+
+        assertEquals(animaisEstimacao, actual);
+    }
+
+    @Test
+    public void deve_lancar_not_found_exception_ao_nao_encontrar_animais() throws NotFoundException {
+        doReturn(Collections.emptyList()).when(repository).findByDonoIdAndIdIn(1L, Arrays.asList(1L, 2L));
+
+        assertThrows(NotFoundException.class, () ->
+                service.buscarAnimaisEstimacaoPorIds(1L, Arrays.asList(1L, 2L)));
     }
 }

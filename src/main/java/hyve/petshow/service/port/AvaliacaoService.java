@@ -13,4 +13,6 @@ public interface AvaliacaoService {
 	Avaliacao adicionarAvaliacao(Avaliacao avaliacao);
 
 	Avaliacao buscarAvaliacaoPorId(Long id) throws Exception;
+
+	Avaliacao buscarAvaliacaoPorAgendamentoId(Long id) throws Exception;
 }

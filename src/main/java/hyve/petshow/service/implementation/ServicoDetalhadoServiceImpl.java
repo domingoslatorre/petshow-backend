@@ -1,5 +1,6 @@
 package hyve.petshow.service.implementation;
 
+import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.exceptions.BusinessException;
@@ -11,9 +12,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static hyve.petshow.repository.specification.ServicoDetalhadoSpecification.geraSpecification;
 import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
@@ -30,34 +34,45 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	@Override
 	public ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
 		servicoDetalhado.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
-
+		servicoDetalhado.setAdicionais(Optional.ofNullable(servicoDetalhado.getAdicionais())
+		.map(lista -> {
+			return lista.stream().map(el -> {
+				el.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
+				return el;
+			}).collect(Collectors.toList());
+		}).orElse(new ArrayList<>()));
+		
 		return repository.save(servicoDetalhado);
 	}
 
 	@Override
-	public Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Integer id, Pageable pageable) throws NotFoundException {
-		var servicosDetalhados = repository.findByTipo(id, pageable);
+	public Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Pageable pageable,
+																		 ServicoDetalhadoFilter filtragem) throws NotFoundException {
+		var specification = geraSpecification(filtragem);
 
-		if(servicosDetalhados.isEmpty()){
+		var servicosDetalhados = repository.findAll(specification, pageable);
+
+		/*if(servicosDetalhados.isEmpty()){
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);
-		}
+		}*/
 
 		return servicosDetalhados;
 	}
 
+	// TODO: Ajustar metodo de atualizar para realmente atualizar | Ajustar teste
 	@Override
 	public ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, ServicoDetalhado request)
 			throws BusinessException, NotFoundException {
 		var servicoDetalhado = buscarPorId(id);
 
-		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){
-			servicoDetalhado.setPreco(request.getPreco());
-			servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ATIVO));
-			var response = repository.save(servicoDetalhado);
-			return response;
-		} else {
+		if(!verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)) {
 			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
+		
+		servicoDetalhado.setMediaAvaliacao(request.getMediaAvaliacao());
+		servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ATIVO));
+		var response = repository.save(servicoDetalhado);
+		return response;
 	}
 
 	@Override
@@ -65,21 +80,28 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			throws BusinessException, NotFoundException{
 		var servicoDetalhado = buscarPorId(id);
 
-		if(verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)){
-			repository.deleteById(id);
-			var sucesso = !repository.existsById(id);
-			var response = new MensagemRepresentation(id);
-			response.setSucesso(sucesso);
-			return response;
-		} else {
+		if(!verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)) {
 			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
+		repository.deleteById(id);
+		var sucesso = !repository.existsById(id);
+		var response = new MensagemRepresentation(id);
+		response.setSucesso(sucesso);
+		return response;
     }
 
 	@Override
 	public ServicoDetalhado buscarPorId(Long id) throws NotFoundException {
-		return repository.findById(id)
+		var servicoDetalhado = repository.findById(id)
 				.orElseThrow(() -> new NotFoundException(SERVICO_DETALHADO_NAO_ENCONTRADO));
+
+		/*TODO: ARRUMAR ESSE NEGOCIO NAO MUITO LEGAL*/
+		servicoDetalhado.setAdicionais(
+				servicoDetalhado.getAdicionais().stream()
+						.filter(adicional -> adicional.getAuditoria().isAtivo())
+						.collect(Collectors.toList()));
+
+		return servicoDetalhado;
 	}
 
 	@Override
@@ -90,11 +112,32 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 			throw new NotFoundException(NENHUM_SERVICO_DETALHADO_ENCONTRADO);
 		}
 
+		/*TODO: ARRUMAR ESSE NEGOCIO NAO MUITO LEGAL*/
+		servicosDetalhados.get()
+				.forEach(servicoDetalhado -> servicoDetalhado.setAdicionais(
+						servicoDetalhado.getAdicionais().stream()
+								.filter(adicional -> adicional.getAuditoria().isAtivo())
+								.collect(Collectors.toList())));
+
 		return servicosDetalhados;
 	}
 
 	@Override
 	public ServicoDetalhado buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws NotFoundException {
-		return repository.findByIdAndPrestadorId(servicoId, prestadorId).orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO));
+		var servicoDetalhado = repository.findByIdAndPrestadorId(servicoId, prestadorId)
+				.orElseThrow(() -> new NotFoundException(SERVICO_NAO_ENCONTRADO_PARA_PRESTADOR_MENCIONADO));
+
+		/*TODO: ARRUMAR ESSE NEGOCIO NAO MUITO LEGAL*/
+		servicoDetalhado.setAdicionais(
+				servicoDetalhado.getAdicionais().stream()
+						.filter(adicional -> adicional.getAuditoria().isAtivo())
+						.collect(Collectors.toList()));
+
+		return servicoDetalhado;
+	}
+
+	@Override
+	public List<ServicoDetalhado> buscarServicosDetalhadosPorIds(List<Long> idsServicos) {
+		return repository.findAllById(idsServicos);
 	}
 }
