@@ -13,8 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.ResponseEntity;
 
-import static hyve.petshow.mock.ClienteMock.criaCliente;
 import static hyve.petshow.mock.ClienteMock.clienteRepresentation;
+import static hyve.petshow.mock.ClienteMock.criaCliente;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;

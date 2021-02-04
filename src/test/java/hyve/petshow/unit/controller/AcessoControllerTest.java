@@ -22,19 +22,15 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 
-import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.Optional;
 
-import static hyve.petshow.domain.enums.TipoConta.CLIENTE;
 import static hyve.petshow.mock.ContaMock.contaCliente;
 import static hyve.petshow.mock.ContaMock.contaRepresentation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

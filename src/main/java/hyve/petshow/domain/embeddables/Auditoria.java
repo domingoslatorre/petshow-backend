@@ -4,9 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import java.time.LocalDateTime;
 
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
-import java.time.LocalDateTime;
 
 @Data
 @Embeddable

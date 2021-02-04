@@ -1,17 +1,14 @@
 package hyve.petshow.integration;
 
-import static hyve.petshow.mock.ContaMock.contaCliente;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.net.URI;
-import java.util.HashMap;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
+import hyve.petshow.controller.converter.ContaConverter;
+import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.Conta;
+import hyve.petshow.domain.embeddables.Login;
+import hyve.petshow.repository.AcessoRepository;
+import hyve.petshow.repository.ClienteRepository;
+import hyve.petshow.repository.VerificationTokenRepository;
+import hyve.petshow.service.port.AcessoService;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -23,14 +20,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hyve.petshow.controller.converter.ContaConverter;
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Conta;
-import hyve.petshow.domain.embeddables.Login;
-import hyve.petshow.repository.AcessoRepository;
-import hyve.petshow.repository.ClienteRepository;
-import hyve.petshow.repository.VerificationTokenRepository;
-import hyve.petshow.service.port.AcessoService;
+import java.net.URI;
+import java.util.HashMap;
+
+import static hyve.petshow.mock.ContaMock.contaCliente;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

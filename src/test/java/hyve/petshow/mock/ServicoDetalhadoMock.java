@@ -13,7 +13,6 @@ import static hyve.petshow.mock.AdicionalMock.criaAdicional;
 import static hyve.petshow.mock.AnimalEstimacaoMock.criaTipoAnimalEstimacao;
 import static hyve.petshow.mock.AuditoriaMock.auditoria;
 import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
-import static hyve.petshow.mock.PrestadorMock.criaPrestadorRepresentation;
 import static hyve.petshow.mock.ServicoMock.servico;
 import static hyve.petshow.mock.ServicoMock.servicoRepresentation;
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;

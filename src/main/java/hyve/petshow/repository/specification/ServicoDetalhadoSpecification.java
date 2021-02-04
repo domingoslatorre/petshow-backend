@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.JoinType;
-
 import java.math.BigDecimal;
 
 import static hyve.petshow.util.NullUtils.isNotNull;

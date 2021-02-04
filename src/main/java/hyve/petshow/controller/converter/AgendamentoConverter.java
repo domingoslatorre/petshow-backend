@@ -1,9 +1,9 @@
 package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.AgendamentoRepresentation;
+import hyve.petshow.domain.AdicionalAgendamento;
 import hyve.petshow.domain.Agendamento;
 import hyve.petshow.domain.AnimalEstimacaoAgendamento;
-import hyve.petshow.domain.AdicionalAgendamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

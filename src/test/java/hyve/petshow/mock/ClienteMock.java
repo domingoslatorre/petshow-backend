@@ -6,8 +6,8 @@ import hyve.petshow.domain.Cliente;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static hyve.petshow.mock.AnimalEstimacaoMock.criaAnimalEstimacao;
 import static hyve.petshow.mock.AnimalEstimacaoMock.animalEstimacaoRepresentation;
+import static hyve.petshow.mock.AnimalEstimacaoMock.criaAnimalEstimacao;
 import static hyve.petshow.mock.ContaMock.contaCliente;
 
 public class ClienteMock {

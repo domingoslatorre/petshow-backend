@@ -1,30 +1,14 @@
 package hyve.petshow.unit.controller;
 
-import static hyve.petshow.mock.AdicionalMock.criaAdicionalRepresentation;
-import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
-import static hyve.petshow.mock.MensagemMock.criaMensagemRepresentationSucesso;
-import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhado;
-import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhadoList;
-import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhadoRepresentation;
-import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhadoRepresentationList;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.mockito.MockitoAnnotations.openMocks;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+import hyve.petshow.controller.ServicoDetalhadoController;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.*;
-import hyve.petshow.domain.Adicional;
+import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.facade.AvaliacaoFacade;
+import hyve.petshow.facade.ServicoDetalhadoFacade;
+import hyve.petshow.service.port.ServicoDetalhadoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,13 +20,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import hyve.petshow.controller.ServicoDetalhadoController;
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.facade.AvaliacaoFacade;
-import hyve.petshow.facade.ServicoDetalhadoFacade;
-import hyve.petshow.service.port.ServicoDetalhadoService;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static hyve.petshow.mock.AdicionalMock.criaAdicionalRepresentation;
+import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
+import static hyve.petshow.mock.MensagemMock.criaMensagemRepresentationSucesso;
+import static hyve.petshow.mock.ServicoDetalhadoMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class ServicoDetalhadoControllerTest {
 	@Mock
@@ -199,21 +191,6 @@ public class ServicoDetalhadoControllerTest {
 		controller.criarAdicional(1l, 1l, adicionalTeste);
 
 		assertEquals(1, dbMock.size());
-	}
-
-	@Test
-	public void deve_retornar_no_content_e_lista_vazia_ao_buscar_servicos_detalhados_por_tipo_servico() throws Exception {
-		var paginaVazia = new PageImpl<ServicoDetalhadoRepresentation>(Collections.emptyList());
-
-		doReturn(paginaVazia).when(servicoDetalhadoFacade)
-				.buscarServicosDetalhadosPorTipoServico(any(Pageable.class), any(ServicoDetalhadoFilter.class));
-
-		var actual = controller.buscarServicosDetalhadosPorTipoServico(0, 1, new ServicoDetalhadoFilter());
-
-		assertAll(() -> {
-			assertEquals(paginaVazia, actual.getBody());
-			assertEquals(HttpStatus.NO_CONTENT, actual.getStatusCode());
-		});
 	}
 
 	@Test

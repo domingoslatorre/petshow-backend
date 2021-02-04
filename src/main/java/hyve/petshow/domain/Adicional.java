@@ -1,13 +1,12 @@
 package hyve.petshow.domain;
 
-import java.math.BigDecimal;
-
-import javax.persistence.*;
-
 import hyve.petshow.domain.embeddables.Auditoria;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor

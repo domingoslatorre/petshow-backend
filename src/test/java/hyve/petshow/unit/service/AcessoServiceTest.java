@@ -26,7 +26,8 @@ import static hyve.petshow.mock.ClienteMock.criaCliente;
 import static hyve.petshow.mock.PrestadorMock.criaPrestador;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

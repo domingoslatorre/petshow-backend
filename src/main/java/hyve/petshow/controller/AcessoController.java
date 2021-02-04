@@ -5,7 +5,6 @@ import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.util.JwtUtils;
 import hyve.petshow.util.OnRegistrationCompleteEvent;

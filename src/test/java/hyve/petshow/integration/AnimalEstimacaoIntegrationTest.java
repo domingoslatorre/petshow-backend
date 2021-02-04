@@ -1,10 +1,14 @@
 package hyve.petshow.integration;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
+import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
+import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
+import hyve.petshow.domain.AnimalEstimacao;
+import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.TipoAnimalEstimacao;
+import hyve.petshow.repository.AnimalEstimacaoRepository;
+import hyve.petshow.repository.ClienteRepository;
+import hyve.petshow.repository.TipoAnimalEstimacaoRepository;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -17,24 +21,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hyve.petshow.controller.converter.AnimalEstimacaoConverter;
-import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
-import hyve.petshow.domain.AnimalEstimacao;
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.TipoAnimalEstimacao;
-import static hyve.petshow.mock.AuditoriaMock.auditoria;
-
-import static hyve.petshow.mock.ContaMock.contaCliente;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.net.URI;
 
-import hyve.petshow.repository.AnimalEstimacaoRepository;
-import hyve.petshow.repository.ClienteRepository;
-import hyve.petshow.repository.TipoAnimalEstimacaoRepository;
+import static hyve.petshow.mock.AuditoriaMock.auditoria;
+import static hyve.petshow.mock.ContaMock.contaCliente;
 import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

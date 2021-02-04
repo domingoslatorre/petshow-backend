@@ -1,20 +1,15 @@
 package hyve.petshow.integration;
 
-import static hyve.petshow.mock.ContaMock.contaCliente;
-import static hyve.petshow.mock.ContaMock.contaPrestador;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.math.BigDecimal;
-import java.net.URI;
-
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
+import hyve.petshow.controller.representation.AdicionalRepresentation;
+import hyve.petshow.controller.representation.ComparacaoWrapper;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.*;
+import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
+import hyve.petshow.repository.*;
+import hyve.petshow.service.port.ServicoDetalhadoService;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -27,23 +22,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.AdicionalRepresentation;
-import hyve.petshow.controller.representation.ComparacaoWrapper;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.Servico;
-import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
-import hyve.petshow.repository.AdicionalRepository;
-import hyve.petshow.repository.AvaliacaoRepository;
-import hyve.petshow.repository.ClienteRepository;
-import hyve.petshow.repository.PrestadorRepository;
-import hyve.petshow.repository.ServicoDetalhadoRepository;
-import hyve.petshow.repository.ServicoRepository;
-import hyve.petshow.service.port.ServicoDetalhadoService;
+import java.math.BigDecimal;
+import java.net.URI;
+
+import static hyve.petshow.mock.ContaMock.contaCliente;
+import static hyve.petshow.mock.ContaMock.contaPrestador;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

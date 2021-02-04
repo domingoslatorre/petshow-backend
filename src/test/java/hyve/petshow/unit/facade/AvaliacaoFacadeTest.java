@@ -1,19 +1,14 @@
 package hyve.petshow.unit.facade;
 
-import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacao;
-import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
-import static hyve.petshow.mock.ClienteMock.criaCliente;
-import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhado;
-import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import hyve.petshow.controller.converter.AvaliacaoConverter;
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.domain.Avaliacao;
+import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.facade.AvaliacaoFacade;
+import hyve.petshow.service.port.AvaliacaoService;
+import hyve.petshow.service.port.ClienteService;
+import hyve.petshow.service.port.ServicoDetalhadoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -24,16 +19,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import hyve.petshow.controller.converter.AvaliacaoConverter;
-import hyve.petshow.controller.representation.AvaliacaoRepresentation;
-import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.facade.AvaliacaoFacade;
-import hyve.petshow.service.port.AvaliacaoService;
-import hyve.petshow.service.port.ClienteService;
-import hyve.petshow.service.port.ServicoDetalhadoService;
+import java.util.ArrayList;
+import java.util.List;
+
+import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacao;
+import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
+import static hyve.petshow.mock.ClienteMock.criaCliente;
+import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhado;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

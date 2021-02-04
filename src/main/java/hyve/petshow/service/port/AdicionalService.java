@@ -1,10 +1,8 @@
 package hyve.petshow.service.port;
 
-import java.util.List;
-
 import hyve.petshow.domain.Adicional;
-import hyve.petshow.domain.AnimalEstimacao;
-import hyve.petshow.exceptions.NotFoundException;
+
+import java.util.List;
 
 public interface AdicionalService {
 	List<Adicional> buscarPorServicoDetalhado(Long idServico) throws Exception;

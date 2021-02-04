@@ -1,23 +1,19 @@
 package hyve.petshow.service.implementation;
 
-import static hyve.petshow.util.AuditoriaUtils.ATIVO;
-import static hyve.petshow.util.AuditoriaUtils.INATIVO;
-import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
-import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import hyve.petshow.domain.Adicional;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.repository.AdicionalRepository;
+import hyve.petshow.service.port.AdicionalService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import hyve.petshow.exceptions.BusinessException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import hyve.petshow.domain.Adicional;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.repository.AdicionalRepository;
-import hyve.petshow.service.port.AdicionalService;
+import static hyve.petshow.util.AuditoriaUtils.*;
 
 @Service
 public class AdicionalServiceImpl implements AdicionalService {

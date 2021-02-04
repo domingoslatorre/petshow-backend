@@ -6,7 +6,6 @@ import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AgendamentoRepository;
 import hyve.petshow.service.port.AgendamentoService;
-import hyve.petshow.service.port.StatusAgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

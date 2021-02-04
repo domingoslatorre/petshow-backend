@@ -1,35 +1,23 @@
 package hyve.petshow.integration;
 
-import hyve.petshow.controller.converter.AgendamentoConverter;
-import hyve.petshow.controller.converter.AvaliacaoConverter;
-import hyve.petshow.controller.converter.StatusAgendamentoConverter;
 import hyve.petshow.controller.representation.AgendamentoRepresentation;
 import hyve.petshow.domain.Agendamento;
-import hyve.petshow.domain.Cliente;
 import hyve.petshow.facade.AgendamentoFacade;
-import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.repository.AgendamentoRepository;
 import hyve.petshow.repository.AvaliacaoRepository;
 import hyve.petshow.repository.StatusAgendamentoRepository;
-import hyve.petshow.service.port.AgendamentoService;
-import hyve.petshow.service.port.AvaliacaoService;
-import hyve.petshow.service.port.StatusAgendamentoService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.net.URI;
 
 import static hyve.petshow.mock.AgendamentoMock.criaAgendamento;
 import static hyve.petshow.mock.AgendamentoMock.criaAgendamentoRepresentation;
-import static hyve.petshow.mock.ContaMock.contaCliente;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
