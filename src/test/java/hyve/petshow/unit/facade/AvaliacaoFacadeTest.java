@@ -35,6 +35,7 @@ import hyve.petshow.service.port.AvaliacaoService;
 import hyve.petshow.service.port.ClienteService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AvaliacaoFacadeTest {
@@ -59,7 +60,7 @@ public class AvaliacaoFacadeTest {
 
 	@BeforeEach
 	public void init() throws Exception {
-		initMocks(this);
+		openMocks(this);
 
 		doReturn(cliente).when(clienteService).buscarPorId(anyLong());
 		doReturn(servicoDetalhado).when(servicoDetalhadoService).buscarPorId(anyLong());
@@ -76,14 +77,14 @@ public class AvaliacaoFacadeTest {
 
 	@Test
 	public void deve_criar_avaliacao() throws Exception {
-		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L, 1L);
+		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L);
 
 		assertFalse(avaliacoes.isEmpty());
 	}
 	
 	@Test
 	public void deve_retornar_avaliacao_em_lista() throws Exception {
-		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L, 1L, 1L);
+		facade.adicionarAvaliacao(avaliacaoRepresentation, 1L);
 
 		var avaliacoes = facade.buscarAvaliacaoPorServico(1L, geraPageable(0, 5));
 		

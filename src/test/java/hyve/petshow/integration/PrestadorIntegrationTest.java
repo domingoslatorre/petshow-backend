@@ -1,4 +1,4 @@
-package hyve.petshow.integration.controller;
+package hyve.petshow.integration;
 
 import static hyve.petshow.mock.ContaMock.contaPrestador;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +28,7 @@ import hyve.petshow.repository.PrestadorRepository;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class PrestadorControllerTest {
+public class PrestadorIntegrationTest {
 	@LocalServerPort
 	private int port;
 	@Autowired

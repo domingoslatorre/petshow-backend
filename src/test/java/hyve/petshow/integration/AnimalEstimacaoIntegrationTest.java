@@ -1,4 +1,4 @@
-package hyve.petshow.integration.controller;
+package hyve.petshow.integration;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +39,7 @@ import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class AnimalEstimacaoControllerTest {
+public class AnimalEstimacaoIntegrationTest {
 	@LocalServerPort
 	private int port;
 	@Autowired

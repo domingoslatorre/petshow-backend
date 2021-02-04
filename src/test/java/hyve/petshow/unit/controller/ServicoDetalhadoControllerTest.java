@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -75,8 +76,8 @@ public class ServicoDetalhadoControllerTest {
 		doReturn(servicoDetalhado).when(service).buscarPorPrestadorIdEServicoId(anyLong(), anyLong());
 		doReturn(servicoDetalhado).when(service).atualizarServicoDetalhado(anyLong(), anyLong(),
 				any(ServicoDetalhado.class));
-		doReturn(servicoDetalhadoPage).when(service).buscarServicosDetalhadosPorTipoServico(anyInt(),
-				any(Pageable.class));
+		doReturn(servicoDetalhadoPage).when(service).buscarServicosDetalhadosPorTipoServico(any(Pageable.class),
+				any(ServicoDetalhadoFilter.class));
 		doReturn(servicoDetalhado).when(converter).toDomain(any(ServicoDetalhadoRepresentation.class));
 		doReturn(servicoDetalhadoRepresentation).when(converter).toRepresentation(any(ServicoDetalhado.class));
 		doReturn(servicoDetalhadoRepresentationList).when(converter).toRepresentationList(anyList());
@@ -84,7 +85,7 @@ public class ServicoDetalhadoControllerTest {
 		doReturn(servicoDetalhadoRepresentation).when(servicoDetalhadoFacade).buscarPorPrestadorIdEServicoId(anyLong(),
 				anyLong());
 		doReturn(servicoDetalhadoRepresentationPage).when(servicoDetalhadoFacade)
-				.buscarServicosDetalhadosPorTipoServico(anyInt(), any(Pageable.class));
+				.buscarServicosDetalhadosPorTipoServico(any(Pageable.class), any(ServicoDetalhadoFilter.class));
 	}
 
 	@Test
@@ -136,7 +137,8 @@ public class ServicoDetalhadoControllerTest {
 	public void deve_retornar_todos_os_servicos_detalhados_de_um_tipo() throws Exception {
 		var expected = ResponseEntity.ok(servicoDetalhadoRepresentationPage);
 
-		var actual = controller.buscarServicosDetalhadosPorTipoServico(1, 0, 5);
+		var actual = controller.buscarServicosDetalhadosPorTipoServico(0, 5,
+				new ServicoDetalhadoFilter());
 
 		assertEquals(expected, actual);
 	}

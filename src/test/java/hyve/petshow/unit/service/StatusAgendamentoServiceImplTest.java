@@ -1,44 +1,66 @@
 package hyve.petshow.unit.service;
 
-import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.domain.StatusAgendamento;
+import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.StatusAgendamentoRepository;
-import hyve.petshow.service.port.StatusAgendamentoService;
+import hyve.petshow.service.implementation.StatusAgendamentoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
+import static hyve.petshow.mock.StatusAgendamentoMock.statusAgendamento;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class StatusAgendamentoServiceImplTest {
     @Mock
     private StatusAgendamentoRepository repository;
     @InjectMocks
-    private StatusAgendamentoService service;
+    private StatusAgendamentoServiceImpl service;
+
+    private StatusAgendamento statusAgendamento = statusAgendamento();
 
     @BeforeEach
     public void init() {
-        initMocks(this);
+        openMocks(this);
 
-       /* doReturn(Optional.of(servicoDetalhado)).when(repository).findById(1L);
-        doReturn(servicoDetalhadoList).when(repository).findAll();
-        doReturn(servicoDetalhadoPage).when(repository).findByPrestadorId(anyLong(), any(Pageable.class));
-        doReturn(servicoDetalhadoPage).when(repository).findByTipo(anyInt(), any(Pageable.class));
-        doReturn(Optional.of(servicoDetalhado)).when(repository).findByIdAndPrestadorId(anyLong(), anyLong());
-        doNothing().when(repository).delete(any(ServicoDetalhado.class));*/
+        doReturn(singletonList(statusAgendamento)).when(repository).findAll();
+        doReturn(Optional.of(statusAgendamento)).when(repository).findById(anyInt());
     }
 
     @Test
-    public void deve_retornar_status_agendamento(){
+    public void deve_retornar_lista() throws NotFoundException {
+        assertFalse(service.buscarStatusAgendamento().isEmpty());
+    }
 
+    @Test
+    public void deve_disparar_excecao_ao_lista_vazia() {
+        doReturn(emptyList()).when(repository).findAll();
+
+        assertThrows(NotFoundException.class,
+                () -> service.buscarStatusAgendamento());
+    }
+
+    @Test
+    public void deve_retornar_status_agendamento_ao_buscar_por_id() throws NotFoundException {
+        assertEquals(statusAgendamento, service.buscarStatusAgendamento(1));
+    }
+
+    @Test
+    public void deve_lancar_not_found_exception_ao_nao_encontrar_ao_buscar_por_id(){
+        doReturn(Optional.empty()).when(repository).findById(anyInt());
+
+        assertThrows(NotFoundException.class,
+                () -> service.buscarStatusAgendamento(1));
     }
 }

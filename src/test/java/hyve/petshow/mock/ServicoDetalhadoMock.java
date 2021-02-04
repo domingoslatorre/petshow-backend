@@ -3,8 +3,10 @@ package hyve.petshow.mock;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
 
+import java.util.Arrays;
 import java.util.List;
 
+import static hyve.petshow.mock.AdicionalMock.criaAdicional;
 import static hyve.petshow.mock.AuditoriaMock.auditoria;
 import static hyve.petshow.mock.AvaliacaoMock.avaliacaoRepresentation;
 import static hyve.petshow.mock.ServicoMock.servico;
@@ -26,6 +28,7 @@ public class ServicoDetalhadoMock {
 		servicoDetalhado.setAuditoria(auditoria(ATIVO));
 		servicoDetalhado.setTipo(servico());
 		servicoDetalhado.setPrestadorId(1L);
+		servicoDetalhado.setAdicionais(Arrays.asList(criaAdicional(1L)));
 
 		return servicoDetalhado;
 	}

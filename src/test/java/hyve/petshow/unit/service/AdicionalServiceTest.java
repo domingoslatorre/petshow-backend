@@ -1,5 +1,10 @@
 package hyve.petshow.unit.service;
 
+import hyve.petshow.domain.Adicional;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.repository.AdicionalRepository;
+import hyve.petshow.service.implementation.AdicionalServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -7,28 +12,19 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.any;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.MockitoAnnotations.initMocks;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
-import hyve.petshow.domain.Adicional;
-import hyve.petshow.exceptions.NotFoundException;
 import static hyve.petshow.mock.AdicionalMock.criaAdicional;
-import hyve.petshow.repository.AdicionalRepository;
-import hyve.petshow.service.implementation.AdicionalServiceImpl;
 import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AdicionalServiceTest {
@@ -39,7 +35,7 @@ public class AdicionalServiceTest {
 
 	@BeforeEach
 	public void init() {
-		initMocks(this);
+		openMocks(this);
 	}
 
 	@Test
@@ -54,7 +50,7 @@ public class AdicionalServiceTest {
 			}
 		};
 
-		doReturn(esperado).when(repository).findByServicoDetalhadoIdAndAuditoriaFlagAtivo(anyLong());
+		doReturn(esperado).when(repository).findByServicoDetalhadoIdAndAuditoriaFlagAtivo(anyLong(), anyString());
 
 		// Then
 		assertEquals(esperado, service.buscarPorServicoDetalhado(1l));
@@ -63,7 +59,7 @@ public class AdicionalServiceTest {
 	@Test
 	public void deve_retornar_erro_por_lista_de_adicionais_vazia() {
 		// Given
-		doReturn(Collections.emptyList()).when(repository).findByServicoDetalhadoIdAndAuditoriaFlagAtivo(anyLong());
+		doReturn(Collections.emptyList()).when(repository).findByServicoDetalhadoIdAndAuditoriaFlagAtivo(anyLong(), anyString());
 
 		// Then
 		assertThrows(NotFoundException.class, () -> {
@@ -149,9 +145,86 @@ public class AdicionalServiceTest {
 		doReturn(Optional.ofNullable(adicional)).when(repository).findById(anyLong());
 		doReturn(adicional).when(repository).save(any());
 		
-		service.desativarAdicional(adicional.getId());
+		service.desativarAdicional(adicional.getId(), adicional.getServicoDetalhadoId());
 		
 		assertFalse(adicional.getAuditoria().isAtivo());
 	}
 
+	@Test
+	public void deve_retornar_erro_quando_adicional_buscado_estiver_desativado() throws Exception {
+		var adicional = criaAdicional(1L);
+
+		adicional.getAuditoria().setFlagAtivo("N");
+
+		doReturn(Optional.of(adicional)).when(repository).findById(anyLong());
+
+		assertThrows(NotFoundException.class,
+				() -> service.buscarPorId(1L));
+	}
+
+	@Test
+	public void deve_retornar_varios_adicionais_ao_buscar_por_seus_ids() throws Exception {
+		var expected = Arrays.asList(criaAdicional(1L));
+
+		doReturn(expected).when(repository)
+				.findByServicoDetalhadoIdAndIdInAndAuditoriaFlagAtivo(anyLong(), anyList(), anyString());
+
+		var actual = service.buscarAdicionaisPorIds(1L, Arrays.asList(1L, 2L));
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void deve_lancar_not_found_exception_ao_nao_encontrar_adicionais(){
+		var adicionais = Collections.emptyList();
+
+		doReturn(adicionais).when(repository)
+				.findByServicoDetalhadoIdAndIdInAndAuditoriaFlagAtivo(anyLong(), anyList(), anyString());
+
+		assertThrows(NotFoundException.class,
+				() -> service.buscarAdicionaisPorIds(1L, Arrays.asList(1L, 2L)));
+	}
+
+	@Test
+	public void deve_lancar_business_exception_ao_id_servico_divergir_ao_atualizar(){
+		var adicionalBuscado = criaAdicional(1L);
+		var adicionalParam = criaAdicional(1L);
+
+		adicionalParam.setServicoDetalhadoId(2L);
+
+		doReturn(Optional.of(adicionalBuscado)).when(repository).findById(1L);
+
+		assertThrows(BusinessException.class, () ->
+				service.atualizarAdicional(1L, adicionalParam));
+	}
+
+	@Test
+	public void deve_lancar_business_exception_ao_id_servico_divergir_ao_deletar(){
+		var adicionalBuscado = criaAdicional(1L);
+
+		doReturn(Optional.of(adicionalBuscado)).when(repository).findById(1L);
+
+		assertThrows(BusinessException.class, () ->
+				service.desativarAdicional(1L, 2L));
+	}
+
+	@Test
+	public void deve_criar_multiplos_adicionais(){
+		var expected = Arrays.asList(criaAdicional(1L));
+
+		doReturn(expected.get(0)).when(repository).save(any(Adicional.class));
+
+		var actual = service.criarAdicionais(expected, 1L);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void deve_retornar_lista_vazia_ao_tentar_criar_multiplos_adicionais(){
+		var expected = new ArrayList<Adicional>();
+
+		var actual = service.criarAdicionais(expected, 1L);
+
+		assertEquals(expected, actual);
+	}
 }

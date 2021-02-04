@@ -68,7 +68,7 @@ public class AcessoControllerTest {
 
     @Test
     public void deve_retornar_token_apos_realizar_login() throws Exception {
-    	doReturn(conta).when(service).buscarContaPorEmail(anyString());
+    	doReturn(conta).when(service).buscarConta(anyString());
         var expected = ResponseEntity.ok(token);
         var actual = controller.realizarLogin(conta.getLogin());
 
@@ -84,7 +84,7 @@ public class AcessoControllerTest {
 
     @Test
     public void deve_lancar_not_found_exception_quando_nao_encontrar_conta() throws Exception {
-        doThrow(NotFoundException.class).when(service).buscarContaPorEmail(anyString());
+        doThrow(NotFoundException.class).when(service).buscarConta(anyString());
         assertThrows(NotFoundException.class, () -> controller.realizarLogin(conta.getLogin()));
     }
 

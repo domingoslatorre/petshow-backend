@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AvaliacaoServiceTest {
@@ -42,10 +42,11 @@ public class AvaliacaoServiceTest {
 
 	@BeforeEach
 	public void init() {
-		initMocks(this);
+		openMocks(this);
 
 		doReturn(avaliacaoPage).when(repository).findByServicoAvaliadoId(anyLong(), any(Pageable.class));
-		doReturn(Optional.of(avaliacao())).when(repository).findById(Mockito.anyLong());
+		doReturn(Optional.of(avaliacao)).when(repository).findById(anyLong());
+		doReturn(Optional.of(avaliacao)).when(repository).findByAgendamentoAvaliadoId(anyLong());
 	}
 
 	@Test
@@ -80,8 +81,22 @@ public class AvaliacaoServiceTest {
 	
 	@Test
 	public void deve_retornar_excecao_por_nao_encontrar_por_id() {
-		doReturn(Optional.empty()).when(repository).findById(Mockito.anyLong());
+		doReturn(Optional.empty()).when(repository).findById(anyLong());
 		
 		assertThrows(NotFoundException.class, () -> service.buscarAvaliacaoPorId(1L));
+	}
+
+	@Test
+	public void deve_buscar_avaliacao_por_agendamento_id() throws Exception {
+		var actual = service.buscarAvaliacaoPorAgendamentoId(1L);
+
+		assertEquals(avaliacao, actual);
+	}
+
+	@Test
+	public void deve_lancar_not_found_exception_ao_buscar_avaliacao_por_agendamento_id() throws Exception {
+		doReturn(Optional.empty()).when(repository).findByAgendamentoAvaliadoId(anyLong());
+
+		assertThrows(NotFoundException.class, () -> service.buscarAvaliacaoPorAgendamentoId(1L));
 	}
 }

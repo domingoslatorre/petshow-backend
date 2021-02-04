@@ -1,4 +1,4 @@
-package hyve.petshow.integration.controller;
+package hyve.petshow.integration;
 
 import static hyve.petshow.mock.ContaMock.contaCliente;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +35,7 @@ import hyve.petshow.service.port.AcessoService;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class AcessoControllerTest {
+public class AcessoIntegrationTest {
 	@LocalServerPort
 	private int port;
 	@Autowired

@@ -78,8 +78,13 @@ public class ServicoDetalhadoController {
 			throws Exception {
 		var servicosDetalhados = servicoDetalhadoFacade
 				.buscarServicosDetalhadosPorTipoServico(geraPageable(pagina, quantidadeItens), filtragem);
+		var response = ResponseEntity.ok(servicosDetalhados);
 
-		return ResponseEntity.ok(servicosDetalhados);
+		if(servicosDetalhados.getContent().isEmpty()){
+			response = ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicosDetalhados);
+		}
+
+		return response;
 	}
 
 	@Operation(summary = "Busca avaliações por serviço detalhado.")

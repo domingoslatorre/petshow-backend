@@ -33,7 +33,6 @@ public class AcessoServiceImpl implements AcessoService {
 	private static final String TIPO_DE_CLIENTE_INEXISTENTE = "TIPO_DE_CLIENTE_INEXISTENTE";//Tipo de cliente inexistente
 	private static final String CONTA_NAO_ENCONTRADA = "CONTA_NAO_ENCONTRADA"; //Conta não encontrada
 	
-	
 	@Autowired
     private AcessoRepository acessoRepository;
     @Autowired
@@ -86,7 +85,8 @@ public class AcessoServiceImpl implements AcessoService {
     }
 
     public Conta buscarConta(String email) throws Exception {
-    	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
+    	return buscarPorEmail(email)
+                .orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
     }
 
 	@Override
@@ -98,7 +98,8 @@ public class AcessoServiceImpl implements AcessoService {
 
 	@Override
 	public VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception {
-		return tokenRepository.findByToken(tokenVerificadcao).orElseThrow(() -> new NotFoundException(TOKEN_NAO_ENCONTRADO));
+		return tokenRepository.findByToken(tokenVerificadcao)
+                .orElseThrow(() -> new NotFoundException(TOKEN_NAO_ENCONTRADO));
 	}
 
 	@Override
@@ -112,11 +113,4 @@ public class AcessoServiceImpl implements AcessoService {
 		return acessoRepository.save(conta);
 
 	}
-
-	@Override
-	public Conta buscarContaPorEmail(String email) throws Exception {
-		return buscarConta(email);
-	}
-
-	
 }

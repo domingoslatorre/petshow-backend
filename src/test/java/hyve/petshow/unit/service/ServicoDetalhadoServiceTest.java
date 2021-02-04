@@ -1,5 +1,6 @@
 package hyve.petshow.unit.service;
 
+import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
@@ -16,11 +17,9 @@ import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static hyve.petshow.mock.ServicoDetalhadoMock.servicoDetalhado;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
@@ -32,6 +31,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -46,23 +46,23 @@ public class ServicoDetalhadoServiceTest {
 	private List<ServicoDetalhado> servicoDetalhadoList = singletonList(servicoDetalhado);
 	private Page<ServicoDetalhado> servicoDetalhadoPage = new PageImpl<>(servicoDetalhadoList);
 	private Pageable pageable = geraPageable(0, 5);
+	private ServicoDetalhadoFilter filter = new ServicoDetalhadoFilter();
 
 	@BeforeEach
     public void init() {
-		initMocks(this);
+		openMocks(this);
 
+		doReturn(servicoDetalhado).when(repository).save(any(ServicoDetalhado.class));
 		doReturn(Optional.of(servicoDetalhado)).when(repository).findById(1L);
 		doReturn(servicoDetalhadoList).when(repository).findAll();
 		doReturn(servicoDetalhadoPage).when(repository).findByPrestadorId(anyLong(), any(Pageable.class));
-		doReturn(servicoDetalhadoPage).when(repository).findAllByTipo(anyInt(), any(Pageable.class));
+		doReturn(servicoDetalhadoPage).when(repository).findAll(any(Specification.class), any(Pageable.class));
 		doReturn(Optional.of(servicoDetalhado)).when(repository).findByIdAndPrestadorId(anyLong(), anyLong());
 		doNothing().when(repository).delete(any(ServicoDetalhado.class));
 	}
     
     @Test
 	public void deve_inserir_servico_detalhado() {
-    	doReturn(servicoDetalhado).when(repository).save(servicoDetalhado);
-
 		var actual = service.adicionarServicoDetalhado(servicoDetalhado);
 		
 		assertAll(() -> assertTrue(repository.findAll().contains(actual)),
@@ -96,16 +96,9 @@ public class ServicoDetalhadoServiceTest {
 
 	@Test
 	public void deve_retornar_por_tipo() throws NotFoundException {
-		var lista = service.buscarServicosDetalhadosPorTipoServico(1, pageable);
+		var lista = service.buscarServicosDetalhadosPorTipoServico(pageable, filter);
 
 		assertFalse(lista.isEmpty());
-	}
-	
-	@Test
-	public void deve_retornar_excecao_em_busca_por_tipo_nao_encontrada() {
-		doReturn(Page.empty()).when(repository).findAllByTipo(anyInt(), any(Pageable.class));
-
-		assertThrows(NotFoundException.class, () -> service.buscarServicosDetalhadosPorTipoServico(1, pageable));
 	}
 	
 	@Test
@@ -177,5 +170,17 @@ public class ServicoDetalhadoServiceTest {
 		doReturn(servicosDetalhados).when(repository).findAllById(anyIterable());
 		
 		assertEquals(servicosDetalhados, service.buscarServicosDetalhadosPorIds(Arrays.asList(new Long[] {1l,2l})));
+	}
+
+	@Test
+	public void deve_salvar_com_lista_vazia_de_adicionais_ao_nenhum_ser_informado_ao_adicionar_servico_detalhado(){
+		var servicoDetalhadoRequest = servicoDetalhado();
+
+		servicoDetalhadoRequest.setAdicionais(Collections.emptyList());
+
+		var actual = service.adicionarServicoDetalhado(servicoDetalhadoRequest);
+
+		assertAll(() -> assertTrue(repository.findAll().contains(actual)),
+				() -> assertNotNull(actual));
 	}
 }

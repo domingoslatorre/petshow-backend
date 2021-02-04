@@ -93,7 +93,7 @@ public class AcessoController {
     }
 
     private String gerarToken(String email) throws Exception {
-    	var conta = acessoService.buscarContaPorEmail(email);
+    	var conta = acessoService.buscarConta(email);
         return jwtUtils.generateToken(email, conta.getId(), conta.getTipo());
     }
 

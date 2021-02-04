@@ -70,8 +70,11 @@ public class AnimalEstimacaoMock {
         return tipoAnimalEstimacaoRepresentation;
     }
 
-    public static List<AnimalEstimacaoRepresentation> animalEstimacaoList(){
-        return Arrays.asList(animalEstimacaoRepresentation());
+    public static List<AnimalEstimacao> animalEstimacaoList(){
+        return Arrays.asList(animalEstimacao());
     }
 
+    public static List<AnimalEstimacaoRepresentation> animalEstimacaoRepresentationList(){
+        return Arrays.asList(animalEstimacaoRepresentation());
+    }
 }

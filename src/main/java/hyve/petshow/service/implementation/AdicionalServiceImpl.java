@@ -110,5 +110,4 @@ public class AdicionalServiceImpl implements AdicionalService {
 					}).collect(Collectors.toList());
 		}).orElse(new ArrayList<>());
 	}
-
 }

@@ -1,4 +1,4 @@
-package hyve.petshow.integration.controller;
+package hyve.petshow.integration;
 
 import static hyve.petshow.mock.ContaMock.contaCliente;
 import static hyve.petshow.mock.ContaMock.contaPrestador;
@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.net.URI;
 
+import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -47,7 +48,7 @@ import hyve.petshow.service.port.ServicoDetalhadoService;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class ServicoDetalhadoControllerTest {
+public class ServicoDetalhadoIntegrationTest {
 	@LocalServerPort
 	private int port;
 	@Autowired
@@ -131,25 +132,30 @@ public class ServicoDetalhadoControllerTest {
 	@Test
 	public void deve_retornar_por_tipo_de_servico() throws Exception {
 		service.adicionarServicoDetalhado(servico);
-		var httpUrl = "http://localhost:"+this.port+"/servico-detalhado/tipo-servico/"+tipoServico.getId();
+		var httpUrl = "http://localhost:"+this.port+"/servico-detalhado/filtro";
 		var uri = UriComponentsBuilder.fromHttpUrl(httpUrl)
 		.queryParam("pagina", 0)
 		.queryParam("quantidadeItens", 5)
 		.toUriString();
+		var filter = new ServicoDetalhadoFilter();
+
+		filter.setTipoServicoId(tipoServico.getId());
 		
-		var response = template.getForEntity(uri, String.class);
+		var response = template.postForEntity(uri, filter, String.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 	
 	@Test
 	public void deve_retornar_erro_por_nao_encontrar_tipo() throws Exception {
-		var httpUrl = "http://localhost:"+this.port+"/servico-detalhado/tipo-servico/"+(tipoServico.getId() + 1);
+		var httpUrl = "http://localhost:"+this.port+"/servico-detalhado/filtro";
 		var uri = UriComponentsBuilder.fromHttpUrl(httpUrl)
 				.queryParam("pagina", 0)
 				.queryParam("quantidadeItens", 5)
 				.toUriString();
-		
-		var response = template.getForEntity(uri, String.class);
+		var filter = new ServicoDetalhadoFilter();
+		filter.setTipoServicoId(tipoServico.getId() + 1);
+
+		var response = template.postForEntity(uri, filter, String.class);
 		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 	}
 	

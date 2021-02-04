@@ -28,7 +28,7 @@ import static java.lang.Boolean.TRUE;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AnimalEstimacaoServiceTest {
@@ -44,7 +44,7 @@ public class AnimalEstimacaoServiceTest {
 
     @BeforeEach
     public void init() {
-        initMocks(this);
+        openMocks(this);
 
         doReturn(animalEstimacao).when(repository).save(animalEstimacao);
         doReturn(Optional.of(animalEstimacao)).when(repository).findById(1L);

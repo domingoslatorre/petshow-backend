@@ -1,4 +1,4 @@
-package hyve.petshow.integration.controller;
+package hyve.petshow.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,7 +21,7 @@ import hyve.petshow.repository.ServicoRepository;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class ServicoControllerTest {
+public class ServicoIntegrationTest {
 	@LocalServerPort
 	private int port;
 	@Autowired
