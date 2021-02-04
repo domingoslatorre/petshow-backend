@@ -1,6 +1,5 @@
 package hyve.petshow.controller;
 
-import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.*;
@@ -34,8 +33,6 @@ public class ServicoDetalhadoController {
 	private AvaliacaoFacade avaliacaoFacade;
 	@Autowired
 	private ServicoDetalhadoFacade servicoDetalhadoFacade;
-	@Autowired
-	private AvaliacaoConverter avaliacaoConverter;
 
 	@Operation(summary = "Busca todos os serviços detalhados por prestador.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado")

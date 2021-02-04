@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static hyve.petshow.repository.specification.ServicoDetalhadoSpecification.geraSpecificationServicoDetalhado;
+import static hyve.petshow.repository.specification.ServicoDetalhadoSpecification.geraSpecification;
 import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
@@ -48,7 +48,7 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	@Override
 	public Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Pageable pageable,
 																		 ServicoDetalhadoFilter filtragem) throws NotFoundException {
-		var specification = geraSpecificationServicoDetalhado(filtragem);
+		var specification = geraSpecification(filtragem);
 
 		var servicosDetalhados = repository.findAll(specification, pageable);
 

@@ -13,7 +13,7 @@ import static hyve.petshow.util.NullUtils.isNotNull;
 
 @Slf4j
 public class ServicoDetalhadoSpecification {
-    public static Specification<ServicoDetalhado> geraSpecificationServicoDetalhado(ServicoDetalhadoFilter filtragem) {
+    public static Specification<ServicoDetalhado> geraSpecification(ServicoDetalhadoFilter filtragem) {
         return (Specification<ServicoDetalhado>) (root, query, builder) -> {
             var predicate = builder.and();
             var servico = root.join("tipo");

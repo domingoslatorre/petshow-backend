@@ -16,7 +16,6 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -54,8 +53,8 @@ public class AcessoServiceTest {
 
 		doReturn(Optional.of(cliente)).when(acessoRepository).findByEmail(anyString());
 		doReturn("token").when(passwordEncoder).encode(anyString());
-		doReturn(cliente).when(clienteRepository).save(Mockito.any(Cliente.class));
-		doReturn(prestador).when(prestadorRepository).save(Mockito.any(Prestador.class));
+		doReturn(cliente).when(clienteRepository).save(any(Cliente.class));
+		doReturn(prestador).when(prestadorRepository).save(any(Prestador.class));
 	}
 	
 	@Test

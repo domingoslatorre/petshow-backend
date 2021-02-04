@@ -45,7 +45,6 @@ public class AnimalEstimacaoIntegrationTest {
     	@Autowired
     	private AnimalEstimacaoConverter converter;
 	private Cliente cliente;
-	private TipoAnimalEstimacao tipo;
 	private AnimalEstimacao animal;
 	private String url;
 	
@@ -59,8 +58,8 @@ public class AnimalEstimacaoIntegrationTest {
 	@BeforeEach
 	public void init() {
 		url = "http://localhost:"+port+"/cliente/animal-estimacao";
-		
-		tipo = new TipoAnimalEstimacao();
+
+		var tipo = new TipoAnimalEstimacao();
 		tipo.setNome("Cachorro");
 		tipo.setPelagem("Pelagem");
 		tipo.setPorte("Porte");

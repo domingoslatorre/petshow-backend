@@ -1,7 +1,6 @@
 package hyve.petshow.unit.service;
 
 import hyve.petshow.domain.Agendamento;
-import hyve.petshow.domain.StatusAgendamento;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AgendamentoRepository;
@@ -37,8 +36,6 @@ public class AgendamentoServiceTest {
     private Agendamento agendamento = criaAgendamento();
     private List<Agendamento> agendamentoList = Arrays.asList(agendamento);
     private Page<Agendamento> agendamentoPage = new PageImpl<>(agendamentoList);
-
-    private StatusAgendamento statusAgendamento = criaStatusAgendamento();
 
     private Pageable pageable = PageRequest.of(0, 10);
 

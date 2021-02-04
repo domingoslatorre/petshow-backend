@@ -56,7 +56,6 @@ public class ServicoDetalhadoIntegrationTest {
 	
 	private String url;
 	
-	private Prestador prestador;
 	private Cliente cliente;
 	private Servico tipoServico;
 	private ServicoDetalhado servico;
@@ -67,7 +66,7 @@ public class ServicoDetalhadoIntegrationTest {
 		tipoServico.setNome("Banho e tosa");
 		servicoRepository.save(tipoServico);
 		
-		prestador = new Prestador(contaPrestador());
+		var prestador = new Prestador(contaPrestador());
 		prestador.setId(null);
 		prestadorRepository.save(prestador);
 		
@@ -140,7 +139,7 @@ public class ServicoDetalhadoIntegrationTest {
 		filter.setTipoServicoId(tipoServico.getId() + 1);
 
 		var response = template.postForEntity(uri, filter, String.class);
-		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 	
 	@Test
@@ -232,7 +231,7 @@ public class ServicoDetalhadoIntegrationTest {
 		
 		var uri = new URI(this.url + "/" + servicoAdd.getId() + "/adicional");
 		var entity = new HttpEntity<>(adicional, new HttpHeaders());
-		var response = template.postForEntity(uri, entity, AdicionalRepresentation.class);;
+		var response = template.postForEntity(uri, entity, AdicionalRepresentation.class);
 	
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		var busca = adicionalRepository.findById(response.getBody().getId());
