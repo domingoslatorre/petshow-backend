@@ -2,7 +2,6 @@ package hyve.petshow.controller.converter;
 
 import hyve.petshow.controller.representation.AnimalEstimacaoRepresentation;
 import hyve.petshow.domain.AnimalEstimacao;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

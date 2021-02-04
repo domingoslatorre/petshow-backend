@@ -1,34 +1,26 @@
 package hyve.petshow.unit.service;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-
-import static org.mockito.MockitoAnnotations.initMocks;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
-import static hyve.petshow.controller.representation.MensagemRepresentation.MENSAGEM_FALHA;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
-
 import hyve.petshow.domain.Conta;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.mock.ClienteMock;
 import hyve.petshow.repository.GenericContaRepository;
 import hyve.petshow.service.implementation.ContaServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import java.util.Optional;
+
+import static hyve.petshow.controller.representation.MensagemRepresentation.MENSAGEM_FALHA;
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.MockitoAnnotations.initMocks;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class ContaServiceTest {
 	@Mock
@@ -45,7 +37,7 @@ public class ContaServiceTest {
 	@Test
 	public void deve_retornar_conta() throws Exception {
 		// Given
-		var conta = Optional.of(ClienteMock.cliente());
+		var conta = Optional.of(ClienteMock.criaCliente());
 		
 		
 		doReturn(conta).when(repository).findById(anyLong());
@@ -72,7 +64,7 @@ public class ContaServiceTest {
 	@Test
 	public void deve_desativar_conta() throws Exception {
 		// Given
-		var conta = ClienteMock.cliente();
+		var conta = ClienteMock.criaCliente();
 		doReturn(conta).when(repository).save(any());
 		doReturn(Optional.of(conta)).when(repository).findById(anyLong());
 		
@@ -102,7 +94,7 @@ public class ContaServiceTest {
 	@Test
 	public void deve_buscar_por_email() {
 		// Given
-		doReturn(Optional.of(ClienteMock.cliente())).when(repository).findByEmail(anyString());
+		doReturn(Optional.of(ClienteMock.criaCliente())).when(repository).findByEmail(anyString());
 		//When
 		var busca = service.buscarPorEmail("sadfglksdjg");
 		// Then
@@ -123,8 +115,8 @@ public class ContaServiceTest {
 	@Test
 	public void deve_atualizar_conta() throws Exception {
 		// Given
-		var cliente = ClienteMock.cliente();
-		var clienteAtualizado = ClienteMock.cliente();
+		var cliente = ClienteMock.criaCliente();
+		var clienteAtualizado = ClienteMock.criaCliente();
 		doReturn(Optional.of(cliente)).when(repository).findById(anyLong());
 		doReturn(cliente).when(repository).save(any());
 		clienteAtualizado.setTelefone("398476239846");

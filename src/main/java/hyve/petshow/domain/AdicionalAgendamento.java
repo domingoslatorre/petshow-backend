@@ -1,16 +1,11 @@
 package hyve.petshow.domain;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity

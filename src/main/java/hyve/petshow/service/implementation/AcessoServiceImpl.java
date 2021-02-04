@@ -1,19 +1,5 @@
 package hyve.petshow.service.implementation;
 
-import static hyve.petshow.util.AuditoriaUtils.ATIVO;
-import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
-import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Prestador;
@@ -27,6 +13,17 @@ import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Optional;
+
+import static hyve.petshow.util.AuditoriaUtils.*;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
@@ -34,7 +31,6 @@ public class AcessoServiceImpl implements AcessoService {
 	private static final String TOKEN_NAO_ENCONTRADO = "TOKEN_NAO_ENCONTRADO";//Token informado não encontrado
 	private static final String TIPO_DE_CLIENTE_INEXISTENTE = "TIPO_DE_CLIENTE_INEXISTENTE";//Tipo de cliente inexistente
 	private static final String CONTA_NAO_ENCONTRADA = "CONTA_NAO_ENCONTRADA"; //Conta não encontrada
-	
 	
 	@Autowired
     private AcessoRepository acessoRepository;
@@ -67,7 +63,7 @@ public class AcessoServiceImpl implements AcessoService {
         var tipoConta = conta.getTipo();
         criptografarSenha(conta.getLogin());
 
-        conta.setAuditoria(geraAuditoriaInsercao(Optional.empty()));
+        conta.setAuditoria(geraAuditoriaInsercaoConta(Optional.empty()));
 
         if(TipoConta.CLIENTE.equals(tipoConta)){
             var cliente = new Cliente(conta);
@@ -88,7 +84,8 @@ public class AcessoServiceImpl implements AcessoService {
     }
 
     public Conta buscarConta(String email) throws Exception {
-    	return buscarPorEmail(email).orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
+    	return buscarPorEmail(email)
+                .orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
     }
 
 	@Override
@@ -100,7 +97,8 @@ public class AcessoServiceImpl implements AcessoService {
 
 	@Override
 	public VerificationToken buscarTokenVerificacao(String tokenVerificadcao) throws Exception {
-		return tokenRepository.findByToken(tokenVerificadcao).orElseThrow(() -> new NotFoundException(TOKEN_NAO_ENCONTRADO));
+		return tokenRepository.findByToken(tokenVerificadcao)
+                .orElseThrow(() -> new NotFoundException(TOKEN_NAO_ENCONTRADO));
 	}
 
 	@Override
@@ -114,11 +112,4 @@ public class AcessoServiceImpl implements AcessoService {
 		return acessoRepository.save(conta);
 
 	}
-
-	@Override
-	public Conta buscarContaPorEmail(String email) throws Exception {
-		return buscarConta(email);
-	}
-
-	
 }

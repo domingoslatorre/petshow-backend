@@ -1,9 +1,8 @@
 package hyve.petshow.controller.converter;
 
-import org.springframework.stereotype.Component;
-
 import hyve.petshow.controller.representation.ServicoRepresentation;
 import hyve.petshow.domain.Servico;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ServicoConverter implements Converter<Servico, ServicoRepresentation>{

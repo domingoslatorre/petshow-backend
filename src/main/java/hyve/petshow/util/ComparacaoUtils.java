@@ -1,16 +1,16 @@
 package hyve.petshow.util;
 
+import hyve.petshow.controller.representation.ComparacaoRepresentation;
+import hyve.petshow.controller.representation.ComparacaoWrapper;
+import hyve.petshow.controller.representation.PrecoPorTipoRepresentation;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import hyve.petshow.controller.representation.ComparacaoRepresentation;
-import hyve.petshow.controller.representation.ComparacaoWrapper;
-import hyve.petshow.controller.representation.PrecoPorTipoRepresentation;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 
 public class ComparacaoUtils {
 	public static ComparacaoWrapper criaWrapper(List<ServicoDetalhadoRepresentation> representation) {

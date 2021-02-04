@@ -1,19 +1,16 @@
 package hyve.petshow.service.implementation;
 
-import static hyve.petshow.util.AuditoriaUtils.ATIVO;
-import static hyve.petshow.util.AuditoriaUtils.INATIVO;
-import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
-
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.GenericContaRepository;
 import hyve.petshow.service.port.GenericContaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+import static hyve.petshow.util.AuditoriaUtils.*;
 
 @Service
 public class ContaServiceImpl implements GenericContaService {

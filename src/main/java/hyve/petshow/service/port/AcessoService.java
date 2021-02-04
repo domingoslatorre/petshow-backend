@@ -21,6 +21,4 @@ public interface AcessoService extends UserDetailsService {
 	Conta ativaConta(String token) throws Exception;
 	
 	Conta buscarConta(String email) throws Exception;
-	
-	Conta buscarContaPorEmail(String email) throws Exception;
 }

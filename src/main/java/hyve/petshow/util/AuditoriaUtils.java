@@ -20,6 +20,17 @@ public class AuditoriaUtils {
         return auditoria;
     }
 
+    public static Auditoria geraAuditoriaInsercaoConta(Optional<Long> usuarioId){
+        var auditoria = new Auditoria();
+
+        auditoria.setDataCriacao(LocalDateTime.now());
+        auditoria.setDataAtualizacao(LocalDateTime.now());
+        auditoria.setUsuarioCriacao(usuarioId.isPresent() ? usuarioId.get() : null);
+        auditoria.setFlagAtivo(INATIVO);
+
+        return auditoria;
+    }
+
     public static Auditoria atualizaAuditoria(Auditoria auditoria, String flagAtivo){
         auditoria.setDataAtualizacao(LocalDateTime.now());
         auditoria.setFlagAtivo(flagAtivo);

@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -104,12 +102,15 @@ public class AgendamentoFacade {
 
     private List<AdicionalAgendamento> processaAgendamentoAdicional(Long servicoDetalhadoId, List<Long> adicionaisIds,
                                                                     Agendamento agendamento) throws Exception {
-        var adicionaisBuscados = adicionalService
-                .buscarAdicionaisPorIds(servicoDetalhadoId, adicionaisIds);
         var adicionais = new ArrayList<AdicionalAgendamento>();
 
-        for (Adicional adicional : adicionaisBuscados) {
-            adicionais.add(new AdicionalAgendamento(agendamento, adicional));
+        if(! adicionaisIds.isEmpty()) {
+            var adicionaisBuscados = adicionalService
+                    .buscarAdicionaisPorIds(servicoDetalhadoId, adicionaisIds);
+
+            for (Adicional adicional : adicionaisBuscados) {
+                adicionais.add(new AdicionalAgendamento(agendamento, adicional));
+            }
         }
 
         return adicionais;

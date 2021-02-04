@@ -45,4 +45,9 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 				.orElseThrow(()-> new NotFoundException(AVALIACAO_NAO_ENCONTRADA));
 	}
 
+	@Override
+	public Avaliacao buscarAvaliacaoPorAgendamentoId(Long id) throws Exception {
+		return repository.findByAgendamentoAvaliadoId(id)
+				.orElseThrow(()-> new NotFoundException(AVALIACAO_NAO_ENCONTRADA));
+	}
 }

@@ -1,12 +1,8 @@
-package hyve.petshow.integration.controller;
+package hyve.petshow.integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
+import hyve.petshow.domain.Prestador;
+import hyve.petshow.repository.GenericContaRepository;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -15,47 +11,51 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
-import hyve.petshow.domain.Servico;
-import hyve.petshow.repository.ServicoRepository;
+import java.net.URI;
+
+import static hyve.petshow.mock.ContaMock.contaPrestador;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class ServicoControllerTest {
+public class ContaIntegrationTest {
 	@LocalServerPort
 	private int port;
 	@Autowired
 	private TestRestTemplate template;
 	@Autowired
-	private ServicoRepository repository;
+	private GenericContaRepository repository;
+
+	private Prestador prestador;
 	private String url;
-	private Servico servico;
 
 	@BeforeEach
 	public void init() {
-		url = "http://localhost:" + port + "/servico";
-		servico = new Servico();
-		servico.setNome("Banho");
+		prestador = new Prestador(contaPrestador());
+		prestador.setId(null);
+
+		url = "http://localhost:" + port + "/conta/";
 	}
 
 	@AfterEach
-	public void limpaRepository() {
+	public void limpaRepositorio() {
 		repository.deleteAll();
 	}
 
 	@Test
-	public void deve_retornar_lista_de_servicos() {
-		repository.save(servico);
-
-		var response = template.getForEntity(url, String.class);
+	public void deve_retornar_por_id() throws Exception {
+		repository.save(prestador);
+		var uri = new URI(url + prestador.getId());
+		var response = template.getForEntity(uri, String.class);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 
 	@Test
-	public void deve_retornar_erro_de_lista_vazia() {
-		var response = template.getForEntity(url, String.class);
-
+	public void deve_retornar_erro_em_busca_por_id() throws Exception {
+		var uri = new URI(url + "1000");
+		var response = template.getForEntity(uri, String.class);
 		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 	}
 

@@ -5,7 +5,6 @@ import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.util.JwtUtils;
 import hyve.petshow.util.OnRegistrationCompleteEvent;
@@ -58,9 +57,6 @@ public class AcessoController {
         } catch (AuthenticationException e) {
             log.error("{}, mensagem: {}, causa: {}", USUARIO_SENHA_INCORRETO, e.getMessage(), e.getCause());
             throw new BusinessException(USUARIO_SENHA_INCORRETO);
-        } catch (NotFoundException e) {
-            log.error(e.getMessage());
-            throw e;
         }
     }
 
@@ -72,19 +68,35 @@ public class AcessoController {
             @RequestBody ContaRepresentation contaRepresentation,
             @Parameter(description = "Requisição")
             HttpServletRequest request) throws BusinessException {
-        try {
-            verificarEmailExistente(contaRepresentation.getLogin().getEmail());
-            var conta = adicionarConta(contaRepresentation);
-            var token = gerarToken(conta);
-            var appUrl = request.getContextPath();
+        verificarEmailExistente(contaRepresentation.getLogin().getEmail());
+        var conta = adicionarConta(contaRepresentation);
+        var token = gerarToken(conta);
+        var appUrl = request.getContextPath();
 
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(conta, request.getLocale(), appUrl));
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(conta, request.getLocale(), appUrl));
 
-            return ResponseEntity.ok(token);
-        } catch (AuthenticationException e) {
-            log.error("{}, mensagem: {}, causa: {}", USUARIO_SENHA_INCORRETO, e.getMessage(), e.getCause());
-            throw new BusinessException(USUARIO_SENHA_INCORRETO);
-        }
+        return ResponseEntity.ok(token);
+    }
+
+    @GetMapping("/ativar")
+    public ResponseEntity<String> confirmarRegistro(@RequestParam("token") String tokenVerificadcao) throws Exception {
+        var conta = acessoService.ativaConta(tokenVerificadcao);
+        var tokenRetorno = gerarToken(conta.getLogin().getEmail());
+        return ResponseEntity.ok(tokenRetorno);
+    }
+
+    @Operation(summary = "Reenvia token de ativação de conta")
+    @PostMapping("/reenvia-ativacao")
+    public ResponseEntity<String> reenviaSolicitacao(
+            @Parameter(description = "Email para enviar a nova solicitação")
+            @RequestBody String email,
+            @Parameter(description = "Requisição")
+                    HttpServletRequest request) throws Exception {
+        var conta = acessoService.buscarConta(email);
+        var appUrl = request.getContextPath();
+        var event = new OnRegistrationCompleteEvent(conta, request.getLocale(), appUrl);
+        eventPublisher.publishEvent(event);
+        return ResponseEntity.ok("Reenviado");
     }
 
     private void realizarAutenticacao(Login login) throws AuthenticationException{
@@ -93,7 +105,7 @@ public class AcessoController {
     }
 
     private String gerarToken(String email) throws Exception {
-    	var conta = acessoService.buscarContaPorEmail(email);
+    	var conta = acessoService.buscarConta(email);
         return jwtUtils.generateToken(email, conta.getId(), conta.getTipo());
     }
 
@@ -112,26 +124,4 @@ public class AcessoController {
 
         return acessoService.adicionarConta(request);
     }
-
-    @GetMapping("/ativar")
-    public ResponseEntity<String> confirmarRegistro(@RequestParam("token") String tokenVerificadcao) throws Exception {
-		var conta = acessoService.ativaConta(tokenVerificadcao);
-    	var tokenRetorno = gerarToken(conta.getLogin().getEmail());
-    	return ResponseEntity.ok(tokenRetorno);
-    }
-    
-    @Operation(summary = "Reenvia token de ativação de conta")
-    @PostMapping("/reenvia-ativacao")
-    public ResponseEntity<String> reenviaSolicitacao(
-    		@Parameter(description = "Email para enviar a nova solicitação") 
-    		@RequestBody String email, 
-    		@Parameter(description = "Requisição")
-    		HttpServletRequest request) throws Exception {
-    	var conta = acessoService.buscarConta(email);
-    	var appUrl = request.getContextPath();
-        var event = new OnRegistrationCompleteEvent(conta, request.getLocale(), appUrl);
-		eventPublisher.publishEvent(event);
-    	return ResponseEntity.ok("Reenviado");
-    }
-
 }

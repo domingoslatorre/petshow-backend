@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class AcessoControllerTest {
@@ -55,7 +55,7 @@ public class AcessoControllerTest {
 
     @BeforeEach
     public void init() throws Exception {
-        initMocks(this);
+        openMocks(this);
 
         doReturn(null).when(authenticationManager).authenticate(any(Authentication.class));
         doReturn(Optional.of(conta)).when(service).buscarPorEmail(anyString());
@@ -63,12 +63,13 @@ public class AcessoControllerTest {
         doReturn(conta).when(converter).toDomain(any(ContaRepresentation.class));
         doReturn(conta).when(service).adicionarConta(any(Conta.class));
         doNothing().when(eventPublisher).publishEvent(any(OnRegistrationCompleteEvent.class));
-        
+        doReturn(conta).when(service).ativaConta(anyString());
+        doReturn(conta).when(service).buscarConta(anyString());
     }
 
     @Test
     public void deve_retornar_token_apos_realizar_login() throws Exception {
-    	doReturn(conta).when(service).buscarContaPorEmail(anyString());
+    	doReturn(conta).when(service).buscarConta(anyString());
         var expected = ResponseEntity.ok(token);
         var actual = controller.realizarLogin(conta.getLogin());
 
@@ -84,7 +85,7 @@ public class AcessoControllerTest {
 
     @Test
     public void deve_lancar_not_found_exception_quando_nao_encontrar_conta() throws Exception {
-        doThrow(NotFoundException.class).when(service).buscarContaPorEmail(anyString());
+        doThrow(NotFoundException.class).when(service).buscarConta(anyString());
         assertThrows(NotFoundException.class, () -> controller.realizarLogin(conta.getLogin()));
     }
 
@@ -102,5 +103,21 @@ public class AcessoControllerTest {
     @Test
     public void deve_lancar_business_exception_caso_email_existente() {
         assertThrows(BusinessException.class, () -> controller.realizarCadastro(contaRepresentation, request));
+    }
+
+    @Test
+    public void deve_confirmar_o_registro_de_uma_conta() throws Exception {
+        var expected = ResponseEntity.ok(token);
+        var actual = controller.confirmarRegistro(token);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deve_reenviar_solicitacao_de_ativacao() throws Exception {
+        var expected = ResponseEntity.ok("Reenviado");
+        var actual = controller.reenviaSolicitacao("email", request);
+
+        assertEquals(expected, actual);
     }
 }

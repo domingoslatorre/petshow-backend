@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static hyve.petshow.util.NullUtils.isNotNull;
+
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
@@ -29,12 +31,12 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
 
-        if(authHeader != null && authHeader.startsWith("Bearer ")){
+        if(isNotNull(authHeader) && authHeader.startsWith("Bearer ")){
             token = authHeader.substring(7);
             email = jwtUtils.extractUsername(token);
         }
 
-        if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if(isNotNull(email) && SecurityContextHolder.getContext().getAuthentication() == null){
             var userDetails = acessoService.loadUserByUsername(email);
 
             if(jwtUtils.validateToken(token, userDetails)){

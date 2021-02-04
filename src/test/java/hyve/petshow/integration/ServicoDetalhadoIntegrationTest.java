@@ -1,26 +1,20 @@
-package hyve.petshow.integration.controller;
+package hyve.petshow.integration;
 
-import static hyve.petshow.mock.ContaMock.contaCliente;
-import static hyve.petshow.mock.ContaMock.contaPrestador;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.math.BigDecimal;
-import java.net.URI;
-import java.util.List;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
+import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
+import hyve.petshow.controller.representation.AdicionalRepresentation;
+import hyve.petshow.controller.representation.ComparacaoWrapper;
+import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.*;
+import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
+import hyve.petshow.repository.*;
+import hyve.petshow.service.port.ServicoDetalhadoService;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,28 +22,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
-import hyve.petshow.controller.representation.AdicionalRepresentation;
-import hyve.petshow.controller.representation.ComparacaoWrapper;
-import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
-import hyve.petshow.domain.Avaliacao;
-import hyve.petshow.domain.Cliente;
-import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.Servico;
-import hyve.petshow.domain.ServicoDetalhado;
-import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
-import hyve.petshow.repository.AdicionalRepository;
-import hyve.petshow.repository.AvaliacaoRepository;
-import hyve.petshow.repository.ClienteRepository;
-import hyve.petshow.repository.PrestadorRepository;
-import hyve.petshow.repository.ServicoDetalhadoRepository;
-import hyve.petshow.repository.ServicoRepository;
-import hyve.petshow.service.port.ServicoDetalhadoService;
+import java.math.BigDecimal;
+import java.net.URI;
+
+import static hyve.petshow.mock.ContaMock.contaCliente;
+import static hyve.petshow.mock.ContaMock.contaPrestador;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class ServicoDetalhadoControllerTest {
+public class ServicoDetalhadoIntegrationTest {
 	@LocalServerPort
 	private int port;
 	@Autowired
@@ -73,7 +56,6 @@ public class ServicoDetalhadoControllerTest {
 	
 	private String url;
 	
-	private Prestador prestador;
 	private Cliente cliente;
 	private Servico tipoServico;
 	private ServicoDetalhado servico;
@@ -84,7 +66,7 @@ public class ServicoDetalhadoControllerTest {
 		tipoServico.setNome("Banho e tosa");
 		servicoRepository.save(tipoServico);
 		
-		prestador = new Prestador(contaPrestador());
+		var prestador = new Prestador(contaPrestador());
 		prestador.setId(null);
 		prestadorRepository.save(prestador);
 		
@@ -133,26 +115,31 @@ public class ServicoDetalhadoControllerTest {
 	@Test
 	public void deve_retornar_por_tipo_de_servico() throws Exception {
 		service.adicionarServicoDetalhado(servico);
-		var httpUrl = "http://localhost:"+this.port+"/servico-detalhado/tipo-servico/"+tipoServico.getId();
+		var httpUrl = "http://localhost:"+this.port+"/servico-detalhado/filtro";
 		var uri = UriComponentsBuilder.fromHttpUrl(httpUrl)
 		.queryParam("pagina", 0)
 		.queryParam("quantidadeItens", 5)
 		.toUriString();
+		var filter = new ServicoDetalhadoFilter();
+
+		filter.setTipoServicoId(tipoServico.getId());
 		
-		var response = template.getForEntity(uri, String.class);
+		var response = template.postForEntity(uri, filter, String.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 	
 	@Test
 	public void deve_retornar_erro_por_nao_encontrar_tipo() throws Exception {
-		var httpUrl = "http://localhost:"+this.port+"/servico-detalhado/tipo-servico/"+(tipoServico.getId() + 1);
+		var httpUrl = "http://localhost:"+this.port+"/servico-detalhado/filtro";
 		var uri = UriComponentsBuilder.fromHttpUrl(httpUrl)
 				.queryParam("pagina", 0)
 				.queryParam("quantidadeItens", 5)
 				.toUriString();
-		
-		var response = template.getForEntity(uri, String.class);
-		assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+		var filter = new ServicoDetalhadoFilter();
+		filter.setTipoServicoId(tipoServico.getId() + 1);
+
+		var response = template.postForEntity(uri, filter, String.class);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 	
 	@Test
@@ -244,7 +231,7 @@ public class ServicoDetalhadoControllerTest {
 		
 		var uri = new URI(this.url + "/" + servicoAdd.getId() + "/adicional");
 		var entity = new HttpEntity<>(adicional, new HttpHeaders());
-		var response = template.postForEntity(uri, entity, AdicionalRepresentation.class);;
+		var response = template.postForEntity(uri, entity, AdicionalRepresentation.class);
 	
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
 		var busca = adicionalRepository.findById(response.getBody().getId());

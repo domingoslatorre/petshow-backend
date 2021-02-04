@@ -1,14 +1,18 @@
 package hyve.petshow.controller;
 
 import hyve.petshow.controller.converter.AgendamentoConverter;
+import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.converter.StatusAgendamentoConverter;
 import hyve.petshow.controller.representation.AgendamentoRepresentation;
+import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.StatusAgendamentoRepresentation;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AgendamentoFacade;
+import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.service.port.AgendamentoService;
+import hyve.petshow.service.port.AvaliacaoService;
 import hyve.petshow.service.port.StatusAgendamentoService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +20,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +37,17 @@ public class AgendamentoController {
     @Autowired
     private StatusAgendamentoService statusAgendamentoService;
     @Autowired
+    private AvaliacaoService avaliacaoService;
+    @Autowired
     private AgendamentoFacade agendamentoFacade;
+    @Autowired
+    private AvaliacaoFacade avaliacaoFacade;
     @Autowired
     private AgendamentoConverter agendamentoConverter;
     @Autowired
     private StatusAgendamentoConverter statusAgendamentoConverter;
+    @Autowired
+    private AvaliacaoConverter avaliacaoConverter;
 
     @Operation(summary = "Adiciona um novo agendamento.")
     @PostMapping
@@ -116,5 +127,31 @@ public class AgendamentoController {
         mensagem.setSucesso(response);
 
         return ResponseEntity.ok(mensagem);
+    }
+
+    @Operation(summary = "Adiciona avaliação.")
+    @PostMapping("/{id}/avaliacao")
+    public ResponseEntity<AvaliacaoRepresentation> adicionarAvaliacao(
+            @Parameter(description = "Id do agendamento.")
+            @PathVariable Long id,
+            @Parameter(description = "Avaliação que será inserida")
+            @RequestBody AvaliacaoRepresentation request)
+            throws Exception {
+        var avaliacao = avaliacaoFacade.adicionarAvaliacao(request, id);
+        var representation = avaliacaoConverter.toRepresentation(avaliacao);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(representation);
+    }
+
+    @Operation(summary = "Busca avaliação por agendamento.")
+    @GetMapping("/{id}/avaliacao")
+    public ResponseEntity<AvaliacaoRepresentation> buscarAvaliacaoPorAgendamento(
+            @Parameter(description = "Id do agendamento.")
+            @PathVariable Long id)
+            throws Exception {
+        var avaliacao = avaliacaoService.buscarAvaliacaoPorAgendamentoId(id);
+        var representation = avaliacaoConverter.toRepresentation(avaliacao);
+
+        return ResponseEntity.ok(representation);
     }
 }
