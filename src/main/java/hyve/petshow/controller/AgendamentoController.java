@@ -175,5 +175,6 @@ public class AgendamentoController {
     		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataAgendamento) {
     	return ResponseEntity.ok(agendamentoFacade.buscaHorariosAgendamento(idPrestador, dataAgendamento));
     }
+    
 }
 
