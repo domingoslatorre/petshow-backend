@@ -17,7 +17,7 @@ public class ServicoDetalhado {
     @Embedded
     private Auditoria auditoria;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_servico_detalhado")
+    @JoinColumn(name = "fk_servico_detalhado", updatable = false)
     private List<Adicional> adicionais = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "fk_servico")
