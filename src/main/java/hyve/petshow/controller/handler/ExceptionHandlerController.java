@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionHandlerController {
 	
+	private static final String ERRO_REQUISICAO = "ERRO_REQUISICAO";
+
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<String> businessExceptionHandler(BusinessException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -22,6 +24,6 @@ public class ExceptionHandlerController {
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> exceptionHander(Exception e) {
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ERRO_REQUISICAO);
 	}
 }
