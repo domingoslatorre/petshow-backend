@@ -1,10 +1,23 @@
 package hyve.petshow.unit.service;
 
-import hyve.petshow.domain.Agendamento;
-import hyve.petshow.exceptions.BusinessException;
-import hyve.petshow.exceptions.NotFoundException;
-import hyve.petshow.repository.AgendamentoRepository;
-import hyve.petshow.service.implementation.AgendamentoServiceImpl;
+import static hyve.petshow.mock.AgendamentoMock.criaAgendamento;
+import static hyve.petshow.mock.StatusAgendamentoMock.criaStatusAgendamento;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.MockitoAnnotations.openMocks;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,18 +27,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static hyve.petshow.mock.AgendamentoMock.criaAgendamento;
-import static hyve.petshow.mock.StatusAgendamentoMock.criaStatusAgendamento;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.MockitoAnnotations.openMocks;
+import hyve.petshow.domain.Agendamento;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.repository.AgendamentoRepository;
+import hyve.petshow.service.implementation.AgendamentoServiceImpl;
 
 public class AgendamentoServiceTest {
     @Mock
@@ -143,5 +149,32 @@ public class AgendamentoServiceTest {
         var actual = service.atualizarStatusAgendamento(1L, 1L, request);
 
         assertNotEquals(agendamento, actual);
+    }
+    
+    @Test
+    public void deve_retornar_lista_de_horarios() {
+    	var agendamentos = new ArrayList<Agendamento>() {
+			private static final long serialVersionUID = 1L;
+
+		{
+    		var agendamento1 = new Agendamento();
+    		var agendamento2 = new Agendamento();
+    		agendamento1.setData(LocalDateTime.of(2021, 01, 01, 10, 0));
+    		agendamento2.setData(LocalDateTime.of(2021, 01, 01, 11, 0));
+    		add(agendamento1);
+    		add(agendamento2);
+    	}};
+    	
+    	var esperado = new ArrayList<String>() {
+			private static final long serialVersionUID = 1L;
+
+		{
+    		add("10:00");
+    		add("11:00");
+    	}};
+    	
+    	doReturn(agendamentos).when(repository).findAllByPrestadorAndDate(anyLong(), any());
+    	var retorno = service.buscarHorariosAgendamento(1l, LocalDate.of(2021, 01, 01));
+    	assertEquals(esperado, retorno);
     }
 }
