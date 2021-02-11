@@ -29,6 +29,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -161,5 +163,21 @@ public class AgendamentoControllerTest {
         var expected = ResponseEntity.ok(avaliacaoRepresentation);
 
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void deve_retornar_lista_de_horarios() {
+    	var esperado = new ArrayList<String>() {
+			private static final long serialVersionUID = 1L;
+
+		{
+    		add("10:00");
+    		add("11:00");
+    	}};
+    	var expected = ResponseEntity.ok(esperado);
+    	
+    	doReturn(esperado).when(agendamentoFacade).buscaHorariosAgendamento(anyLong(), any());
+    	
+    	assertEquals(expected, agendamentoController.buscarHorariosAgendamento(1l, LocalDate.of(2021,01, 01)));
     }
 }

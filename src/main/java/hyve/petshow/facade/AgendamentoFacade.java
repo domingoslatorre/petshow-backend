@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -114,5 +115,9 @@ public class AgendamentoFacade {
         }
 
         return adicionais;
+    }
+    
+    public List<String> buscaHorariosAgendamento(Long prestadorId, LocalDate dataAgendamento) {
+    	return agendamentoService.buscarHorariosAgendamento(prestadorId, dataAgendamento);
     }
 }
