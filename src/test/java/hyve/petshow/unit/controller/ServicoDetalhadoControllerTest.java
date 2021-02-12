@@ -5,6 +5,7 @@ import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.*;
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.facade.ServicoDetalhadoFacade;
@@ -104,7 +105,7 @@ public class ServicoDetalhadoControllerTest {
 	}
 
 	@Test
-	public void deve_adicionar_e_retornar_servico_detalhado() {
+	public void deve_adicionar_e_retornar_servico_detalhado() throws BusinessException {
 		var expected = ResponseEntity.status(HttpStatus.CREATED).body(servicoDetalhadoRepresentation);
 
 		var actual = controller.adicionarServicoDetalhado(1L, servicoDetalhadoRepresentation);

@@ -3,6 +3,7 @@ package hyve.petshow.controller;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.*;
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.facade.ServicoDetalhadoFacade;
 import hyve.petshow.service.port.ServicoDetalhadoService;
@@ -88,7 +89,7 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Id do prestador.")
 			@PathVariable Long idPrestador,
 			@Parameter(description = "Serviço que será inserido.")
-			@RequestBody ServicoDetalhadoRepresentation request) {
+			@RequestBody ServicoDetalhadoRepresentation request) throws BusinessException {
 		var servico = converter.toDomain(request);
 		servico.setPrestadorId(idPrestador);
 		servico = service.adicionarServicoDetalhado(servico);

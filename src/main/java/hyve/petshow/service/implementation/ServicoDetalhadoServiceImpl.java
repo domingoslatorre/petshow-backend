@@ -27,12 +27,22 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	private static final String SERVICO_DETALHADO_NAO_ENCONTRADO = "SERVICO_DETALHADO_NAO_ENCONTRADO";//"Serviço detalhado não encontrado";
 	private static final String NENHUM_SERVICO_DETALHADO_ENCONTRADO = "NENHUM_SERVICO_DETALHADO_ENCONTRADO";//"Nenhum serviço detalhado encontrado";
 	private static final String USUARIO_NAO_PROPRIETARIO_SERVICO = "USUARIO_NAO_PROPRIETARIO_SERVICO";//"Este serviço não pertence a este usuário";
+	private static final String SERVICO_DESTE_TIPO_JA_ADICIONADO = "SERVICO_DESTE_TIPO_JA_ADICIONADO"; //"Já existe um serviço deste tipo cadastrado para este prestador.";
 
 	@Autowired
 	private ServicoDetalhadoRepository repository;
 	
 	@Override
-	public ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) {
+	public ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) throws BusinessException {
+		var servicosPrestador = repository.findByPrestadorId(servicoDetalhado.getPrestadorId());
+
+		if(servicosPrestador.stream()
+				.filter(servicoPrestador ->
+						servicoPrestador.getTipo().equals(servicoDetalhado.getTipo()))
+				.findAny().isPresent()) {
+			throw new BusinessException(SERVICO_DESTE_TIPO_JA_ADICIONADO);
+		}
+
 		servicoDetalhado.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
 		servicoDetalhado.setAdicionais(Optional.ofNullable(servicoDetalhado.getAdicionais())
 		.map(lista -> {

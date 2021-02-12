@@ -61,7 +61,7 @@ public class ServicoDetalhadoServiceTest {
 	}
     
     @Test
-	public void deve_inserir_servico_detalhado() {
+	public void deve_inserir_servico_detalhado() throws BusinessException {
 		var actual = service.adicionarServicoDetalhado(servicoDetalhado);
 		
 		assertAll(() -> assertTrue(repository.findAll().contains(actual)),
@@ -172,7 +172,7 @@ public class ServicoDetalhadoServiceTest {
 	}
 
 	@Test
-	public void deve_salvar_com_lista_vazia_de_adicionais_ao_nenhum_ser_informado_ao_adicionar_servico_detalhado(){
+	public void deve_salvar_com_lista_vazia_de_adicionais_ao_nenhum_ser_informado_ao_adicionar_servico_detalhado() throws BusinessException {
 		var servicoDetalhadoRequest = criaServicoDetalhado();
 
 		servicoDetalhadoRequest.setAdicionais(Collections.emptyList());

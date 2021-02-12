@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 public interface ServicoDetalhadoService {
-	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado);
+	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) throws BusinessException;
 
 	Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Pageable pageable, ServicoDetalhadoFilter filtragem) throws NotFoundException;
 	
