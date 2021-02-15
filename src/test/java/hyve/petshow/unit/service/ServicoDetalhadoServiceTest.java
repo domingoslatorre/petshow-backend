@@ -77,7 +77,7 @@ public class ServicoDetalhadoServiceTest {
 
 		doReturn(servicoDetalhadoRequest).when(repository).save(servicoDetalhadoRequest);
 
-		var actual = service.atualizarServicoDetalhado(1L, 1L, servicoDetalhadoRequest);
+		var actual = service.adicionarTipoAnimalAceito(1L, 1L, servicoDetalhadoRequest);
 
 		assertEquals(actual.getTipo().getNome(), servicoDetalhado.getTipo().getNome());
 	}
@@ -139,7 +139,7 @@ public class ServicoDetalhadoServiceTest {
 	public void deve_retornar_excecao_por_donos_diferentes_em_atualizacao() {
 		var servicoRequest = criaServicoDetalhado();
 
-		assertThrows(BusinessException.class, () -> service.atualizarServicoDetalhado(1L, 2L, servicoRequest));
+		assertThrows(BusinessException.class, () -> service.adicionarTipoAnimalAceito(1L, 2L, servicoRequest));
 	}
 	
 	@Test

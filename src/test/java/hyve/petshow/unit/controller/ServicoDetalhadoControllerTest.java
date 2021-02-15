@@ -74,7 +74,7 @@ public class ServicoDetalhadoControllerTest {
 		doReturn(servicoDetalhado).when(service).adicionarServicoDetalhado(any(ServicoDetalhado.class));
 		doReturn(mensagemRepresentation).when(service).removerServicoDetalhado(anyLong(), anyLong());
 		doReturn(servicoDetalhado).when(service).buscarPorPrestadorIdEServicoId(anyLong(), anyLong());
-		doReturn(servicoDetalhado).when(service).atualizarServicoDetalhado(anyLong(), anyLong(),
+		doReturn(servicoDetalhado).when(service).adicionarTipoAnimalAceito(anyLong(), anyLong(),
 				any(ServicoDetalhado.class));
 		doReturn(servicoDetalhadoPage).when(service).buscarServicosDetalhadosPorTipoServico(any(Pageable.class),
 				any(ServicoDetalhadoFilter.class));
@@ -135,7 +135,7 @@ public class ServicoDetalhadoControllerTest {
 	public void deve_atualizar_e_retornar_servico_detalhado() throws Exception {
 		var expected = ResponseEntity.ok(servicoDetalhadoRepresentation);
 
-		var actual = controller.atualizarServicoDetalhado(1L, 1L, servicoDetalhadoRepresentation);
+		var actual = controller.adicionarTipoAnimalAceito(1L, 1L, servicoDetalhadoRepresentation);
 
 		assertEquals(expected, actual);
 	}
