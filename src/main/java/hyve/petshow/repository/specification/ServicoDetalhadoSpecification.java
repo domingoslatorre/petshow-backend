@@ -20,22 +20,20 @@ public class ServicoDetalhadoSpecification {
 	public static Specification<ServicoDetalhado> geraSpecification(ServicoDetalhadoFilter filtragem) {
         return (Specification<ServicoDetalhado>) (root, query, builder) -> {
             var predicate = builder.and();
-            var criteriaQueryPrestador = builder.createQuery(Prestador.class);
+
+            var subQueryFiltrarPreco = query.subquery(BigDecimal.class);
+            var subQueryTiposAnimaisAceitos = subQueryFiltrarPreco.from(ServicoDetalhadoTipoAnimalEstimacao.class);
+            var subQueryPrestador = query.subquery(Prestador.class);
+
             var servico = root.join("tipo");
             var adicionais = root.join("adicionais", JoinType.LEFT);
             var tiposAnimaisAceitos = root.join("tiposAnimaisAceitos", JoinType.LEFT);
-            var prestador = criteriaQueryPrestador.from(Prestador.class);
-            
-            var subQueryFiltrarPreco = query.subquery(BigDecimal.class);
-            var subQueryTiposAnimaisAceitos = subQueryFiltrarPreco.from(ServicoDetalhadoTipoAnimalEstimacao.class);
-            var queryPrestador = criteriaQueryPrestador.select(prestador)
-            					.where(builder.equal(prestador.get("id"), root.get("prestadorId")));
-            
-            
+            var prestador = subQueryPrestador.from(Prestador.class);
+
             predicate = builder.and(predicate, builder.equal(servico.get("id"), filtragem.getTipoServicoId()));
             predicate = adicionaFiltroAdicionais(predicate, builder, filtragem, adicionais);
             predicate = adicionaFiltroAvaliacao(filtragem, root, builder, predicate);
-            predicate = adicionaFiltroGeoloc(filtragem, root, builder, predicate, queryPrestador, prestador);
+            predicate = adicionaFiltroGeoloc(filtragem, root, builder, predicate, subQueryPrestador, prestador);
             predicate = adicionaFiltroPrecoMinimo(filtragem, root, builder, predicate, subQueryFiltrarPreco, subQueryTiposAnimaisAceitos);
             predicate = adicionaFiltroPrecoMaximo(filtragem, root, builder, predicate, subQueryFiltrarPreco, subQueryTiposAnimaisAceitos);
 
@@ -110,19 +108,28 @@ public class ServicoDetalhadoSpecification {
         return predicate;
     }
     
-    private static Predicate adicionaFiltroGeoloc(ServicoDetalhadoFilter filtragem, Root<ServicoDetalhado> root, CriteriaBuilder builder,Predicate predicate, CriteriaQuery<Prestador> queryPrestador, Root<Prestador> prestador) {
+    private static Predicate adicionaFiltroGeoloc(ServicoDetalhadoFilter filtragem, Root<ServicoDetalhado> root,
+                                                  CriteriaBuilder builder,  Predicate predicate,
+                                                  Subquery<Prestador> queryPrestador, Root<Prestador> prestador) {
     	if(isNotNull(filtragem.getPosicaoAtual())) {
     		var geolocPositiva = geraGeolocalizacaoPositiva(filtragem.getPosicaoAtual(), filtragem.getMetrosGeoloc());
     		var geolocNegativa = geraGeolocalizacaoNegativa(filtragem.getPosicaoAtual(), filtragem.getMetrosGeoloc());
     		
-    		predicate = builder.and(predicate, 
-    				builder.equal(queryPrestador.select(prestador.get("id"))
-    						.where(builder.and(
-    								builder.between(prestador.get("geolocalizacao.geolocLongitude"), geolocPositiva.getGeolocLongitude(), geolocNegativa.getGeolocLongitude()),
-    								builder.between(prestador.get("geolocalizacao.geolocLatitude"), geolocPositiva.getGeolocLatitude(), geolocNegativa.getGeolocLatitude())
-    								))
-    						, root.get("prestadorId")));
+    		predicate = builder.and(predicate, builder.equal(
+                    queryPrestador
+                            .select(prestador.get("id"))
+                            .where(builder.and(
+                                    builder.between(
+                                            prestador.get("geolocalizacao.geolocLongitude"),
+                                            geolocPositiva.getGeolocLongitude(),
+                                            geolocNegativa.getGeolocLongitude())),
+                                    builder.between(
+                                            prestador.get("geolocalizacao.geolocLatitude"),
+                                            geolocPositiva.getGeolocLatitude(),
+                                            geolocNegativa.getGeolocLatitude())),
+                    root.get("prestadorId")));
     	}
+
     	return predicate;
     }
     
