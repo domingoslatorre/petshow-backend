@@ -1,20 +1,27 @@
 package hyve.petshow.service.implementation;
 
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
+import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import hyve.petshow.domain.Agendamento;
 import hyve.petshow.domain.StatusAgendamento;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.AgendamentoRepository;
 import hyve.petshow.service.port.AgendamentoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-
-import static hyve.petshow.util.AuditoriaUtils.*;
-import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 @Service
 public class AgendamentoServiceImpl implements AgendamentoService {
@@ -93,4 +100,16 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
         return repository.save(agendamento);
     }
+
+	@Override
+	public List<String> buscarHorariosAgendamento(Long prestadorId, LocalDate dataAgendamento) {
+		var agendamentos = repository.findAllByPrestadorAndDate(prestadorId, dataAgendamento);
+		return agendamentos.stream().map(el -> {
+			var data = el.getData();
+			data.toLocalDate();
+			return data.format(DateTimeFormatter.ofPattern("HH:mm"));
+		}).collect(Collectors.toList());
+	}
+    
+    
 }
