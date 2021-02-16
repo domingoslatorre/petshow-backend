@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Info;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +47,12 @@ public class PrestadorController {
 		var representation = converter.toRepresentation(prestador);
 
 		return ResponseEntity.status(HttpStatus.OK).body(representation);
+	}
+	
+	@Operation(summary = "Busca prestadores com base em geolocalização")
+	@GetMapping("/geolocalizacao")
+	public ResponseEntity<List<PrestadorRepresentation>> buscaPorGeolocalizacao() {
+		return null;
+		
 	}
 }

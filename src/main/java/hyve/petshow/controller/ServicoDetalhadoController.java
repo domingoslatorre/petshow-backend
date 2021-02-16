@@ -66,6 +66,13 @@ public class ServicoDetalhadoController {
 
 		return response;
 	}
+	
+	@Operation(summary = "Busca serviços detalhados por geolocalizacao")
+	@PostMapping("/servico-detalhado/geoloc")
+	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscaGeolocalizacao(@Parameter(description = "Informações relacionadas a filtragem")
+	@RequestBody ServicoDetalhadoFilter filtragem) {
+		return null;
+	}
 
 	@Operation(summary = "Busca avaliações por serviço detalhado.")
 	@GetMapping("/servico-detalhado/{id}/avaliacoes")

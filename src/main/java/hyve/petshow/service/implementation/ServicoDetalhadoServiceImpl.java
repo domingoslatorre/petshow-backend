@@ -58,6 +58,13 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
 		return servicosDetalhados;
 	}
+	
+	@Override
+	public List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(ServicoDetalhadoFilter filtragem) {
+		var spec = geraSpecification(filtragem);
+		var servicosDetalhados = repository.findAll(spec);
+		return servicosDetalhados;
+	}
 
 	// TODO: Ajustar metodo de atualizar para realmente atualizar | Ajustar teste
 	@Override
