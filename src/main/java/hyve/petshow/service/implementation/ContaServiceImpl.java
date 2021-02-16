@@ -2,6 +2,7 @@ package hyve.petshow.service.implementation;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Conta;
+import hyve.petshow.domain.embeddables.Endereco;
 import hyve.petshow.domain.embeddables.Geolocalizacao;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.GenericContaRepository;
@@ -51,16 +52,16 @@ public class ContaServiceImpl implements GenericContaService {
 
 		conta.setTelefone(request.getTelefone());
 		conta.setEndereco(request.getEndereco());
-		conta.setGeolocalizacao(geraGeolocalizacao(conta.getEndereco().getCep()));
+		conta.setGeolocalizacao(geraGeolocalizacao(conta.getEndereco()));
 		conta.setAuditoria(atualizaAuditoria(conta.getAuditoria(), ATIVO));
 
 		return repository.save(conta);
 	}
 
-	private Geolocalizacao geraGeolocalizacao(String cep) {
+	private Geolocalizacao geraGeolocalizacao(Endereco endereco) {
 		var geolocalizacao = new Geolocalizacao();
     	try {
-    		var url = GeoLocUtils.geraUrl(cep);
+    		var url = GeoLocUtils.geraUrl(endereco);
         	var response = getRequest(url);
         	var geoloc = GeoLocUtils.mapeiaJson(response);
         	geolocalizacao.setGeolocLatitude(geoloc.getLat());

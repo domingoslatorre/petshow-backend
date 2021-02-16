@@ -46,6 +46,20 @@ public class ServicoDetalhadoFacade {
 
         return servicosDetalhados;
     }
+    
+	public List<ServicoDetalhadoRepresentation> buscarServicosDetalhadosPorTipoServico(ServicoDetalhadoFilter filtragem)
+			throws Exception {
+		var servicos = servicoDetalhadoService.buscarServicosDetalhadosPorTipoServico(filtragem);
+		var representation = servicoDetalhadoConverter.toRepresentationList(servicos);
+
+		for (var servicoRepresentation : representation) {
+			var prestador = prestadorService.buscarPorId(servicoRepresentation.getPrestadorId());
+			var prestadorRepresentation = prestadorConverter.toRepresentation(prestador);
+			servicoRepresentation.setPrestador(prestadorRepresentation);
+		}
+
+		return representation;
+	}
 
     public ServicoDetalhadoRepresentation buscarPorPrestadorIdEServicoId(Long prestadorId, Long servicoId) throws Exception {
         var servico = servicoDetalhadoService.buscarPorPrestadorIdEServicoId(prestadorId, servicoId);

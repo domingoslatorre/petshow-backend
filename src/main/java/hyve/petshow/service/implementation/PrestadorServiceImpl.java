@@ -2,6 +2,7 @@ package hyve.petshow.service.implementation;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.embeddables.Endereco;
 import hyve.petshow.domain.embeddables.Geolocalizacao;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.PrestadorRepository;
@@ -37,16 +38,16 @@ public class PrestadorServiceImpl implements PrestadorService {
 
         prestador.setTelefone(request.getTelefone());
         prestador.setEndereco(request.getEndereco());
-        prestador.setGeolocalizacao(geraGeolocalizacao(prestador.getEndereco().getCep()));
+        prestador.setGeolocalizacao(geraGeolocalizacao(prestador.getEndereco()));
         prestador.setAuditoria(atualizaAuditoria(prestador.getAuditoria(), ATIVO));
 
         return repository.save(prestador);
     }
 
-    private Geolocalizacao geraGeolocalizacao(String cep) {
+    private Geolocalizacao geraGeolocalizacao(Endereco endereco) {
 		var geolocalizacao = new Geolocalizacao();
     	try {
-    		var url = GeoLocUtils.geraUrl(cep);
+    		var url = GeoLocUtils.geraUrl(endereco);
         	var response = getRequest(url);
         	var geoloc = GeoLocUtils.mapeiaJson(response);
         	geolocalizacao.setGeolocLatitude(geoloc.getLat());

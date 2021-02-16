@@ -15,7 +15,8 @@ import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
-import hyve.petshow.util.GeoLocUtils;
+import static hyve.petshow.util.GeoLocUtils.geraUrl;
+import static hyve.petshow.util.GeoLocUtils.mapeiaJson;
 
 import static hyve.petshow.util.OkHttpUtils.getRequest;
 
@@ -88,9 +89,9 @@ public class AcessoServiceImpl implements AcessoService {
     private Geolocalizacao geraGeoloc(Endereco endereco) {
     	var geolocalizacao = new Geolocalizacao();
     	try {
-    		var url = GeoLocUtils.geraUrl(endereco.getCep());
+    		var url = geraUrl(endereco);
         	var response = getRequest(url);
-        	var geoloc = GeoLocUtils.mapeiaJson(response);
+        	var geoloc = mapeiaJson(response);
         	geolocalizacao.setGeolocLatitude(geoloc.getLat());
         	geolocalizacao.setGeolocLongitude(geoloc.getLon());
         	return geolocalizacao;

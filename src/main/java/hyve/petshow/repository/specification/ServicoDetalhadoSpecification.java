@@ -42,15 +42,6 @@ public class ServicoDetalhadoSpecification {
             return predicate;
         };
     }
-	
-	
-
-    private static Predicate geraPredicateGeoloc(Root<Prestador> prestador, ServicoDetalhadoFilter filtragem) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 
 	private static void adicionaOrdenacao(ServicoDetalhadoFilter filtragem, Root<ServicoDetalhado> root, CriteriaQuery<?> query, CriteriaBuilder builder, Join<Object, Object> tiposAnimaisAceitos) {
         if(isNotNull(filtragem.getOrdenacao())){
@@ -120,11 +111,11 @@ public class ServicoDetalhadoSpecification {
                             .select(prestador.get("id"))
                             .where(builder.and(
                                     builder.between(
-                                            prestador.get("geolocalizacao.geolocLongitude"),
+                                            prestador.get("geolocalizacao").get("geolocLongitude"),
                                             geolocPositiva.getGeolocLongitude(),
                                             geolocNegativa.getGeolocLongitude())),
                                     builder.between(
-                                            prestador.get("geolocalizacao.geolocLatitude"),
+                                            prestador.get("geolocalizacao").get("geolocLatitude"),
                                             geolocPositiva.getGeolocLatitude(),
                                             geolocNegativa.getGeolocLatitude())),
                     root.get("prestadorId")));

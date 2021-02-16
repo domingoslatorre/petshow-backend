@@ -6,18 +6,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import hyve.petshow.domain.embeddables.Endereco;
 import lombok.Data;
 
 @Data
 public class GeoLocUtils {
-	private static final String GEOLOC_API_URL_BASE = "https://nominatim.openstreetmap.org/search?postalcode=";
+	private static final String GEOLOC_API_URL_BASE = "https://nominatim.openstreetmap.org/search?q=";
 
 	private String lat;
 	private String lon;
 
-	public static String geraUrl(String cep) {
-		var cepTratado = cep.substring(0, 5) + "-" + cep.substring(5);
-		return GEOLOC_API_URL_BASE + cepTratado + "&format=json";
+	public static String geraUrl(Endereco endereco) {
+//		var cepTratado = cep.substring(0, 5) + "-" + cep.substring(5);
+		var local = endereco.getLogradouro() + " " + endereco.getNumero() + " ,Brazil";
+		return GEOLOC_API_URL_BASE + local + "&format=json";
 	}
 
 	public static GeoLocUtils mapeiaJson(String json) {
