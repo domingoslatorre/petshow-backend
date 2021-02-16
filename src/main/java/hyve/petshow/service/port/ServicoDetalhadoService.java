@@ -24,6 +24,8 @@ public interface ServicoDetalhadoService {
 
     ServicoDetalhado atualizarTipoAnimalAceito(Long id, Long prestadorId, Integer idTipoAnimal, ServicoDetalhadoTipoAnimalEstimacao servicoDetalhadoTipoAnimalEstimacao) throws BusinessException, NotFoundException;
 
+    void atualizarMediaAvaliacaoServicoDetalhado(Long id, Float mediaAvaliacao) throws NotFoundException;
+
     MensagemRepresentation removerServicoDetalhado(Long id, Long prestadorId) throws BusinessException, NotFoundException;
     
     ServicoDetalhado buscarPorId(Long id) throws NotFoundException;

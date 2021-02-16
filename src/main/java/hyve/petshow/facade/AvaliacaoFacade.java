@@ -3,6 +3,8 @@ package hyve.petshow.facade;
 import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
 import hyve.petshow.domain.Avaliacao;
+import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.service.port.AgendamentoService;
 import hyve.petshow.service.port.AvaliacaoService;
 import hyve.petshow.service.port.ClienteService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
@@ -20,6 +22,8 @@ public class AvaliacaoFacade {
 	@Autowired
 	private AvaliacaoService avaliacaoService;
 	@Autowired
+	private AgendamentoService agendamentoService;
+	@Autowired
 	private AvaliacaoConverter converter;
 
 	public Avaliacao adicionarAvaliacao(AvaliacaoRepresentation request, Long agendamentoId)
@@ -29,12 +33,17 @@ public class AvaliacaoFacade {
 
 		var cliente = clienteService.buscarPorId(clienteId);
 		var avaliacao = converter.toDomain(request);
+		var agendamento = agendamentoService.buscarPorId(agendamentoId, clienteId);
 
 		avaliacao.setCliente(cliente);
 		avaliacao.setServicoAvaliadoId(servicoAvaliadoId);
-		avaliacao.setAgendamentoAvaliadoId(agendamentoId);
+		avaliacao.setAgendamentoAvaliado(agendamento);
 
-		return avaliacaoService.adicionarAvaliacao(avaliacao);
+		var response = avaliacaoService.adicionarAvaliacao(avaliacao);
+
+		this.atualizaMediaServico(servicoAvaliadoId);
+
+		return response;
 	}
 
 	public Page<AvaliacaoRepresentation> buscarAvaliacaoPorServico(Long idServicoPrestado, Pageable pageable)
@@ -45,4 +54,9 @@ public class AvaliacaoFacade {
 		return converter.toRepresentationPage(avaliacoes);
 	}
 
+	private void atualizaMediaServico(Long servicoId) throws NotFoundException {
+		var mediaAvaliacaoServico = avaliacaoService.buscarMediaAvaliacaoPorServicoDetalhadoId(servicoId);
+
+		servicoDetalhadoService.atualizarMediaAvaliacaoServicoDetalhado(servicoId, mediaAvaliacaoServico);
+	}
 }

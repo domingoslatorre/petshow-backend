@@ -133,6 +133,15 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	}
 
 	@Override
+	public void atualizarMediaAvaliacaoServicoDetalhado(Long id, Float mediaAvaliacao) throws NotFoundException {
+		var servicoDetalhado = buscarPorId(id);
+
+		servicoDetalhado.setMediaAvaliacao(mediaAvaliacao);
+
+		repository.save(servicoDetalhado);
+	}
+
+	@Override
 	public MensagemRepresentation removerServicoDetalhado(Long id, Long prestadorId)
 			throws BusinessException, NotFoundException{
 		var servicoDetalhado = buscarPorId(id);

@@ -35,13 +35,13 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
     @Override
     public AnimalEstimacao buscarAnimalEstimacaoPorId(Long id) throws NotFoundException {
-        return animalEstimacaoRepository.findById(id).orElseThrow(
+        return animalEstimacaoRepository.findByIdAndAuditoriaFlagAtivo(id, ATIVO).orElseThrow(
                 () -> new NotFoundException(ANIMAL_ESTIMACAO_NAO_ENCONTRADO));
     }
 
     @Override
     public List<AnimalEstimacao> buscarAnimaisEstimacaoPorIds(Long donoId, List<Long> animaisEstimacaoIds) throws NotFoundException {
-        var animaisEstimacao = animalEstimacaoRepository.findByDonoIdAndIdIn(donoId, animaisEstimacaoIds);
+        var animaisEstimacao = animalEstimacaoRepository.findByDonoIdAndIdInAndAuditoriaFlagAtivo(donoId, animaisEstimacaoIds, ATIVO);
 
         if(animaisEstimacao.isEmpty()) {
             throw new NotFoundException(NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO);
@@ -52,11 +52,7 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
 
     @Override
     public Page<AnimalEstimacao> buscarAnimaisEstimacaoPorDono(Long id, Pageable pageable) throws NotFoundException {
-        var animaisEstimacao = animalEstimacaoRepository.findByDonoId(id, pageable);
-
-        if(animaisEstimacao.isEmpty()) {
-            throw new NotFoundException(NENHUM_ANIMAL_ESTIMACAO_ENCONTRADO);
-        }
+        var animaisEstimacao = animalEstimacaoRepository.findByDonoIdAndAuditoriaFlagAtivo(id, ATIVO, pageable);
 
         return animaisEstimacao;
     }
@@ -87,10 +83,12 @@ public class AnimalEstimacaoServiceImpl implements AnimalEstimacaoService {
         if(!verificarIdentidade(animalEstimacao.getDonoId(), donoId)) {
         	throw new BusinessException(USUARIO_NAO_PROPRIETARIO_ANIMAL);
         }
-        
-        animalEstimacaoRepository.deleteById(id);
 
-        var sucesso = !animalEstimacaoRepository.existsById(id);
+        animalEstimacao.setAuditoria(atualizaAuditoria(animalEstimacao.getAuditoria(), INATIVO));
+
+        var animalEstimacaoResponse = animalEstimacaoRepository.save(animalEstimacao);
+
+        var sucesso = ! animalEstimacaoResponse.getAuditoria().isAtivo();
         var response = new MensagemRepresentation(id);
 
         response.setSucesso(sucesso);

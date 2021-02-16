@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static hyve.petshow.util.AuditoriaUtils.*;
 
@@ -23,6 +24,12 @@ public class ClienteServiceImpl implements ClienteService {
 	public Cliente buscarPorId(Long id) throws NotFoundException {
 		var cliente = repository.findById(id)
 				.orElseThrow(() -> new NotFoundException(CONTA_NAO_ENCONTRADA));
+
+		cliente.setAnimaisEstimacao(
+				cliente.getAnimaisEstimacao().stream()
+						.filter(animalEstimacao -> animalEstimacao.getAuditoria().isAtivo())
+						.collect(Collectors.toList()));
+
 		return cliente;
 	}
 
