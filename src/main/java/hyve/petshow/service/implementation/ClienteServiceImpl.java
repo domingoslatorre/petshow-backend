@@ -2,9 +2,13 @@ package hyve.petshow.service.implementation;
 
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.Cliente;
+import hyve.petshow.domain.embeddables.Endereco;
+import hyve.petshow.domain.embeddables.Geolocalizacao;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.service.port.ClienteService;
+import hyve.petshow.util.GeoLocUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static hyve.petshow.util.AuditoriaUtils.*;
+import static hyve.petshow.util.OkHttpUtils.getRequest;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -39,9 +44,24 @@ public class ClienteServiceImpl implements ClienteService {
 
 		conta.setTelefone(request.getTelefone());
 		conta.setEndereco(request.getEndereco());
+		conta.setGeolocalizacao(geraGeolocalizacao(conta.getEndereco()));
 		conta.setAuditoria(atualizaAuditoria(conta.getAuditoria(), ATIVO));
 
 		return repository.save(conta);
+	}
+	
+	private Geolocalizacao geraGeolocalizacao(Endereco endereco) {
+		var geolocalizacao = new Geolocalizacao();
+    	try {
+    		var url = GeoLocUtils.geraUrl(endereco);
+        	var response = getRequest(url);
+        	var geoloc = GeoLocUtils.mapeiaJson(response);
+        	geolocalizacao.setGeolocLatitude(geoloc.getLat());
+        	geolocalizacao.setGeolocLongitude(geoloc.getLon());
+        	return geolocalizacao;
+    	} catch (Exception e) {
+    		return geolocalizacao;
+    	}    	
 	}
 
 	@Override

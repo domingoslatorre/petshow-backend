@@ -19,8 +19,10 @@ public interface ServicoDetalhadoService {
 	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) throws BusinessException;
 
 	Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Pageable pageable, ServicoDetalhadoFilter filtragem) throws NotFoundException;
-	
-	ServicoDetalhado adicionarTipoAnimalAceito(Long id, Long prestadorId, ServicoDetalhadoTipoAnimalEstimacao servicoDetalhadoTipoAnimalEstimacao) throws BusinessException, NotFoundException;
+
+    List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(ServicoDetalhadoFilter filtragem);
+
+    ServicoDetalhado adicionarTipoAnimalAceito(Long id, Long prestadorId, ServicoDetalhadoTipoAnimalEstimacao servicoDetalhadoTipoAnimalEstimacao) throws BusinessException, NotFoundException;
 
     ServicoDetalhado atualizarTipoAnimalAceito(Long id, Long prestadorId, Integer idTipoAnimal, ServicoDetalhadoTipoAnimalEstimacao servicoDetalhadoTipoAnimalEstimacao) throws BusinessException, NotFoundException;
 

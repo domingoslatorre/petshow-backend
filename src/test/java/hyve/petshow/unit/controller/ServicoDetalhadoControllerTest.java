@@ -2,9 +2,11 @@ package hyve.petshow.unit.controller;
 
 import hyve.petshow.controller.ServicoDetalhadoController;
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.converter.ServicoDetalhadoTipoAnimalEstimacaoConverter;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.*;
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.domain.ServicoDetalhadoTipoAnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.facade.AvaliacaoFacade;
@@ -46,11 +48,16 @@ public class ServicoDetalhadoControllerTest {
 	private AvaliacaoFacade avaliacaoFacade;
 	@Mock
 	private ServicoDetalhadoFacade servicoDetalhadoFacade;
+	@Mock
+	private ServicoDetalhadoTipoAnimalEstimacaoConverter servicoDetalhadoTipoAnimalEstimacaoConverter;
 	@InjectMocks
 	private ServicoDetalhadoController controller;
 
 	private ServicoDetalhado servicoDetalhado = criaServicoDetalhado();
 	private ServicoDetalhadoRepresentation servicoDetalhadoRepresentation = criaServicoDetalhadoRepresentation();
+
+	private PrecoPorTipoRepresentation precoPorTipoRepresentation = criaPrecoPorTipoRepresentation();
+	private ServicoDetalhadoTipoAnimalEstimacao servicoDetalhadoTipoAnimalEstimacao = criaServicoDetalhadoTipoAnimalEstimacao();
 
 	private List<ServicoDetalhado> servicoDetalhadoList = criaServicoDetalhadoList();
 	private List<ServicoDetalhadoRepresentation> servicoDetalhadoRepresentationList = criaServicoDetalhadoRepresentationList();
@@ -75,7 +82,7 @@ public class ServicoDetalhadoControllerTest {
 		doReturn(mensagemRepresentation).when(service).removerServicoDetalhado(anyLong(), anyLong());
 		doReturn(servicoDetalhado).when(service).buscarPorPrestadorIdEServicoId(anyLong(), anyLong());
 		doReturn(servicoDetalhado).when(service).adicionarTipoAnimalAceito(anyLong(), anyLong(),
-				any(ServicoDetalhado.class));
+				any(ServicoDetalhadoTipoAnimalEstimacao.class));
 		doReturn(servicoDetalhadoPage).when(service).buscarServicosDetalhadosPorTipoServico(any(Pageable.class),
 				any(ServicoDetalhadoFilter.class));
 		doReturn(servicoDetalhado).when(converter).toDomain(any(ServicoDetalhadoRepresentation.class));
@@ -93,6 +100,12 @@ public class ServicoDetalhadoControllerTest {
 		doReturn(adicionalRepresentation).when(servicoDetalhadoFacade)
 				.atualizarAdicional(anyLong(), anyLong(), anyLong(), any(AdicionalRepresentation.class));
 		doReturn(mensagemRepresentation).when(servicoDetalhadoFacade).desativarAdicional(anyLong(), anyLong(), anyLong());
+		doReturn(servicoDetalhadoTipoAnimalEstimacao)
+				.when(servicoDetalhadoTipoAnimalEstimacaoConverter).toDomain(any(PrecoPorTipoRepresentation.class));
+		doReturn(precoPorTipoRepresentation).when(servicoDetalhadoTipoAnimalEstimacaoConverter)
+				.toRepresentation(any(ServicoDetalhadoTipoAnimalEstimacao.class));
+		doReturn(servicoDetalhadoRepresentation).when(servicoDetalhadoFacade).adicionarTipoAnimalAceito(anyLong(),
+				anyLong(), anyInt(), any(ServicoDetalhadoTipoAnimalEstimacao.class));
 	}
 
 	@Test
@@ -135,7 +148,7 @@ public class ServicoDetalhadoControllerTest {
 	public void deve_atualizar_e_retornar_servico_detalhado() throws Exception {
 		var expected = ResponseEntity.ok(servicoDetalhadoRepresentation);
 
-		var actual = controller.adicionarTipoAnimalAceito(1L, 1L, servicoDetalhadoRepresentation);
+		var actual = controller.adicionarTipoAnimalAceito(1L, 1L, 1, precoPorTipoRepresentation);
 
 		assertEquals(expected, actual);
 	}

@@ -4,6 +4,8 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+import hyve.petshow.domain.embeddables.Geolocalizacao;
+
 @Data
 public class ServicoDetalhadoFilter {
     private Integer tipoServicoId;
@@ -12,4 +14,6 @@ public class ServicoDetalhadoFilter {
     private Integer mediaAvaliacao;
     private BigDecimal menorPreco;
     private BigDecimal maiorPreco;
+    private Geolocalizacao posicaoAtual;
+    private Double metrosGeoloc = 100d;
 }

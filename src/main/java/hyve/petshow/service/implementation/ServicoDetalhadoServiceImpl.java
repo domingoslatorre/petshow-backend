@@ -74,6 +74,13 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
 		return servicosDetalhados;
 	}
+	
+	@Override
+	public List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(ServicoDetalhadoFilter filtragem) {
+		var spec = geraSpecification(filtragem);
+		var servicosDetalhados = repository.findAll(spec);
+		return servicosDetalhados;
+	}
 
 	@Override
 	public ServicoDetalhado adicionarTipoAnimalAceito(Long id, Long prestadorId, ServicoDetalhadoTipoAnimalEstimacao request)
