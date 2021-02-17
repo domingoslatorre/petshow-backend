@@ -24,20 +24,18 @@ import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
 public class AgendamentoMock {
     public static Agendamento criaAgendamento(){
         var agendamento = new Agendamento();
-        var animalEstimacaoAgendamento = new AnimalEstimacaoAgendamento(agendamento, criaAnimalEstimacao());
-        var adicionalAgendamento = new AdicionalAgendamento(agendamento, criaAdicional(1L));
 
         agendamento.setEndereco(new Endereco());
         agendamento.setData(LocalDateTime.now());
         agendamento.setPrecoFinal(BigDecimal.TEN);
         agendamento.setPrestador(criaPrestador());
         agendamento.setStatus(criaStatusAgendamento());
-        agendamento.setAnimaisAtendidos(Arrays.asList(animalEstimacaoAgendamento));
+        agendamento.setAnimaisAtendidos(Arrays.asList(new AnimalEstimacaoAgendamento()));
         agendamento.setServicoDetalhado(criaServicoDetalhado());
         agendamento.setAuditoria(geraAuditoriaInsercao(Optional.of(1L)));
         agendamento.setCliente(criaCliente());
         agendamento.setComentario("teste");
-        agendamento.setAdicionais(Arrays.asList(adicionalAgendamento));
+        agendamento.setAdicionais(Arrays.asList(new AdicionalAgendamento()));
         agendamento.setAvaliacao(criaAvaliacao());
         agendamento.setId(1L);
 

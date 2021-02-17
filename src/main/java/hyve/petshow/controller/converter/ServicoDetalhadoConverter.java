@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
-
 @Component
 public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, ServicoDetalhadoRepresentation>{
 	@Autowired
@@ -32,10 +30,11 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         representation.setMediaAvaliacao(domain.getMediaAvaliacao());
         
         var precosPorTipo = Optional.ofNullable(domain.getTiposAnimaisAceitos())
-        .map(tiposAceitos -> tiposAceitos.stream()
+            .map(tiposAceitos -> tiposAceitos.stream()
         		.map(tipoAceito -> PrecoPorTipoRepresentation.builder()
         				.preco(tipoAceito.getPreco())
         				.tipoAnimal(tipoAnimalEstimacaoConverter.toRepresentation(tipoAceito.getTipoAnimalEstimacao()))
+                        .ativo(tipoAceito.getAuditoria().isAtivo())
         				.build()).collect(Collectors.toList())).orElse(new ArrayList<>());
         
         representation.setPrecoPorTipo(precosPorTipo);

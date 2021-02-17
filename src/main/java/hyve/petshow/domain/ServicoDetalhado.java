@@ -24,6 +24,6 @@ public class ServicoDetalhado {
     private Servico tipo;
     @Column(name = "fk_conta")
     private Long prestadorId;
-    @OneToMany(mappedBy = "servicoDetalhado", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "servicoDetalhado", fetch = FetchType.LAZY)
     private List<ServicoDetalhadoTipoAnimalEstimacao> tiposAnimaisAceitos = new ArrayList<>();
 }

@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static hyve.petshow.mock.AnimalEstimacaoMock.criaAnimalEstimacao;
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
+import static hyve.petshow.util.AuditoriaUtils.INATIVO;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -48,9 +50,10 @@ public class AnimalEstimacaoServiceTest {
 
         doReturn(animalEstimacao).when(repository).save(animalEstimacao);
         doReturn(Optional.of(animalEstimacao)).when(repository).findById(1L);
+        doReturn(Optional.of(animalEstimacao)).when(repository).findByIdAndAuditoriaFlagAtivo(1L, ATIVO);
         doReturn(animaisEstimacao).when(repository).findAll();
-        doReturn(animalEstimacaoPage).when(repository).findByDonoId(1L, pageable);
-        doReturn(animaisEstimacao).when(repository).findByDonoIdAndIdIn(anyLong(), anyList());
+        doReturn(animalEstimacaoPage).when(repository).findByDonoIdAndAuditoriaFlagAtivo(1L, ATIVO, pageable);
+        doReturn(animaisEstimacao).when(repository).findByDonoIdAndIdInAndAuditoriaFlagAtivo(anyLong(), anyList(), anyString());
         doNothing().when(repository).delete(any(AnimalEstimacao.class));
     }
 
@@ -107,14 +110,7 @@ public class AnimalEstimacaoServiceTest {
     public void deve_retornar_excecao_de_nao_encontrado() {
     	assertThrows(NotFoundException.class, () -> service.buscarAnimalEstimacaoPorId(3L));
     }
-    
-    @Test
-    public void deve_retornar_excecao_por_lista_nao_encontrada() {
-        doReturn(Page.empty()).when(repository).findByDonoId(2L, pageable);
 
-        assertThrows(NotFoundException.class, () -> service.buscarAnimaisEstimacaoPorDono(2L, pageable));
-    }
-    
     @Test
     public void deve_retornar_excecao_por_donos_diferentes() {
     	var animalRequest = criaAnimalEstimacao();
@@ -133,9 +129,13 @@ public class AnimalEstimacaoServiceTest {
     
     @Test
     public void deve_retornar_mensagem_de_falha() throws BusinessException, NotFoundException {
-    	doReturn(TRUE).when(repository).existsById(1L);
+    	var animalEstimacao = criaAnimalEstimacao();
 
-    	var removerAnimalEstimacao = service.removerAnimalEstimacao(1L, animalEstimacao.getDonoId());
+    	animalEstimacao.getAuditoria().setFlagAtivo(ATIVO);
+
+        doReturn(animalEstimacao).when(repository).save(any(AnimalEstimacao.class));
+
+    	var removerAnimalEstimacao = service.removerAnimalEstimacao(1L, this.animalEstimacao.getDonoId());
 
     	assertEquals(MensagemRepresentation.MENSAGEM_FALHA, removerAnimalEstimacao.getMensagem());
     }
@@ -149,7 +149,7 @@ public class AnimalEstimacaoServiceTest {
 
     @Test
     public void deve_lancar_not_found_exception_ao_nao_encontrar_animais() throws NotFoundException {
-        doReturn(Collections.emptyList()).when(repository).findByDonoIdAndIdIn(1L, Arrays.asList(1L, 2L));
+        doReturn(Collections.emptyList()).when(repository).findByDonoIdAndIdInAndAuditoriaFlagAtivo(1L, Arrays.asList(1L, 2L), ATIVO);
 
         assertThrows(NotFoundException.class, () ->
                 service.buscarAnimaisEstimacaoPorIds(1L, Arrays.asList(1L, 2L)));

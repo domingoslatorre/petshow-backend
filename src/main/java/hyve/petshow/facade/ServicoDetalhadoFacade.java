@@ -7,9 +7,14 @@ import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.AdicionalRepresentation;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
+import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.domain.ServicoDetalhadoTipoAnimalEstimacao;
+import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.service.port.AdicionalService;
 import hyve.petshow.service.port.PrestadorService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
+import hyve.petshow.service.port.TipoAnimalEstimacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +36,8 @@ public class ServicoDetalhadoFacade {
     private AdicionalService adicionalService;
     @Autowired
     private AdicionalConverter adicionalConverter;
+    @Autowired
+    private TipoAnimalEstimacaoService tipoAnimalEstimacaoService;
 
     public Page<ServicoDetalhadoRepresentation> buscarServicosDetalhadosPorTipoServico(Pageable pageable,
                                                                                        ServicoDetalhadoFilter filtragem) throws Exception {
@@ -123,5 +130,17 @@ public class ServicoDetalhadoFacade {
         mensagem.setSucesso(response);
 
         return mensagem;
+    }
+
+    public ServicoDetalhadoRepresentation adicionarTipoAnimalAceito(Long id, Long prestadorId, Integer idTipoAnimal,
+                                                                    ServicoDetalhadoTipoAnimalEstimacao request) throws NotFoundException, BusinessException {
+        var tipoAnimalEstimacao = tipoAnimalEstimacaoService.buscarTipoAnimalEstimacaoPorId(idTipoAnimal);
+
+        request.setTipoAnimalEstimacao(tipoAnimalEstimacao);
+
+        var response = servicoDetalhadoService.adicionarTipoAnimalAceito(id, prestadorId, request);
+        var representation = servicoDetalhadoConverter.toRepresentation(response);
+
+        return representation;
     }
 }

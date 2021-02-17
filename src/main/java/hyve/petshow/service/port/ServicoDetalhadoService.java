@@ -3,6 +3,7 @@ package hyve.petshow.service.port;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.domain.ServicoDetalhadoTipoAnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -15,13 +16,17 @@ import java.util.List;
 
 @Service
 public interface ServicoDetalhadoService {
-	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado);
+	ServicoDetalhado adicionarServicoDetalhado(ServicoDetalhado servicoDetalhado) throws BusinessException;
 
 	Page<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(Pageable pageable, ServicoDetalhadoFilter filtragem) throws NotFoundException;
-	
-	List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(ServicoDetalhadoFilter filtragem);
-	
-	ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, ServicoDetalhado servicoDetalhadoRequest) throws BusinessException, NotFoundException;
+
+    List<ServicoDetalhado> buscarServicosDetalhadosPorTipoServico(ServicoDetalhadoFilter filtragem);
+
+    ServicoDetalhado adicionarTipoAnimalAceito(Long id, Long prestadorId, ServicoDetalhadoTipoAnimalEstimacao servicoDetalhadoTipoAnimalEstimacao) throws BusinessException, NotFoundException;
+
+    ServicoDetalhado atualizarTipoAnimalAceito(Long id, Long prestadorId, Integer idTipoAnimal, ServicoDetalhadoTipoAnimalEstimacao servicoDetalhadoTipoAnimalEstimacao) throws BusinessException, NotFoundException;
+
+    void atualizarMediaAvaliacaoServicoDetalhado(Long id, Float mediaAvaliacao) throws NotFoundException;
 
     MensagemRepresentation removerServicoDetalhado(Long id, Long prestadorId) throws BusinessException, NotFoundException;
     

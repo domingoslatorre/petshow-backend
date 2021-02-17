@@ -50,4 +50,9 @@ public class AvaliacaoServiceImpl implements AvaliacaoService {
 		return repository.findByAgendamentoAvaliadoId(id)
 				.orElseThrow(()-> new NotFoundException(AVALIACAO_NAO_ENCONTRADA));
 	}
+
+	@Override
+	public Float buscarMediaAvaliacaoPorServicoDetalhadoId(Long servicoDetalhadoId) {
+		return repository.findMediaAvaliacaoByServicoDetalhado(servicoDetalhadoId);
+	}
 }

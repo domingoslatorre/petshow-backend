@@ -25,7 +25,15 @@ public class TipoAnimalEstimacaoServiceImpl extends TipoService<TipoAnimalEstima
     	return buscarTodos();
     }
 
-	@Override
+    @Override
+    public TipoAnimalEstimacao buscarTipoAnimalEstimacaoPorId(Integer id) throws NotFoundException {
+        var tipoAnimalEstimacao = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(NENHUM_TIPO_ANIMAL_ENCONTRADO));
+
+        return tipoAnimalEstimacao;
+    }
+
+    @Override
 	public List<TipoAnimalEstimacao> buscarLista() {
 		return repository.findAll();
 	}

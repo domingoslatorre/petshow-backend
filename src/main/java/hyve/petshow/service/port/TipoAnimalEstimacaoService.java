@@ -9,4 +9,5 @@ import java.util.List;
 @Service
 public interface TipoAnimalEstimacaoService {
     List<TipoAnimalEstimacao> buscarTiposAnimalEstimacao() throws NotFoundException;
+    TipoAnimalEstimacao buscarTipoAnimalEstimacaoPorId(Integer tipoAnimalEstimacaoId) throws NotFoundException;
 }

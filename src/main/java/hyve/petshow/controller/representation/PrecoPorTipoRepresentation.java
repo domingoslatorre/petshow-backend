@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class PrecoPorTipoRepresentation {
     private TipoAnimalEstimacaoRepresentation tipoAnimal;
     private BigDecimal preco;
+    private Boolean ativo;
 }

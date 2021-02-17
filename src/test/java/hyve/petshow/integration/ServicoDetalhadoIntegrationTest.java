@@ -7,6 +7,7 @@ import hyve.petshow.controller.representation.ComparacaoWrapper;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 import hyve.petshow.domain.*;
 import hyve.petshow.domain.embeddables.CriteriosAvaliacao;
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.repository.*;
 import hyve.petshow.service.port.ServicoDetalhadoService;
 import org.junit.jupiter.api.*;
@@ -93,7 +94,7 @@ public class ServicoDetalhadoIntegrationTest {
 	}
 	
 	@Test
-	public void deve_retornar_lista_com_servicos() {
+	public void deve_retornar_lista_com_servicos() throws BusinessException {
 		service.adicionarServicoDetalhado(servico);
 		var uri = UriComponentsBuilder.fromHttpUrl(this.url)
 				.queryParam("pagina", 0)
@@ -144,7 +145,7 @@ public class ServicoDetalhadoIntegrationTest {
 	}
 	
 	@Test
-	public void deve_retornar_lista_vazia_de_avaliacoes() {
+	public void deve_retornar_lista_vazia_de_avaliacoes() throws BusinessException {
 		service.adicionarServicoDetalhado(servico);
 		var httpUrl = "http://localhost:"+this.port + "/servico-detalhado/"+servico.getId()+"/avaliacoes";
 		var uri = UriComponentsBuilder.fromHttpUrl(httpUrl)
@@ -201,7 +202,7 @@ public class ServicoDetalhadoIntegrationTest {
 	}
 	
 	@Test
-	public void deve_retornar_lista_de_avaliacoes() {
+	public void deve_retornar_lista_de_avaliacoes() throws BusinessException {
 		var servicoAdd = service.adicionarServicoDetalhado(servico);
 		var avaliacao = new Avaliacao();
 		avaliacao.setServicoAvaliadoId(servicoAdd.getId());
@@ -242,7 +243,7 @@ public class ServicoDetalhadoIntegrationTest {
 	}
 	
 	@Test
-	public void deve_retornar_lista_com_servicos_para_comparacao() {
+	public void deve_retornar_lista_com_servicos_para_comparacao() throws BusinessException {
 		service.adicionarServicoDetalhado(servico);
 		var uri = UriComponentsBuilder.fromHttpUrl("http://localhost:"+this.port+"/servico-detalhado")
 				.queryParam("ids", servico.getId())

@@ -13,7 +13,7 @@ import java.util.List;
 @DiscriminatorValue(value = "C") // Cliente
 @EqualsAndHashCode(callSuper = true)
 public class Cliente extends Conta {
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_conta")
 	private List<AnimalEstimacao> animaisEstimacao;
 

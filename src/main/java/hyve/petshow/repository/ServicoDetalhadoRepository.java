@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,6 +18,8 @@ public interface ServicoDetalhadoRepository extends JpaRepository<ServicoDetalha
 	Optional<ServicoDetalhado> findById(Long id);
 
 	Page<ServicoDetalhado> findByPrestadorId(Long prestadorId, Pageable pageable);
+
+	List<ServicoDetalhado> findByPrestadorId(Long prestadorId);
 	
 	Optional<ServicoDetalhado> findByIdAndPrestadorId(Long idServico, Long idPrestador);
 }
