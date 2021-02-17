@@ -1,8 +1,10 @@
 package hyve.petshow.controller;
 
 import hyve.petshow.controller.converter.ServicoDetalhadoConverter;
+import hyve.petshow.controller.converter.ServicoDetalhadoTipoAnimalEstimacaoConverter;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.*;
+import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.facade.AvaliacaoFacade;
 import hyve.petshow.facade.ServicoDetalhadoFacade;
 import hyve.petshow.service.port.ServicoDetalhadoService;
@@ -33,6 +35,8 @@ public class ServicoDetalhadoController {
 	private AvaliacaoFacade avaliacaoFacade;
 	@Autowired
 	private ServicoDetalhadoFacade servicoDetalhadoFacade;
+	@Autowired
+	private ServicoDetalhadoTipoAnimalEstimacaoConverter servicoDetalhadoTipoAnimalEstimacaoConverter;
 
 	@Operation(summary = "Busca todos os serviços detalhados por prestador.")
 	@GetMapping("/prestador/{prestadorId}/servico-detalhado")
@@ -66,6 +70,14 @@ public class ServicoDetalhadoController {
 
 		return response;
 	}
+	
+	@Operation(summary = "Busca serviços detalhados por geolocalizacao")
+	@PostMapping("/servico-detalhado/geoloc")
+	public ResponseEntity<List<ServicoDetalhadoRepresentation>> buscaGeolocalizacao(@Parameter(description = "Informações relacionadas a filtragem")
+	@RequestBody ServicoDetalhadoFilter filtragem) throws Exception {
+		var servicosDetalhados = servicoDetalhadoFacade.buscarServicosDetalhadosPorTipoServico(filtragem);
+		return ResponseEntity.ok(servicosDetalhados);
+	}
 
 	@Operation(summary = "Busca avaliações por serviço detalhado.")
 	@GetMapping("/servico-detalhado/{id}/avaliacoes")
@@ -88,7 +100,7 @@ public class ServicoDetalhadoController {
 			@Parameter(description = "Id do prestador.")
 			@PathVariable Long idPrestador,
 			@Parameter(description = "Serviço que será inserido.")
-			@RequestBody ServicoDetalhadoRepresentation request) {
+			@RequestBody ServicoDetalhadoRepresentation request) throws BusinessException {
 		var servico = converter.toDomain(request);
 		servico.setPrestadorId(idPrestador);
 		servico = service.adicionarServicoDetalhado(servico);
@@ -121,18 +133,38 @@ public class ServicoDetalhadoController {
 		return ResponseEntity.ok(servicoDetalhado);
 	}
 
-	@Operation(summary = "Atualiza serviço detalhado.")
-	@PutMapping("/prestador/{idPrestador}/servico-detalhado/{idServico}")
-	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(
+	@Operation(summary = "Adiciona novo tipo de animal aceito para serviço detalhado.")
+	@PostMapping("/prestador/{idPrestador}/servico-detalhado/{idServico}/tipoAnimalAceito/tipoAnimal/{idTipoAnimal}")
+	public ResponseEntity<ServicoDetalhadoRepresentation> adicionarTipoAnimalAceito(
 			@Parameter(description = "Id do prestador.")
 			@PathVariable Long idPrestador,
 			@Parameter(description = "Id do serviço detalhado.")
 			@PathVariable Long idServico,
+			@Parameter(description = "Id do tipo do animal.")
+			@PathVariable Integer idTipoAnimal,
 			@Parameter(description = "Serviço detalhado a ser atualizado")
-			@RequestBody ServicoDetalhadoRepresentation request)
+			@RequestBody PrecoPorTipoRepresentation request)
 			throws Exception {
-		var servico = converter.toDomain(request);
-		servico = service.atualizarServicoDetalhado(idServico, idPrestador, servico);
+		var servico = servicoDetalhadoFacade.adicionarTipoAnimalAceito(idServico, idPrestador, idTipoAnimal,
+				servicoDetalhadoTipoAnimalEstimacaoConverter.toDomain(request));
+
+		return ResponseEntity.ok(servico);
+	}
+
+	@Operation(summary = "Atualiza um tipo de animal aceito para serviço detalhado.")
+	@PutMapping("/prestador/{idPrestador}/servico-detalhado/{idServico}/tipoAnimalAceito/tipoAnimal/{idTipoAnimal}")
+	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarTipoAnimalAceito(
+			@Parameter(description = "Id do prestador.")
+			@PathVariable Long idPrestador,
+			@Parameter(description = "Id do serviço detalhado.")
+			@PathVariable Long idServico,
+			@Parameter(description = "Id do tipo do animal.")
+			@PathVariable Integer idTipoAnimal,
+			@Parameter(description = "Serviço detalhado a ser atualizado")
+			@RequestBody PrecoPorTipoRepresentation request)
+			throws Exception {
+		var servico = service.atualizarTipoAnimalAceito(idServico, idPrestador, idTipoAnimal,
+				servicoDetalhadoTipoAnimalEstimacaoConverter.toDomain(request));
 		var representation = converter.toRepresentation(servico);
 
 		return ResponseEntity.ok(representation);

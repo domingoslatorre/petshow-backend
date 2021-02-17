@@ -2,6 +2,8 @@ package hyve.petshow.unit.service;
 
 import static hyve.petshow.mock.AgendamentoMock.criaAgendamento;
 import static hyve.petshow.mock.StatusAgendamentoMock.criaStatusAgendamento;
+import static hyve.petshow.util.AuditoriaUtils.INATIVO;
+import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -127,7 +129,7 @@ public class AgendamentoServiceTest {
     public void deve_atualizar_agendamento() throws NotFoundException, BusinessException {
         var request = criaAgendamento();
 
-        request.setComentario("alt");
+        request.getAuditoria().setFlagAtivo(INATIVO);
 
         doReturn(request).when(repository).save(any(Agendamento.class));
 
@@ -141,8 +143,9 @@ public class AgendamentoServiceTest {
         var request = criaStatusAgendamento();
         var agendamentoResponse = criaAgendamento();
 
-        request.setId(2);
+        request.setId(1);
         agendamentoResponse.setStatus(request);
+        agendamentoResponse.setAuditoria(atualizaAuditoria(agendamentoResponse.getAuditoria(),INATIVO));
 
         doReturn(agendamentoResponse).when(repository).save(any(Agendamento.class));
 

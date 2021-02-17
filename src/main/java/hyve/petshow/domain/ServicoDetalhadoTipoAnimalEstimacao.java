@@ -1,6 +1,6 @@
 package hyve.petshow.domain;
 
-import lombok.AllArgsConstructor;
+import hyve.petshow.domain.embeddables.Auditoria;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "servico_detalhado_tipo_animal_estimacao")
 public class ServicoDetalhadoTipoAnimalEstimacao implements Serializable {
@@ -28,4 +27,24 @@ public class ServicoDetalhadoTipoAnimalEstimacao implements Serializable {
     private TipoAnimalEstimacao tipoAnimalEstimacao;
 
     private BigDecimal preco;
+    @Embedded
+    private Auditoria auditoria;
+
+    public ServicoDetalhadoTipoAnimalEstimacao(ServicoDetalhado servicoDetalhado,
+                                               TipoAnimalEstimacao tipoAnimalEstimacao,
+                                               BigDecimal preco){
+        this.servicoDetalhado = servicoDetalhado;
+        this.tipoAnimalEstimacao = tipoAnimalEstimacao;
+        this.preco = preco;
+    }
+
+    public ServicoDetalhadoTipoAnimalEstimacao(ServicoDetalhado servicoDetalhado,
+                                               TipoAnimalEstimacao tipoAnimalEstimacao,
+                                               BigDecimal preco,
+                                               Auditoria auditoria){
+        this.servicoDetalhado = servicoDetalhado;
+        this.tipoAnimalEstimacao = tipoAnimalEstimacao;
+        this.preco = preco;
+        this.auditoria = auditoria;
+    }
 }

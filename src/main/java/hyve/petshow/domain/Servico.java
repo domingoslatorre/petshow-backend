@@ -14,4 +14,5 @@ public class Servico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+    private String grupo;
 }

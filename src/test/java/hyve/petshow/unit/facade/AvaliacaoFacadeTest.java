@@ -2,10 +2,12 @@ package hyve.petshow.unit.facade;
 
 import hyve.petshow.controller.converter.AvaliacaoConverter;
 import hyve.petshow.controller.representation.AvaliacaoRepresentation;
+import hyve.petshow.domain.Agendamento;
 import hyve.petshow.domain.Avaliacao;
 import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.facade.AvaliacaoFacade;
+import hyve.petshow.service.port.AgendamentoService;
 import hyve.petshow.service.port.AvaliacaoService;
 import hyve.petshow.service.port.ClienteService;
 import hyve.petshow.service.port.ServicoDetalhadoService;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static hyve.petshow.mock.AgendamentoMock.criaAgendamento;
 import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacao;
 import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
 import static hyve.petshow.mock.ClienteMock.criaCliente;
@@ -45,10 +48,13 @@ public class AvaliacaoFacadeTest {
 	private ClienteService clienteService;
 	@Mock
 	private AvaliacaoConverter converter;
+	@Mock
+	private AgendamentoService agendamentoService;
 	@InjectMocks
 	private AvaliacaoFacade facade;
 
 	private Cliente cliente = criaCliente();
+	private Agendamento agendamento = criaAgendamento();
 	private ServicoDetalhado servicoDetalhado = criaServicoDetalhado();
 	private AvaliacaoRepresentation avaliacaoRepresentation = criaAvaliacaoRepresentation();
 	private List<Avaliacao> avaliacoes = new ArrayList<>();
@@ -71,6 +77,7 @@ public class AvaliacaoFacadeTest {
 			avaliacoes.add(avaliacao);
 			return null;
 		}).when(avaliacaoService).adicionarAvaliacao(any(Avaliacao.class));
+		doReturn(agendamento).when(agendamentoService).buscarPorId(anyLong(), anyLong());
 	}
 
 	@Test

@@ -15,4 +15,6 @@ public interface AvaliacaoService {
 	Avaliacao buscarAvaliacaoPorId(Long id) throws Exception;
 
 	Avaliacao buscarAvaliacaoPorAgendamentoId(Long id) throws Exception;
+
+	Float buscarMediaAvaliacaoPorServicoDetalhadoId(Long servicoDetalhadoId);
 }

@@ -26,6 +26,6 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     default List<Agendamento> findAllByPrestadorAndDate(Long prestdadorId, LocalDate dataAgendamento) {
     	return findAllByPrestadorAndDate(prestdadorId, dataAgendamento.atStartOfDay(), dataAgendamento.atTime(19, 0, 0));
     }
-    
-    
+
+
 }

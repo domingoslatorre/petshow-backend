@@ -1,12 +1,16 @@
 package hyve.petshow.unit.service;
 
+import hyve.petshow.controller.converter.ServicoDetalhadoTipoAnimalEstimacaoConverter;
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.controller.representation.PrecoPorTipoRepresentation;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
+import hyve.petshow.domain.ServicoDetalhadoTipoAnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ServicoDetalhadoRepository;
+import hyve.petshow.repository.nativeQueryRepository.ServicoDetalhadoTipoAnimalEstimacaoNativeQueryRepository;
 import hyve.petshow.service.implementation.ServicoDetalhadoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -21,7 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.*;
 
-import static hyve.petshow.mock.ServicoDetalhadoMock.criaServicoDetalhado;
+import static hyve.petshow.mock.ServicoDetalhadoMock.*;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -37,11 +41,16 @@ import static org.mockito.MockitoAnnotations.openMocks;
 public class ServicoDetalhadoServiceTest {
 	@Mock
 	private ServicoDetalhadoRepository repository;
-
+	@Mock
+	private ServicoDetalhadoTipoAnimalEstimacaoConverter servicoDetalhadoTipoAnimalEstimacaoConverter;
+	@Mock
+	private ServicoDetalhadoTipoAnimalEstimacaoNativeQueryRepository servicoDetalhadoTipoAnimalEstimacaoNativeQueryRepository;
 	@InjectMocks
 	private ServicoDetalhadoServiceImpl service;
 
 	private ServicoDetalhado servicoDetalhado = criaServicoDetalhado();
+	private ServicoDetalhadoTipoAnimalEstimacao servicoDetalhadoTipoAnimalEstimacao = criaServicoDetalhadoTipoAnimalEstimacao();
+	private PrecoPorTipoRepresentation precoPorTipoRepresentation = criaPrecoPorTipoRepresentation();
 	private List<ServicoDetalhado> servicoDetalhadoList = singletonList(servicoDetalhado);
 	private Page<ServicoDetalhado> servicoDetalhadoPage = new PageImpl<>(servicoDetalhadoList);
 	private Pageable pageable = geraPageable(0, 5);
@@ -57,11 +66,17 @@ public class ServicoDetalhadoServiceTest {
 		doReturn(servicoDetalhadoPage).when(repository).findByPrestadorId(anyLong(), any(Pageable.class));
 		doReturn(servicoDetalhadoPage).when(repository).findAll(any(Specification.class), any(Pageable.class));
 		doReturn(Optional.of(servicoDetalhado)).when(repository).findByIdAndPrestadorId(anyLong(), anyLong());
+		doReturn(servicoDetalhadoTipoAnimalEstimacao)
+				.when(servicoDetalhadoTipoAnimalEstimacaoConverter).toDomain(any(PrecoPorTipoRepresentation.class));
+		doReturn(precoPorTipoRepresentation).when(servicoDetalhadoTipoAnimalEstimacaoConverter)
+				.toRepresentation(any(ServicoDetalhadoTipoAnimalEstimacao.class));
+		doNothing().when(servicoDetalhadoTipoAnimalEstimacaoNativeQueryRepository)
+				.adicionar(any(ServicoDetalhadoTipoAnimalEstimacao.class));
 		doNothing().when(repository).delete(any(ServicoDetalhado.class));
 	}
     
     @Test
-	public void deve_inserir_servico_detalhado() {
+	public void deve_inserir_servico_detalhado() throws BusinessException {
 		var actual = service.adicionarServicoDetalhado(servicoDetalhado);
 		
 		assertAll(() -> assertTrue(repository.findAll().contains(actual)),
@@ -77,7 +92,7 @@ public class ServicoDetalhadoServiceTest {
 
 		doReturn(servicoDetalhadoRequest).when(repository).save(servicoDetalhadoRequest);
 
-		var actual = service.atualizarServicoDetalhado(1L, 1L, servicoDetalhadoRequest);
+		var actual = service.adicionarTipoAnimalAceito(1L, 1L, servicoDetalhadoTipoAnimalEstimacao);
 
 		assertEquals(actual.getTipo().getNome(), servicoDetalhado.getTipo().getNome());
 	}
@@ -139,7 +154,7 @@ public class ServicoDetalhadoServiceTest {
 	public void deve_retornar_excecao_por_donos_diferentes_em_atualizacao() {
 		var servicoRequest = criaServicoDetalhado();
 
-		assertThrows(BusinessException.class, () -> service.atualizarServicoDetalhado(1L, 2L, servicoRequest));
+		assertThrows(BusinessException.class, () -> service.adicionarTipoAnimalAceito(1L, 2L, servicoDetalhadoTipoAnimalEstimacao));
 	}
 	
 	@Test
@@ -172,7 +187,7 @@ public class ServicoDetalhadoServiceTest {
 	}
 
 	@Test
-	public void deve_salvar_com_lista_vazia_de_adicionais_ao_nenhum_ser_informado_ao_adicionar_servico_detalhado(){
+	public void deve_salvar_com_lista_vazia_de_adicionais_ao_nenhum_ser_informado_ao_adicionar_servico_detalhado() throws BusinessException {
 		var servicoDetalhadoRequest = criaServicoDetalhado();
 
 		servicoDetalhadoRequest.setAdicionais(Collections.emptyList());

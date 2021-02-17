@@ -1,5 +1,6 @@
 package hyve.petshow.controller.representation;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import hyve.petshow.domain.embeddables.Endereco;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 public class AgendamentoRepresentation {
     private Long id;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime data;
     private String comentario;
     private Endereco endereco;

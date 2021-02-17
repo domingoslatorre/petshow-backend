@@ -1,6 +1,7 @@
 package hyve.petshow.controller;
 
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
+import static hyve.petshow.util.PagingAndSortingUtils.geraPageableOrdemMaisNovo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -78,7 +79,7 @@ public class AgendamentoController {
             @RequestParam("pagina") Integer pagina,
             @Parameter(description = "Número de itens")
             @RequestParam("quantidadeItens") Integer quantidadeItens) throws Exception {
-        var agendamentos = agendamentoService.buscarAgendamentosPorCliente(id, geraPageable(pagina, quantidadeItens));
+        var agendamentos = agendamentoService.buscarAgendamentosPorCliente(id, geraPageableOrdemMaisNovo(pagina, quantidadeItens));
         var representation = agendamentoConverter.toRepresentationPage(agendamentos);
 
         return ResponseEntity.ok(representation);
@@ -93,7 +94,7 @@ public class AgendamentoController {
             @RequestParam("pagina") Integer pagina,
             @Parameter(description = "Número de itens")
             @RequestParam("quantidadeItens") Integer quantidadeItens) throws Exception {
-        var agendamentos = agendamentoService.buscarAgendamentosPorPrestador(id, geraPageable(pagina, quantidadeItens));
+        var agendamentos = agendamentoService.buscarAgendamentosPorPrestador(id, geraPageableOrdemMaisNovo(pagina, quantidadeItens));
         var representation = agendamentoConverter.toRepresentationPage(agendamentos);
 
         return ResponseEntity.ok(representation);
