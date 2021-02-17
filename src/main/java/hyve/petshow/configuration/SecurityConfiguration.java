@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/acesso/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/servico-detalhado/**", "/prestador/**", "/cliente/**", "/servico/**")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/servico-detalhado/filtro/**")
+                .antMatchers(HttpMethod.POST, "/servico-detalhado/filtro/**", "/servico-detalhado/geoloc/**")
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
@@ -68,5 +68,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers().frameOptions().disable();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-   }
+    }
 }

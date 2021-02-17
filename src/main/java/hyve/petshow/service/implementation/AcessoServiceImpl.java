@@ -4,6 +4,8 @@ import hyve.petshow.domain.Cliente;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.VerificationToken;
+import hyve.petshow.domain.embeddables.Endereco;
+import hyve.petshow.domain.embeddables.Geolocalizacao;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.domain.enums.TipoConta;
 import hyve.petshow.exceptions.BusinessException;
@@ -13,6 +15,11 @@ import hyve.petshow.repository.ClienteRepository;
 import hyve.petshow.repository.PrestadorRepository;
 import hyve.petshow.repository.VerificationTokenRepository;
 import hyve.petshow.service.port.AcessoService;
+import static hyve.petshow.util.GeoLocUtils.geraUrl;
+import static hyve.petshow.util.GeoLocUtils.mapeiaJson;
+
+import static hyve.petshow.util.OkHttpUtils.getRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +34,7 @@ import static hyve.petshow.util.AuditoriaUtils.*;
 
 @Service
 public class AcessoServiceImpl implements AcessoService {
+	
 	private static final String CONTA_JA_ATIVA = "CONTA_JA_ATIVA";//"Conta já ativa";
 	private static final String TOKEN_NAO_ENCONTRADO = "TOKEN_NAO_ENCONTRADO";//Token informado não encontrado
 	private static final String TIPO_DE_CLIENTE_INEXISTENTE = "TIPO_DE_CLIENTE_INEXISTENTE";//Tipo de cliente inexistente
@@ -64,6 +72,7 @@ public class AcessoServiceImpl implements AcessoService {
         criptografarSenha(conta.getLogin());
 
         conta.setAuditoria(geraAuditoriaInsercaoConta(Optional.empty()));
+        conta.setGeolocalizacao(geraGeoloc(conta.getEndereco()));
 
         if(TipoConta.CLIENTE.equals(tipoConta)){
             var cliente = new Cliente(conta);
@@ -74,11 +83,24 @@ public class AcessoServiceImpl implements AcessoService {
         } else {
             throw new BusinessException(TIPO_DE_CLIENTE_INEXISTENTE);
         }
-
         return conta;
     }
 
-    private void criptografarSenha(Login login){
+    private Geolocalizacao geraGeoloc(Endereco endereco) {
+    	var geolocalizacao = new Geolocalizacao();
+    	try {
+    		var url = geraUrl(endereco);
+        	var response = getRequest(url);
+        	var geoloc = mapeiaJson(response);
+        	geolocalizacao.setGeolocLatitude(geoloc.getLat());
+        	geolocalizacao.setGeolocLongitude(geoloc.getLon());
+        	return geolocalizacao;
+    	} catch (Exception e) {
+    		return geolocalizacao;
+    	}    	
+	}
+
+	private void criptografarSenha(Login login){
         var senha = login.getSenha();
         login.setSenha(passwordEncoder.encode(senha));
     }
