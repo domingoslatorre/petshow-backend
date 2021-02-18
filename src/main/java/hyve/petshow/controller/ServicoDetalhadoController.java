@@ -110,15 +110,18 @@ public class ServicoDetalhadoController {
 	}
 
 	@Operation(summary = "Deleta serviço detalhado por prestador e pelo próprio id.")
-	@DeleteMapping("/prestador/{prestadorId}/servico-detalhado/{id}")
-	public ResponseEntity<MensagemRepresentation> removerServicoDetalhado(
+	@PatchMapping("/prestador/{prestadorId}/servico-detalhado/{id}")
+	public ResponseEntity<ServicoDetalhadoRepresentation> atualizarServicoDetalhado(
 			@Parameter(description = "Id do prestador.")
 			@PathVariable Long prestadorId,
 			@Parameter(description = "Id do serviço detalhado.")
-			@PathVariable Long id) throws Exception {
-		var response = service.removerServicoDetalhado(id, prestadorId);
+			@PathVariable Long id,
+			@Parameter(description = "Status novo do serviço detalhado")
+			@RequestParam Boolean ativo) throws Exception {
+		var response = service.atualizarServicoDetalhado(id, prestadorId, ativo);
+		var representation = converter.toRepresentation(response);
 
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(representation);
 	}
 
 	@Operation(summary = "Busca serviço detalhado.")

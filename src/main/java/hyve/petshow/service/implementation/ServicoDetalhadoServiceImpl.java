@@ -2,6 +2,7 @@ package hyve.petshow.service.implementation;
 
 import hyve.petshow.controller.filter.ServicoDetalhadoFilter;
 import hyve.petshow.controller.representation.MensagemRepresentation;
+import hyve.petshow.domain.Servico;
 import hyve.petshow.domain.ServicoDetalhado;
 import hyve.petshow.domain.ServicoDetalhadoTipoAnimalEstimacao;
 import hyve.petshow.exceptions.BusinessException;
@@ -55,12 +56,17 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 
 		servicoDetalhado.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
 		servicoDetalhado.setAdicionais(Optional.ofNullable(servicoDetalhado.getAdicionais())
-		.map(lista -> {
-			return lista.stream().map(el -> {
-				el.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
-				return el;
-			}).collect(Collectors.toList());
-		}).orElse(new ArrayList<>()));
+				.map(lista -> {
+					return lista.stream().map(el -> {
+						el.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
+						return el;
+					}).collect(Collectors.toList());
+				}).orElse(new ArrayList<>()));
+		servicoDetalhado.setTiposAnimaisAceitos(servicoDetalhado.getTiposAnimaisAceitos().stream()
+			.map(tipoAnimalAceito -> {
+				tipoAnimalAceito.setAuditoria(geraAuditoriaInsercao(Optional.of(servicoDetalhado.getPrestadorId())));
+				return tipoAnimalAceito;
+			}).collect(Collectors.toList()));
 		
 		return repository.save(servicoDetalhado);
 	}
@@ -149,17 +155,18 @@ public class ServicoDetalhadoServiceImpl implements ServicoDetalhadoService {
 	}
 
 	@Override
-	public MensagemRepresentation removerServicoDetalhado(Long id, Long prestadorId)
+	public ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, Boolean ativo)
 			throws BusinessException, NotFoundException{
 		var servicoDetalhado = buscarPorId(id);
 
 		if(!verificarIdentidade(servicoDetalhado.getPrestadorId(), prestadorId)) {
 			throw new BusinessException(USUARIO_NAO_PROPRIETARIO_SERVICO);
 		}
-		repository.deleteById(id);
-		var sucesso = !repository.existsById(id);
-		var response = new MensagemRepresentation(id);
-		response.setSucesso(sucesso);
+
+		servicoDetalhado.setAuditoria(atualizaAuditoria(servicoDetalhado.getAuditoria(), ativo ? ATIVO : INATIVO));
+
+		var response = repository.save(servicoDetalhado);
+
 		return response;
     }
 

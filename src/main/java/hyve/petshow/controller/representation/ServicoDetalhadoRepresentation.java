@@ -16,6 +16,7 @@ public class ServicoDetalhadoRepresentation {
 	private PrestadorRepresentation prestador;
 	private List<PrecoPorTipoRepresentation> precoPorTipo = new ArrayList<>();
 	private List<AdicionalRepresentation> adicionais = new ArrayList<>();
+	private Boolean ativo;
 
 	public Float getMedia() {
 		return Optional.ofNullable(getMediaAvaliacao())

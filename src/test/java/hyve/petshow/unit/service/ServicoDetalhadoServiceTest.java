@@ -98,14 +98,12 @@ public class ServicoDetalhadoServiceTest {
 	}
 
 	@Test
-	public void deve_retornar_mensagem_sucesso_ao_remover_elemento() throws Exception {
-		var mensagem = service.removerServicoDetalhado(1L, 1L);
+	public void deve_inativar_elemento() throws Exception {
+		var resposta = service.atualizarServicoDetalhado(1L, 1L, FALSE);
 
-		doReturn(FALSE).when(repository).existsById(1L);
+		doReturn(resposta).when(repository).save(any(ServicoDetalhado.class));
 
-		assertAll(
-				() -> assertEquals(MensagemRepresentation.MENSAGEM_SUCESSO, mensagem.getMensagem()),
-				() -> assertTrue(mensagem.getSucesso()));
+		assertFalse(resposta.getAuditoria().isAtivo());
 	}
 
 	@Test
@@ -159,18 +157,9 @@ public class ServicoDetalhadoServiceTest {
 	
 	@Test
 	public void deve_retornar_excecao_por_donos_diferentes_em_delecao() {
-		assertThrows(BusinessException.class, () -> service.removerServicoDetalhado(1L, 2L));
+		assertThrows(BusinessException.class, () -> service.atualizarServicoDetalhado(1L, 2L, FALSE));
 	}
-	
-	@Test
-	public void deve_retornar_mensagem_de_falha_em_delecao() throws BusinessException, NotFoundException {
-		doReturn(TRUE).when(repository).existsById(anyLong());
 
-		var mensagem = service.removerServicoDetalhado(servicoDetalhado.getId(), servicoDetalhado.getPrestadorId());
-
-		assertEquals(MensagemRepresentation.MENSAGEM_FALHA, mensagem.getMensagem());
-	}
-	
 	@Test
 	public void deve_retornar_dois_servicos() {
 		var servicosDetalhados = new ArrayList<ServicoDetalhado>() {
