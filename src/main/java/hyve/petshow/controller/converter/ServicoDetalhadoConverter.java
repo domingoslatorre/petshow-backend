@@ -28,18 +28,19 @@ public class ServicoDetalhadoConverter implements Converter<ServicoDetalhado, Se
         representation.setTipo(servicoConverter.toRepresentation(domain.getTipo()));
         representation.setPrestadorId(domain.getPrestadorId());
         representation.setMediaAvaliacao(domain.getMediaAvaliacao());
-        
-        var precosPorTipo = Optional.ofNullable(domain.getTiposAnimaisAceitos())
-            .map(tiposAceitos -> tiposAceitos.stream()
-        		.map(tipoAceito -> PrecoPorTipoRepresentation.builder()
-        				.preco(tipoAceito.getPreco())
-        				.tipoAnimal(tipoAnimalEstimacaoConverter.toRepresentation(tipoAceito.getTipoAnimalEstimacao()))
-                        .ativo(tipoAceito.getAuditoria().isAtivo())
-        				.build()).collect(Collectors.toList())).orElse(new ArrayList<>());
+
+        var precosPorTipo = domain.getTiposAnimaisAceitos().stream()
+            .map(tipoAceito -> PrecoPorTipoRepresentation.builder()
+                    .preco(tipoAceito.getPreco())
+                    .tipoAnimal(tipoAnimalEstimacaoConverter.toRepresentation(tipoAceito.getTipoAnimalEstimacao()))
+                    .ativo(tipoAceito.getAuditoria().isAtivo())
+                    .build())
+                .collect(Collectors.toList());
         
         representation.setPrecoPorTipo(precosPorTipo);
-
         representation.setAdicionais(adicionalConverter.toRepresentationList(domain.getAdicionais()));
+        representation.setAtivo(domain.getAuditoria().isAtivo());
+
         return representation;
     }
 

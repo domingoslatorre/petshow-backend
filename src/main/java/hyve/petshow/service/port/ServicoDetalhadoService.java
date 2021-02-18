@@ -28,7 +28,7 @@ public interface ServicoDetalhadoService {
 
     void atualizarMediaAvaliacaoServicoDetalhado(Long id, Float mediaAvaliacao) throws NotFoundException;
 
-    MensagemRepresentation removerServicoDetalhado(Long id, Long prestadorId) throws BusinessException, NotFoundException;
+    ServicoDetalhado atualizarServicoDetalhado(Long id, Long prestadorId, Boolean ativo) throws BusinessException, NotFoundException;
     
     ServicoDetalhado buscarPorId(Long id) throws NotFoundException;
     
