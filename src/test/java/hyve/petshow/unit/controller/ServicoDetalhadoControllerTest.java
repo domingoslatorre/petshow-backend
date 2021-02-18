@@ -32,6 +32,7 @@ import static hyve.petshow.mock.AdicionalMock.criaAdicionalRepresentation;
 import static hyve.petshow.mock.AvaliacaoMock.criaAvaliacaoRepresentation;
 import static hyve.petshow.mock.MensagemMock.criaMensagemRepresentationSucesso;
 import static hyve.petshow.mock.ServicoDetalhadoMock.*;
+import static hyve.petshow.util.AuditoriaUtils.INATIVO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
@@ -79,7 +80,7 @@ public class ServicoDetalhadoControllerTest {
 
 		doReturn(servicoDetalhadoPage).when(service).buscarPorPrestadorId(anyLong(), any(Pageable.class));
 		doReturn(servicoDetalhado).when(service).adicionarServicoDetalhado(any(ServicoDetalhado.class));
-		doReturn(mensagemRepresentation).when(service).removerServicoDetalhado(anyLong(), anyLong());
+		doReturn(servicoDetalhado).when(service).atualizarServicoDetalhado(anyLong(), anyLong(), anyBoolean());
 		doReturn(servicoDetalhado).when(service).buscarPorPrestadorIdEServicoId(anyLong(), anyLong());
 		doReturn(servicoDetalhado).when(service).adicionarTipoAnimalAceito(anyLong(), anyLong(),
 				any(ServicoDetalhadoTipoAnimalEstimacao.class));
@@ -127,10 +128,10 @@ public class ServicoDetalhadoControllerTest {
 	}
 
 	@Test
-	public void deve_remover_servico_detalhado() throws Exception {
-		var expected = ResponseEntity.ok(mensagemRepresentation);
+	public void deve_atualizar_servico_detalhado() throws Exception {
+		var expected = ResponseEntity.ok(servicoDetalhadoRepresentation);
 
-		var actual = controller.removerServicoDetalhado(1L, 1L);
+		var actual = controller.atualizarServicoDetalhado(1L, 1L, Boolean.FALSE);
 
 		assertEquals(expected, actual);
 	}

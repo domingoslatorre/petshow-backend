@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.*;
 import java.math.BigDecimal;
 
+import static hyve.petshow.util.AuditoriaUtils.ATIVO;
 import static hyve.petshow.util.NullUtils.isNotNull;
 
 @Slf4j
@@ -30,6 +31,7 @@ public class ServicoDetalhadoSpecification {
             var tiposAnimaisAceitos = root.join("tiposAnimaisAceitos", JoinType.LEFT);
             var prestador = subQueryPrestador.from(Prestador.class);
 
+            predicate = builder.and(predicate, builder.equal(root.get("auditoria").get("flagAtivo"), ATIVO));
             predicate = builder.and(predicate, builder.equal(servico.get("id"), filtragem.getTipoServicoId()));
             predicate = adicionaFiltroAdicionais(predicate, builder, filtragem, adicionais);
             predicate = adicionaFiltroAvaliacao(filtragem, root, builder, predicate);
