@@ -17,6 +17,9 @@ public class Prestador extends Conta {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_conta")
 	private List<ServicoDetalhado> servicosPrestados;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private VinculoEmpregaticio vinculo;
 
 	public Prestador(Conta conta){
 		super(conta.getId(), conta.getNome(), conta.getNomeSocial(), conta.getCpf(), conta.getTelefone(),
