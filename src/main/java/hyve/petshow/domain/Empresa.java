@@ -1,5 +1,6 @@
 package hyve.petshow.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -35,7 +36,7 @@ public class Empresa {
 	@Column(name = "fk_dono")
 	private Long donoId;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<VinculoEmpregaticio> vinculos;
+	private List<VinculoEmpregaticio> vinculos = new ArrayList<>();
 	
 	
 	

@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,8 +20,8 @@ public class Prestador extends Conta {
 	@JoinColumn(name = "fk_conta")
 	private List<ServicoDetalhado> servicosPrestados;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<VinculoEmpregaticio> vinculo;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private List<VinculoEmpregaticio> vinculo = new ArrayList<>();
 
 	public Prestador(Conta conta) {
 		super(conta.getId(), conta.getNome(), conta.getNomeSocial(), conta.getCpf(), conta.getTelefone(),

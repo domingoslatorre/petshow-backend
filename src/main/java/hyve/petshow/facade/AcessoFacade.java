@@ -1,5 +1,7 @@
 package hyve.petshow.facade;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +11,6 @@ import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Prestador;
 import hyve.petshow.domain.enums.Cargo;
-import hyve.petshow.domain.enums.TipoConta;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.service.port.EmpresaService;
 import hyve.petshow.service.port.PrestadorService;
@@ -28,26 +29,29 @@ public class AcessoFacade {
 	private ContaConverter contaConverter;
 	
 	public ContaRepresentation salvaConta(ContaRepresentation conta) throws Exception {
-		var domain = contaConverter.toDomain(conta);
-		if(TipoConta.PRESTADOR_AUTONOMO.equals(domain.getTipo())) {
-			var representation = new Prestador(domain);
-			return salvaPrestador(representation);
-		}
-		
+		var domain = contaConverter.toDomain(conta);		
 		return contaConverter.toRepresentation(acessoService.adicionarConta(domain));
 	}
 
-	public PrestadorRepresentation salvaPrestador(Prestador domain) throws Exception {
-		var prestador = acessoService.adicionarConta(domain);
+	public PrestadorRepresentation salvaPrestador(PrestadorRepresentation representation) throws Exception {
+		var domain = converter.toDomain(representation);
+		var conta = acessoService.adicionarConta(domain);
 		
 		var vinculos = domain.getVinculo();
-		vinculos.forEach(vinculo -> {
+		var vinculosSalvos = vinculos.stream().map(vinculo -> {
 			var empresa = vinculo.getEmpresa();
-			empresa.setDonoId(prestador.getId());
-			var empresaSalva = empresaService.salvarEmpresa(empresa);
-			vinculo.setEmpresa(empresaSalva);
+			empresa.setDonoId(conta.getId());
+			vinculo.setPrestador(new Prestador(conta));
 			vinculo.setCargo(Cargo.DONO);
-		});
-		return converter.toRepresentation(prestadorService.buscarPorId(prestador.getId()));
+			empresa.getVinculos().add(vinculo);
+			var empresaSalva = empresaService.salvarEmpresa(empresa);
+			return vinculo;
+			
+		}).collect(Collectors.toList());
+		
+		var prestador = new Prestador(conta);
+		prestador.setVinculo(vinculosSalvos);
+		prestadorService.atualizarConta(prestador.getId(), prestador);
+		return converter.toRepresentation(prestadorService.buscarPorId(conta.getId()));
 	}
 }

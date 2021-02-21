@@ -25,7 +25,7 @@ public class VinculoEmpregaticio implements Serializable {
 	private Prestador prestador;
 
 	@Id
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "fk_empresa", referencedColumnName = "id", nullable = false)
 	@ToString.Exclude
 	private Empresa empresa;
