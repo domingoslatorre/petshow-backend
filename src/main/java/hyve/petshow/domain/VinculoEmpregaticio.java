@@ -1,5 +1,7 @@
 package hyve.petshow.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -12,11 +14,13 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@Entity(name = "vinculo_empregaticio")
-public class VinculoEmpregaticio {
+@Entity
+public class VinculoEmpregaticio implements Serializable {
+	private static final long serialVersionUID = -8403753014189610381L;
+
 	@Id
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_prestador")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "fk_prestador", referencedColumnName = "id", nullable = false)
 	@ToString.Exclude
 	private Prestador prestador;
 

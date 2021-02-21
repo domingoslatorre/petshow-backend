@@ -5,6 +5,7 @@ import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.exceptions.BusinessException;
+import hyve.petshow.facade.AcessoFacade;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.util.JwtUtils;
 import hyve.petshow.util.OnRegistrationCompleteEvent;
@@ -39,6 +40,8 @@ public class AcessoController {
     @Autowired
     private AcessoService acessoService;
     @Autowired
+    private AcessoFacade facade;
+    @Autowired
     private ContaConverter contaConverter;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
@@ -67,7 +70,7 @@ public class AcessoController {
             @Parameter(description = "Objeto da conta que será cadastrada.")
             @RequestBody ContaRepresentation contaRepresentation,
             @Parameter(description = "Requisição")
-            HttpServletRequest request) throws BusinessException {
+            HttpServletRequest request) throws Exception {
         verificarEmailExistente(contaRepresentation.getLogin().getEmail());
         var conta = adicionarConta(contaRepresentation);
         var token = gerarToken(conta);
@@ -119,9 +122,8 @@ public class AcessoController {
         }
     }
 
-    private Conta adicionarConta(ContaRepresentation contaRepresentation) throws BusinessException {
-        var request = contaConverter.toDomain(contaRepresentation);
-
-        return acessoService.adicionarConta(request);
-    }
+	private Conta adicionarConta(ContaRepresentation contaRepresentation) throws Exception {
+		var conta = facade.salvaConta(contaRepresentation);
+		return contaConverter.toDomain(conta);
+	}
 }

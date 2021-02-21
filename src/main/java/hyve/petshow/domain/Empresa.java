@@ -1,10 +1,16 @@
 package hyve.petshow.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import hyve.petshow.domain.embeddables.Auditoria;
 import hyve.petshow.domain.embeddables.Endereco;
@@ -26,6 +32,11 @@ public class Empresa {
 	private Auditoria auditoria;
 	@Embedded
 	private Geolocalizacao geolocalizacao;
+	@Column(name = "fk_dono")
+	private Long donoId;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<VinculoEmpregaticio> vinculos;
+	
 	
 	
 }
