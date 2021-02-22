@@ -12,3 +12,6 @@ spring:
           auth: true
           starttls:
             enable: true
+mercado-pago:
+  access:
+    token: ${env.MERCADO_PAGO_ACCESS_TOKEN}
