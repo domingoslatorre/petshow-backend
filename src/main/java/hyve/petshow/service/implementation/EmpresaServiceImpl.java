@@ -36,7 +36,6 @@ public class EmpresaServiceImpl implements EmpresaService {
 		var domain = buscarPorId(idEmpresa);
 		domain.setEndereco(empresa.getEndereco());
 		domain.setGeolocalizacao(empresa.getGeolocalizacao());
-		domain.setVinculos(empresa.getVinculos());
 		domain.setAuditoria(atualizaAuditoria(domain.getAuditoria(), ATIVO));
 		return repository.save(domain);
 	}

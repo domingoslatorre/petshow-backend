@@ -35,8 +35,6 @@ public class Empresa {
 	private Geolocalizacao geolocalizacao;
 	@Column(name = "fk_dono")
 	private Long donoId;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private List<VinculoEmpregaticio> vinculos = new ArrayList<>();
 	
 	
 	

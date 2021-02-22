@@ -20,7 +20,7 @@ public class Prestador extends Conta {
 	@JoinColumn(name = "fk_conta")
 	private List<ServicoDetalhado> servicosPrestados;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "prestador")
 	private List<VinculoEmpregaticio> vinculo = new ArrayList<>();
 
 	public Prestador(Conta conta) {
@@ -32,5 +32,12 @@ public class Prestador extends Conta {
 	public Prestador(Conta conta, List<ServicoDetalhado> servicosDetalhados) {
 		this(conta);
 		setServicosPrestados(servicosDetalhados);
+	}
+	
+	public void addAllVinculos(List<VinculoEmpregaticio> vinculos) {
+		if (vinculos != null) {
+			this.vinculo.clear();
+			this.vinculo.addAll(vinculos);
+		}
 	}
 }
