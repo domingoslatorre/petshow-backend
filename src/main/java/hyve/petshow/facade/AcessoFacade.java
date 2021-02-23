@@ -10,6 +10,7 @@ import hyve.petshow.controller.converter.PrestadorConverter;
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Prestador;
+import hyve.petshow.domain.VinculoEmpregaticio;
 import hyve.petshow.domain.enums.Cargo;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.service.port.EmpresaService;
@@ -35,26 +36,18 @@ public class AcessoFacade {
 
 	public PrestadorRepresentation salvaPrestador(PrestadorRepresentation representation) throws Exception {
 		var domain = converter.toDomain(representation);
-		var conta = acessoService.adicionarConta(domain);
-		var prestador = new Prestador(conta);
-		domain.getVinculo().forEach(vinculo -> {
-			vinculo.setPrestador(prestador); 
-			vinculo.setEmpresa(empresaService.salvarEmpresa(vinculo.getEmpresa()));
+		var conta = new Prestador(acessoService.adicionarConta(domain));
+		for(var vinculo: domain.getVinculo()) {
+			vinculo.setPrestador(conta);
 			vinculo.setCargo(Cargo.DONO);
-		});
-		prestador.setVinculo(domain.getVinculo());
-		prestadorService.atualizarConta(prestador.getId(), prestador);
-//		var vinculos = domain.getVinculo();
-//		var vinculosMap = vinculos.stream().map(vinculo -> {
-//			vinculo.getEmpresa().setDonoId(prestador.getId());
-//			empresaService.salvarEmpresa(vinculo.getEmpresa());
-//			vinculo.setPrestador(prestador);
-//			vinculo.setCargo(Cargo.DONO);
-//			return vinculo;
-//		}).collect(Collectors.toList());
+			var empresa = vinculo.getEmpresa();
+			var empresaDb = empresaService.salvarEmpresa(empresa);
+			vinculo.setEmpresa(empresaDb);
+		}
+		domain.setId(conta.getId());
 		
-//		prestador.setVinculo(vinculosMap);
-//		prestadorService.atualizarConta(prestador.getId(), prestador);
+		prestadorService.atualizarConta(conta.getId(), domain);
+		
 		return converter.toRepresentation(prestadorService.buscarPorId(conta.getId()));
 	}
 }

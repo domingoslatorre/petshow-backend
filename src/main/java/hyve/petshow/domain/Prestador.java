@@ -20,7 +20,7 @@ public class Prestador extends Conta {
 	@JoinColumn(name = "fk_conta")
 	private List<ServicoDetalhado> servicosPrestados;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "prestador")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "prestador", fetch = FetchType.EAGER)
 	private List<VinculoEmpregaticio> vinculo = new ArrayList<>();
 
 	public Prestador(Conta conta) {
