@@ -1,6 +1,5 @@
 package hyve.petshow.facade;
 
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,8 +9,6 @@ import hyve.petshow.controller.converter.PrestadorConverter;
 import hyve.petshow.controller.representation.ContaRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.domain.Prestador;
-import hyve.petshow.domain.VinculoEmpregaticio;
-import hyve.petshow.domain.enums.Cargo;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.service.port.EmpresaService;
 import hyve.petshow.service.port.PrestadorService;
@@ -37,17 +34,11 @@ public class AcessoFacade {
 	public PrestadorRepresentation salvaPrestador(PrestadorRepresentation representation) throws Exception {
 		var domain = converter.toDomain(representation);
 		var conta = new Prestador(acessoService.adicionarConta(domain));
-		for(var vinculo: domain.getVinculo()) {
-			vinculo.setPrestador(conta);
-			vinculo.setCargo(Cargo.DONO);
-			var empresa = vinculo.getEmpresa();
-			var empresaDb = empresaService.salvarEmpresa(empresa);
-			vinculo.setEmpresa(empresaDb);
-		}
-		domain.setId(conta.getId());
-		
-		prestadorService.atualizarConta(conta.getId(), domain);
-		
+		var empresa = domain.getEmpresa();
+		conta.setEmpresa(empresa);
+		empresa.setDono(conta);
+		empresaService.salvarEmpresa(empresa);
+//		prestadorService.atualizarConta(conta.getId(), conta);
 		return converter.toRepresentation(prestadorService.buscarPorId(conta.getId()));
 	}
 }

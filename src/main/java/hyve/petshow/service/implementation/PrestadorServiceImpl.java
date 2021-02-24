@@ -38,7 +38,7 @@ public class PrestadorServiceImpl implements PrestadorService {
 
         prestador.setTelefone(request.getTelefone());
         prestador.setEndereco(request.getEndereco());
-        prestador.setVinculo(request.getVinculo());
+        prestador.setEmpresa(request.getEmpresa());
         prestador.setGeolocalizacao(geraGeolocalizacao(prestador.getEndereco()));
         prestador.setAuditoria(atualizaAuditoria(prestador.getAuditoria(), ATIVO));
         

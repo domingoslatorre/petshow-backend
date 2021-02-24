@@ -10,7 +10,7 @@ import java.util.List;
 public class PrestadorRepresentation extends ContaRepresentation {
     private List<ServicoDetalhadoRepresentation> servicos;
     private String descricao;
-    private List<VinculoEmpregaticioRepresentation> vinculo;
+    private EmpresaRepresentation empresa;
     
     public PrestadorRepresentation() {}
     

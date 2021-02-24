@@ -22,7 +22,7 @@ public class EmpresaServiceImpl implements EmpresaService {
 	private EmpresaRepository repository;
 	@Override
 	public Empresa salvarEmpresa(Empresa empresa) {
-		empresa.setAuditoria(geraAuditoriaInsercao(Optional.ofNullable(empresa.getDonoId())));
+		empresa.setAuditoria(geraAuditoriaInsercao(Optional.ofNullable(empresa.getDono().getId())));
 		return repository.save(empresa);
 	}
 

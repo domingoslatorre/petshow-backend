@@ -1,6 +1,7 @@
 package hyve.petshow.integration;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import hyve.petshow.controller.representation.EmpresaRepresentation;
 import hyve.petshow.controller.representation.PrestadorRepresentation;
-import hyve.petshow.controller.representation.VinculoEmpregaticioRepresentation;
 import hyve.petshow.domain.embeddables.Endereco;
 import hyve.petshow.domain.embeddables.Login;
 import hyve.petshow.facade.AcessoFacade;
@@ -67,8 +67,6 @@ public class AcessoFacadeIntegration {
 
 		representation.setEndereco(endereco);
 
-		var vinculos = new ArrayList<VinculoEmpregaticioRepresentation>();
-		var vinculo = new VinculoEmpregaticioRepresentation();
 		var empresa = new EmpresaRepresentation();
 		empresa.setNome("AAAAAA");
 		empresa.setRazaoSocial("BBBBB");
@@ -79,10 +77,8 @@ public class AcessoFacadeIntegration {
 		enderecoEmpresa.setCep("235255");
 		empresa.setEndereco(enderecoEmpresa);
 
-		vinculo.setEmpresa(empresa);
-		vinculos.add(vinculo);
+		representation.setEmpresa(empresa);
 
-		representation.setVinculo(vinculos);
 	}
 
 	@AfterEach
@@ -109,11 +105,11 @@ public class AcessoFacadeIntegration {
 	}
 
 	@Test
-	public void deve_adicionar_vinculo() throws Exception {
+	public void deve_adicionar_empresa() throws Exception {
 		facade.salvaPrestador(representation);
 
 		var prestador = prestadorRepository.findAll().stream().findFirst().get();
 
-		assertFalse(prestador.getVinculo().isEmpty());
+		assertTrue(prestador.getEmpresa() != null);
 	}
 }

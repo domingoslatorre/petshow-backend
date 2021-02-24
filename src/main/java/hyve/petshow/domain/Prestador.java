@@ -3,10 +3,10 @@ package hyve.petshow.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,14 +14,15 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @DiscriminatorValue(value = "P") // Prestador
+@ToString(callSuper = true)
 public class Prestador extends Conta {
 	private String descricao;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_conta")
 	private List<ServicoDetalhado> servicosPrestados;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "prestador", fetch = FetchType.EAGER)
-	private List<VinculoEmpregaticio> vinculo = new ArrayList<>();
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "dono", orphanRemoval = true)
+	private Empresa empresa;
 
 	public Prestador(Conta conta) {
 		super(conta.getId(), conta.getNome(), conta.getNomeSocial(), conta.getCpf(), conta.getTelefone(),
@@ -32,12 +33,5 @@ public class Prestador extends Conta {
 	public Prestador(Conta conta, List<ServicoDetalhado> servicosDetalhados) {
 		this(conta);
 		setServicosPrestados(servicosDetalhados);
-	}
-	
-	public void addAllVinculos(List<VinculoEmpregaticio> vinculos) {
-		if (vinculos != null) {
-			this.vinculo.clear();
-			this.vinculo.addAll(vinculos);
-		}
 	}
 }

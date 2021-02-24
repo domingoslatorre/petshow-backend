@@ -1,6 +1,5 @@
 package hyve.petshow.controller.representation;
 
-import java.util.List;
 
 import hyve.petshow.domain.embeddables.Endereco;
 import hyve.petshow.domain.embeddables.Geolocalizacao;
@@ -14,5 +13,4 @@ public class EmpresaRepresentation {
 	private String cnpj;
 	private Endereco endereco;
 	private Geolocalizacao geolocalizacao;
-	private List<VinculoEmpregaticioRepresentation> vinculos;
 }
