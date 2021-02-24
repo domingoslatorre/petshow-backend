@@ -37,8 +37,9 @@ public class AcessoFacade {
 		var empresa = domain.getEmpresa();
 		conta.setEmpresa(empresa);
 		empresa.setDono(conta);
+		empresa.setEndereco(conta.getEndereco());
+		empresa.setGeolocalizacao(conta.getGeolocalizacao());
 		empresaService.salvarEmpresa(empresa);
-//		prestadorService.atualizarConta(conta.getId(), conta);
 		return converter.toRepresentation(prestadorService.buscarPorId(conta.getId()));
 	}
 }
