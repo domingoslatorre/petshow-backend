@@ -1,6 +1,7 @@
 package hyve.petshow.integration;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -111,5 +112,15 @@ public class AcessoFacadeIntegration {
 		var prestador = prestadorRepository.findAll().stream().findFirst().get();
 
 		assertTrue(prestador.getEmpresa() != null);
+	}
+	
+	@Test
+	public void deve_inserir_nome_da_empresa() throws Exception {
+		facade.salvaPrestador(representation);
+		
+		var prestador = prestadorRepository.findAll().stream().findFirst().get();
+		
+		assertNotNull(prestador.getEmpresa().getNome());
+		assertNotNull(prestador.getEmpresa().getRazaoSocial());
 	}
 }
