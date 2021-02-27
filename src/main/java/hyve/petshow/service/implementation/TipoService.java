@@ -17,6 +17,10 @@ public abstract class TipoService <T> {
 	
 	public List<T> buscarTodos() throws NotFoundException {
 		var lista = buscarLista();
+		return validaLista(lista);
+	}
+
+	protected List<T> validaLista(List<T> lista) throws NotFoundException {
 		if(lista.isEmpty()) {
 			throw new NotFoundException(NENHUM_ENCONTRADO);
 		}

@@ -3,6 +3,7 @@ package hyve.petshow.service.implementation;
 import hyve.petshow.domain.Servico;
 import hyve.petshow.exceptions.NotFoundException;
 import hyve.petshow.repository.ServicoRepository;
+import static hyve.petshow.repository.specification.ServicoSpecification.geraSpecification;
 import hyve.petshow.service.port.ServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,13 @@ public class ServicoServiceImpl extends TipoService<Servico> implements ServicoS
 	public List<Servico> buscarLista() {
 		return repository.findAll();
 	}
+
+	@Override
+	public List<Servico> buscarServicosPresentesEmEstado(String cidade, String estado) throws NotFoundException {
+		var findAll = repository.findAll(geraSpecification(cidade, estado));
+		return validaLista(findAll);
+	}
+	
+	
 }
 
