@@ -32,7 +32,7 @@ public class EmpresaController {
 	}
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<EmpresaRepresentation> atualizarEmpresa(@PathVariable Long id, 
+	public ResponseEntity<EmpresaRepresentation> atualizaEmpresa(@PathVariable Long id, 
 			@RequestBody EmpresaRepresentation representation,
 			@RequestParam Boolean ativo) throws Exception {
 		var domain = converter.toDomain(representation);

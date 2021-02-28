@@ -22,7 +22,7 @@ public class AcessoFacade {
 	@Autowired
 	private AcessoService acessoService;
 	@Autowired
-	private PrestadorConverter converter;
+	private PrestadorConverter prestadorConverter;
 	@Autowired
 	private ContaConverter contaConverter;
 
@@ -32,12 +32,12 @@ public class AcessoFacade {
 	}
 
 	public PrestadorRepresentation salvaPrestador(PrestadorRepresentation representation) throws Exception {
-		var domain = converter.toDomain(representation);
+		var domain = prestadorConverter.toDomain(representation);
 		var conta = new Prestador(acessoService.adicionarConta(domain));
 		var empresa = domain.getEmpresa();
 		conta.setEmpresa(empresa);
 		empresa.setDono(conta);
 		empresaService.salvarEmpresa(empresa);
-		return converter.toRepresentation(prestadorService.buscarPorId(conta.getId()));
+		return prestadorConverter.toRepresentation(prestadorService.buscarPorId(conta.getId()));
 	}
 }

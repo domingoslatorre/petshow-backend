@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface ServicoService {
 	List<Servico> buscarServicos() throws NotFoundException;
+	
+	List<Servico> buscarServicosPresentesEmEstado(String cidade, String estado) throws NotFoundException;
 }

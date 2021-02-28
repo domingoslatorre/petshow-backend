@@ -41,7 +41,7 @@ public class AcessoController {
     @Autowired
     private AcessoService acessoService;
     @Autowired
-    private AcessoFacade facade;
+    private AcessoFacade acessoFacade;
     @Autowired
     private ContaConverter contaConverter;
     @Autowired
@@ -90,7 +90,7 @@ public class AcessoController {
 			@Parameter(description = "Requisição")
 			HttpServletRequest request) throws Exception {
     	verificarEmailExistente(representation.getLogin().getEmail());
-    	var prestador = facade.salvaPrestador(representation);
+    	var prestador = acessoFacade.salvaPrestador(representation);
     	var domain = contaConverter.toDomain(prestador);
 		var token = gerarToken(domain);
     	var appUrl = request.getContextPath();
@@ -142,7 +142,7 @@ public class AcessoController {
     }
 
 	private Conta adicionarConta(ContaRepresentation contaRepresentation) throws Exception {
-		var conta = facade.salvaConta(contaRepresentation);
+		var conta = acessoFacade.salvaConta(contaRepresentation);
 		return contaConverter.toDomain(conta);
 	}
 }
