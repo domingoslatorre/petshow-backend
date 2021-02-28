@@ -19,13 +19,19 @@ public class ServicoSpecification {
 			var prestador = queryPrestador.from(Prestador.class);
 			query.distinct(true);
 			return builder.and(predicate,
-					builder.equal(
-							queryPrestador.select(prestador.get("id"))
-									.where(builder.and(
-											builder.equal(prestador.get("endereco").get("cidade"), cidade),
-											builder.equal(prestador.get("endereco").get("estado"), estado),
-											builder.equal(prestador.get("id"), joinServicos.get("prestadorId"))
-											)),
+					builder.equal(queryPrestador.select(prestador.get("id")).where(builder.and(builder.or(
+							builder.and(builder.isNull(prestador.get("empresa")),
+									builder.equal(prestador.get("endereco").get("cidade"), cidade)),
+							builder.and(builder.isNotNull(prestador.get("empresa")),
+									builder.equal(prestador.get("empresa").get("endereco").get("cidade"), cidade))),
+//											builder.equal(prestador.get("endereco").get("estado"), estado),
+							builder.or(
+									builder.and(builder.isNull(prestador.get("empresa")),
+											builder.equal(prestador.get("endereco").get("estado"), estado)),
+									builder.and(builder.isNotNull(prestador.get("empresa")),
+											builder.equal(prestador.get("empresa").get("endereco").get("estado"),
+													estado))),
+							builder.equal(prestador.get("id"), joinServicos.get("prestadorId")))),
 							joinServicos.get("prestadorId")));
 		};
 	}
