@@ -11,6 +11,8 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
 	private ServicoDetalhadoConverter servicoConverter;
 	@Autowired
 	private ContaConverter contaConverter;
+	@Autowired 
+	private EmpresaConverter empresaConverter;
 
     @Override
     public PrestadorRepresentation toRepresentation(Prestador domain) {
@@ -19,6 +21,7 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
 
         representation.setServicos(servicoConverter.toRepresentationList(domain.getServicosPrestados()));
 		representation.setDescricao(domain.getDescricao());
+		representation.setEmpresa(empresaConverter.toRepresentation(domain.getEmpresa()));
 
         return representation;
     }
@@ -30,7 +33,7 @@ public class PrestadorConverter implements Converter<Prestador, PrestadorReprese
 
         domain.setServicosPrestados(servicoConverter.toDomainList(representation.getServicos()));
         domain.setDescricao(representation.getDescricao());
-
+        domain.setEmpresa(empresaConverter.toDomain(representation.getEmpresa()));
         return domain;
     }
 }

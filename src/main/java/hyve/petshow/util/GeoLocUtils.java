@@ -17,8 +17,7 @@ public class GeoLocUtils {
 	private String lon;
 
 	public static String geraUrl(Endereco endereco) {
-//		var cepTratado = cep.substring(0, 5) + "-" + cep.substring(5);
-		var local = endereco.getLogradouro() + " " + endereco.getNumero() + " ,Brazil";
+		var local = endereco.getLogradouro() + " " + endereco.getNumero() + ", "+endereco.getCidade()+", "+endereco.getEstado()+" ,Brazil";
 		return GEOLOC_API_URL_BASE + local + "&format=json";
 	}
 
