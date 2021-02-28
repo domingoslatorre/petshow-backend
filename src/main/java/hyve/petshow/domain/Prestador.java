@@ -15,7 +15,7 @@ import java.util.List;
 public class Prestador extends Conta {
 	private String descricao;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_conta")
+	@JoinColumn(name = "fk_prestador")
 	private List<ServicoDetalhado> servicosPrestados;
 
 	public Prestador(Conta conta){
