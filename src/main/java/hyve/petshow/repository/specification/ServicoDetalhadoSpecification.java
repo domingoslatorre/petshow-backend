@@ -118,9 +118,9 @@ public class ServicoDetalhadoSpecification {
 											geolocPositiva.getGeolocLatitude(), geolocNegativa.getGeolocLatitude())
 
 							), builder.and(prestador.get("empresa").isNotNull(),
-									builder.between(prestador.get("geolocalizacao").get("geolocLongitude"),
+									builder.between(prestador.get("empresa").get("geolocalizacao").get("geolocLongitude"),
 											geolocPositiva.getGeolocLongitude(), geolocNegativa.getGeolocLongitude()),
-									builder.between(prestador.get("geolocalizacao").get("geolocLatitude"),
+									builder.between(prestador.get("empresa").get("geolocalizacao").get("geolocLatitude"),
 											geolocPositiva.getGeolocLatitude(), geolocNegativa.getGeolocLatitude())))),
 									builder.equal(prestador.get("id"), root.get("id"))),
 							root.get("prestadorId")));
