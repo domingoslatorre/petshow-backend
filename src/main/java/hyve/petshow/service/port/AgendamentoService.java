@@ -20,12 +20,18 @@ public interface AgendamentoService {
 
     Page<Agendamento> buscarAgendamentosPorPrestador(Long id, Pageable pageable) throws NotFoundException;
 
-    Agendamento buscarPorId(Long id, Long usuarioId) throws NotFoundException, BusinessException;
+    Agendamento buscarPorIdAtivo(Long id, Long usuarioId) throws NotFoundException, BusinessException;
 
     Agendamento atualizarAgendamento(Long id, Long prestadorId, Agendamento request) throws BusinessException, NotFoundException;
+
+    Agendamento ativarAgendamento(Long id, Long clienteId) throws NotFoundException, BusinessException;
 
     Agendamento atualizarStatusAgendamento(Long id, Long prestadorId, StatusAgendamento statusAgendamento) throws BusinessException, NotFoundException;
     
     List<String> buscarHorariosAgendamento(Long prestadorId, LocalDate dataAgendamento);
+
+    Agendamento buscarPorId(Long id, Long usuarioId) throws BusinessException, NotFoundException;
+
+    void deletarAgendamento(Long agendamentoId, Long clienteId) throws NotFoundException, BusinessException;
 
 }

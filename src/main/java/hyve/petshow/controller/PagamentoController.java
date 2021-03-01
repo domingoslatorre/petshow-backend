@@ -5,6 +5,7 @@ import hyve.petshow.controller.representation.PagamentoRepresentation;
 import hyve.petshow.facade.PagamentoFacade;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,13 @@ public class PagamentoController {
     private PagamentoFacade pagamentoFacade;
 
     @Operation(summary = "Retorna preference para efetuar checkout.")
-    @PostMapping(value = "/preference")
+    @GetMapping(value = "/agendamento/{agendamentoId}/cliente/{clienteId}/preference")
     public ResponseEntity<PagamentoRepresentation> geraPreference(
-            @RequestBody AgendamentoRepresentation request) throws Exception {
-        var preference = pagamentoFacade.efetuarPagamento(request);
+            @Parameter(description = "Id do agendamento")
+            @PathVariable Long agendamentoId,
+            @Parameter(description = "Id do cliente")
+            @PathVariable Long clienteId) throws Exception {
+        var preference = pagamentoFacade.efetuarPagamento(agendamentoId, clienteId);
 
         return ResponseEntity.ok(PagamentoRepresentation.builder()
                 .preferenceId(preference.getId())

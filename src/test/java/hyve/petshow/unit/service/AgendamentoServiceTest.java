@@ -2,13 +2,11 @@ package hyve.petshow.unit.service;
 
 import static hyve.petshow.mock.AgendamentoMock.criaAgendamento;
 import static hyve.petshow.mock.StatusAgendamentoMock.criaStatusAgendamento;
-import static hyve.petshow.util.AuditoriaUtils.INATIVO;
-import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
+import static hyve.petshow.util.AuditoriaUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -52,8 +50,8 @@ public class AgendamentoServiceTest {
         openMocks(this);
 
         doReturn(agendamento).when(repository).save(any(Agendamento.class));
-        doReturn(agendamentoPage).when(repository).findByClienteId(anyLong(), any(Pageable.class));
-        doReturn(agendamentoPage).when(repository).findByPrestadorId(anyLong(), any(Pageable.class));
+        doReturn(agendamentoPage).when(repository).findByClienteIdAndAuditoriaFlagAtivo(anyLong(), anyString(), any(Pageable.class));
+        doReturn(agendamentoPage).when(repository).findByPrestadorIdAndAuditoriaFlagAtivo(anyLong(), anyString(), any(Pageable.class));
         doReturn(Optional.of(agendamento)).when(repository).findById(anyLong());
     }
 
@@ -75,7 +73,7 @@ public class AgendamentoServiceTest {
     public void deve_lancar_not_found_exception_caso_buscar_agendamentos_por_cliente_nao_retornar_nada(){
         var paginaVazia = new PageImpl<Agendamento>(Collections.emptyList());
 
-        doReturn(paginaVazia).when(repository).findByClienteId(1L, pageable);
+        doReturn(paginaVazia).when(repository).findByClienteIdAndAuditoriaFlagAtivo(1L, ATIVO, pageable);
 
         assertThrows(NotFoundException.class, () ->
                 service.buscarAgendamentosPorCliente(1L, pageable));
@@ -98,7 +96,7 @@ public class AgendamentoServiceTest {
     public void deve_lancar_not_found_exception_caso_buscar_agendamentos_por_prestador_nao_retornar_nada(){
         var paginaVazia = new PageImpl<Agendamento>(Collections.emptyList());
 
-        doReturn(paginaVazia).when(repository).findByPrestadorId(1L, pageable);
+        doReturn(paginaVazia).when(repository).findByPrestadorIdAndAuditoriaFlagAtivo(1L, ATIVO,pageable);
 
         assertThrows(NotFoundException.class, () ->
                 service.buscarAgendamentosPorPrestador(1L, pageable));
@@ -106,7 +104,7 @@ public class AgendamentoServiceTest {
 
     @Test
     public void deve_buscar_agendamento_por_id() throws NotFoundException, BusinessException {
-        var actual = service.buscarPorId(1L, 1L);
+        var actual = service.buscarPorIdAtivo(1L, 1L);
 
         assertEquals(agendamento, actual);
     }
@@ -116,13 +114,13 @@ public class AgendamentoServiceTest {
         doReturn(Optional.empty()).when(repository).findById(anyLong());
 
         assertThrows(NotFoundException.class,
-                () -> service.buscarPorId(1L, 1L));
+                () -> service.buscarPorIdAtivo(1L, 1L));
     }
 
     @Test
     public void deve_lancar_business_exception_caso_cliente_id_e_prestador_id_divergentes_ao_buscar_por_id(){
         assertThrows(BusinessException.class, () ->
-                service.buscarPorId(1L, 2L));
+                service.buscarPorIdAtivo(1L, 2L));
     }
 
     @Test
@@ -176,7 +174,7 @@ public class AgendamentoServiceTest {
     		add("11:00");
     	}};
     	
-    	doReturn(agendamentos).when(repository).findAllByPrestadorAndDate(anyLong(), any());
+    	doReturn(agendamentos).when(repository).findAllByPrestadorAndDateAndAuditoriaFlagAtivo(anyLong(), any());
     	var retorno = service.buscarHorariosAgendamento(1l, LocalDate.of(2021, 01, 01));
     	assertEquals(esperado, retorno);
     }

@@ -1,8 +1,6 @@
 package hyve.petshow.service.implementation;
 
-import static hyve.petshow.util.AuditoriaUtils.ATIVO;
-import static hyve.petshow.util.AuditoriaUtils.atualizaAuditoria;
-import static hyve.petshow.util.AuditoriaUtils.geraAuditoriaInsercao;
+import static hyve.petshow.util.AuditoriaUtils.*;
 import static hyve.petshow.util.ProxyUtils.verificarIdentidade;
 
 import java.time.LocalDate;
@@ -35,13 +33,15 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     @Override
     public Agendamento adicionarAgendamento(Agendamento agendamento) {
         agendamento.setAuditoria(geraAuditoriaInsercao(Optional.of(agendamento.getCliente().getId())));
+        //Insere inativo como pré-agendamento
+        agendamento.getAuditoria().setFlagAtivo(INATIVO);
 
         return repository.save(agendamento);
     }
 
     @Override
     public Page<Agendamento> buscarAgendamentosPorCliente(Long id, Pageable pageable) throws NotFoundException, BusinessException {
-        var agendamentos = repository.findByClienteId(id, pageable);
+        var agendamentos = repository.findByClienteIdAndAuditoriaFlagAtivo(id, ATIVO, pageable);
 
         if(agendamentos.isEmpty()){
             throw new NotFoundException(NENHUM_AGENDAMENTO_ENCONTRADO);
@@ -58,7 +58,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
     @Override
     public Page<Agendamento> buscarAgendamentosPorPrestador(Long id, Pageable pageable) throws NotFoundException {
-        var agendamentos = repository.findByPrestadorId(id, pageable);
+        var agendamentos = repository.findByPrestadorIdAndAuditoriaFlagAtivo(id, ATIVO, pageable);
 
         if(agendamentos.isEmpty()){
             throw new NotFoundException(NENHUM_AGENDAMENTO_ENCONTRADO);
@@ -68,8 +68,8 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     }
 
     @Override
-    public Agendamento buscarPorId(Long id, Long usuarioId) throws NotFoundException, BusinessException {
-        var agendamento = repository.findById(id)
+    public Agendamento buscarPorIdAtivo(Long id, Long usuarioId) throws NotFoundException, BusinessException {
+        var agendamento = repository.findByIdAndAuditoriaFlagAtivo(id, ATIVO)
                 .orElseThrow(() -> new NotFoundException(AGENDAMENTO_NAO_ENCONTRADO));
 
         if(! (verificarIdentidade(agendamento.getCliente().getId(), usuarioId) ||
@@ -82,7 +82,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
     @Override
     public Agendamento atualizarAgendamento(Long id, Long prestadorId, Agendamento request) throws BusinessException, NotFoundException {
-        var agendamento = buscarPorId(id, prestadorId);
+        var agendamento = buscarPorIdAtivo(id, prestadorId);
 
         agendamento.setComentario(request.getComentario());
         agendamento.setEndereco(request.getEndereco());
@@ -92,9 +92,20 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     }
 
     @Override
+    public Agendamento ativarAgendamento(Long id, Long clienteId) throws NotFoundException, BusinessException {
+        var agendamento = buscarPorId(id, clienteId);
+
+        agendamento.setAuditoria(atualizaAuditoria(agendamento.getAuditoria(), ATIVO));
+
+        var response = repository.save(agendamento);
+
+        return response;
+    }
+
+    @Override
     public Agendamento atualizarStatusAgendamento(Long id, Long prestadorId, StatusAgendamento statusAgendamento)
             throws BusinessException, NotFoundException {
-        var agendamento = buscarPorId(id, prestadorId);
+        var agendamento = buscarPorIdAtivo(id, prestadorId);
 
         agendamento.setStatus(statusAgendamento);
 
@@ -103,13 +114,31 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
 	@Override
 	public List<String> buscarHorariosAgendamento(Long prestadorId, LocalDate dataAgendamento) {
-		var agendamentos = repository.findAllByPrestadorAndDate(prestadorId, dataAgendamento);
+		var agendamentos = repository.findAllByPrestadorAndDateAndAuditoriaFlagAtivo(prestadorId, dataAgendamento);
 		return agendamentos.stream().map(el -> {
 			var data = el.getData();
 			data.toLocalDate();
 			return data.format(DateTimeFormatter.ofPattern("HH:mm"));
 		}).collect(Collectors.toList());
 	}
-    
-    
+
+    @Override
+    public Agendamento buscarPorId(Long id, Long usuarioId) throws BusinessException, NotFoundException {
+        var agendamento = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(AGENDAMENTO_NAO_ENCONTRADO));
+
+        if(! (verificarIdentidade(agendamento.getCliente().getId(), usuarioId) ||
+                verificarIdentidade(agendamento.getPrestador().getId(), usuarioId))){
+            throw new BusinessException(USUARIO_NAO_PROPRIETARIO_AGENDAMENTO);
+        }
+
+        return agendamento;
+    }
+
+    @Override
+    public void deletarAgendamento(Long agendamentoId, Long clienteId) throws NotFoundException, BusinessException {
+        var agendamento = buscarPorId(agendamentoId, clienteId);
+
+        repository.delete(agendamento);
+    }
 }
