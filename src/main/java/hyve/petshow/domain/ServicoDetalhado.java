@@ -22,7 +22,7 @@ public class ServicoDetalhado {
     @ManyToOne
     @JoinColumn(name = "fk_servico")
     private Servico tipo;
-    @Column(name = "fk_conta")
+    @Column(name = "fk_prestador")
     private Long prestadorId;
     @OneToMany(mappedBy = "servicoDetalhado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ServicoDetalhadoTipoAnimalEstimacao> tiposAnimaisAceitos = new ArrayList<>();

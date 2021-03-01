@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: test
+    active: local
   mail:
     host: smtp.gmail.com
     port: 587
@@ -12,3 +12,7 @@ spring:
           auth: true
           starttls:
             enable: true
+mercado-pago:
+  access:
+    token: ${env.MERCADO_PAGO_ACCESS_TOKEN}
+    url-base-front: ${env.URL_BASE_FRONT}

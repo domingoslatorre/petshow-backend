@@ -6,36 +6,36 @@ import org.springframework.data.domain.PageImpl;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public interface Converter<T, Y> {
-    Y toRepresentation(T domain);
-    T toDomain( Y representation);
+public interface Converter<DOMAIN, REPRESENTATION> {
+    REPRESENTATION toRepresentation(DOMAIN domain);
+    DOMAIN toDomain( REPRESENTATION representation);
     
     
-    default List<Y> toRepresentationList(List<T> domainList) {
+    default List<REPRESENTATION> toRepresentationList(List<DOMAIN> domainList) {
     	return Optional.ofNullable(domainList).map(lista -> {
     		return lista.stream().map(el -> toRepresentation(el)).collect(Collectors.toList());
-    	}).orElse(new ArrayList<Y>());
+    	}).orElse(new ArrayList<REPRESENTATION>());
     }
     
-    default List<T> toDomainList(List<Y> representationList) {
+    default List<DOMAIN> toDomainList(List<REPRESENTATION> representationList) {
     	return Optional.ofNullable(representationList).map(lista -> {
     		return lista.stream().map(el -> toDomain(el)).collect(Collectors.toList());
-    	}).orElse(new ArrayList<T>());
+    	}).orElse(new ArrayList<DOMAIN>());
     }
     
-    default List<Y> toRepresentationList(Set<T> domainList) {
+    default List<REPRESENTATION> toRepresentationList(Set<DOMAIN> domainList) {
     	return Optional.ofNullable(domainList).map(lista -> {
     		return lista.stream().map(el -> toRepresentation(el)).collect(Collectors.toList());
-    	}).orElse(new ArrayList<Y>());
+    	}).orElse(new ArrayList<REPRESENTATION>());
     }
     
-    default Set<T> toDomainSet(List<Y> representationList) {
+    default Set<DOMAIN> toDomainSet(List<REPRESENTATION> representationList) {
     	return Optional.ofNullable(representationList).map(lista -> {
     		return lista.stream().map(el -> toDomain(el)).collect(Collectors.toSet());
     	}).orElse(Collections.emptySet());
     }
 
-    default Page<Y> toRepresentationPage(Page<T> domainPage){
+    default Page<REPRESENTATION> toRepresentationPage(Page<DOMAIN> domainPage){
         return new PageImpl<>(toRepresentationList(domainPage.getContent()), domainPage.getPageable(),
                 domainPage.getTotalElements());
     }

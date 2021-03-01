@@ -18,6 +18,6 @@ public class AnimalEstimacao {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_tipo_animal_estimacao")
     private TipoAnimalEstimacao tipo;
-    @Column(name = "fk_conta")
+    @Column(name = "fk_cliente")
     private Long donoId;
 }

@@ -1,6 +1,5 @@
 package hyve.petshow.controller;
 
-import static hyve.petshow.util.PagingAndSortingUtils.geraPageable;
 import static hyve.petshow.util.PagingAndSortingUtils.geraPageableOrdemMaisNovo;
 
 import java.time.LocalDate;
@@ -11,14 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import hyve.petshow.controller.converter.AgendamentoConverter;
 import hyve.petshow.controller.converter.AvaliacaoConverter;
@@ -107,7 +99,7 @@ public class AgendamentoController {
             @PathVariable Long id,
             @Parameter(description = "Id do usuario que realiza a busca, para verificar se o mesmo pode ter acesso às informações")
             @PathVariable Long usuarioId) throws Exception {
-        var agendamento = agendamentoService.buscarPorId(id, usuarioId);
+        var agendamento = agendamentoService.buscarPorIdAtivo(id, usuarioId);
         var representation = agendamentoConverter.toRepresentation(agendamento);
 
         return ResponseEntity.ok(representation);
@@ -176,6 +168,30 @@ public class AgendamentoController {
     		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataAgendamento) {
     	return ResponseEntity.ok(agendamentoFacade.buscaHorariosAgendamento(idPrestador, dataAgendamento));
     }
-    
+
+    @Operation(summary = "Deleta agendamento")
+    @DeleteMapping("/{agendamentoId}/cliente/{clienteId}")
+    public ResponseEntity<?> deletarAgendamento(
+            @Parameter(description = "Id do agendamento")
+            @PathVariable Long agendamentoId,
+            @Parameter(description = "Id do cliente")
+            @PathVariable Long clienteId) throws NotFoundException, BusinessException {
+        agendamentoService.deletarAgendamento(agendamentoId, clienteId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Ativa agendamento")
+    @PatchMapping("/{agendamentoId}/cliente/{clienteId}")
+    public ResponseEntity<AgendamentoRepresentation> ativaAgendamento(
+            @Parameter(description = "Id do agendamento")
+            @PathVariable Long agendamentoId,
+            @Parameter(description = "Id do cliente")
+            @PathVariable Long clienteId) throws NotFoundException, BusinessException {
+        var agendamento = agendamentoService.ativarAgendamento(agendamentoId, clienteId);
+        var representation = agendamentoConverter.toRepresentation(agendamento);
+
+        return ResponseEntity.ok(representation);
+    }
 }
 

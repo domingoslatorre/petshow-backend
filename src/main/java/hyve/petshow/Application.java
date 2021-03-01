@@ -1,5 +1,7 @@
 package hyve.petshow;
 
+import com.mercadopago.MercadoPago;
+import com.mercadopago.exceptions.MPConfException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +21,11 @@ public class Application {
 	private String mail;
 	@Value("${spring.mail.password}")
 	private String password;
-	
+	@Value("${mercado-pago.access.token}")
+	private String mercadoPagoAccessToken;
+	@Value("${mercado-pago.access.url-base-front}")
+	private String urlBaseFront;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -54,5 +60,14 @@ public class Application {
 	    props.put("mail.debug", "true");
 	    
 	    return mailSender;
+	}
+
+	@Bean
+	public void setPaymentToken() throws MPConfException {
+		MercadoPago.SDK.setAccessToken(mercadoPagoAccessToken);
+	}
+
+	public String getUrlBaseFront(){
+		return this.urlBaseFront;
 	}
 }

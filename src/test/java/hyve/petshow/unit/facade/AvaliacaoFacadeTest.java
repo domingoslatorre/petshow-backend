@@ -77,7 +77,7 @@ public class AvaliacaoFacadeTest {
 			avaliacoes.add(avaliacao);
 			return null;
 		}).when(avaliacaoService).adicionarAvaliacao(any(Avaliacao.class));
-		doReturn(agendamento).when(agendamentoService).buscarPorId(anyLong(), anyLong());
+		doReturn(agendamento).when(agendamentoService).buscarPorIdAtivo(anyLong(), anyLong());
 	}
 
 	@Test

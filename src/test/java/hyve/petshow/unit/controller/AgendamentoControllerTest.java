@@ -91,7 +91,7 @@ public class AgendamentoControllerTest {
         doReturn(agendamentoPage).when(agendamentoService).buscarAgendamentosPorCliente(anyLong(), any(Pageable.class));
         doReturn(agendamentoPage).when(agendamentoService).buscarAgendamentosPorPrestador(anyLong(), any(Pageable.class));
         doReturn(agendamentoRepresentationPage).when(agendamentoConverter).toRepresentationPage(any(Page.class));
-        doReturn(agendamento).when(agendamentoService).buscarPorId(anyLong(), anyLong());
+        doReturn(agendamento).when(agendamentoService).buscarPorIdAtivo(anyLong(), anyLong());
         doReturn(agendamentoRepresentation).when(agendamentoConverter).toRepresentation(any(Agendamento.class));
         doReturn(statusAgendamentoList).when(statusAgendamentoService).buscarStatusAgendamento();
         doReturn(statusAgendamentoRepresentationList).when(statusAgendamentoConverter).toRepresentationList(anyList());
