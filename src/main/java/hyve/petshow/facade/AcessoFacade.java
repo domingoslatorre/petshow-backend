@@ -33,11 +33,10 @@ public class AcessoFacade {
 
 	public PrestadorRepresentation salvaPrestador(PrestadorRepresentation representation) throws Exception {
 		var domain = prestadorConverter.toDomain(representation);
-		var conta = new Prestador(acessoService.adicionarConta(domain));
+		var prestador = new Prestador(acessoService.adicionarConta(domain));
 		var empresa = domain.getEmpresa();
-		conta.setEmpresa(empresa);
-		empresa.setDono(conta);
-		empresaService.salvarEmpresa(empresa);
-		return prestadorConverter.toRepresentation(prestadorService.buscarPorId(conta.getId()));
+
+		empresaService.salvarEmpresa(empresa, prestador.getId());
+		return prestadorConverter.toRepresentation(prestadorService.buscarPorId(prestador.getId()));
 	}
 }

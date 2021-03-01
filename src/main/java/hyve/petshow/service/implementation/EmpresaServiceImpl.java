@@ -25,8 +25,8 @@ public class EmpresaServiceImpl implements EmpresaService {
 	@Autowired
 	private EmpresaRepository repository;
 	@Override
-	public Empresa salvarEmpresa(Empresa empresa) {
-		empresa.setAuditoria(geraAuditoriaInsercao(Optional.ofNullable(empresa.getDono().getId())));
+	public Empresa salvarEmpresa(Empresa empresa, Long prestadorId) {
+		empresa.setAuditoria(geraAuditoriaInsercao(Optional.ofNullable(prestadorId)));
 		empresa.setGeolocalizacao(geraGeolocalizacao(empresa.getEndereco()));
 		return repository.save(empresa);
 	}

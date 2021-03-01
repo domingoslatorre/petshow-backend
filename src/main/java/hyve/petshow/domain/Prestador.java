@@ -21,7 +21,8 @@ public class Prestador extends Conta {
 	@JoinColumn(name = "fk_prestador")
 	private List<ServicoDetalhado> servicosPrestados;
 
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "dono", orphanRemoval = true)
+	@OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
+	@JoinColumn(name = "fk_empresa")
 	private Empresa empresa;
 
 	public Prestador(Conta conta) {
