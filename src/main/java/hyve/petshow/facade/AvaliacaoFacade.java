@@ -33,7 +33,7 @@ public class AvaliacaoFacade {
 
 		var cliente = clienteService.buscarPorId(clienteId);
 		var avaliacao = converter.toDomain(request);
-		var agendamento = agendamentoService.buscarPorId(agendamentoId, clienteId);
+		var agendamento = agendamentoService.buscarPorIdAtivo(agendamentoId, clienteId);
 
 		avaliacao.setCliente(cliente);
 		avaliacao.setServicoAvaliadoId(servicoAvaliadoId);

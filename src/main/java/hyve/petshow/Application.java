@@ -23,7 +23,9 @@ public class Application {
 	private String password;
 	@Value("${mercado-pago.access.token}")
 	private String mercadoPagoAccessToken;
-	
+	@Value("${mercado-pago.access.url-base-front}")
+	private String urlBaseFront;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -63,5 +65,9 @@ public class Application {
 	@Bean
 	public void setPaymentToken() throws MPConfException {
 		MercadoPago.SDK.setAccessToken(mercadoPagoAccessToken);
+	}
+
+	public String getUrlBaseFront(){
+		return this.urlBaseFront;
 	}
 }
