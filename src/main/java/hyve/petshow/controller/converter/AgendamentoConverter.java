@@ -45,9 +45,6 @@ public class AgendamentoConverter implements Converter<Agendamento, AgendamentoR
         representation.setPrestador(prestadorConverter.toRepresentation(domain.getPrestador()));
         representation.setServicoDetalhadoId(domain.getServicoDetalhado().getId());
         representation.setServicoDetalhado(servicoDetalhadoConverter.toRepresentation(domain.getServicoDetalhado()));
-        if(isNotNull(domain.getAvaliacao())){
-            representation.setAvaliacao(avaliacaoConverter.toRepresentation(domain.getAvaliacao()));
-        }
         representation.setAnimaisAtendidos(
                 animalConverter.toRepresentationList(domain.getAnimaisAtendidos().stream()
                         .map(animalEstimacaoAgendamento -> animalEstimacaoAgendamento.getAnimalEstimacao())

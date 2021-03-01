@@ -30,9 +30,4 @@ public class Empresa {
 	private Auditoria auditoria;
 	@Embedded
 	private Geolocalizacao geolocalizacao;
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FK_PRESTADOR", referencedColumnName = "id")
-	@ToString.Exclude
-	private Prestador dono;
-	
 }

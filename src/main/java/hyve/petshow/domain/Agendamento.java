@@ -34,9 +34,6 @@ public class Agendamento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_servico_detalhado")
     private ServicoDetalhado servicoDetalhado;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_avaliacao")
-    private Avaliacao avaliacao;
     @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL)
     private List<AnimalEstimacaoAgendamento> animaisAtendidos = new ArrayList<>();
     @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL)

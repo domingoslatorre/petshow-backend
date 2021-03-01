@@ -6,7 +6,7 @@ import hyve.petshow.domain.Empresa;
 
 @Service
 public interface EmpresaService {
-	Empresa salvarEmpresa(Empresa empresa);
+	Empresa salvarEmpresa(Empresa empresa, Long prestadorId);
 
 	Empresa buscarPorId(Long id) throws Exception;
 

@@ -18,10 +18,11 @@ import java.util.List;
 public class Prestador extends Conta {
 	private String descricao;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_conta")
+	@JoinColumn(name = "fk_prestador")
 	private List<ServicoDetalhado> servicosPrestados;
 
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "dono", orphanRemoval = true)
+	@OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
+	@JoinColumn(name = "fk_empresa")
 	private Empresa empresa;
 
 	public Prestador(Conta conta) {

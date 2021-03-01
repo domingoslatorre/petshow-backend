@@ -20,6 +20,4 @@ public class Servico {
     private Integer id;
     private String nome;
     private String grupo;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tipo")
-    private List<ServicoDetalhado> servicosDetalhados = new ArrayList<>();
 }

@@ -36,7 +36,6 @@ public class AgendamentoMock {
         agendamento.setCliente(criaCliente());
         agendamento.setComentario("teste");
         agendamento.setAdicionais(Arrays.asList(new AdicionalAgendamento()));
-        agendamento.setAvaliacao(criaAvaliacao());
         agendamento.setId(1L);
 
         return agendamento;

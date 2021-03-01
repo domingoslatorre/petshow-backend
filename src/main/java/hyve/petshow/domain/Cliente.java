@@ -14,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Cliente extends Conta {
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_conta")
+	@JoinColumn(name = "fk_cliente")
 	private List<AnimalEstimacao> animaisEstimacao;
 
 	public Cliente(Conta conta) {
