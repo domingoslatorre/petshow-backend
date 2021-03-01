@@ -7,6 +7,7 @@ import hyve.petshow.domain.Conta;
 import hyve.petshow.domain.enums.TipoConta;
 import hyve.petshow.exceptions.BusinessException;
 import hyve.petshow.exceptions.NotFoundException;
+import hyve.petshow.facade.AcessoFacade;
 import hyve.petshow.service.port.AcessoService;
 import hyve.petshow.util.JwtUtils;
 import hyve.petshow.util.OnRegistrationCompleteEvent;
@@ -45,6 +46,8 @@ public class AcessoControllerTest {
     private JwtUtils jwtUtils;
     @Mock
     private ApplicationEventPublisher eventPublisher;
+    @Mock
+    private AcessoFacade facade;
     @InjectMocks
     private AcessoController controller;
 
@@ -65,6 +68,7 @@ public class AcessoControllerTest {
         doNothing().when(eventPublisher).publishEvent(any(OnRegistrationCompleteEvent.class));
         doReturn(conta).when(service).ativaConta(anyString());
         doReturn(conta).when(service).buscarConta(anyString());
+        doReturn(contaRepresentation).when(facade).salvaConta(any());
     }
 
     @Test
@@ -90,7 +94,7 @@ public class AcessoControllerTest {
     }
 
     @Test
-    public void deve_retornar_token_apos_realizar_cadastro() throws BusinessException {
+    public void deve_retornar_token_apos_realizar_cadastro() throws Exception {
         var expected = ResponseEntity.ok(token);
 
         doReturn(Optional.empty()).when(service).buscarPorEmail(anyString());

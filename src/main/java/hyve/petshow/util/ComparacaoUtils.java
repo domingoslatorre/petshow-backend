@@ -3,6 +3,7 @@ package hyve.petshow.util;
 import hyve.petshow.controller.representation.ComparacaoRepresentation;
 import hyve.petshow.controller.representation.ComparacaoWrapper;
 import hyve.petshow.controller.representation.PrecoPorTipoRepresentation;
+import hyve.petshow.controller.representation.PrestadorRepresentation;
 import hyve.petshow.controller.representation.ServicoDetalhadoRepresentation;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ComparacaoUtils {
@@ -79,7 +81,7 @@ public class ComparacaoUtils {
 	public static ComparacaoRepresentation criaRepresentation(ServicoDetalhadoRepresentation representation) {
 		var comparacao = new ComparacaoRepresentation();
 		comparacao.setId(representation.getId());
-		comparacao.setNome(representation.getTipo().getNome() + " - " + representation.getPrestador().getNome());
+		comparacao.setNome(representation.getTipo().getNome()+"|"+geraNomePrestador(representation.getPrestador()));
 		comparacao.setAdicionais(representation.getAdicionais());
 		comparacao.setMaiorPreco(geraMaiorPreco(representation.getPrecoPorTipo()));
 		comparacao.setMenorPreco(geraMenorPreco(representation.getPrecoPorTipo()));
@@ -87,6 +89,12 @@ public class ComparacaoUtils {
 		comparacao.setTiposAtendidos(geraTiposAtendidos(representation.getPrecoPorTipo()));
 		comparacao.setMediaAvaliacao(new BigDecimal(representation.getMedia()).setScale(2));
 		return comparacao;
+	}
+	
+	public static String geraNomePrestador(PrestadorRepresentation prestador) {
+		return Optional.ofNullable(prestador.getEmpresa())
+				.map(emp -> Optional.ofNullable(emp.getRazaoSocial()).orElse(emp.getNome()))
+				.orElse(prestador.getNome());
 	}
 
 	private static Map<String, Boolean> geraTiposAtendidos(List<PrecoPorTipoRepresentation> precoPorTipo) {

@@ -25,7 +25,7 @@ public class Avaliacao {
 	@ToString.Exclude
 	private Agendamento agendamentoAvaliado;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fk_conta")
+	@JoinColumn(name = "fk_cliente")
 	private Cliente cliente;
 	
 	@Transient

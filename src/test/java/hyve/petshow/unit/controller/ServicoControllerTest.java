@@ -44,7 +44,7 @@ public class ServicoControllerTest {
     public void deve_retornar_todos_os_tipos_de_servico() throws NotFoundException {
         var expected = ResponseEntity.ok(servicosRepresentation);
 
-        var actual = controller.buscarServicos();
+        var actual = controller.buscarServicos(null, null);
 
         assertEquals(expected, actual);
     }
