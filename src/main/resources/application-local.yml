@@ -1,15 +1,28 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/petshow?reconnect=true&serverTimezone=America/Sao_Paulo
+    url: ${JDBC_DATABASE_URL}
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: root
   app-url: "http://localhost:4200"
   jpa:
      show-sql: false
+     generate-ddl: true
      properties:
       hibernate:
         format_sql: true
+        ddl-auto: create
+  mail:
+    host: ${env.PETSHOW_MAIL_HOST}
+    port: ${env.PETSHOW_MAIL_PORT}
+    username: ${env.PETSHOW_MAIL}
+    password: ${env.PETSHOW_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 logging:
   level:
     org:

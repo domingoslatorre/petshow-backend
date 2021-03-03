@@ -1,0 +1,65 @@
+version: '3'
+services:
+  mysql-docker-container:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=petshow
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    networks:
+      - app_net
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.0.1
+    restart: always
+    environment:
+      PMA_HOST: mysql-docker-container
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - 8081:80
+    networks:
+      - app_net
+  mailhog:
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    environment:
+      - MH_SMTP_BIND_ADDR=0.0.0.0:587
+    ports:
+      - 587:587 # smtp server
+      - 8082:8025 # web ui
+    networks:
+      - app_net
+  petshow-backend-app-container:
+    image: petshow-backend:latest
+    restart: on-failure
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql-docker-container
+      - phpmyadmin
+      - mailhog
+    ports:
+      - 8080:8080 # smtp server
+    environment:
+      - PETSHOW_MAIL_HOST=mailhog
+      - PETSHOW_MAIL_PORT=587
+      - PETSHOW_MAIL=qualquer
+      - PETSHOW_PASSWORD=qualquer
+      - MERCADO_PAGO_ACCESS_TOKEN=qualquer
+      - URL_BASE_FRONT=http://localhost:4200
+      - SPRING_PROFILES_ACTIVE=local
+      - JDBC_DATABASE_URL=jdbc:mysql://mysql-docker-container:3306/petshow?reconnect=true&serverTimezone=America/Sao_Paulo
+    networks:
+      - app_net
+networks:
+  app_net:
+volumes:
+  db_data:
